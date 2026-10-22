@@ -169,7 +169,10 @@ patches/          0001-voxcpm2-4gb-ve-hiz.patch — audio.cpp v0.7.2 changes (LF
 scripts/          kur.ps1 (installer: prebuilt or -Derle), derle.ps1 (build), release_zip.ps1 (packs a release zip)
 ayarlar/          okunus_sozlugu.tsv pronunciation dictionary
 docs/4gb.md       how it fits in 4 GB, measurements
-.github/          ISSUE_TEMPLATE (install problem form, Discussions link)
+docs/marka_sesi_rehberi.md   brand voice guide (prompt pattern, seeds, ethics)
+docs/test_seti/cumleler.txt  shared Turkish test set (CC0; digit sentences need spelling out for this reader)
+CONTRIBUTING.md   how to contribute (starter issues #5-#8, PR rules); SECURITY.md private reporting
+.github/          ISSUE_TEMPLATE (install problem form, Discussions link), pull_request_template.md, dependabot.yml
 ayarlar.example.json, requirements.txt, LICENSE (Apache-2.0), THIRD_PARTY.md, ETHICS.md
 ```
 

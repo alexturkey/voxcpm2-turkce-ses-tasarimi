@@ -147,6 +147,8 @@ Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi bir ilk adım:
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Test setine bir cümle ekle
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Tasarladığın bir sesi tarifi ve tohumuyla paylaş
 
+Ortak test seti: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); marka sesi rehberi:
+[docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); kod gönderme: [CONTRIBUTING.md](CONTRIBUTING.md).
 Kurulum sorunu: [sorun formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); soru ve sonuçlar: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 ## Lisans ve teşekkür

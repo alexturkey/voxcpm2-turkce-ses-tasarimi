@@ -150,6 +150,8 @@ Not sure where to start? These four small issues are a good first step:
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Add a sentence to the test set
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Share a voice you designed, with its description and seed
 
+Shared test set: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); brand voice guide:
+[docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); how to send code: [CONTRIBUTING.md](CONTRIBUTING.md).
 Install problems: [issue form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); questions and results: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 ## License and credits

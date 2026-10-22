@@ -1,0 +1,63 @@
+# Ortak Türkçe test seti / Shared Turkish test set. Lisans: CC0 1.0 (kamu malı). Tartışma ve ekleme: Discussions #2, issue #7.
+# Biçim: numara | cümle. Rakamlı cümleler (9-22) okuma motorunun sayı ve kısaltma davranışını sınamak içindir; bu depodaki
+# okuyucu rakam ve tırnak kabul etmez, onları okutmak için sayıları yazıyla yazın (README "Kullanım").
+# Format: number | sentence. Sentences with digits (9-22) probe number/abbreviation handling; this repo's reader refuses
+# digits and quotes, so spell numbers out to read them (README "Use").
+## Zor sesler (g, I, o, u, c, s)
+1 | Yağmurdan sonra dağın yamacındaki ağaçların yaprakları ışıl ışıl parlıyordu.
+2 | Çocuklar bahçedeki küçük çeşmenin başında şarkı söyleyerek koşuşturdu.
+3 | Öğretmen, güneşli bir öğleden sonra öğrencilerine ördeğin öyküsünü okudu.
+4 | Üzüm yüklü kamyonun şoförü, ışıkta durup yüzünü yıkadı.
+5 | Şişedeki sıcak çaydan bir yudum alıp sessizce pencereye yaklaştı.
+6 | Kağıt kesici makas, çekmecenin en alt gözünde duruyordu.
+7 | Dağcılar, yağışlı havada ağır ağır tepeye tırmanmaya çalışıyordu.
+8 | Işığı söndürmeden önce çocuğun yorganını düzeltip alnını öptü.
+## Sayılar, tarihler, saatler
+9 | Toplantı 23 Ekim 2026 Cuma günü saat 14.30'da başlayacak.
+10 | Faturanın tutarı 1.249,75 TL, son ödeme tarihi 5 Kasım.
+11 | Maratonda 42 kilometre 195 metre koşan sporcu üçüncü oldu.
+12 | Ankara'dan İstanbul'a yaklaşık 450 kilometre var.
+13 | Sınıfın yüzde 65'i, yani 26 öğrenci sınavdan geçti.
+14 | 1 Ocak 2000 ile 31 Aralık 2025 arasında tam 9.497 gün geçti.
+15 | Kapı numarası 7/B, daire numarası 12 olan eve gidiyorum.
+16 | Sıcaklık eksi 3 dereceye düştü, öğleden sonra ise 11 dereceyi gördü.
+## Kısaltmalar ve sembol
+17 | TBMM'nin yeni dönemi, T.C. Resmî Gazete'de yayımlanan kararla başladı.
+18 | Dr. Aslan, 15 mg'lık hapı günde 2 kez almamı söyledi.
+19 | Bu cihaz 220 V gerilimle çalışır ve 1,5 kW güç çeker.
+20 | Prof. Dr. Yıldız'ın makalesi, ODTÜ ve İTÜ'den araştırmacılarca da atıf aldı.
+21 | Saat 09.00-17.00 arası hizmet veriyoruz; ayrıntı için www.ornek.org adresine bakın.
+22 | Haftada 3 gün, günde ortalama 45 dk. yürüyüş yapmak yeterli olabilir.
+## Soru ve ünlem
+23 | Bu akşam hangi filme gitmek istersin?
+24 | Gerçekten de o kadar zor muydu, yoksa sen mi vazgeçtin?
+25 | Dikkat, zemin kaygan olabilir!
+26 | Harika, sonunda başardık!
+27 | Neden bu kadar geç kaldınız, bir haber verseydiniz?
+28 | Hayır, hayır, kesinlikle olmaz!
+## Uzun bileşik cümleler
+29 | Kasabanın en eski fırınında sabah beşte yoğrulmaya başlayan hamur, mahallenin uyanmasını beklemeden odunla yakılan ateşte pişer, o sırada fırıncı da radyoda eski şarkılar çalarken sessizce çayını demlerdi.
+30 | Dere kıyısında oturup uzun süre düşündükten sonra, yıllardır ertelediği mektubu yazmaya karar verdi ve ilk cümleyi bulmak için bir saat harcadı.
+31 | Yağmur dinince çıkan gökkuşağını görmek için herkes balkona koştu, ama en çok sevinen, bunu ilk kez gören küçük kız oldu.
+32 | Eğer kitabı zamanında teslim etmeyi başaramazsan, kütüphane görevlisi sana ek süre vermeyecek, üstelik bir sonraki ödünç alışında da seni uyaracak.
+33 | Okulun bahçesinde yetişen eski çınar ağacının gölgesinde, her yıl mezuniyet günü fotoğraf çekilir ve o fotoğraflar koridorun duvarına asılırdı.
+## Özel adlar
+34 | Mimar Sinan, Süleymaniye Camii'ni yaptıktan yıllar sonra Selimiye'yi ustalık eseri olarak tanımladı.
+35 | Kapadokya'da Göreme, Ürgüp ve Uçhisar'ı gezdikten sonra Erciyes'in eteklerine vardık.
+36 | Orhan Pamuk'un Kırmızı Saçlı Kadın adlı romanı birçok dile çevrildi.
+37 | Dicle ile Fırat'ın birleştiği yerde Şattülarap adı verilen nehir oluşur.
+38 | Ayşe, Mehmet ve Zeynep, Eskişehir'den Çanakkale'ye birlikte yola çıktılar.
+39 | Karadeniz'in en yüksek zirvelerinden Kaçkar Dağı, Rize ile Artvin arasında yer alır.
+## Yabancı kelimeler ve karışık dil
+40 | Toplantıyı Zoom üzerinden yapalım, link'i mail olarak gönderirim.
+41 | Yeni telefonun ekran kartı ve batarya performansı benchmark testlerinde çok iyi çıktı.
+42 | Ofiste meeting'den sonra herkes brunch yapmak için kafeye gitti.
+43 | Bu yazılım Python ile yazıldı ve GitHub üzerinden indirilebiliyor.
+44 | Müşteri feedback'ini dikkate alıp ürünün tasarımını baştan elden geçirdik.
+45 | Rendez-vous kelimesini Türkçede genellikle randevu diye yazarız.
+## Ek: ünlü uyumu, ek ve eylem sınaması
+46 | Gelmeyecekmişsiniz diye kimse size haber vermemiş olabilir mi?
+47 | Evlerimizdekilerle konuşurken sevgimizi göstermeyi unutmamalıyız.
+48 | Çekoslovakyalılaştıramadıklarımızdan mısınız, diye şaka yaptı.
+49 | Bilmediğim bir yola girerken yanıma harita almayı hiç ihmal etmem.
+50 | Kısa bir mola verip derin bir nefes aldıktan sonra yeniden çalışmaya başladık.
