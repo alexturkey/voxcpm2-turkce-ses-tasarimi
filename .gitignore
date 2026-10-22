@@ -16,3 +16,5 @@ venv/
 motor/
 cuda/
 model/
+# sürüm paketi / release build output
+dist/

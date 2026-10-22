@@ -10,6 +10,7 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+try { [Console]::OutputEncoding = New-Object Text.UTF8Encoding $false } catch {}   # Türkçe harfler log dosyasında bozulmasın
 $Adim = @($Adim | ForEach-Object { $_ -split "," } | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ })
 $known = @("model", "cuda", "kaynak", "derle", "ayar")
 foreach ($a in $Adim) { if ($known -notcontains $a) { throw "bilinmeyen adım '$a'; seçenekler: $($known -join ', ')" } }
@@ -35,11 +36,17 @@ $CUDA = @(
 )
 
 function Sha256([string]$path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLower() }
+function GitApply([string[]]$argv, [bool]$sessiz = $false) {
+    # git hata metnini stderr'a yazar; PowerShell 5.1 bunu $ErrorActionPreference=Stop ile istisnaya çevirir. Burada metin olarak gösterilir, çıkış kodu döner.
+    $eap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+    try { & git @argv 2>&1 | ForEach-Object { if (-not $sessiz) { Write-Output "  git: $_" } } } finally { $ErrorActionPreference = $eap }
+    return $LASTEXITCODE
+}
 function Indir([string]$url, [string]$hedef, [string]$sha) {
     if ((Test-Path -LiteralPath $hedef) -and ((Sha256 $hedef) -eq $sha)) { Write-Output "  var ve doğru: $(Split-Path $hedef -Leaf)"; return }
     Write-Output "  indiriliyor: $url"
     $tmp = "$hedef.part"
-    curl.exe -L --fail --retry 3 --retry-delay 5 -o $tmp $url
+    curl.exe -L --fail --retry 3 --retry-delay 5 --progress-bar -o $tmp $url
     if ($LASTEXITCODE -ne 0) { throw "indirme başarısız: $url" }
     $got = Sha256 $tmp
     if ($got -ne $sha) { Remove-Item -LiteralPath $tmp -Force; throw "sha256 tutmadı: $hedef`n  beklenen $sha`n  gelen    $got" }
@@ -90,21 +97,21 @@ if ($Adim -contains "kaynak") {
     if (Test-Path $src) { Write-Output "  kaynak klasörü var, yeniden açılmıyor: $src (temiz başlamak için sil)" }
     else {
         New-Item -ItemType Directory -Force $motor | Out-Null
-        tar.exe -xzf $tar -C $motor
+        # Windows'un kendi tar'ı (bsdtar); Git Bash'in /usr/bin/tar'ı "E:" sürücü harfini sunucu sanır. / Windows' own tar, not Git Bash's.
+        $tarExe = Join-Path $env:SystemRoot "System32\tar.exe"
+        if (-not (Test-Path $tarExe)) { throw "tar.exe yok ($tarExe); Windows 10 1803+ gerekir" }
+        & $tarExe -xzf $tar -C $motor
         if ($LASTEXITCODE -ne 0) { throw "tar açılamadı" }
         Rename-Item (Join-Path $motor "audio.cpp-0.7.2") "src"
     }
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "git bulunamadı; Git for Windows kurun (yama için gerekli)" }
     Push-Location $src
     try {
-        git apply --reverse --check $PATCH 2>$null
-        if ($LASTEXITCODE -eq 0) { Write-Output "  yama zaten uygulanmış" }
+        if ((GitApply @("apply", "--reverse", "--check", $PATCH) $true) -eq 0) { Write-Output "  yama zaten uygulanmış" }
         else {
-            git apply --check $PATCH
-            if ($LASTEXITCODE -ne 0) { throw "yama uygulanamıyor (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)" }
-            git apply $PATCH
-            if ($LASTEXITCODE -ne 0) { throw "git apply başarısız" }
-            git apply --reverse --check $PATCH
-            if ($LASTEXITCODE -ne 0) { throw "yama sessizce atlandı (git deposu içinde misin? --directory gerekir)" }
+            if ((GitApply @("apply", "--check", $PATCH)) -ne 0) { throw "yama uygulanamıyor (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)" }
+            if ((GitApply @("apply", $PATCH)) -ne 0) { throw "git apply başarısız" }
+            if ((GitApply @("apply", "--reverse", "--check", $PATCH)) -ne 0) { throw "yama sessizce atlandı (git deposu içinde misin? --directory gerekir)" }
             Write-Output "  yama uygulandı ve doğrulandı"
         }
     } finally { Pop-Location }
