@@ -106,6 +106,33 @@ yourself (another port: `--port 8800`). Three boxes (description, creation text,
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
 Stop the server with Ctrl+C.
 
+## FAQ
+
+**Model or engine? What is what?** VoxCPM2 (OpenBMB) is the *model*: the 2-billion-parameter network that turns text
+into speech. audio.cpp is the *engine*: the C++/CUDA program that runs the model on your GPU (`audiocpp_cli.exe`). Our
+patch changes the engine, not the model: it makes VoxCPM2 fit in 4 GB and makes the same seed give the same audio
+every time. The Python package in this repo only prepares text, calls the engine and collects the files.
+
+**Which GPUs?** See "Supported GPUs" above: NVIDIA from GTX 10xx up, 4 GB VRAM or more, driver ≥ 570. Native code is
+in the release for sm_61/75/86/89/120a; other Pascal-or-newer cards use the embedded PTX (slower first start). No
+AMD/Intel yet (an experimental Vulkan build is planned). CPU-only (`"backend": "cpu"` in `ayarlar.json`) runs but is
+~6× slower than a GTX 1050 Ti (engine measurement, 535 s vs 94 s for 48 s of speech); not a supported path.
+
+**How fast?** Measured on a GTX 1050 Ti 4 GB (i7-7700HQ): one design variant (≈ 25 s recording) 55 s; reading ≈ 2 s of
+compute per 1 s of speech (real-time factor 1.9-2.8) after a one-time ~50 s reference encoding per voice (cached on
+disk) and 10-20 s model load per batch; peak VRAM 2.6-2.9 GB. Newer cards are faster; numbers and method:
+[docs/4gb.md](docs/4gb.md).
+
+**Does it clone real people?** No. There is no audio upload and no recording path: every voice starts from an English
+text description, and the "reference" used for reading is the model's own synthetic design recording. See
+[ETHICS.md](ETHICS.md). Label what you publish as AI-generated.
+
+**How do I write a good voice description?** In English, 1-3 sentences: age and gender, timbre (deep/bright, warm,
+nasal, raspy), tone and role (calm documentary narrator, energetic presenter), tempo (slow, measured), and
+"clean studio recording, no background noise". Keep it a description, not a script; no parentheses. Ask for 3-5
+variants and listen: the seed changes the voice a lot. For the creation text use 3-5 natural Turkish sentences in the
+mood you want (≈ 20-30 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
+
 ## License and credits
 
 Code and bundled voices: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. Built on VoxCPM2 (OpenBMB, Apache-2.0),

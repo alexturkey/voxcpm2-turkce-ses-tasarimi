@@ -103,6 +103,33 @@ adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratı
 sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
 ile kapatın.
 
+## Sık sorulanlar
+
+**Model mi, motor mu? Hangisi ne?** VoxCPM2 (OpenBMB) *model*dir: metni konuşmaya çeviren 2 milyar parametreli ağ.
+audio.cpp *motor*dur: modeli ekran kartında çalıştıran C++/CUDA programı (`audiocpp_cli.exe`). Bizim yama modeli değil
+motoru değiştirir: VoxCPM2'yi 4 GB'a sığdırır ve aynı tohumun her seferinde aynı sesi vermesini sağlar. Bu depodaki
+Python paketi yalnız metni hazırlar, motoru çağırır ve dosyaları toplar.
+
+**Hangi kartlar?** Yukarıdaki "Desteklenen kartlar": GTX 10xx ve üstü NVIDIA, en az 4 GB VRAM, sürücü ≥ 570. Sürümde
+sm_61/75/86/89/120a için yerel kod var; Pascal ve sonrası diğer kartlar gömülü PTX ile çalışır (ilk açılış yavaş).
+AMD/Intel henüz yok (deneysel Vulkan sürümü planda). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
+GTX 1050 Ti'den ~6 kat yavaştır (motor ölçümü: 48 sn ses için 535 sn / 94 sn); desteklenen yol değildir.
+
+**Ne kadar hızlı?** GTX 1050 Ti 4 GB (i7-7700HQ) üzerinde ölçüldü: bir tasarım çeşidi (≈ 25 sn kayıt) 55 sn; okuma,
+ses başına 1 sn için ≈ 2 sn hesap (gerçek zaman çarpanı 1,9-2,8); ses başına bir kerelik ~50 sn referans kodlaması
+(diske önbelleklenir) ve parti başına 10-20 sn model yükleme eklenir; VRAM tepe 2,6-2,9 GB. Yeni kartlar daha hızlı;
+sayılar ve yöntem: [docs/4gb.md](docs/4gb.md).
+
+**Gerçek kişiyi klonlar mı?** Hayır. Ses yükleme ve kayıt yolu yoktur: her ses İngilizce bir metin tarifinden başlar,
+okumada kullanılan "referans" modelin kendi yapay tasarım kaydıdır. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay
+zekâ ürünü olarak etiketleyin.
+
+**İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,
+kısık), ton ve rol (sakin belgesel anlatıcısı, enerjik sunucu), tempo (yavaş, ölçülü) ve "clean studio recording, no
+background noise". Tarif olsun, senaryo olmasın; parantez kullanmayın. 3-5 çeşit isteyip dinleyin: tohum sesi çok
+değiştirir. Yaratılırken okunan metin için istediğiniz havada 3-5 doğal Türkçe cümle (≈ 20-30 sn konuşma). Okumada
+satır başına bir cümle; uzun cümleyi bölün, rakamı yazıyla yazın.
+
 ## Lisans ve teşekkür
 
 Kod ve hazır sesler: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. VoxCPM2 (OpenBMB, Apache-2.0), audio.cpp (ShugoAI LLC,
