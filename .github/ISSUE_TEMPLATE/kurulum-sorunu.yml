@@ -1,0 +1,57 @@
+name: Kurulum sorunu / Install problem
+description: kur.ps1, hazır motor, CUDA ya da arayüz açılmıyor / installer, prebuilt engine, CUDA or UI does not start
+title: "[kurulum] "
+labels: ["kurulum"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Önce [AGENTS.md](../blob/main/AGENTS.md) "Sorun giderme" tablosuna bakın. Exe çift tıklanmaz; kurulum `scripts\kur.ps1` iledir.
+        Check the troubleshooting table in [AGENTS.md](../blob/main/AGENTS.md) first. The exe is not double-clicked; install with `scripts\kur.ps1`.
+  - type: input
+    id: gpu
+    attributes:
+      label: Ekran kartı / GPU
+      description: "`nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader` çıktısı"
+      placeholder: "NVIDIA GeForce GTX 1050 Ti, 581.29, 4096 MiB"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows sürümü / Windows version
+      description: "`winver` ya da `(Get-CimInstance Win32_OperatingSystem).Version`"
+      placeholder: "Windows 10 22H2 (10.0.19045)"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python
+      description: "`py -3 --version` ya da `python --version`"
+      placeholder: "Python 3.12.6"
+  - type: input
+    id: komut
+    attributes:
+      label: Çalıştırılan komut / Command you ran
+      placeholder: "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox"
+    validations:
+      required: true
+  - type: textarea
+    id: hata
+    attributes:
+      label: Hata çıktısı / Error output
+      description: Komutun son 30 satırı; son geçen `*_OK` satırı dahil. / Last 30 lines, including the last `*_OK` marker.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: yol
+    attributes:
+      label: Kurulum yolu / Install path
+      options:
+        - Hazır motor (varsayılan kur.ps1) / prebuilt engine (default)
+        - Kaynaktan derleme (kur.ps1 -Derle) / build from source
+        - Elle / manual
+    validations:
+      required: true

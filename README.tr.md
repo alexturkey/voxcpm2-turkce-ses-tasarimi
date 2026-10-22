@@ -38,24 +38,49 @@ Yedisi de `ses.json` içindeki tariflerden tasarlandı; hiçbiri gerçek bir ki�
 Her klasörde: `referans.flac` (kayıpsız tasarım kaydı), `ses.json` (tarif, metin, tasarım tohumu, okuma tohumu,
 tanıtım), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`.
 
-## Kurulum (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
+## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
-Ön koşullar: NVIDIA sürücüsü ≥ 570, Git, Python 3.10+, Visual Studio 2022 Build Tools "Desktop development with C++"
-(C++ CMake tools dahil). Tam kontrol ve çözümler: [AGENTS.md](AGENTS.md).
+Ön koşullar: NVIDIA sürücüsü ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10+
+(`winget install Python.Python.3.12`). Başka bir şey yok: Visual Studio da CUDA kurulumu da gerekmez.
 
 ```powershell
 git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
 cd voxcpm2-turkce-ses-tasarimi
-python -m venv .venv && .venv\Scripts\python.exe -m pip install -r requirements.txt
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
 
-`kur.ps1` modeli (2,95 GB, sha256 doğrulamalı), CUDA 12.8 çalışma zamanı + derleyicisini taşınabilir zip olarak (sistem
-kurulumu yok, PATH değişmez), audio.cpp v0.7.2 kaynağını indirir, yamayı uygular, `audiocpp_cli.exe`'yi derler (~15-25 dk)
-ve `ayarlar.json`'ı yazar. Kökü kısa tutun (`C:\vox`): nvcc uzun yolda düşer. Başka kart: `-Mimari 75/86/89`.
+Tek komut, ~10 dk, ~3,7 GB indirme, hepsi sha256 doğrulamalı: model (2,95 GB), CUDA 12.8 çalışma DLL'leri taşınabilir zip
+olarak (sistem kurulumu yok, PATH değişmez), Releases sayfasındaki **hazır derlenmiş motor**, iki Python paketiyle `.venv`,
+`ayarlar.json` ve sonda ekran kartı kontrolü (`KONTROL_OK`). Bir hata olursa aynı komutu yeniden çalıştırın; doğrulanmış
+dosyalar atlanır. Sonra web arayüzünü başlatın:
 
-Hazır derlenmiş motor: Releases sayfasındaki zip (`audiocpp_cli.exe`, GTX 10xx / sm_61, CUDA 12.8). CUDA DLL'leri
-(`kur.ps1 -Adim cuda`) ve model (`-Adim model`) yine gerekir.
+```powershell
+.venv\Scripts\python.exe -m ses_tasarim.arayuz
+```
+ve tarayıcınızda **http://127.0.0.1:8765/** adresini açın (arayüz tarayıcıyı kendisi açmaz; yalnız bu bilgisayardan erişilir).
+
+> **Sürüm zip'indeki `audiocpp_cli.exe` çift tıklanmaz.** Komut satırı motorudur; yanında CUDA DLL'leri ve model ister,
+> hepsini `kur.ps1` yerine koyar ve Python paketi sürer. Çift tıklayınca yalnız "cudart64_12.dll bulunamadı" görürsünüz.
+
+**Desteklenen kartlar (sürüm v0.1.1):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
+RTX 50xx (sm_120a) için yerel kod; Pascal ve sonrası başka CUDA kartlar gömülü PTX ile sürücü üzerinden çalışır (ilk açılış
+yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050 Ti 4 GB'de denendi; başka kart deneyimlerinizi
+[Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
+
+### Seçenek: motoru kaynaktan derlemek
+
+Visual Studio 2022 Build Tools "Desktop development with C++" (C++ CMake tools dahil, ~7 GB) gerekir. Sonra:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox -Derle
+```
+Bu yol nvcc'yi de indirir, audio.cpp v0.7.2 kaynağını alır, `patches/0001-voxcpm2-4gb-ve-hiz.patch` yamasını uygular ve
+kartınız için derler (`-Mimari native`, varsayılan; ya da ör. `-Mimari 61`), ~15-25 dk. Kökü kısa tutun (`C:\vox`): nvcc
+uzun yolda düşer. Adım adım, kontrollü anlatım: [AGENTS.md](AGENTS.md).
+
+Sorun mu var? [Discussions (Soru-Cevap)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) ya da
+[kurulum sorunu kaydı](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml):
+ekran kartı, Windows sürümü, komut ve son satırlarıyla.
 
 ## Kullanım
 
@@ -73,9 +98,10 @@ Komut satırı:
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
 satır ≤ 2000 karakter. Yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
 
-Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → yazdırılan adresi açın.
-Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit sayısı. *Tasarla* → çeşitleri dinle → birini seç →
-*Bu sesle oku* → indir. Ya da hazır sesi seçip oku.
+Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
+adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit
+sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
+ile kapatın.
 
 ## Lisans ve teşekkür
 

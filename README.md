@@ -40,24 +40,50 @@ All seven were designed from the prompts stored in their `ses.json`; none is a r
 Each folder: `referans.flac` (lossless design recording), `ses.json` (prompt, transcript, design seed, reading seed,
 description), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<name>`.
 
-## Install (Windows 10/11, NVIDIA GPU ≥ 4 GB)
+## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
-Prerequisites: NVIDIA driver ≥ 570, Git, Python 3.10+, Visual Studio 2022 Build Tools with "Desktop development with C++"
-(incl. C++ CMake tools). Exact checks and fixes: [AGENTS.md](AGENTS.md).
+Prerequisites: NVIDIA driver ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10+
+(`winget install Python.Python.3.12`). Nothing else: no Visual Studio, no CUDA installer.
 
 ```powershell
 git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
 cd voxcpm2-turkce-ses-tasarimi
-python -m venv .venv && .venv\Scripts\python.exe -m pip install -r requirements.txt
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
 
-`kur.ps1` downloads the model (2.95 GB, sha256-verified), the CUDA 12.8 runtime + compiler as portable zips (no system
-install, PATH untouched), the audio.cpp v0.7.2 source, applies the patch, builds `audiocpp_cli.exe` (~15-25 min) and
-writes `ayarlar.json`. Keep the root short (`C:\vox`): nvcc fails on long paths. Other GPUs: `-Mimari 75/86/89`.
+One command, ~10 min, ~3.7 GB download, everything sha256-verified: the model (2.95 GB), the CUDA 12.8 runtime DLLs as
+portable zips (no system install, PATH untouched), the **prebuilt engine** from the Releases page, a `.venv` with the two
+Python packages, `ayarlar.json`, and a final GPU check (`KONTROL_OK`). Re-run it after any failure; verified files are
+skipped. Then start the web UI:
 
-Prebuilt engine: see the Releases page for a zip with `audiocpp_cli.exe` (GTX 10xx / sm_61, CUDA 12.8). You still need
-the CUDA DLLs (`kur.ps1 -Adim cuda`) and the model (`-Adim model`).
+```powershell
+.venv\Scripts\python.exe -m ses_tasarim.arayuz
+```
+and open **http://127.0.0.1:8765/** in your browser (the UI does not open it for you; it listens on localhost only).
+
+> **The `audiocpp_cli.exe` in the release zip is not meant to be double-clicked.** It is a command-line engine that
+> needs the CUDA DLLs and the model next to it; `kur.ps1` puts everything in place and the Python package drives it.
+> Double-clicking it only shows "cudart64_12.dll not found".
+
+**Supported GPUs (release v0.1.1):** native code for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+(sm_89) and RTX 50xx (sm_120a); any other CUDA GPU from Pascal on runs the embedded PTX via the driver (slower first
+start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB only; reports from
+other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+
+### Alternative: build the engine from source
+
+Needs Visual Studio 2022 Build Tools with "Desktop development with C++" (incl. C++ CMake tools), ~7 GB. Then:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox -Derle
+```
+This also downloads nvcc, fetches the audio.cpp v0.7.2 source, applies `patches/0001-voxcpm2-4gb-ve-hiz.patch` and
+builds for your GPU (`-Mimari native`, default; or e.g. `-Mimari 61`), ~15-25 min. Keep the root short (`C:\vox`):
+nvcc fails on long paths. Step-by-step with checks: [AGENTS.md](AGENTS.md).
+
+Problems? [Discussions (Q&A)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) or an
+[install issue](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml)
+with your GPU, Windows version, the command and its last lines.
 
 ## Use
 
@@ -75,9 +101,10 @@ Command line:
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
 ≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words.
 
-Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open the printed address.
-Three boxes (description, creation text, text to read) + variant count. *Design* → listen to the variants → pick one →
-*Read with this voice* → download. Or pick a bundled voice and read.
+Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
+yourself (another port: `--port 8800`). Three boxes (description, creation text, text to read) + variant count.
+*Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
+Stop the server with Ctrl+C.
 
 ## License and credits
 

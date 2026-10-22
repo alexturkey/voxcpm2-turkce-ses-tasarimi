@@ -7,7 +7,7 @@ param(
     [Parameter(Mandatory = $true)][string]$Build,    # derleme klasoru (kisa yol!) / build dir (short path!)
     [Parameter(Mandatory = $true)][string]$Cuda,     # CUDA 12.8 koku: bin\nvcc.exe burada / CUDA 12.8 root
     [int]$Paralel = 6,
-    [string]$Mimari = "61",                          # GTX 1050 Ti = sm_61 (Pascal). RTX 30xx: 86, RTX 40xx: 89
+    [string]$Mimari = "61",                          # CMAKE_CUDA_ARCHITECTURES: "native" = bu PC'nin kartı; "61" = GTX 10xx; liste: "61-real;75-real;86-real;89-real;120"
     [switch]$DusukOncelik                            # derlemeyi BelowNormal oncelikle calistir
 )
 $ErrorActionPreference = "Stop"
@@ -23,6 +23,7 @@ $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.e
 if (-not (Test-Path $vswhere)) { throw "vswhere.exe yok: Visual Studio 2022 Build Tools kurulu degil (AGENTS.md adim 1)" }
 $vs = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath | Select-Object -First 1
 if (-not $vs) { throw "MSVC C++ araclari (VC.Tools.x86.x64) bulunamadi; Build Tools'a 'Desktop development with C++' is yukunu ekle" }
+$env:PATH = (Split-Path $vswhere) + ";" + $env:PATH    # vcvars64.bat vswhere.exe'yi PATH'te arar / vcvars64.bat looks up vswhere.exe on PATH
 $vcvars = Join-Path $vs "VC\Auxiliary\Build\vcvars64.bat"
 $cmake = Join-Path $vs "Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
 $ninja = Join-Path $vs "Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"
