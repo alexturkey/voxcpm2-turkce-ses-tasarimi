@@ -137,6 +137,17 @@ background noise". Tarif olsun, senaryo olmasın; parantez kullanmayın. 3-5 çe
 değiştirir. Yaratılırken okunan metin için istediğiniz havada 3-5 doğal Türkçe cümle (≈ 20-30 sn konuşma). Okumada
 satır başına bir cümle; uzun cümleyi bölün, rakamı yazıyla yazın.
 
+## Katkı
+
+Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi bir ilk adım:
+
+- [#5](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/5) Kendi kartında dene; kartı, sürücüyü ve süreleri yaz
+- [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: deneysel Vulkan sürümünü dene
+- [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Test setine bir cümle ekle
+- [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Tasarladığın bir sesi tarifi ve tohumuyla paylaş
+
+Kurulum sorunu: [sorun formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); soru ve sonuçlar: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+
 ## Lisans ve teşekkür
 
 Kod ve hazır sesler: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. VoxCPM2 (OpenBMB, Apache-2.0), audio.cpp (ShugoAI LLC,

@@ -56,7 +56,15 @@ voxcpm2-q8_0.gguf (kur.ps1 -Adim model). NVIDIA driver >= 570. The exe is a comm
 New-Item -ItemType Directory -Force (Join-Path $Repo $Cikti) | Out-Null
 $zip = Join-Path (Join-Path $Repo $Cikti) "$name.zip"
 if (Test-Path $zip) { Remove-Item $zip -Force }
-Compress-Archive -Path $dir -DestinationPath $zip -CompressionLevel Optimal
+# Girdi adları elle "/" ile yazılır: Compress-Archive ve .NET Framework ZipFile "\" yazar; unzip ve Linux araçları bozuk ad verir.
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$arsiv =[IO.Compression.ZipFile]::Open($zip, [IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($f in (Get-ChildItem -LiteralPath $dir -File | Sort-Object Name)) {
+        [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($arsiv, $f.FullName, "$name/$($f.Name)", [IO.Compression.CompressionLevel]::Optimal) | Out-Null
+    }
+} finally { $arsiv.Dispose() }
 Remove-Item -Recurse -Force $stage
 Write-Output ("ZIP: {0} ({1:N0} bytes)" -f $zip, (Get-Item $zip).Length)
 Write-Output ("ZIP_SHA256: " + (Get-FileHash -Algorithm SHA256 -LiteralPath $zip).Hash.ToLower())

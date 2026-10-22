@@ -44,11 +44,11 @@ $PATCH = Join-Path $Repo "patches\0001-voxcpm2-4gb-ve-hiz.patch"
 $REL_SURUM = "v0.1.1"
 $REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip"
 $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP"
-$REL_ZIP_SHA = "66aa6251832f8e3b09844fd9231dafa893b92f1bef2777a1712794ad9fff647e"
+$REL_ZIP_SHA = "0c7a596590500f52b9cc44bd036df874e04358107a9793dddbe0e5b6d0c27c26"
 $REL_EXE_SHA = "eb75f6e6de3440c5a6b3583ba7581d539adbf80d6c069bde6611d350c95747d4"
 # Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez). Aynı sürüm etiketinde ayrı zip. / Experimental Vulkan engine, same release tag.
 $REL_VK_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip"
-$REL_VK_ZIP_SHA = "e27886531c69105a2ef40e19c8dc5dfac2ee1afc55cb9ea4f6811ebedd271a6f"
+$REL_VK_ZIP_SHA = "93367a1e5c380d916fea00b5596ff0b7e8ab1ddc5a6d36330ac416676726ce18"
 $REL_VK_EXE_SHA = "29fa97c8869369ca186f9bfceb7b307fa3d24181f7a3711da3e135ad7731645b"
 if ($Vulkan) { $REL_ZIP = $REL_VK_ZIP; $REL_ZIP_SHA = $REL_VK_ZIP_SHA; $REL_EXE_SHA = $REL_VK_EXE_SHA; $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP" }
 $CUDA_BASE = "https://developer.download.nvidia.com/compute/cuda/redist"

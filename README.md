@@ -140,6 +140,17 @@ nasal, raspy), tone and role (calm documentary narrator, energetic presenter), t
 variants and listen: the seed changes the voice a lot. For the creation text use 3-5 natural Turkish sentences in the
 mood you want (≈ 20-30 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
 
+## Contributing
+
+Not sure where to start? These four small issues are a good first step:
+
+- [#5](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/5) Try it on your GPU and report the card, driver and timings
+- [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: try the experimental Vulkan build
+- [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Add a sentence to the test set
+- [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Share a voice you designed, with its description and seed
+
+Install problems: [issue form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); questions and results: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+
 ## License and credits
 
 Code and bundled voices: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. Built on VoxCPM2 (OpenBMB, Apache-2.0),
