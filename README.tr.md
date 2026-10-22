@@ -70,7 +70,8 @@ yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050
 
 **AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
 `scripts\kur.ps1 -Kok C:ox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
-2-6 kat yavaş, aynı tohum aynı sesi verdi); AMD ya da Intel donanımında **denenmedi**: denerseniz sonucu Discussions'a
+yavaş çalıştı ama aynı tohum aynı sesi verdi; o ölçüm sırasında disk başka bir işle doluydu, temiz hız karşılaştırması
+bekliyor); AMD ya da Intel donanımında **denenmedi**: denerseniz sonucu Discussions'a
 yazın. Birden çok Vulkan cihazı varsa (dahili + harici) kurulum harici kartın dizinini `ayarlar.json` içine `cihaz`
 olarak yazar.
 

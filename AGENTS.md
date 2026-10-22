@@ -43,7 +43,8 @@ runs `model,hazir,python,ayar,kontrol` (no `cuda` step), writes `"backend": "vul
 needs a `Vulkan:N` line from `--list-devices` and, when several devices are listed, writes the index of the `[GPU]` line as
 `"cihaz"` (passed to the engine as `--device N`; default device 0 may be an integrated GPU, where a design aborts with
 `maxComputeWorkGroupCount`). Verified only on a GTX 1050 Ti via Vulkan: design variant 108 s (CUDA 55 s), reading
-6-13 s per 1 s of speech (CUDA ≈ 2 s), same seed → bit-identical wav. Build: `kur.ps1 -Derle -Vulkan` /
+6-13 s per 1 s of speech (CUDA ≈ 2 s), same seed → bit-identical wav. Vulkan numbers were taken while the disk was busy
+with another job (CUDA numbers on an idle disk): clean comparison pending. Build: `kur.ps1 -Derle -Vulkan` /
 `derle.ps1 -Vulkan [-VulkanSdk <dir>]` (needs `glslc.exe`, Vulkan headers incl. `spirv/unified1/spirv.hpp`,
 `vulkan-1.lib`; `VULKAN_SDK` env var is the default). Runtime: a driver with Vulkan 1.3 (`vulkan-1.dll`).
 

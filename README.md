@@ -72,8 +72,9 @@ start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a 
 other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
-`scripts\kur.ps1 -Kok C:ox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it is
-2-6× slower than CUDA, same audio for the same seed) and has **not** been tried on AMD or Intel hardware: if you try it,
+`scripts\kur.ps1 -Kok C:ox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it ran
+slower than CUDA but gave the same audio for the same seed; that measurement was taken while the disk was busy with
+another job, so a clean speed comparison is still pending) and has **not** been tried on AMD or Intel hardware: if you try it,
 please post the result in Discussions. With more than one Vulkan device (integrated + discrete) the installer writes
 the discrete GPU's index as `cihaz` into `ayarlar.json`.
 

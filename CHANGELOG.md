@@ -23,7 +23,8 @@
   Yalnız NVIDIA GTX 1050 Ti üzerinde Vulkan arka ucuyla denendi; AMD/Intel'de denenmedi, sonuç bekliyoruz.
   Ölçüm (GTX 1050 Ti, Vulkan, aynı 16 adım / cfg 2.0): tasarım çeşidi 108 sn (ilk çalıştırma 216 sn, gölgelendirici
   derlemesi dahil; CUDA 55 sn), okuma 1 sn ses için 6-13 sn hesap (CUDA ≈ 2 sn), VRAM tepe 2,8 GB; aynı tohum iki kez
-  bit-bit aynı wav verdi. Motor varsayılan olarak `Vulkan:0` cihazını seçer; birden çok Vulkan cihazı varsa (ör. dahili
+  bit-bit aynı wav verdi. Uyarı: bu ölçüm sırasında disk başka bir işle doluydu (CUDA 55 sn boş diskte ölçüldü);
+  temiz karşılaştırma bekliyor. Motor varsayılan olarak `Vulkan:0` cihazını seçer; birden çok Vulkan cihazı varsa (ör. dahili
   Intel + NVIDIA) `kur.ps1 -Vulkan` `[GPU]` satırını bulup `ayarlar.json` içine `cihaz` dizinini yazar (`--device`).
   Dahili Intel HD 630 üzerinde tasarım `maxComputeWorkGroupCount` hatasıyla durdu. Zip 18,6 MB. Derleme:
   `derle.ps1 -Vulkan` (Vulkan SDK ya da `-VulkanSdk <klasör>`: glslc, başlıklar, vulkan-1.lib).
@@ -49,7 +50,8 @@
   `kur.ps1 -Vulkan`. Verified only on an NVIDIA GTX 1050 Ti through the Vulkan backend; untested on AMD/Intel, reports
   welcome. Measured (GTX 1050 Ti, Vulkan, same 16 steps / cfg 2.0): one design variant 108 s (first run 216 s including
   shader compilation; CUDA 55 s), reading 6-13 s of compute per 1 s of speech (CUDA ≈ 2 s), peak VRAM 2.8 GB; the same
-  seed produced bit-identical wavs twice. The engine defaults to device `Vulkan:0`; with several Vulkan devices (e.g.
+  seed produced bit-identical wavs twice. Caveat: the disk was busy with another job during this measurement (the CUDA
+  55 s was measured on an idle disk); a clean comparison is pending. The engine defaults to device `Vulkan:0`; with several Vulkan devices (e.g.
   integrated Intel + NVIDIA) `kur.ps1 -Vulkan` picks the `[GPU]` line and writes its index as `cihaz` into `ayarlar.json`
   (`--device`). On the integrated Intel HD 630 a design stopped with a `maxComputeWorkGroupCount` assert. Zip 18.6 MB.
   Build: `derle.ps1 -Vulkan` (Vulkan SDK or `-VulkanSdk <folder>`: glslc, headers, vulkan-1.lib).
