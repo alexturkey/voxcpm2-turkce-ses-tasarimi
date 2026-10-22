@@ -1,4 +1,4 @@
-# Sıfırdan kurulum / fresh install:  model + CUDA 12.8 + audio.cpp v0.7.2 kaynağı + yama + derleme + ayarlar.json
+﻿# Sıfırdan kurulum / fresh install:  model + CUDA 12.8 + audio.cpp v0.7.2 kaynağı + yama + derleme + ayarlar.json
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 # Adım seçmek / select steps:  -Adim model,cuda,kaynak,derle,ayar   (varsayılan hepsi / default: all)
 # Her adım yeniden çalıştırılabilir: mevcut ve sha256'sı doğru dosya atlanır. / Idempotent: verified files are skipped.
@@ -10,6 +10,10 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+$Adim = @($Adim | ForEach-Object { $_ -split "," } | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ })
+$known = @("model", "cuda", "kaynak", "derle", "ayar")
+foreach ($a in $Adim) { if ($known -notcontains $a) { throw "bilinmeyen adım '$a'; seçenekler: $($known -join ', ')" } }
+Write-Output ("adımlar: " + ($Adim -join ", "))
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 if ($Kok.Length -gt 12) { Write-Warning "Kök yolu uzun ($Kok); derlemede nvcc düşebilir. Öneri: C:\vox" }

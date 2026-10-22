@@ -1,4 +1,4 @@
-# audio.cpp (yamali) motorunu derler. / Builds the patched audio.cpp engine.
+﻿# audio.cpp (yamali) motorunu derler. / Builds the patched audio.cpp engine.
 # Kullanim / usage:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\derle.ps1 -Kaynak C:\vox\motor\src -Build C:\vox\motor\build -Cuda C:\vox\cuda
 # Cikti / output: <Build>\bin\audiocpp_cli.exe   Basarida son satir: BUILD_OK

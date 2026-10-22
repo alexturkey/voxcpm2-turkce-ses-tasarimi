@@ -1,4 +1,4 @@
-# Derlenmiş motoru GitHub Release zip'i olarak paketler (yalnız exe + lisans; CUDA DLL'leri ve model ayrı indirilir).
+﻿# Derlenmiş motoru GitHub Release zip'i olarak paketler (yalnız exe + lisans; CUDA DLL'leri ve model ayrı indirilir).
 # Packs the built engine as a release zip (exe + license notes only; CUDA DLLs and model are downloaded separately).
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\release_zip.ps1 -Exe C:\vox\motor\build\bin\audiocpp_cli.exe -Surum v0.1.0 -Cikti dist
 param(
