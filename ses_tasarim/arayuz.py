@@ -13,6 +13,7 @@ import queue
 import sys
 import threading
 import time
+import traceback
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -139,8 +140,8 @@ class Isler:
                     result = oku.oku(self.settings, voice_dir, payload["metin"], out_dir, progress)
                     result["is"] = job_id
                     self._set(job_id, durum="bitti", sonuc=result, mesaj="bitti")
-            except Exception as error:  # kullanıcıya düz metin hata / plain-text error for the UI
-                self._set(job_id, durum="hata", mesaj=str(error))
+            except Exception as error:  # kullanıcıya düz metin hata, ayrıntı için iz / plain-text error + traceback
+                self._set(job_id, durum="hata", mesaj=str(error), iz=traceback.format_exc()[-1200:])
 
 
 def make_handler(settings, jobs: Isler):
@@ -231,6 +232,10 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     settings = ayarlar.load(args.ayarlar)
     port = args.port or int(settings.get("port") or 8765)
+    if sys.platform == "win32":
+        # Windows'ta SO_REUSEADDR dolu porta ikinci sunucuyu sessizce bağlar; dolu port açıkça hata versin.
+        # On Windows SO_REUSEADDR lets a second server bind a busy port silently; fail loudly instead.
+        ThreadingHTTPServer.allow_reuse_address = False
     server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(settings, Isler(settings)))
     print(f"Arayüz hazır: http://127.0.0.1:{port}/  (kapatmak için Ctrl+C)", flush=True)
     try:
