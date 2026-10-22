@@ -42,7 +42,7 @@ description), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<n
 
 ## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
-Prerequisites: NVIDIA driver ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10+
+Prerequisites: NVIDIA driver ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10–3.13
 (`winget install Python.Python.3.12`). Nothing else: no Visual Studio, no CUDA installer.
 
 ```powershell
@@ -51,7 +51,8 @@ cd voxcpm2-turkce-ses-tasarimi
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
 
-One command, ~10 min, ~3.7 GB download, everything sha256-verified: the model (2.95 GB), the CUDA 12.8 runtime DLLs as
+`-ExecutionPolicy Bypass` applies to this one process only and changes no system setting; read `scripts\kur.ps1`
+before running it, as with any installer script. One command, ~10 min, ~3.7 GB download, everything sha256-verified: the model (2.95 GB), the CUDA 12.8 runtime DLLs as
 portable zips (no system install, PATH untouched), the **prebuilt engine** from the Releases page, a `.venv` with the two
 Python packages, `ayarlar.json`, and a final GPU check (`KONTROL_OK`). Re-run it after any failure; verified files are
 skipped. Then start the web UI:
@@ -69,6 +70,12 @@ and open **http://127.0.0.1:8765/** in your browser (the UI does not open it for
 (sm_89) and RTX 50xx (sm_120a); any other CUDA GPU from Pascal on runs the embedded PTX via the driver (slower first
 start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB only; reports from
 other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+
+**AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
+`scripts\kur.ps1 -Kok C:ox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it is
+2-6× slower than CUDA, same audio for the same seed) and has **not** been tried on AMD or Intel hardware: if you try it,
+please post the result in Discussions. With more than one Vulkan device (integrated + discrete) the installer writes
+the discrete GPU's index as `cihaz` into `ayarlar.json`.
 
 ### Alternative: build the engine from source
 
@@ -114,8 +121,8 @@ patch changes the engine, not the model: it makes VoxCPM2 fit in 4 GB and makes 
 every time. The Python package in this repo only prepares text, calls the engine and collects the files.
 
 **Which GPUs?** See "Supported GPUs" above: NVIDIA from GTX 10xx up, 4 GB VRAM or more, driver ≥ 570. Native code is
-in the release for sm_61/75/86/89/120a; other Pascal-or-newer cards use the embedded PTX (slower first start). No
-AMD/Intel yet (an experimental Vulkan build is planned). CPU-only (`"backend": "cpu"` in `ayarlar.json`) runs but is
+in the release for sm_61/75/86/89/120a; other Pascal-or-newer cards use the embedded PTX (slower first start). AMD/Intel:
+experimental Vulkan zip, `kur.ps1 -Vulkan`, untested on AMD/Intel (see "AMD / Intel" above). CPU-only (`"backend": "cpu"` in `ayarlar.json`) runs but is
 ~6× slower than a GTX 1050 Ti (engine measurement, 535 s vs 94 s for 48 s of speech); not a supported path.
 
 **How fast?** Measured on a GTX 1050 Ti 4 GB (i7-7700HQ): one design variant (≈ 25 s recording) 55 s; reading ≈ 2 s of

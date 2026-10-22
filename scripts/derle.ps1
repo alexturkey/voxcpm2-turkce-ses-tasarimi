@@ -5,9 +5,11 @@
 param(
     [Parameter(Mandatory = $true)][string]$Kaynak,   # yamali audio.cpp v0.7.2 kaynagi / patched source dir
     [Parameter(Mandatory = $true)][string]$Build,    # derleme klasoru (kisa yol!) / build dir (short path!)
-    [Parameter(Mandatory = $true)][string]$Cuda,     # CUDA 12.8 koku: bin\nvcc.exe burada / CUDA 12.8 root
+    [string]$Cuda = "",                              # CUDA 12.8 koku: bin\nvcc.exe burada / CUDA 12.8 root (CUDA derlemesinde sart)
     [int]$Paralel = 6,
     [string]$Mimari = "61",                          # CMAKE_CUDA_ARCHITECTURES: "native" = bu PC'nin kartı; "61" = GTX 10xx; liste: "61-real;75-real;86-real;89-real;120"
+    [switch]$Vulkan,                                 # deneysel: CUDA yerine Vulkan arka ucu (AMD/Intel/NVIDIA) / experimental Vulkan backend instead of CUDA
+    [string]$VulkanSdk = $env:VULKAN_SDK,            # Vulkan SDK koku (LunarG: Include, Lib, Bin) ya da glslc + headers + vulkan-1.lib iceren klasor
     [switch]$DusukOncelik                            # derlemeyi BelowNormal oncelikle calistir
 )
 $ErrorActionPreference = "Stop"
@@ -15,8 +17,22 @@ $ErrorActionPreference = "Stop"
 if (($Build.Length) -gt 40) {
     Write-Warning "Build yolu uzun ($($Build.Length) karakter). nvcc 260 karakter sinirinda duser; C:\vox gibi kisa bir kok kullan."
 }
-if (-not (Test-Path (Join-Path $Cuda "bin\nvcc.exe"))) { throw "nvcc bulunamadi: $Cuda\bin\nvcc.exe" }
 if (-not (Test-Path (Join-Path $Kaynak "CMakeLists.txt"))) { throw "kaynak bulunamadi: $Kaynak\CMakeLists.txt" }
+if ($Vulkan) {
+    if (-not $VulkanSdk) { throw "Vulkan icin -VulkanSdk <kok> ya da VULKAN_SDK gerekli (LunarG SDK: https://vulkan.lunarg.com/sdk/home)" }
+    function Bul([string[]]$adaylar, [string]$ne) { foreach ($a in $adaylar) { $p = Join-Path $VulkanSdk $a; if (Test-Path $p) { return $p } }; throw "Vulkan SDK'da $ne yok: $VulkanSdk ($($adaylar -join ', '))" }
+    $glslc = Bul @("Bin\glslc.exe", "bin\glslc.exe") "glslc.exe"
+    $vkInc = Split-Path (Split-Path (Bul @("Include\vulkan\vulkan.h", "headers\include\vulkan\vulkan.h", "include\vulkan\vulkan.h") "vulkan\vulkan.h"))
+    $vkLib = Bul @("Lib\vulkan-1.lib", "lib\vulkan-1.lib") "vulkan-1.lib"
+    Write-Output "Vulkan: glslc=$glslc include=$vkInc lib=$vkLib"
+    $backendFlags = @("-DENGINE_ENABLE_CUDA=OFF", "-DENGINE_ENABLE_CUDA_GRAPHS=OFF", "-DENGINE_ENABLE_VULKAN=ON",
+        "-DVulkan_INCLUDE_DIR=$($vkInc -replace '\\','/')", "-DVulkan_LIBRARY=$($vkLib -replace '\\','/')", "-DVulkan_GLSLC_EXECUTABLE=$($glslc -replace '\\','/')")
+} else {
+    if (-not $Cuda) { throw "-Cuda <CUDA 12.8 koku> gerekli (ya da -Vulkan)" }
+    if (-not (Test-Path (Join-Path $Cuda "bin\nvcc.exe"))) { throw "nvcc bulunamadi: $Cuda\bin\nvcc.exe" }
+    $backendFlags = @("-DENGINE_ENABLE_CUDA=ON", "-DENGINE_ENABLE_CUDA_GRAPHS=ON", "-DCMAKE_CUDA_ARCHITECTURES=$Mimari",
+        "-DCMAKE_CUDA_COMPILER=$Cuda/bin/nvcc.exe", "-DCUDAToolkit_ROOT=$Cuda", "-DENGINE_ENABLE_VULKAN=OFF")
+}
 
 # Visual Studio 2022 Build Tools: vswhere ile bul / locate with vswhere
 $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -34,7 +50,8 @@ Write-Output "VS: $vs"
 cmd /c "`"$vcvars`" >nul && set" | ForEach-Object {
     if ($_ -match '^([^=]+)=(.*)$') { [Environment]::SetEnvironmentVariable($matches[1], $matches[2]) }
 }
-$env:CUDA_PATH = $Cuda; $env:CUDATOOLKIT_ROOT = $Cuda
+if ($Cuda) { $env:CUDA_PATH = $Cuda; $env:CUDATOOLKIT_ROOT = $Cuda }
+if ($Vulkan) { $env:PATH = (Split-Path $glslc) + ";" + $env:PATH }   # glslc'nin DLL'leri yaninda / glslc DLLs next to it
 $tmp = Join-Path $Build "tmp"; New-Item -ItemType Directory -Force $tmp | Out-Null
 $env:TEMP = $tmp; $env:TMP = $tmp
 if ($DusukOncelik) { (Get-Process -Id $PID).PriorityClass = "BelowNormal" }
@@ -44,9 +61,8 @@ if ($DusukOncelik) { (Get-Process -Id $PID).PriorityClass = "BelowNormal" }
   -DOpenMP_C_FLAGS=/openmp:experimental -DOpenMP_CXX_FLAGS=/openmp:experimental `
   -DAUDIOCPP_MODEL_SET=custom -DAUDIOCPP_MODELS=voxcpm2 -DAUDIOCPP_DEPLOYMENT_BUILD=ON `
   -DAUDIOCPP_BUILD_NATIVE_MODEL_MANAGER=OFF -DAUDIOCPP_EMBED_DEMO_VOICES=OFF `
-  -DENGINE_ENABLE_CUDA=ON -DENGINE_ENABLE_CUDA_GRAPHS=ON "-DCMAKE_CUDA_ARCHITECTURES=$Mimari" `
-  "-DCMAKE_CUDA_COMPILER=$Cuda/bin/nvcc.exe" "-DCUDAToolkit_ROOT=$Cuda" `
-  -DENGINE_ENABLE_HIP=OFF -DENGINE_ENABLE_VULKAN=OFF -DENGINE_ENABLE_METAL=OFF `
+  @backendFlags `
+  -DENGINE_ENABLE_HIP=OFF -DENGINE_ENABLE_METAL=OFF `
   -DENGINE_ENABLE_OPENMP=ON -DGGML_OPENMP=ON -DENGINE_ENABLE_NATIVE_CPU=ON -DENGINE_ENABLE_LLAMAFILE=ON `
   -DENGINE_BUILD_TESTS=OFF -DENGINE_BUILD_EXAMPLES=OFF -DCMAKE_OBJECT_PATH_MAX=220 -DCMAKE_BUILD_TYPE=Release
 if ($LASTEXITCODE -ne 0) { throw "cmake configure failed" }

@@ -148,8 +148,20 @@ def make_handler(settings, jobs: Isler):
     roots = {"hazir": settings["hazir_sesler"], "tasarlanan": settings["sesler"]}
 
     class Handler(BaseHTTPRequestHandler):
+        MAX_BODY = 1_000_000  # 1 MB: metin kutuları için fazlasıyla yeter / plenty for the text boxes
+
         def log_message(self, fmt, *args):  # sessiz / quiet
             pass
+
+        def _host_ok(self) -> bool:
+            # DNS yeniden bağlama / CSRF: yalnız 127.0.0.1:<port> ve localhost:<port> Host başlığı kabul edilir.
+            # DNS rebinding / CSRF guard: only Host 127.0.0.1:<port> or localhost:<port> is served.
+            host = (self.headers.get("Host") or "").strip().lower()
+            port = self.server.server_address[1]
+            if host in (f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"):
+                return True
+            self._json({"hata": "Host başlığı kabul edilmedi (yalnız 127.0.0.1:%d)" % port}, 403)
+            return False
 
         def _json(self, data, code=200):
             body = json.dumps(data, ensure_ascii=False).encode("utf-8")
@@ -175,6 +187,8 @@ def make_handler(settings, jobs: Isler):
             self.wfile.write(data)
 
         def do_GET(self):
+            if not self._host_ok():
+                return
             path = unquote(self.path.split("?")[0])
             if path == "/":
                 body = HTML.encode("utf-8")
@@ -198,11 +212,19 @@ def make_handler(settings, jobs: Isler):
                 self.send_error(404)
 
         def do_POST(self):
+            if not self._host_ok():
+                return
+            if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
+                return self._json({"hata": "Content-Type: application/json gerekli"}, 415)
             length = int(self.headers.get("Content-Length") or 0)
+            if length <= 0 or length > self.MAX_BODY:
+                return self._json({"hata": f"istek gövdesi 1 ile {self.MAX_BODY} bayt arasında olmalı"}, 413)
             try:
                 payload = json.loads(self.rfile.read(length) or b"{}")
-            except json.JSONDecodeError:
+            except (json.JSONDecodeError, UnicodeDecodeError):
                 return self._json({"hata": "geçersiz JSON"}, 400)
+            if not isinstance(payload, dict):
+                return self._json({"hata": "JSON nesnesi bekleniyor"}, 400)
             if self.path == "/api/tasarla":
                 found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""))
                 if not str(payload.get("ad", "")).strip():

@@ -38,6 +38,15 @@ through the driver JIT (works, slower first start). Maxwell (GTX 9xx) and older:
 only on a GTX 1050 Ti 4 GB. Check what a given exe contains with `cuobjdump --list-elf audiocpp_cli.exe` (CUDA
 `cuda_cuobjdump` redist package).
 
+**Vulkan (experimental, AMD/Intel/NVIDIA).** Separate release zip `…-win64-vulkan.zip`; `kur.ps1 -Kok C:ox -Vulkan`
+runs `model,hazir,python,ayar,kontrol` (no `cuda` step), writes `"backend": "vulkan"`, `"cuda_bin": ""`; `kontrol`
+needs a `Vulkan:N` line from `--list-devices` and, when several devices are listed, writes the index of the `[GPU]` line as
+`"cihaz"` (passed to the engine as `--device N`; default device 0 may be an integrated GPU, where a design aborts with
+`maxComputeWorkGroupCount`). Verified only on a GTX 1050 Ti via Vulkan: design variant 108 s (CUDA 55 s), reading
+6-13 s per 1 s of speech (CUDA ≈ 2 s), same seed → bit-identical wav. Build: `kur.ps1 -Derle -Vulkan` /
+`derle.ps1 -Vulkan [-VulkanSdk <dir>]` (needs `glslc.exe`, Vulkan headers incl. `spirv/unified1/spirv.hpp`,
+`vulkan-1.lib`; `VULKAN_SDK` env var is the default). Runtime: a driver with Vulkan 1.3 (`vulkan-1.dll`).
+
 ## 1. Get the code
 
 ```powershell
@@ -61,7 +70,7 @@ step does and how to check it by hand:
 
 | Step | Does | Check |
 |---|---|---|
-| `model` | downloads `voxcpm2-q8_0.gguf` from `https://huggingface.co/audio-cpp/audio.cpp-gguf/resolve/main/VoxCPM2-GGUF/voxcpm2-q8_0.gguf` to `C:\vox\model\` | `(Get-FileHash C:\vox\model\voxcpm2-q8_0.gguf).Hash` = `C8E01AB4416011E12A28F24EDE298A1AA5CE64B43F8E8AAAD53B1E2FE7C96432`, size 2 955 000 480 bytes |
+| `model` | downloads `voxcpm2-q8_0.gguf` from `https://huggingface.co/audio-cpp/audio.cpp-gguf/resolve/661a224e9d9adbd49c01626f85e426f5f425d771/VoxCPM2-GGUF/voxcpm2-q8_0.gguf` (pinned commit; the file on `main` was replaced on 2026-10-19 with a different build, 2 955 007 488 bytes, sha256 `8df1faf2…`, not verified with this engine) to `C:\vox\model\` | `(Get-FileHash C:\vox\model\voxcpm2-q8_0.gguf).Hash` = `C8E01AB4416011E12A28F24EDE298A1AA5CE64B43F8E8AAAD53B1E2FE7C96432`, size 2 955 000 480 bytes |
 | `cuda` | downloads the CUDA 12.8.2 redist zips (cudart, cublas, cufft; with `-Derle` also nvcc, cccl; sha256 pinned in the script), merges them into `C:\vox\cuda\{bin,include,lib}`; no system install, PATH untouched | `cudart64_12.dll`, `cublas64_12.dll`, `cublasLt64_12.dll`, `cufft64_11.dll` exist in `C:\vox\cuda\bin` |
 | `hazir` | downloads the release zip pinned in the script (`$REL_SURUM`, `$REL_ZIP_SHA`, `$REL_EXE_SHA`) from `https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/<version>/<zip>`, verifies both sha256, unpacks `audiocpp_cli.exe` (+ LICENSE, THIRD_PARTY.md, README.txt) into `C:\vox\motor\build\bin\` | `(Get-FileHash C:\vox\motor\build\bin\audiocpp_cli.exe).Hash` equals `$REL_EXE_SHA` in `scripts\kur.ps1` |
 | `python` | finds a 64-bit Python 3.10+ (`py -3`, `python`, `python3`), creates `.venv` in the repo, `pip install -r requirements.txt` | `.venv\Scripts\python.exe -c "import numpy, soundfile; print('ok')"` → `ok` |

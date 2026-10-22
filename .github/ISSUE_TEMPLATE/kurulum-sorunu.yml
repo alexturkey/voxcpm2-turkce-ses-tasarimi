@@ -34,7 +34,7 @@ body:
     id: komut
     attributes:
       label: Çalıştırılan komut / Command you ran
-      placeholder: "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox"
+      placeholder: 'powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox'
     validations:
       required: true
   - type: textarea

@@ -40,7 +40,7 @@ tanıtım), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`
 
 ## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
-Ön koşullar: NVIDIA sürücüsü ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10+
+Ön koşullar: NVIDIA sürücüsü ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10–3.13
 (`winget install Python.Python.3.12`). Başka bir şey yok: Visual Studio da CUDA kurulumu da gerekmez.
 
 ```powershell
@@ -49,7 +49,8 @@ cd voxcpm2-turkce-ses-tasarimi
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
 
-Tek komut, ~10 dk, ~3,7 GB indirme, hepsi sha256 doğrulamalı: model (2,95 GB), CUDA 12.8 çalışma DLL'leri taşınabilir zip
+`-ExecutionPolicy Bypass` yalnız bu süreç için geçerlidir, sistem ayarı değiştirmez; her kurulum betiğinde olduğu gibi
+`scripts\kur.ps1`'i çalıştırmadan önce okuyun. Tek komut, ~10 dk, ~3,7 GB indirme, hepsi sha256 doğrulamalı: model (2,95 GB), CUDA 12.8 çalışma DLL'leri taşınabilir zip
 olarak (sistem kurulumu yok, PATH değişmez), Releases sayfasındaki **hazır derlenmiş motor**, iki Python paketiyle `.venv`,
 `ayarlar.json` ve sonda ekran kartı kontrolü (`KONTROL_OK`). Bir hata olursa aynı komutu yeniden çalıştırın; doğrulanmış
 dosyalar atlanır. Sonra web arayüzünü başlatın:
@@ -66,6 +67,12 @@ ve tarayıcınızda **http://127.0.0.1:8765/** adresini açın (arayüz tarayıc
 RTX 50xx (sm_120a) için yerel kod; Pascal ve sonrası başka CUDA kartlar gömülü PTX ile sürücü üzerinden çalışır (ilk açılış
 yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050 Ti 4 GB'de denendi; başka kart deneyimlerinizi
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
+
+**AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
+`scripts\kur.ps1 -Kok C:ox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
+2-6 kat yavaş, aynı tohum aynı sesi verdi); AMD ya da Intel donanımında **denenmedi**: denerseniz sonucu Discussions'a
+yazın. Birden çok Vulkan cihazı varsa (dahili + harici) kurulum harici kartın dizinini `ayarlar.json` içine `cihaz`
+olarak yazar.
 
 ### Seçenek: motoru kaynaktan derlemek
 
@@ -112,7 +119,7 @@ Python paketi yalnız metni hazırlar, motoru çağırır ve dosyaları toplar.
 
 **Hangi kartlar?** Yukarıdaki "Desteklenen kartlar": GTX 10xx ve üstü NVIDIA, en az 4 GB VRAM, sürücü ≥ 570. Sürümde
 sm_61/75/86/89/120a için yerel kod var; Pascal ve sonrası diğer kartlar gömülü PTX ile çalışır (ilk açılış yavaş).
-AMD/Intel henüz yok (deneysel Vulkan sürümü planda). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
+AMD/Intel: deneysel Vulkan zip'i, `kur.ps1 -Vulkan`, AMD/Intel'de denenmedi (yukarıdaki "AMD / Intel"). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
 GTX 1050 Ti'den ~6 kat yavaştır (motor ölçümü: 48 sn ses için 535 sn / 94 sn); desteklenen yol değildir.
 
 **Ne kadar hızlı?** GTX 1050 Ti 4 GB (i7-7700HQ) üzerinde ölçüldü: bir tasarım çeşidi (≈ 25 sn kayıt) 55 sn; okuma,

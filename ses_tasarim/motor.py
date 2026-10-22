@@ -128,6 +128,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
     log_path = work_dir / "motor.log"
     command = [str(settings["motor"]), "--model", str(settings["model"]), "--task", "tts",
                "--backend", settings.get("backend", "cuda"), "--threads", str(settings.get("motor_threads", 4)),
+               *(["--device", str(settings["cihaz"])] if settings.get("cihaz") not in (None, "") else []),
                "--request-sequence", str(work_dir / "dizi.json"), *REFERENCE_OPTION,
                "--out-dir", str(work_dir / "out"), "--batch-manifest-out", str(work_dir / "manifest.json"),
                "--log", "--log-file", str(log_path), "--metrics"]

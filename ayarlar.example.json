@@ -1,9 +1,10 @@
 {
-  "_aciklama": "Bu dosyayı ayarlar.json olarak kopyala ve yolları düzelt. kur.ps1 bunu kendisi yazar. / Copy to ayarlar.json; kur.ps1 writes it for you.",
+  "_aciklama": "Bu dosyayı ayarlar.json olarak kopyala ve yolları düzelt. kur.ps1 bunu kendisi yazar. backend: cuda | vulkan (deneysel) | cpu; cihaz: birden çok kart varsa motor --list-devices'taki numara, yoksa null. / Copy to ayarlar.json; kur.ps1 writes it for you. cihaz = device index from --list-devices when there are several GPUs.",
   "motor": "C:/vox/motor/build/bin/audiocpp_cli.exe",
   "model": "C:/vox/model/voxcpm2-q8_0.gguf",
   "cuda_bin": "C:/vox/cuda/bin",
   "backend": "cuda",
+  "cihaz": null,
   "sesler": "sesler",
   "hazir_sesler": "hazir_sesler",
   "onbellek": "onbellek",

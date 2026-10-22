@@ -1,0 +1,20 @@
+# Dependabot: requirements.txt bağımlılıklarını (numpy, soundfile) haftada bir denetler, güncelleme için PR açar.
+# Güvenlik güncellemeleri (dependabot_security_updates) repo ayarından ayrıca açık; bu dosya sürüm güncellemeleri içindir.
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels: ["bagimlilik"]
+    commit-message:
+      prefix: "bagimlilik"
+  # GitHub Actions workflow eklenirse eylem sürümlerini de izler (şu an workflow yok; zararsız).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    labels: ["bagimlilik"]

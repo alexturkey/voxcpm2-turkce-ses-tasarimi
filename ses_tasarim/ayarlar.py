@@ -8,12 +8,13 @@ DEFAULTS = {
     "motor": "",            # audiocpp_cli.exe (yamalı derleme) / patched audiocpp_cli.exe
     "model": "",            # voxcpm2-q8_0.gguf
     "cuda_bin": "",         # CUDA 12.8 bin klasörü (cudart64_12.dll, cublas64_12.dll, cublasLt64_12.dll, cufft64_11.dll)
-    "backend": "cuda",      # cuda | cpu (cpu çok yavaştır, yalnız deneme için)
+    "backend": "cuda",      # cuda | vulkan (deneysel, Vulkan derlemesi gerekir) | cpu (çok yavaş, yalnız deneme için)
     "sesler": "sesler",             # tasarlanan sesler (ayar dosyasına göre göreli) / designed voices
     "hazir_sesler": "hazir_sesler", # repodaki hazır sesler / bundled voices
     "onbellek": "onbellek",         # referans kodlama disk önbelleği / reference-encoding cache
     "audiovae_threads": 6,  # AudioVAE kodlayıcı CPU iş parçacığı / CPU threads for the AudioVAE encoder
     "motor_threads": 4,     # motor --threads
+    "cihaz": None,          # motor --device <no>: birden çok kart varsa (ör. Vulkan'da iGPU + ekran kartı) hangisi; boş = motorun ilk cihazı
     "port": 8765,           # arayüz (127.0.0.1) / web UI port
 }
 PATH_KEYS = ("motor", "model", "cuda_bin", "sesler", "hazir_sesler", "onbellek")
