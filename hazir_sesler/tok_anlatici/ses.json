@@ -1,0 +1,28 @@
+{
+  "ad": "tok_anlatici",
+  "gorunen_ad": "Tok Anlatici",
+  "tanitim_tr": "Çok derin, tok, göğüs ve boğaz dolu olgun erkek anlatıcı; ağır, kontrollü, buyurgan ve hafif gizemli. Belgesel, tarih, tanıtım, kurumsal film.",
+  "tanitim_en": "Exceptionally deep, dense, chest-and-throat-driven mature male narrator; heavy, controlled, commanding, slightly mysterious. Documentary, history, promos, corporate film.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "derin",
+    "tok",
+    "göğüs sesi",
+    "buyurgan",
+    "gizemli",
+    "belgesel anlatıcı"
+  ],
+  "ses_yaratici_ingilizce_prompt": "An exceptionally deep, powerful Turkish male voice with rich chest resonance and a dense, full-bodied, throat-driven tone. A mature, wise and commanding vocal presence that feels grounded, imposing and captivating, with deep natural vocal weight and strong, rounded resonance. Deliberate, controlled speech with dramatic pauses and flexible pacing, allowing important words to stretch naturally into long, resonant vowels when emotionally appropriate, emphasizing meaning, tension and authority. Every phrase carries depth, confidence and quiet dominance, with a subtle sense of mystery and ancient wisdom. Strong, deliberate articulation, a warm, dark vocal texture, and a powerful, almost cinematic presence that feels as though the voice emerges from deep within the chest and throat. Smooth, stable and controlled delivery, never rushed, never thin or nasal, never overly theatrical. Clean vocal production with no background noise, no hiss, no artificial distortion, no excessive breathiness, and no unwanted rasp. Studio-quality clarity while preserving the voice's natural depth, weight and commanding resonance.",
+  "ses_yaratilirken_okutulan_metin": "Ben yılların tecrübesini sesinde taşıyan bir anlatıcıyım. Belgesellerde tarihin büyük anlarını, şehirlerin kuruluşunu ve insanların yolculuklarını anlatırım. Tok ve sakin sesimle en uzun hikâyeyi bile dinletir, her kelimeye ağırlık veririm. Tanıtımlarda, kurumsal filmlerde ve ana haber kuşağında güven veren sesim fark yaratır. Şimdi arkanıza yaslanın, anlatacaklarım daha yeni başlıyor.",
+  "tasarim_tohumu": 2092167506,
+  "okuma_tohumu": 2092167506,
+  "referans": "referans.flac",
+  "referans_sn": 24.8,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

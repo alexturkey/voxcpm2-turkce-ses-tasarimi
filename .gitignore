@@ -1,0 +1,18 @@
+# yerel ayar ve çıktılar / local settings and outputs
+ayarlar.json
+sesler/
+onbellek/
+_calisma/
+cikti/
+*.tmp.wav
+__pycache__/
+*.pyc
+.venv/
+venv/
+# büyük indirmeler / large downloads
+*.gguf
+*.zip
+*.tar.gz
+motor/
+cuda/
+model/

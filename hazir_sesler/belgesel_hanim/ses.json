@@ -1,0 +1,28 @@
+{
+  "ad": "belgesel_hanim",
+  "gorunen_ad": "Belgesel Hanim",
+  "tanitim_tr": "Ellili yaşlarda, derin ve sıcak alto sesli olgun kadın belgesel anlatıcısı; sakin, bilge, yavaş ve sürükleyici. Bilim, tarih ve doğa belgeselleri.",
+  "tanitim_en": "Mature woman in her fifties with a deep, warm alto; calm, wise, slow and captivating documentary narrator. Science, history and nature.",
+  "karakter": [
+    "kadın",
+    "olgun",
+    "derin",
+    "sıcak",
+    "alto",
+    "sakin",
+    "bilge",
+    "belgesel anlatıcı"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A mature 55-year-old Turkish woman with a deep, rich, warm alto voice and a soft velvety chest resonance. She narrates like a seasoned documentary storyteller: calm, wise and quietly captivating, at a slow, unhurried pace. Clear Turkish diction, gentle emphasis on key words, natural pauses between phrases and slightly longer pauses at sentence endings. Clean and smooth, no rasp, no breathiness, no hiss, recorded cleanly in a studio with no background noise.",
+  "ses_yaratilirken_okutulan_metin": "Merhaba, ben bir belgesel anlatıcısıyım. Yıllardır tarihin derinliklerinden, uzak coğrafyalardan ve unutulmuş insanların hayatlarından hikâyeler anlatırım. Sesim sakin ve sıcaktır, sizi acele ettirmeden bir yolculuğa çıkarır. Tarih belgesellerinde, doğa filmlerinde ve uzun anlatımlarda yanınızdayım. Şimdi arkanıza yaslanın, çünkü anlatacağım hikâye yüzyıllar öncesinde başlıyor.",
+  "tasarim_tohumu": 2692139539,
+  "okuma_tohumu": 2692139539,
+  "referans": "referans.flac",
+  "referans_sn": 27.68,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

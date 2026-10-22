@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.patch -text
+*.ps1 text eol=crlf
+*.flac binary
+*.mp3 binary
+*.wav binary

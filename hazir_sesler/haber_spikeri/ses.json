@@ -1,0 +1,28 @@
+{
+  "ad": "haber_spikeri",
+  "gorunen_ad": "Haber Spikeri",
+  "tanitim_tr": "Yetmiş yaşlarında, derin ve dolgun göğüs sesli, hafif buğulu deneyimli haber spikeri; sakin, otoriter, güven veren. Haber, tarih, belgesel.",
+  "tanitim_en": "Seasoned news anchor around seventy with a deep, full chest voice and slight huskiness; calm, authoritative, trustworthy. News, history, documentary.",
+  "karakter": [
+    "erkek",
+    "yaşlı",
+    "derin",
+    "dolgun",
+    "buğulu",
+    "sakin",
+    "otoriter",
+    "haber spikeri"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A mature 70-year-old Turkish man with a deep, full, resonant chest voice and a slightly husky warmth. He speaks as a seasoned news anchor: calm, authoritative and trustworthy, at a measured, unhurried pace. Clear Turkish diction, natural pauses between phrases, slightly longer pauses at sentence endings. Clean and smooth, no rasp, no breathiness, no hiss, recorded cleanly in a studio with no background noise.",
+  "ses_yaratilirken_okutulan_metin": "İyi akşamlar, ana haber bültenine hoş geldiniz. İstanbul'da gün boyu etkili olan sağanak yağış, öğleden sonra yerini güneşli bir havaya bıraktı.",
+  "tasarim_tohumu": 42,
+  "okuma_tohumu": 42,
+  "referans": "referans.flac",
+  "referans_sn": 12.32,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

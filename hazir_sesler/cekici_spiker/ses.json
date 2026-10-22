@@ -1,0 +1,28 @@
+{
+  "ad": "cekici_spiker",
+  "gorunen_ad": "Cekici Spiker",
+  "tanitim_tr": "Otuzlu yaşlarda karizmatik kadın akşam haberleri sunucusu; derin, dolgun, kadifemsi göğüs sesi, vurgulu ve tutkulu anlatım. Haber, ekonomi, tanıtım.",
+  "tanitim_en": "Charismatic evening news anchor in her thirties; deep, full, velvety chest voice with expressive, passionate delivery. News, economy stories, promos.",
+  "karakter": [
+    "kadın",
+    "otuzlu yaşlar",
+    "karizmatik",
+    "derin",
+    "kadifemsi",
+    "vurgulu",
+    "tutkulu",
+    "haber sunucusu"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A charismatic Turkish woman in her early thirties, a captivating evening news anchor who gets completely carried away by her story. Her voice is deep, full and gently resonant, with a warm chest tone that lingers in the listener ear, velvety and slightly sultry. She speaks with strong, expressive emphasis, leaning into key words, rising and falling with passion and drama, sometimes slowing down to draw the listener in. Self-assured, theatrical and magnetic. Clear Turkish diction, natural pauses between phrases.",
+  "ses_yaratilirken_okutulan_metin": "Ben akşam haberlerinin sesiyim. Kameraya baktığımda ekranın öbür ucundaki herkesin bana kulak verdiğini bilirim. Tok ve kendinden emin sesimle en sert haberi bile merakla dinletirim. Ana haber bültenlerinde, magazin programlarında, lüks marka tanıtımlarında ve gece kuşağı yayınlarında sesim fark yaratır. Şimdi arkanıza yaslanın, çünkü asıl haber yeni başlıyor.",
+  "tasarim_tohumu": 7,
+  "okuma_tohumu": 42,
+  "referans": "referans.flac",
+  "referans_sn": 22.88,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

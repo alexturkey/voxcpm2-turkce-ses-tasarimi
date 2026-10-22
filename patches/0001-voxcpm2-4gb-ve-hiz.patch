@@ -1,0 +1,1302 @@
+--- a/app/workflow/execution.cpp
++++ b/app/workflow/execution.cpp
+@@ -1,4 +1,6 @@
+ #include "execution.h"
++
++#include "engine/framework/runtime/deferred_decode.h"
+ 
+ #include <chrono>
+ #include <stdexcept>
+@@ -65,6 +67,11 @@
+     AppBatchResult out;
+     out.prepare_ms = to_ms(Clock::now() - prepare_start);
+     out.results.reserve(batch.requests.size());
++    // ahenk yama c5: oturum destekliyor ve VOXCPM2_TOPLU_COZ=1 ise once butun satirlar uretilir,
++    // cozme sonda bir kez yapilir; sonuclar yine sirayla bildirilir.
++    auto * deferred = dynamic_cast<engine::runtime::IDeferredDecodeSession *>(&offline);
++    const bool defer = deferred != nullptr && batch.requests.size() > 1 &&
++                       deferred->begin_deferred_decode();
+     for (const auto & item : batch.requests) {
+         const auto run_start = Clock::now();
+         auto result = offline.run(item.request);
+@@ -74,8 +81,24 @@
+             std::move(result),
+             wall_ms,
+         });
+-        if (on_result) {
++        if (on_result && !defer) {
+             on_result(out.results.size() - 1, out.results.back());
++        }
++    }
++    if (defer) {
++        std::vector<engine::runtime::TaskResult *> pending;
++        pending.reserve(out.results.size());
++        for (auto & item : out.results) {
++            pending.push_back(&item.result);
++        }
++        const auto decode_start = Clock::now();
++        deferred->finish_deferred_decode(pending);
++        const double decode_ms = to_ms(Clock::now() - decode_start);
++        for (size_t i = 0; i < out.results.size(); ++i) {
++            out.results[i].wall_ms += decode_ms / static_cast<double>(out.results.size());
++            if (on_result) {
++                on_result(i, out.results[i]);
++            }
+         }
+     }
+     out.session_wall_ms = to_ms(Clock::now() - session_start);
+--- a/external/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/external/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -802,6 +802,7 @@
+         GGML_LOG_ERROR("%s: allocating %.2f MiB on device %d: cudaMalloc failed: %s\n", __func__, size / 1024.0 / 1024.0, buft_ctx->device, cudaGetErrorString(err));
+         return nullptr;
+     }
++    CUDA_CHECK(cudaMemset(dev_ptr, 0, size));  // ahenk yama f: yeniden kullanilan VRAM'deki eski veri sonuca sizmasin
+ 
+     ggml_backend_cuda_buffer_context * ctx = new ggml_backend_cuda_buffer_context(buft_ctx->device, dev_ptr);
+ 
+--- /dev/null
++++ b/include/engine/framework/runtime/deferred_decode.h
+@@ -0,0 +1,20 @@
++#pragma once
++
++#include "engine/framework/runtime/session.h"
++
++#include <vector>
++
++namespace engine::runtime {
++
++// ahenk yama c5: toplu cozme. Oturum destekliyorsa toplu istekte once butun satirlar uretilir
++// (latent ana bellekte), sonra cozucu bir kez kurulup hepsi cozulur.
++class IDeferredDecodeSession {
++public:
++    virtual ~IDeferredDecodeSession() = default;
++    // true donerse sonraki run() cagrilari cozmeyi erteleyebilir (audio_output bos kalir).
++    virtual bool begin_deferred_decode() = 0;
++    // ertelenen sonuclari sirayla doldurur; audio_output'u bos olanlar ertelenenlerdir.
++    virtual void finish_deferred_decode(std::vector<TaskResult *> &results) = 0;
++};
++
++}  // namespace engine::runtime
+--- a/include/engine/models/voxcpm2/audiovae.h
++++ b/include/engine/models/voxcpm2/audiovae.h
+@@ -38,6 +38,10 @@
+ 
+   runtime::AudioBuffer decode_features(const std::vector<float> &features,
+                                        int64_t patches);
++  // anlatim GPU yamasi (K5): nedensel kod cozucuyu sol baglamli (overlap >= alici alan) parcalarla cozer.
++  runtime::AudioBuffer decode_features_chunked(const std::vector<float> &features,
++                                               int64_t patches, int64_t chunk_frames,
++                                               int64_t overlap_frames);
+   VoxCPM2EncodedPrompt encode_prompt_audio(
+       const std::optional<runtime::AudioBuffer> &prompt_audio,
+       const std::string &prompt_text,
+--- a/include/engine/models/voxcpm2/generator.h
++++ b/include/engine/models/voxcpm2/generator.h
+@@ -15,6 +15,10 @@
+ namespace engine::models::voxcpm2 {
+ 
+ struct VoxCPM2Assets;
++struct VoxCPM2PromptEmbeddingStore;
++
++std::shared_ptr<VoxCPM2PromptEmbeddingStore>
++make_voxcpm2_prompt_embedding_store(size_t capacity);
+ 
+ struct VoxCPM2FeatureGeneratorConfig {
+   size_t weight_context_bytes = 3ull * 1024ull * 1024ull * 1024ull;
+@@ -24,6 +28,7 @@
+   size_t local_encoder_graph_context_bytes = 512ull * 1024ull * 1024ull;
+   size_t dit_graph_context_bytes = 1024ull * 1024ull * 1024ull;
+   size_t prompt_cache_slots = 1;
++  std::shared_ptr<VoxCPM2PromptEmbeddingStore> prompt_embedding_store;
+   bool mem_saver = true;
+   engine::assets::TensorStorageType weight_storage_type =
+       engine::assets::TensorStorageType::Native;
+--- a/include/engine/models/voxcpm2/minicpm.h
++++ b/include/engine/models/voxcpm2/minicpm.h
+@@ -163,11 +163,13 @@
+       VoxCPM2MiniCPMKind kind, int64_t cache_steps,
+       size_t graph_context_bytes);
+   ~VoxCPM2MiniCPMStepRuntime();
++  VoxCPM2MiniCPMStepRuntime(VoxCPM2MiniCPMStepRuntime &&) noexcept;  // anlatim GPU yamasi (K5): KV yeniden boyutlama
++  VoxCPM2MiniCPMStepRuntime &operator=(VoxCPM2MiniCPMStepRuntime &&) noexcept;
+ 
+   void reset();
+   void import_state(const engine::runtime::TransformerKVState &state);
+   engine::runtime::TransformerKVState export_state() const;
+-  VoxCPM2MiniCPMStepOutput run_step(const std::vector<float> &embedding);
++  VoxCPM2MiniCPMStepOutput run_step(const std::vector<float> &embedding, int64_t position_offset = 0);
+   void release_runtime_memory();
+ 
+ private:
+--- a/include/engine/models/voxcpm2/session.h
++++ b/include/engine/models/voxcpm2/session.h
+@@ -1,10 +1,12 @@
+ #pragma once
+ 
+ #include "engine/framework/runtime/cache_slots.h"
++#include "engine/framework/runtime/deferred_decode.h"
+ #include "engine/framework/runtime/session_base.h"
+ #include "engine/models/voxcpm2/assets.h"
+ #include "engine/models/voxcpm2/audiovae.h"
+ #include "engine/models/voxcpm2/generator.h"
++#include "engine/framework/core/execution_context.h"
+ 
+ #include <cstddef>
+ #include <memory>
+@@ -53,24 +55,46 @@
+       const runtime::TaskRequest &request,
+       const runtime::StreamEventCallback &stream_event_sink = nullptr);
+   void release_request_runtime_memory();
++  void ensure_generator();  // anlatim GPU yamasi (K5): LM bosaltildiysa yeniden kurar
++  runtime::AudioBuffer decode_on_gpu_chunked(const std::vector<float> &features,
++                                             int64_t patches, double chunk_seconds);  // anlatim GPU yamasi (K5)
+ 
+   runtime::TaskSpec task_;
+   std::shared_ptr<const VoxCPM2Assets> assets_;
+   VoxCPM2FeatureGeneratorConfig generator_config_;
+   VoxCPM2AudioVAEDecoderConfig decoder_config_;
++  std::unique_ptr<engine::core::ExecutionContext> audiovae_context_;  // anlatim GPU yamasi (b)
+   std::unique_ptr<VoxCPM2FeatureGeneratorRuntime> generator_;
+   std::unique_ptr<VoxCPM2AudioVAEDecoderRuntime> decoder_;
+   runtime::CacheSlots<EncodedPromptCacheKey, EncodedPromptCacheEntry,
+                       EncodedPromptCacheKeyEqual>
+       encoded_prompt_cache_;
+   std::optional<EncodedPromptCacheEntry> uncached_encoded_prompt_;
++
++  // ahenk yama c5: toplu cozme (VOXCPM2_TOPLU_COZ=1)
++  struct PendingDecode {
++    std::vector<float> features;
++    int64_t patches = 0;
++    int64_t trim_patches = 0;
++    double chunk_seconds = 0.0;
++  };
++  bool begin_deferred_decode_impl();
++  void finish_deferred_decode_impl(std::vector<runtime::TaskResult *> &results);
++  bool defer_decode_ = false;
++  std::vector<PendingDecode> pending_decodes_;
+ };
+ 
+ class VoxCPM2OfflineSession final : public VoxCPM2SessionBase,
+-                                    public runtime::IOfflineVoiceTaskSession {
++                                    public runtime::IOfflineVoiceTaskSession,
++                                    public runtime::IDeferredDecodeSession {
+ public:
+   VoxCPM2OfflineSession(runtime::TaskSpec task, runtime::SessionOptions options,
+                         std::shared_ptr<const VoxCPM2Assets> assets);
++
++  bool begin_deferred_decode() override { return begin_deferred_decode_impl(); }
++  void finish_deferred_decode(std::vector<runtime::TaskResult *> &results) override {
++    finish_deferred_decode_impl(results);
++  }
+ 
+   std::string family() const override;
+   runtime::VoiceTaskKind task_kind() const override;
+--- a/src/models/voxcpm2/audiovae.cpp
++++ b/src/models/voxcpm2/audiovae.cpp
+@@ -544,6 +544,21 @@
+   return hidden;
+ }
+ 
++// anlatim GPU yamasi (K5): kod cozucunun nedensel sol alici alani (latent kare).
++// Ilk derinlemesine conv k7: 6 kare; her blokta ters conv (cekirdek 2*stride) bir
++// onceki giris karesi + uc artik birim 6*(1+3+9)=78 ornek; son conv k7: 6 ornek.
++int64_t decoder_receptive_field_frames(const std::vector<int64_t> &rates) {
++  double frames = 6.0;
++  double rate = 1.0;
++  for (const int64_t r : rates) {
++    frames += 1.0 / rate;
++    rate *= static_cast<double>(r);
++    frames += static_cast<double>((kResidualKernel - 1) * (1 + 3 + 9)) / rate;
++  }
++  frames += static_cast<double>(kResidualKernel - 1) / rate;
++  return static_cast<int64_t>(std::ceil(frames));
++}
++
+ } // namespace
+ 
+ class VoxCPM2AudioVAEDecoderRuntime::Impl {
+@@ -611,6 +626,81 @@
+     audio.channels = 1;
+     audio.samples.assign(
+         full.begin(), full.begin() + static_cast<std::ptrdiff_t>(sample_count));
++    return audio;
++  }
++
++  // anlatim GPU yamasi (K5): parca [begin,end) icin [begin-overlap,end) cozulur, ilk
++  // (begin-start)*stride ornek atilir. Kod cozucu tamamen nedensel oldugundan overlap alici
++  // alandan buyukse sonuc tek parca cozumle matematiksel olarak aynidir (capraz gecis
++  // gerekmez). Kapasite tam (chunk+overlap), ikinin kuvvetine yuvarlanmaz.
++  runtime::AudioBuffer decode_features_chunked(const std::vector<float> &features,
++                                               int64_t patches, int64_t chunk_frames,
++                                               int64_t overlap_frames) {
++    const auto &vae = assets_->config.audio_vae;
++    if (patches < 0) {
++      throw std::runtime_error("VoxCPM2 AudioVAE patch count is negative");
++    }
++    const int64_t latent_frames = patches * assets_->config.patch_size;
++    if (static_cast<int64_t>(features.size()) != latent_frames * vae.latent_dim) {
++      throw std::runtime_error("VoxCPM2 AudioVAE feature size mismatch");
++    }
++    if (chunk_frames <= 0 || overlap_frames < 0) {
++      throw std::runtime_error("VoxCPM2 AudioVAE chunk sizes are invalid");
++    }
++    const int64_t receptive = decoder_receptive_field_frames(vae.decoder_rates);
++    if (overlap_frames < receptive) {
++      throw std::runtime_error(
++          "VoxCPM2 AudioVAE chunk overlap is smaller than the decoder receptive field");
++    }
++    const int64_t capacity = std::max<int64_t>(
++        1, std::min<int64_t>(latent_frames, chunk_frames + overlap_frames));
++    const auto build_start = Clock::now();
++    if (graph_ == nullptr || decoder_latent_frame_capacity_ != capacity) {
++      build_decoder(capacity);
++    }
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.graph_build_ms",
++                                     engine::debug::elapsed_ms(build_start));
++    const int64_t stride = decoder_stride_;
++    runtime::AudioBuffer audio;
++    audio.sample_rate = vae.output_sample_rate;
++    audio.channels = 1;
++    audio.samples.assign(static_cast<size_t>(latent_frames * stride), 0.0F);
++    std::vector<float> input(static_cast<size_t>(vae.latent_dim * capacity), 0.0F);
++    std::vector<float> full(static_cast<size_t>(output_frames_), 0.0F);
++    int64_t chunks = 0;
++    for (int64_t begin = 0; begin < latent_frames; begin += chunk_frames) {
++      const int64_t end = std::min<int64_t>(latent_frames, begin + chunk_frames);
++      const int64_t start = std::max<int64_t>(0, begin - overlap_frames);
++      const int64_t count = end - start;
++      std::fill(input.begin(), input.end(), 0.0F);
++      for (int64_t t = 0; t < count; ++t) {
++        for (int64_t c = 0; c < vae.latent_dim; ++c) {
++          input[static_cast<size_t>(c * capacity + t)] =
++              features[static_cast<size_t>((start + t) * vae.latent_dim + c)];
++        }
++      }
++      ggml_backend_tensor_set(input_, input.data(), 0,
++                              input.size() * sizeof(float));
++      core::set_backend_threads(execution_context_.backend(),
++                                std::max(1, execution_context_.config().threads));
++      const ggml_status status =
++          core::compute_backend_graph(execution_context_.backend(), graph_);
++      ggml_backend_synchronize(execution_context_.backend());
++      if (status != GGML_STATUS_SUCCESS) {
++        throw std::runtime_error("VoxCPM2 AudioVAE chunked decoder compute failed");
++      }
++      ggml_backend_tensor_get(output_, full.data(), 0,
++                              full.size() * sizeof(float));
++      std::copy(full.begin() + static_cast<std::ptrdiff_t>((begin - start) * stride),
++                full.begin() + static_cast<std::ptrdiff_t>((end - start) * stride),
++                audio.samples.begin() + static_cast<std::ptrdiff_t>(begin * stride));
++      ++chunks;
++    }
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.chunks", chunks);
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.chunk_frames", chunk_frames);
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.overlap_frames", overlap_frames);
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.receptive_field_frames", receptive);
++    engine::debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.capacity_frames", capacity);
+     return audio;
+   }
+ 
+@@ -926,6 +1016,13 @@
+   return impl_->decode_features(features, patches);
+ }
+ 
++runtime::AudioBuffer VoxCPM2AudioVAEDecoderRuntime::decode_features_chunked(
++    const std::vector<float> &features, int64_t patches, int64_t chunk_frames,
++    int64_t overlap_frames) {
++  return impl_->decode_features_chunked(features, patches, chunk_frames,
++                                        overlap_frames);
++}
++
+ VoxCPM2EncodedPrompt VoxCPM2AudioVAEDecoderRuntime::encode_prompt_audio(
+     const std::optional<runtime::AudioBuffer> &prompt_audio,
+     const std::string &prompt_text,
+--- a/src/models/voxcpm2/generator.cpp
++++ b/src/models/voxcpm2/generator.cpp
+@@ -20,6 +20,9 @@
+ #include <ggml-backend.h>
+ #include <ggml.h>
+ 
++#include <cstdlib>
++#include <sstream>
++#include <iomanip>
+ #include <algorithm>
+ #include <chrono>
+ #include <cctype>
+@@ -38,6 +41,32 @@
+ namespace {
+ 
+ namespace binding = engine::modules::binding;
++
++
++void probe_vector(const std::string &name, const std::vector<float> &values, bool full) {
++  double sum = 0.0, squares = 0.0, maximum = 0.0;
++  int64_t nonfinite = 0;
++  for (float value : values) {
++    if (!std::isfinite(value)) { ++nonfinite; continue; }
++    sum += value;
++    squares += static_cast<double>(value) * value;
++    maximum = std::max(maximum, std::abs(static_cast<double>(value)));
++  }
++  debug::trace_log_scalar("voxcpm2.internal." + name + ".mean", sum / values.size());
++  debug::trace_log_scalar("voxcpm2.internal." + name + ".rms", std::sqrt(squares / values.size()));
++  debug::trace_log_scalar("voxcpm2.internal." + name + ".max_abs", maximum);
++  debug::trace_log_scalar("voxcpm2.internal." + name + ".nonfinite", nonfinite);
++  if (full) {
++    std::ostringstream data;
++    data << std::setprecision(9) << '[';
++    for (size_t i = 0; i < values.size(); ++i) {
++      if (i) data << ',';
++      data << values[i];
++    }
++    data << ']';
++    debug::trace_log_scalar("voxcpm2.internal." + name + ".values", data.str());
++  }
++}
+ 
+ using Clock = std::chrono::steady_clock;
+ 
+@@ -515,6 +544,7 @@
+       return;
+     }
+     buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     if (buffer_ == nullptr) {
+       throw std::runtime_error(
+           "failed to allocate VoxCPM2 step projection graph");
+@@ -672,6 +702,7 @@
+       }
+     } else {
+       buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
++      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     }
+     if (!mem_saver_ && buffer_ == nullptr) {
+       throw std::runtime_error(
+@@ -937,6 +968,7 @@
+       }
+     } else {
+       buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
++      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     }
+     if (!mem_saver_ && buffer_ == nullptr) {
+       throw std::runtime_error(
+@@ -1118,6 +1150,13 @@
+       for (int64_t i = 0; i < patch_elems; ++i) {
+         x[static_cast<size_t>(i)] -= dt * dphi[static_cast<size_t>(i)];
+       }
++      if (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") {
++        const std::string key = "cfm_" + std::to_string(noise_start_index) + "_" + std::to_string(step);
++        probe_vector(key + "_x", x, true);
++        probe_vector(key + "_dphi", dphi, true);
++        debug::trace_log_scalar("voxcpm2.internal." + key + "_t", t);
++        debug::trace_log_scalar("voxcpm2.internal." + key + "_dt", dt);
++      }
+       t -= dt;
+       if (step < static_cast<int64_t>(t_span.size()) - 1) {
+         dt = t - t_span[static_cast<size_t>(step + 1)];
+@@ -1190,6 +1229,59 @@
+   return impl_->generate_patch(mu, cond_patch, timesteps, cfg_value, seed,
+                                noise_start_index, noise_file, temperature);
+ }
++
++static int64_t voxcpm2_kv_capacity(int64_t max_length) {
++  // anlatim GPU yamasi (a): KV kapasitesi max_length yerine verilen adim sayisi; ayarsizken davranis aynen kalir.
++  const char *value = std::getenv("VOXCPM2_KV_CAPACITY");
++  if (value == nullptr || value[0] == 0) { return max_length; }
++  // anlatim GPU yamasi (K5): "auto" -> kucuk yer tutucu; her istekte ensure_kv_capacity boyutlar.
++  if (std::string(value) == "auto") { return std::min<int64_t>(max_length, 64); }
++  const int64_t capacity = std::stoll(value);
++  if (capacity <= 0 || capacity > max_length) { throw std::invalid_argument("VOXCPM2_KV_CAPACITY must be in 1..max_length"); }
++  return capacity;
++}
++
++static bool voxcpm2_kv_capacity_auto() {
++  const char *value = std::getenv("VOXCPM2_KV_CAPACITY");
++  return value != nullptr && std::string(value) == "auto";
++}
++
++// ahenk yama d: prompt ses gomme onbellegi oturuma ait; yama b her istekte uretici yeniden kurdugunda kaybolmaz.
++struct VoxCPM2PromptEmbeddingStore {
++  struct Key {
++    std::vector<float> prompt_features;
++    int64_t prompt_patches = 0;
++    std::vector<float> reference_features;
++    int64_t reference_patches = 0;
++  };
++
++  struct KeyEqual {
++    bool operator()(const Key &lhs,
++                    const Key &rhs) const {
++      return lhs.prompt_patches == rhs.prompt_patches &&
++             lhs.reference_patches == rhs.reference_patches &&
++             lhs.prompt_features == rhs.prompt_features &&
++             lhs.reference_features == rhs.reference_features;
++    }
++  };
++
++  struct Entry {
++    std::vector<float> prompt_embeddings;
++    std::vector<float> reference_embeddings;
++  };
++
++  explicit VoxCPM2PromptEmbeddingStore(size_t capacity) : slots(capacity) {}
++  engine::runtime::CacheSlots<Key, Entry, KeyEqual> slots;
++};
++
++std::shared_ptr<VoxCPM2PromptEmbeddingStore>
++make_voxcpm2_prompt_embedding_store(size_t capacity) {
++  return std::make_shared<VoxCPM2PromptEmbeddingStore>(capacity);
++}
++
++using PromptAudioEmbeddingCacheKey = VoxCPM2PromptEmbeddingStore::Key;
++using PromptAudioEmbeddingCacheKeyEqual = VoxCPM2PromptEmbeddingStore::KeyEqual;
++using PromptAudioEmbeddingCacheEntry = VoxCPM2PromptEmbeddingStore::Entry;
+ 
+ class VoxCPM2FeatureGeneratorRuntime::Impl {
+ public:
+@@ -1205,17 +1297,21 @@
+                         config.mem_saver),
+         prefill_(weights_, config.lm_step_graph_context_bytes),
+         base_lm_(weights_, VoxCPM2MiniCPMKind::BaseLM,
+-                 assets_->config.max_length,
++                 voxcpm2_kv_capacity(assets_->config.max_length),
+                  config.lm_step_graph_context_bytes),
+         residual_lm_(weights_, VoxCPM2MiniCPMKind::ResidualLM,
+-                     assets_->config.max_length,
++                     voxcpm2_kv_capacity(assets_->config.max_length),
+                      config.lm_step_graph_context_bytes),
+         projection_(weights_, config.projection_graph_context_bytes,
+                     config.mem_saver),
+         cfm_(weights_, config.dit_graph_context_bytes, config.mem_saver),
+         local_encoder_(weights_, config.local_encoder_graph_context_bytes,
+                        config.mem_saver),
+-        prompt_audio_embedding_cache_(config.prompt_cache_slots) {}
++        prompt_store_(config.prompt_embedding_store
++                          ? config.prompt_embedding_store
++                          : make_voxcpm2_prompt_embedding_store(config.prompt_cache_slots)),
++        prompt_audio_embedding_cache_(prompt_store_->slots), probe_lm_graph_context_bytes_(config.lm_step_graph_context_bytes),
++        kv_capacity_(voxcpm2_kv_capacity(assets_->config.max_length)) {}
+ 
+   VoxCPM2Result generate_zero_shot(const std::string &text,
+                                    const VoxCPM2GenerationOptions &options) {
+@@ -1230,6 +1326,7 @@
+ 
+     const int64_t max_tokens =
+         effective_max_tokens(options, prefill.target_text_tokens);
++    ensure_kv_capacity(static_cast<int64_t>(prefill.rows.size()) + max_tokens);
+     VoxCPM2Result last_result;
+     uint64_t retry_noise_start = 0;
+     for (int64_t attempt = 0; attempt < options.retry_badcase_max_times;
+@@ -1263,6 +1360,7 @@
+     const auto prefill = build_prefill_sequence(text, prompt);
+     const int64_t max_tokens =
+         effective_max_tokens(options, prefill.target_text_tokens);
++    ensure_kv_capacity(static_cast<int64_t>(prefill.rows.size()) + max_tokens);
+     VoxCPM2StreamingResult streaming;
+     auto *streaming_chunks =
+         chunk_callback ? nullptr : &streaming.chunks;
+@@ -1272,6 +1370,18 @@
+     return streaming;
+   }
+ 
++  // anlatim GPU yamasi (K5): VOXCPM2_KV_CAPACITY=auto iken KV = on doldurma + ust adim + 16,
++  // 256'ya yukari yuvarlanir (CUDA flash-attn KV dilimi; 64'te 1216 yolu degistirdi); tavan max_length (asilirsa generate_once acik CapacityError verir).
++  void ensure_kv_capacity(int64_t needed) {
++    if (!voxcpm2_kv_capacity_auto()) { return; }
++    const int64_t capacity = std::min<int64_t>(assets_->config.max_length, ((needed + 16 + 255) / 256) * 256);
++    debug::trace_log_scalar("voxcpm2.kv_capacity_auto", capacity);
++    if (capacity == kv_capacity_) { return; }
++    base_lm_ = VoxCPM2MiniCPMStepRuntime(weights_, VoxCPM2MiniCPMKind::BaseLM, capacity, probe_lm_graph_context_bytes_);
++    residual_lm_ = VoxCPM2MiniCPMStepRuntime(weights_, VoxCPM2MiniCPMKind::ResidualLM, capacity, probe_lm_graph_context_bytes_);
++    kv_capacity_ = capacity;
++  }
++
+   void release_runtime_memory() {
+     prefill_.release_runtime_memory();
+     base_lm_.release_runtime_memory();
+@@ -1279,27 +1389,6 @@
+   }
+ 
+ private:
+-  struct PromptAudioEmbeddingCacheKey {
+-    std::vector<float> prompt_features;
+-    int64_t prompt_patches = 0;
+-    std::vector<float> reference_features;
+-    int64_t reference_patches = 0;
+-  };
+-
+-  struct PromptAudioEmbeddingCacheKeyEqual {
+-    bool operator()(const PromptAudioEmbeddingCacheKey &lhs,
+-                    const PromptAudioEmbeddingCacheKey &rhs) const {
+-      return lhs.prompt_patches == rhs.prompt_patches &&
+-             lhs.reference_patches == rhs.reference_patches &&
+-             lhs.prompt_features == rhs.prompt_features &&
+-             lhs.reference_features == rhs.reference_features;
+-    }
+-  };
+-
+-  struct PromptAudioEmbeddingCacheEntry {
+-    std::vector<float> prompt_embeddings;
+-    std::vector<float> reference_embeddings;
+-  };
+ 
+   PrefillSequence build_prefill_sequence(const std::string &target_text,
+                                          const VoxCPM2EncodedPrompt *prompt) {
+@@ -1334,6 +1423,8 @@
+     PrefillSequence sequence;
+     sequence.target_text_tokens =
+         static_cast<int64_t>(target_prompt.input_ids.size());
++    debug::trace_log_scalar("voxcpm2.probe.target_text", normalized_target_text);
++    debug::trace_log_scalar("voxcpm2.probe.target_text_tokens", sequence.target_text_tokens);
+ 
+     auto append_text = [&](int32_t token) {
+       PrefillRow row;
+@@ -1503,6 +1594,9 @@
+     }
+     base_lm_.reset();
+     residual_lm_.reset();
++    debug::trace_log_scalar("voxcpm2.probe.min_tokens", options.min_tokens);
++    debug::trace_log_scalar("voxcpm2.probe.effective_max_tokens", max_tokens);
++    debug::trace_log_scalar("voxcpm2.probe.prefill_rows", prefill.rows.size());
+ 
+     std::vector<float> zero_hidden(static_cast<size_t>(hidden_size), 0.0F);
+     std::vector<float> zero_patch(static_cast<size_t>(patch_elems), 0.0F);
+@@ -1541,6 +1635,7 @@
+       prefill_input.text_mask.push_back(row.text_mask ? 1.0F : 0.0F);
+       prefill_input.audio_mask.push_back(row.audio_mask ? 1.0F : 0.0F);
+     }
++    probe_vector("prefill_embeddings", prefill_input.input_embeddings, true);
+     const auto prefill_output = prefill_.run(prefill_input);
+     base_lm_.import_state(prefill_output.base_state);
+     residual_lm_.import_state(prefill_output.residual_state);
+@@ -1564,12 +1659,42 @@
+       append_patch(result.decode_features, (*it)->feature, patch_elems);
+       ++result.decode_patches;
+     }
++    const char *hold_value = std::getenv("VOXCPM2_PROBE_HOLD_UNTIL");
++    const int64_t probe_hold_until = hold_value ? std::stoll(hold_value) : 0;
++    const char *disable_value = std::getenv("VOXCPM2_PROBE_DISABLE_EOS");
++    const bool probe_disable_eos = disable_value && std::string(disable_value) == "1";
++    const char *confirm_value = std::getenv("VOXCPM2_PROBE_EOS_CONFIRMATIONS");
++    const int64_t probe_eos_confirmations = confirm_value ? std::stoll(confirm_value) : 2;
++    if (probe_eos_confirmations < 1) { throw std::invalid_argument("EOS confirmations must be positive"); }
++    const char *consensus_value = std::getenv("VOXCPM2_PROBE_POSITION_CONSENSUS");
++    const int64_t probe_position_offset = consensus_value ? std::stoll(consensus_value) : 0;
++    if (probe_position_offset < 0 || probe_position_offset > 16) { throw std::invalid_argument("Invalid consensus offset"); }
++    std::unique_ptr<VoxCPM2MiniCPMStepRuntime> probe_shadow_lm;
++    std::vector<float> probe_shadow_stop_logits;
++    std::vector<float> probe_shadow_fsq;
++    const char *repair_value = std::getenv("VOXCPM2_PROBE_ACOUSTIC_RESCUE");
++    const bool probe_acoustic_rescue = repair_value && std::string(repair_value) == "1";
++    if (probe_acoustic_rescue && probe_position_offset == 0) { throw std::invalid_argument("Acoustic rescue requires shadow model"); }
++    if (probe_position_offset > 0) {
++      probe_shadow_lm = std::make_unique<VoxCPM2MiniCPMStepRuntime>(weights_, VoxCPM2MiniCPMKind::BaseLM, kv_capacity_, probe_lm_graph_context_bytes_);
++      probe_shadow_lm->import_state(prefill_output.base_state);
++    }
++    debug::trace_log_scalar("voxcpm2.internal.hold_until", probe_hold_until);
++    debug::trace_log_scalar("voxcpm2.internal.disable_eos", probe_disable_eos ? 1 : 0);
++    debug::trace_log_scalar("voxcpm2.internal.eos_confirmations", probe_eos_confirmations);
++    debug::trace_log_scalar("voxcpm2.internal.position_consensus_offset", probe_position_offset);
+     uint64_t patch_noise_start = noise_start_index;
++    int64_t consecutive_stop_predictions = 0;
++    debug::trace_log_scalar("voxcpm2.probe.eos_confirmation_steps", probe_eos_confirmations);
+     for (int64_t index = 0; index < max_tokens; ++index) {
+       const auto projected =
+           projection_.run(lm_hidden, residual_hidden, zero_hidden);
+-      const auto mu = concat_dit_mu(projected.current_lm_dit_hidden,
+-                                    projected.residual_dit_hidden);
++      const bool probe_rescue_applied = probe_acoustic_rescue && !probe_shadow_fsq.empty() &&
++          stop_class(projected.current_stop_logits) == 1 && stop_class(probe_shadow_stop_logits) == 0;
++      const auto acoustic_projected = probe_rescue_applied
++          ? projection_.run(probe_shadow_fsq, residual_hidden, zero_hidden) : projected;
++      const auto mu = concat_dit_mu(acoustic_projected.current_lm_dit_hidden,
++                                    acoustic_projected.residual_dit_hidden);
+       const auto patch = cfm_.generate_patch(
+           mu, prefix_cond, options.num_inference_steps, options.guidance_scale,
+           options.seed, patch_noise_start, options.cfm_noise_file);
+@@ -1592,16 +1717,57 @@
+       }
+       prefix_cond = patch;
+ 
+-      if (index > options.min_tokens &&
+-          stop_class(projected.current_stop_logits) == 1) {
++      debug::trace_log_scalar("voxcpm2.internal.step", index + 1);
++      debug::trace_log_scalar("voxcpm2.internal.acoustic_rescue_applied", probe_rescue_applied ? 1 : 0);
++      debug::trace_log_scalar("voxcpm2.internal.base_position_expected", prefill.rows.size() + index);
++      debug::trace_log_scalar("voxcpm2.internal.noise_start", patch_noise_start - patch_elems);
++      const bool probe_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 1 >= 170 && index + 1 <= 220);
++      probe_vector("lm_hidden", lm_hidden, probe_full);
++      probe_vector("residual_hidden", residual_hidden, probe_full);
++      probe_vector("mu", mu, probe_full);
++      probe_vector("patch", patch, probe_full);
++      probe_vector("stop_logits", projected.current_stop_logits, true);
++      debug::trace_log_scalar("voxcpm2.probe.ar_patch", index + 1);
++      debug::trace_log_scalar("voxcpm2.probe.continue_logit", static_cast<double>(projected.current_stop_logits[0]));
++      debug::trace_log_scalar("voxcpm2.probe.stop_logit", static_cast<double>(projected.current_stop_logits[1]));
++      const bool probe_main_stop = stop_class(projected.current_stop_logits) == 1;
++      const bool probe_shadow_stop = probe_shadow_stop_logits.empty() ? probe_main_stop : stop_class(probe_shadow_stop_logits) == 1;
++      if (probe_shadow_lm) {
++        const auto &shadow_logits = probe_shadow_stop_logits.empty() ? projected.current_stop_logits : probe_shadow_stop_logits;
++        debug::trace_log_scalar("voxcpm2.internal.shadow_continue_logit", static_cast<double>(shadow_logits[0]));
++        debug::trace_log_scalar("voxcpm2.internal.shadow_stop_logit", static_cast<double>(shadow_logits[1]));
++        debug::trace_log_scalar("voxcpm2.internal.consensus_stop", probe_main_stop && probe_shadow_stop ? 1 : 0);
++      }
++      consecutive_stop_predictions = probe_main_stop && probe_shadow_stop
++          ? consecutive_stop_predictions + 1 : 0;
++      if (index > options.min_tokens && consecutive_stop_predictions >= probe_eos_confirmations && (probe_disable_eos || index + 1 < probe_hold_until)) {
++        debug::trace_log_scalar("voxcpm2.internal.eos_suppressed_at", index + 1);
++      }
++      if (!probe_disable_eos && index > options.min_tokens && consecutive_stop_predictions >= probe_eos_confirmations && index + 1 >= probe_hold_until) {
++        debug::trace_log_scalar("voxcpm2.probe.eos_accepted_at_patch", index + 1);
+         break;
+       }
+ 
+       const auto curr_embed = local_encoder_.encode_patch(patch);
+-      const auto next_lm = base_lm_.run_step(curr_embed).hidden;
++      const auto next_lm_result = base_lm_.run_step(curr_embed);
++      const auto &next_lm = next_lm_result.hidden;
++      debug::trace_log_scalar("voxcpm2.internal.next_state_step", index + 2);
++      debug::trace_log_scalar("voxcpm2.internal.base_position_actual", next_lm_result.position);
++      const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 2 >= 170 && index + 2 <= 220);
++      probe_vector("next_encoder_embed", curr_embed, true);
++      probe_vector("next_lm_raw", next_lm, probe_next_full);
+       const auto next_projected =
+           projection_.run(next_lm, residual_hidden, curr_embed);
+       lm_hidden = next_projected.fsq_hidden;
++      probe_vector("next_fsq", lm_hidden, probe_next_full);
++      if (probe_shadow_lm) {
++        const auto shadow_raw = probe_shadow_lm->run_step(curr_embed, probe_position_offset).hidden;
++        const auto shadow_projected = projection_.run(shadow_raw, residual_hidden, zero_hidden);
++        probe_shadow_stop_logits = shadow_projected.fsq_stop_logits;
++        probe_shadow_fsq = shadow_projected.fsq_hidden;
++        probe_vector("shadow_raw", shadow_raw, probe_next_full);
++        probe_vector("shadow_fsq", probe_shadow_fsq, probe_next_full);
++      }
+       residual_hidden =
+           residual_lm_.run_step(next_projected.residual_input).hidden;
+     }
+@@ -1618,12 +1784,15 @@
+   VoxCPM2StepProjectionRuntime projection_;
+   VoxCPM2CFMRuntime cfm_;
+   VoxCPM2LocalEncoderRuntime local_encoder_;
++  std::shared_ptr<VoxCPM2PromptEmbeddingStore> prompt_store_;
+   engine::runtime::CacheSlots<PromptAudioEmbeddingCacheKey,
+                               PromptAudioEmbeddingCacheEntry,
+                               PromptAudioEmbeddingCacheKeyEqual>
+-      prompt_audio_embedding_cache_;
++      &prompt_audio_embedding_cache_;
+   std::optional<PromptAudioEmbeddingCacheEntry>
+       uncached_prompt_audio_embedding_;
++  size_t probe_lm_graph_context_bytes_;
++  int64_t kv_capacity_;  // anlatim GPU yamasi (K5)
+ };
+ 
+ VoxCPM2FeatureGeneratorRuntime::VoxCPM2FeatureGeneratorRuntime(
+--- a/src/models/voxcpm2/minicpm.cpp
++++ b/src/models/voxcpm2/minicpm.cpp
+@@ -422,6 +422,7 @@
+       return;
+     }
+     buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     if (buffer_ == nullptr) {
+       throw std::runtime_error(
+           "failed to allocate VoxCPM2 text embedding graph");
+@@ -1025,7 +1026,7 @@
+     return step_cache_.export_state();
+   }
+ 
+-  VoxCPM2MiniCPMStepOutput run_step(const std::vector<float> &embedding) {
++  VoxCPM2MiniCPMStepOutput run_step(const std::vector<float> &embedding, int64_t position_offset = 0) {
+     ensure_graph();
+     const auto &config =
+         select_minicpm_weights(weights_->weights(), kind_).config;
+@@ -1037,7 +1038,7 @@
+     }
+     ggml_backend_tensor_set(input_, embedding.data(), 0,
+                             embedding.size() * sizeof(float));
+-    const int32_t position = static_cast<int32_t>(step_cache_.current_end());
++    const int32_t position = static_cast<int32_t>(step_cache_.current_end() + position_offset);
+     ggml_backend_tensor_set(position_, &position, 0, sizeof(position));
+     const int32_t cache_slot = static_cast<int32_t>(step_cache_.valid_steps());
+     ggml_backend_tensor_set(cache_slot_, &cache_slot, 0, sizeof(cache_slot));
+@@ -1164,6 +1165,7 @@
+     graph_ = ggml_new_graph_custom(ctx_.get(), kDefaultGraphNodes, false);
+     ggml_build_forward_expand(graph_, hidden_output_);
+     buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     if (buffer_ == nullptr) {
+       throw std::runtime_error("failed to allocate VoxCPM2 MiniCPM step graph");
+     }
+@@ -1194,6 +1196,8 @@
+                                    graph_context_bytes)) {}
+ 
+ VoxCPM2MiniCPMStepRuntime::~VoxCPM2MiniCPMStepRuntime() = default;
++VoxCPM2MiniCPMStepRuntime::VoxCPM2MiniCPMStepRuntime(VoxCPM2MiniCPMStepRuntime &&) noexcept = default;
++VoxCPM2MiniCPMStepRuntime &VoxCPM2MiniCPMStepRuntime::operator=(VoxCPM2MiniCPMStepRuntime &&) noexcept = default;
+ 
+ void VoxCPM2MiniCPMStepRuntime::reset() { impl_->reset(); }
+ 
+@@ -1208,8 +1212,8 @@
+ }
+ 
+ VoxCPM2MiniCPMStepOutput
+-VoxCPM2MiniCPMStepRuntime::run_step(const std::vector<float> &embedding) {
+-  return impl_->run_step(embedding);
++VoxCPM2MiniCPMStepRuntime::run_step(const std::vector<float> &embedding, int64_t position_offset) {
++  return impl_->run_step(embedding, position_offset);
+ }
+ 
+ void VoxCPM2MiniCPMStepRuntime::release_runtime_memory() {
+--- a/src/models/voxcpm2/session.cpp
++++ b/src/models/voxcpm2/session.cpp
+@@ -5,8 +5,15 @@
+ #include "engine/framework/runtime/options.h"
+ #include "engine/framework/text/chunking.h"
+ 
++#include <cstdlib>
++#include <fstream>
++#include <filesystem>
+ #include <algorithm>
++#include <array>
+ #include <chrono>
++#include <cstdint>
++#include "engine/framework/audio/resampling.h"
++#include <cmath>
+ #include <initializer_list>
+ #include <memory>
+ #include <optional>
+@@ -189,6 +196,193 @@
+     out *= value;
+   }
+   return out;
++}
++
++// ahenk yama c4: referans kodlamasinin (prompt_encode) diske onbellegi. VOXCPM2_PROMPT_CACHE_DIR
++// verilmezse kapali. Anahtar sha256: AudioVAE agirlik dosyasi (yol, boyut, zaman), kodlayici ayarlari,
++// yeniden ornekleyici (soxr/dogrusal) parmak izi, referans metni ve referans seslerin ornekleri.
++// Kayit float'lari birebir yazar ve okur.
++class Sha256 {
++public:
++  Sha256() { reset(); }
++  void update(const void *data, size_t size) {
++    const auto *bytes = static_cast<const uint8_t *>(data);
++    for (size_t i = 0; i < size; ++i) {
++      block_[block_size_++] = bytes[i];
++      if (block_size_ == 64) {
++        transform();
++        bit_count_ += 512;
++        block_size_ = 0;
++      }
++    }
++  }
++  template <typename T> void value(const T &v) { update(&v, sizeof(T)); }
++  void text(const std::string &s) {
++    value(static_cast<uint64_t>(s.size()));
++    update(s.data(), s.size());
++  }
++  std::string hex() {
++    uint64_t total_bits = bit_count_ + static_cast<uint64_t>(block_size_) * 8;
++    const uint8_t pad = 0x80;
++    update(&pad, 1);
++    const uint8_t zero = 0;
++    while (block_size_ != 56) {
++      update(&zero, 1);
++    }
++    for (int i = 7; i >= 0; --i) {
++      const uint8_t b = static_cast<uint8_t>(total_bits >> (i * 8));
++      update(&b, 1);
++    }
++    static const char *digits = "0123456789abcdef";
++    std::string out;
++    for (uint32_t h : state_) {
++      for (int i = 7; i >= 0; --i) {
++        out.push_back(digits[(h >> (i * 4)) & 0xF]);
++      }
++    }
++    return out;
++  }
++
++private:
++  static uint32_t rotr(uint32_t x, int n) { return (x >> n) | (x << (32 - n)); }
++  void reset() {
++    state_ = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
++              0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
++    block_size_ = 0;
++    bit_count_ = 0;
++  }
++  void transform() {
++    static const uint32_t k[64] = {
++        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
++        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
++        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
++        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
++        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
++        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
++        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
++        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
++    uint32_t w[64];
++    for (int i = 0; i < 16; ++i) {
++      w[i] = (uint32_t(block_[i * 4]) << 24) | (uint32_t(block_[i * 4 + 1]) << 16) |
++             (uint32_t(block_[i * 4 + 2]) << 8) | uint32_t(block_[i * 4 + 3]);
++    }
++    for (int i = 16; i < 64; ++i) {
++      const uint32_t s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
++      const uint32_t s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >> 10);
++      w[i] = w[i - 16] + s0 + w[i - 7] + s1;
++    }
++    uint32_t a = state_[0], b = state_[1], c = state_[2], d = state_[3];
++    uint32_t e = state_[4], f = state_[5], g = state_[6], h = state_[7];
++    for (int i = 0; i < 64; ++i) {
++      const uint32_t s1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
++      const uint32_t ch = (e & f) ^ (~e & g);
++      const uint32_t t1 = h + s1 + ch + k[i] + w[i];
++      const uint32_t s0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
++      const uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
++      const uint32_t t2 = s0 + maj;
++      h = g; g = f; f = e; e = d + t1; d = c; c = b; b = a; a = t1 + t2;
++    }
++    state_[0] += a; state_[1] += b; state_[2] += c; state_[3] += d;
++    state_[4] += e; state_[5] += f; state_[6] += g; state_[7] += h;
++  }
++
++  std::array<uint32_t, 8> state_{};
++  uint8_t block_[64] = {};
++  size_t block_size_ = 0;
++  uint64_t bit_count_ = 0;
++};
++
++void hash_optional_audio(Sha256 &sha, const std::optional<runtime::AudioBuffer> &audio) {
++  sha.value(static_cast<uint8_t>(audio.has_value() ? 1 : 0));
++  if (!audio.has_value()) {
++    return;
++  }
++  sha.value(static_cast<int64_t>(audio->sample_rate));
++  sha.value(static_cast<int64_t>(audio->channels));
++  sha.value(static_cast<uint64_t>(audio->samples.size()));
++  sha.update(audio->samples.data(), audio->samples.size() * sizeof(float));
++}
++
++constexpr uint32_t kPromptDiskCacheMagic = 0x34435641;  // "AVC4"
++
++void write_floats(std::ofstream &file, const std::vector<float> &values) {
++  const uint64_t count = values.size();
++  file.write(reinterpret_cast<const char *>(&count), sizeof(count));
++  file.write(reinterpret_cast<const char *>(values.data()),
++             static_cast<std::streamsize>(count * sizeof(float)));
++}
++
++bool read_floats(std::ifstream &file, std::vector<float> &values) {
++  uint64_t count = 0;
++  if (!file.read(reinterpret_cast<char *>(&count), sizeof(count)) ||
++      count > (1ull << 32)) {
++    return false;
++  }
++  values.resize(static_cast<size_t>(count));
++  return static_cast<bool>(file.read(reinterpret_cast<char *>(values.data()),
++                                     static_cast<std::streamsize>(count * sizeof(float))));
++}
++
++bool load_prompt_from_disk(const std::filesystem::path &path, const std::string &key_hex,
++                           VoxCPM2EncodedPrompt &out) {
++  std::ifstream file(path, std::ios::binary);
++  if (!file) {
++    return false;
++  }
++  uint32_t magic = 0;
++  std::string stored_key(64, '\0');
++  uint64_t text_size = 0;
++  if (!file.read(reinterpret_cast<char *>(&magic), sizeof(magic)) ||
++      magic != kPromptDiskCacheMagic || !file.read(stored_key.data(), 64) ||
++      stored_key != key_hex ||
++      !file.read(reinterpret_cast<char *>(&text_size), sizeof(text_size)) ||
++      text_size > (1ull << 24)) {
++    return false;
++  }
++  out.prompt_text.assign(static_cast<size_t>(text_size), '\0');
++  if (!file.read(out.prompt_text.data(), static_cast<std::streamsize>(text_size)) ||
++      !read_floats(file, out.prompt_features) ||
++      !file.read(reinterpret_cast<char *>(&out.prompt_patches), sizeof(out.prompt_patches)) ||
++      !read_floats(file, out.reference_features) ||
++      !file.read(reinterpret_cast<char *>(&out.reference_patches), sizeof(out.reference_patches))) {
++    return false;
++  }
++  uint32_t tail = 0;
++  return file.read(reinterpret_cast<char *>(&tail), sizeof(tail)) &&
++         tail == kPromptDiskCacheMagic;
++}
++
++void save_prompt_to_disk(const std::filesystem::path &path, const std::string &key_hex,
++                         const VoxCPM2EncodedPrompt &prompt) {
++  std::error_code ec;
++  std::filesystem::create_directories(path.parent_path(), ec);
++  auto temporary = path;
++  temporary += ".tmp";
++  {
++    std::ofstream file(temporary, std::ios::binary | std::ios::trunc);
++    if (!file) {
++      return;
++    }
++    file.write(reinterpret_cast<const char *>(&kPromptDiskCacheMagic), sizeof(kPromptDiskCacheMagic));
++    file.write(key_hex.data(), 64);
++    const uint64_t text_size = prompt.prompt_text.size();
++    file.write(reinterpret_cast<const char *>(&text_size), sizeof(text_size));
++    file.write(prompt.prompt_text.data(), static_cast<std::streamsize>(text_size));
++    write_floats(file, prompt.prompt_features);
++    file.write(reinterpret_cast<const char *>(&prompt.prompt_patches), sizeof(prompt.prompt_patches));
++    write_floats(file, prompt.reference_features);
++    file.write(reinterpret_cast<const char *>(&prompt.reference_patches), sizeof(prompt.reference_patches));
++    file.write(reinterpret_cast<const char *>(&kPromptDiskCacheMagic), sizeof(kPromptDiskCacheMagic));
++    if (!file) {
++      file.close();
++      std::filesystem::remove(temporary, ec);
++      return;
++    }
++  }
++  std::filesystem::rename(temporary, path, ec);
++  if (ec) {
++    std::filesystem::remove(temporary, ec);
++  }
+ }
+ 
+ } // namespace
+@@ -243,6 +437,8 @@
+       options.options, {"voxcpm2.dit_graph_context_mb"},
+       generator_config_.dit_graph_context_bytes);
+   generator_config_.prompt_cache_slots = encoded_prompt_cache_.capacity();
++  generator_config_.prompt_embedding_store =
++      make_voxcpm2_prompt_embedding_store(generator_config_.prompt_cache_slots);
+   decoder_config_.weight_context_bytes = runtime::parse_size_mb_option(
+       options.options, {"voxcpm2.audiovae_weight_context_mb"},
+       decoder_config_.weight_context_bytes);
+@@ -270,8 +466,26 @@
+ 
+   generator_ = std::make_unique<VoxCPM2FeatureGeneratorRuntime>(
+       assets_, execution_context(), generator_config_);
++  engine::core::ExecutionContext *decoder_context = &execution_context();
++  if (const char *audiovae_cpu = std::getenv("VOXCPM2_AUDIOVAE_CPU");
++      audiovae_cpu != nullptr && std::string(audiovae_cpu) == "1" &&
++      execution_context().backend_type() != engine::core::BackendType::Cpu) {
++    // anlatim GPU yamasi (b): AudioVAE ayri CPU baglaminda (VRAM'e sigmayan kod cozucu).
++    engine::core::BackendConfig cpu_config;
++    cpu_config.type = engine::core::BackendType::Cpu;
++    cpu_config.threads = execution_context().config().threads;
++    if (const char *audiovae_threads = std::getenv("VOXCPM2_AUDIOVAE_THREADS");
++        audiovae_threads != nullptr && audiovae_threads[0] != 0) {
++      // anlatim yamasi (K4): AudioVAE CPU baglaminin is parcacigi sayisi (uretec etkilenmez).
++      const int threads = std::stoi(audiovae_threads);
++      if (threads < 1 || threads > 256) { throw std::invalid_argument("VOXCPM2_AUDIOVAE_THREADS must be in 1..256"); }
++      cpu_config.threads = threads;
++    }
++    audiovae_context_ = std::make_unique<engine::core::ExecutionContext>(cpu_config);
++    decoder_context = audiovae_context_.get();
++  }
+   decoder_ = std::make_unique<VoxCPM2AudioVAEDecoderRuntime>(
+-      assets_, execution_context(), decoder_config_);
++      assets_, *decoder_context, decoder_config_);
+ }
+ 
+ VoxCPM2SessionBase::~VoxCPM2SessionBase() = default;
+@@ -294,6 +508,7 @@
+     throw std::runtime_error("VoxCPM2 run requires an offline session");
+   }
+   validate_request(request);
++  ensure_generator();
+   auto release_runtime_memory = [this](VoxCPM2SessionBase *self) {
+     if (self != nullptr) {
+       self->release_request_runtime_memory();
+@@ -338,8 +553,39 @@
+     generator_ms += engine::debug::elapsed_ms(generator_start, Clock::now());
+ 
+     const auto decoder_start = Clock::now();
+-    auto audio = decoder_->decode_features(generated.decode_features,
+-                                           generated.decode_patches);
++    const char *gpu_chunk = std::getenv("VOXCPM2_AUDIOVAE_GPU_CHUNK");
++    const bool gpu_chunked =
++        gpu_chunk != nullptr && gpu_chunk[0] != 0 &&
++        &chunk_request == &chunk_requests.back() &&
++        execution_context().backend_type() != engine::core::BackendType::Cpu;
++    if (defer_decode_ && gpu_chunked && chunk_requests.size() == 1) {
++      // ahenk yama c5: cozme toplu istegin sonuna ertelenir; LM VRAM'de kalir (yalniz
++      // calisma bellegi birakilir), latent ana bellekte bekler.
++      PendingDecode pending;
++      pending.features = generated.decode_features;
++      pending.patches = generated.decode_patches;
++      pending.trim_patches = generated.decode_trim_patches;
++      pending.chunk_seconds = std::stod(gpu_chunk);
++      pending_decodes_.push_back(std::move(pending));
++      debug::timing_log_scalar("voxcpm2.toplu_coz.deferred", 1.0);
++      break;
++    }
++    auto audio = gpu_chunked
++        ? decode_on_gpu_chunked(generated.decode_features,
++                                generated.decode_patches, std::stod(gpu_chunk))
++        : decoder_->decode_features(generated.decode_features,
++                                    generated.decode_patches);
++    if (const char *directory = std::getenv("VOXCPM2_PROBE_PCM_DIR")) {
++      auto dump = [&](const char *name, const std::vector<float> &values) {
++        std::ofstream file(std::filesystem::path(directory) / name, std::ios::binary);
++        file.write(reinterpret_cast<const char *>(values.data()), values.size() * sizeof(float));
++        if (!file) { throw std::runtime_error("Probe float dump failed"); }
++      };
++      dump("decode_features.f32", generated.decode_features);
++      dump("decoded_pcm.f32", audio.samples);
++      std::ofstream meta(std::filesystem::path(directory) / "decode_shape.txt");
++      meta << generated.decode_patches << " " << generated.decode_trim_patches << " " << audio.sample_rate << " " << audio.samples.size() << "\n";
++    }
+     if (generated.decode_trim_patches > 0) {
+       const int64_t trim_samples =
+           generated.decode_trim_patches * assets_->config.patch_size *
+@@ -368,7 +614,9 @@
+       active_prompt = &*continuation_prompt;
+     }
+   }
+-  result.audio_output = std::move(merged_audio);
++  if (!merged_audio.samples.empty() || pending_decodes_.empty() || !defer_decode_) {
++    result.audio_output = std::move(merged_audio);
++  }
+ 
+   const auto wall_end = Clock::now();
+   debug::trace_log_scalar("voxcpm2.text_chunk_size", text_chunk_size);
+@@ -393,6 +641,7 @@
+         "VoxCPM2 run_streaming requires a streaming session");
+   }
+   validate_request(request);
++  ensure_generator();
+   auto release_runtime_memory = [this](VoxCPM2SessionBase *self) {
+     if (self != nullptr) {
+       self->release_request_runtime_memory();
+@@ -479,8 +728,158 @@
+   if (!generator_config_.mem_saver) {
+     return;
+   }
+-  generator_->release_runtime_memory();
++  if (generator_ != nullptr) {
++    generator_->release_runtime_memory();
++  }
+   decoder_->release_runtime_memory();
++}
++
++bool VoxCPM2SessionBase::begin_deferred_decode_impl() {
++  // ahenk yama c5: VOXCPM2_TOPLU_COZ=1 ve GPU parcali cozme (4 GB yolu) aciksa
++  const char *flag = std::getenv("VOXCPM2_TOPLU_COZ");
++  const char *gpu_chunk = std::getenv("VOXCPM2_AUDIOVAE_GPU_CHUNK");
++  defer_decode_ = flag != nullptr && std::string(flag) == "1" &&
++                  gpu_chunk != nullptr && gpu_chunk[0] != 0 &&
++                  task_.mode == runtime::RunMode::Offline &&
++                  execution_context().backend_type() != engine::core::BackendType::Cpu;
++  pending_decodes_.clear();
++  return defer_decode_;
++}
++
++void VoxCPM2SessionBase::finish_deferred_decode_impl(
++    std::vector<runtime::TaskResult *> &results) {
++  defer_decode_ = false;
++  std::vector<runtime::TaskResult *> targets;
++  for (auto *result : results) {
++    if (result != nullptr && !result->audio_output.has_value()) {
++      targets.push_back(result);
++    }
++  }
++  if (targets.size() != pending_decodes_.size()) {
++    pending_decodes_.clear();
++    throw std::runtime_error("VoxCPM2 deferred decode count mismatch");
++  }
++  if (targets.empty()) {
++    return;
++  }
++  const auto release_start = Clock::now();
++  generator_.reset();
++  debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.lm_release_ms",
++                           engine::debug::elapsed_ms(release_start));
++  const auto &vae = assets_->config.audio_vae;
++  const int64_t patch = assets_->config.patch_size;
++  const double frames_per_second =
++      static_cast<double>(vae.output_sample_rate) /
++      static_cast<double>(product(vae.decoder_rates));
++  int64_t overlap_frames = 32;
++  if (const char *overlap = std::getenv("VOXCPM2_AUDIOVAE_GPU_OVERLAP");
++      overlap != nullptr && overlap[0] != 0) {
++    overlap_frames = std::stoll(overlap);
++  }
++  const auto load_start = Clock::now();
++  VoxCPM2AudioVAEDecoderRuntime *gpu_decoder = decoder_.get();
++  std::unique_ptr<VoxCPM2AudioVAEDecoderRuntime> temporary;
++  if (audiovae_context_ != nullptr) {
++    temporary = std::make_unique<VoxCPM2AudioVAEDecoderRuntime>(
++        assets_, execution_context(), decoder_config_);
++    gpu_decoder = temporary.get();
++  } else {
++    decoder_->release_runtime_memory();
++  }
++  debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.weights_load_ms",
++                           engine::debug::elapsed_ms(load_start));
++  const auto decode_start = Clock::now();
++  for (size_t i = 0; i < targets.size(); ++i) {
++    auto &pending = pending_decodes_[i];
++    if (!(pending.chunk_seconds > 0.0)) {
++      throw std::invalid_argument("VOXCPM2_AUDIOVAE_GPU_CHUNK must be positive seconds");
++    }
++    int64_t chunk_frames = std::llround(pending.chunk_seconds * frames_per_second);
++    chunk_frames = std::max<int64_t>(patch, ((chunk_frames + patch - 1) / patch) * patch);
++    auto audio = gpu_decoder->decode_features_chunked(pending.features, pending.patches,
++                                                      chunk_frames, overlap_frames);
++    if (const char *directory = std::getenv("VOXCPM2_PROBE_PCM_DIR")) {
++      auto dump = [&](const char *name, const std::vector<float> &values) {
++        std::ofstream file(std::filesystem::path(directory) / name, std::ios::binary);
++        file.write(reinterpret_cast<const char *>(values.data()), values.size() * sizeof(float));
++        if (!file) { throw std::runtime_error("Probe float dump failed"); }
++      };
++      dump("decode_features.f32", pending.features);
++      dump("decoded_pcm.f32", audio.samples);
++      std::ofstream meta(std::filesystem::path(directory) / "decode_shape.txt");
++      meta << pending.patches << " " << pending.trim_patches << " " << audio.sample_rate << " " << audio.samples.size() << "\n";
++    }
++    if (pending.trim_patches > 0) {
++      const int64_t trim_samples =
++          pending.trim_patches * patch * product(vae.decoder_rates);
++      if (trim_samples > static_cast<int64_t>(audio.samples.size())) {
++        throw std::runtime_error(
++            "VoxCPM2 decoded continuation trim exceeds audio length");
++      }
++      audio.samples.erase(
++          audio.samples.begin(),
++          audio.samples.begin() + static_cast<std::ptrdiff_t>(trim_samples));
++    }
++    runtime::AudioBuffer merged;
++    runtime::append_audio_buffer(merged, audio);
++    targets[i]->audio_output = std::move(merged);
++    pending.features.clear();
++    pending.features.shrink_to_fit();
++  }
++  debug::timing_log_scalar("voxcpm2.toplu_coz.decode_ms",
++                           engine::debug::elapsed_ms(decode_start));
++  debug::timing_log_scalar("voxcpm2.toplu_coz.lines",
++                           static_cast<double>(targets.size()));
++  pending_decodes_.clear();
++  temporary.reset();
++  decoder_->release_runtime_memory();
++}
++
++void VoxCPM2SessionBase::ensure_generator() {
++  if (generator_ == nullptr) {
++    generator_ = std::make_unique<VoxCPM2FeatureGeneratorRuntime>(
++        assets_, execution_context(), generator_config_);
++  }
++}
++
++runtime::AudioBuffer VoxCPM2SessionBase::decode_on_gpu_chunked(
++    const std::vector<float> &features, int64_t patches, double chunk_seconds) {
++  // anlatim GPU yamasi (K5): istegin son metin parcasi uretildi; LM agirliklari, KV ve
++  // grafikler VRAM'den bosaltilir (sonraki istekte ensure_generator yeniden kurar),
++  // AudioVAE GPU'da sol baglamli parcalarla cozulur.
++  if (!(chunk_seconds > 0.0)) {
++    throw std::invalid_argument("VOXCPM2_AUDIOVAE_GPU_CHUNK must be positive seconds");
++  }
++  const auto release_start = Clock::now();
++  generator_.reset();
++  debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.lm_release_ms",
++                           engine::debug::elapsed_ms(release_start));
++  const auto &vae = assets_->config.audio_vae;
++  const int64_t patch = assets_->config.patch_size;
++  const double frames_per_second =
++      static_cast<double>(vae.output_sample_rate) /
++      static_cast<double>(product(vae.decoder_rates));
++  int64_t chunk_frames = std::llround(chunk_seconds * frames_per_second);
++  chunk_frames = std::max<int64_t>(patch, ((chunk_frames + patch - 1) / patch) * patch);
++  int64_t overlap_frames = 32;
++  if (const char *overlap = std::getenv("VOXCPM2_AUDIOVAE_GPU_OVERLAP");
++      overlap != nullptr && overlap[0] != 0) {
++    overlap_frames = std::stoll(overlap);
++  }
++  const auto load_start = Clock::now();
++  VoxCPM2AudioVAEDecoderRuntime *gpu_decoder = decoder_.get();
++  std::unique_ptr<VoxCPM2AudioVAEDecoderRuntime> temporary;
++  if (audiovae_context_ != nullptr) {
++    temporary = std::make_unique<VoxCPM2AudioVAEDecoderRuntime>(
++        assets_, execution_context(), decoder_config_);
++    gpu_decoder = temporary.get();
++  } else {
++    decoder_->release_runtime_memory();
++  }
++  debug::timing_log_scalar("voxcpm2.audiovae.gpu_chunk.weights_load_ms",
++                           engine::debug::elapsed_ms(load_start));
++  return gpu_decoder->decode_features_chunked(features, patches, chunk_frames,
++                                              overlap_frames);
+ }
+ 
+ const VoxCPM2EncodedPrompt *VoxCPM2SessionBase::encoded_prompt_for_request(
+@@ -508,8 +907,70 @@
+ 
+   const auto encode_start = Clock::now();
+   EncodedPromptCacheEntry entry;
+-  entry.encoded =
+-      decoder_->encode_prompt_audio(prompt_audio, prompt_text, reference_audio);
++  // ahenk yama c4: diskteki onbellek (VOXCPM2_PROMPT_CACHE_DIR)
++  std::filesystem::path disk_path;
++  std::string disk_key;
++  if (const char *cache_dir = std::getenv("VOXCPM2_PROMPT_CACHE_DIR");
++      cache_dir != nullptr && cache_dir[0] != 0) {
++    Sha256 sha;
++    sha.text("voxcpm2-prompt-disk-cache-v1");
++    const auto &weights_path = assets_->audiovae_weights->source_path();
++    std::error_code ec;
++    sha.update(weights_path.native().data(),
++               weights_path.native().size() * sizeof(weights_path.native()[0]));
++    sha.value(static_cast<uint64_t>(std::filesystem::file_size(weights_path, ec)));
++    sha.value(static_cast<int64_t>(
++        std::filesystem::last_write_time(weights_path, ec).time_since_epoch().count()));
++    const auto &vae = assets_->config.audio_vae;
++    sha.value(static_cast<int64_t>(vae.sample_rate));
++    sha.value(static_cast<int64_t>(vae.latent_dim));
++    sha.value(static_cast<int64_t>(assets_->config.patch_size));
++    sha.value(static_cast<int64_t>(decoder_config_.encoder_sample_capacity));
++    sha.value(static_cast<int64_t>(decoder_config_.weight_storage_type));
++    const auto &encoder_context =
++        audiovae_context_ != nullptr ? *audiovae_context_ : execution_context();
++    sha.value(static_cast<int64_t>(encoder_context.backend_type()));
++    sha.value(static_cast<int64_t>(encoder_context.config().threads));
++    {
++      // yeniden ornekleyici parmak izi: soxr bulunursa soxr, yoksa dogrusal sonuc verir
++      std::vector<float> probe(4410);
++      for (size_t i = 0; i < probe.size(); ++i) {
++        probe[i] = static_cast<float>(0.5 * std::sin(0.013 * static_cast<double>(i * i % 9973)));
++      }
++      engine::audio::SoxrResampleOptions options;
++      options.profile = engine::audio::SoxrResampleProfile::ExplicitFloat32Runtime;
++      options.output_length_policy = engine::audio::SoxrOutputLengthPolicy::ExactExpected;
++      options.output_padding = 256;
++      options.require_full_input = true;
++      options.reject_empty_output = true;
++      options.warning_context = "VoxCPM2 prompt disk cache probe";
++      options.fallback_description = "linear resampling";
++      const auto resampled = engine::audio::resample_mono_soxr_or_linear(
++          probe, 44100, vae.sample_rate, options);
++      sha.value(static_cast<uint64_t>(resampled.size()));
++      sha.update(resampled.data(), resampled.size() * sizeof(float));
++    }
++    sha.text(prompt_text);
++    hash_optional_audio(sha, prompt_audio);
++    hash_optional_audio(sha, reference_audio);
++    disk_key = sha.hex();
++    disk_path = std::filesystem::u8path(cache_dir) / (disk_key + ".bin");
++  }
++  bool disk_hit = false;
++  if (!disk_path.empty()) {
++    disk_hit = load_prompt_from_disk(disk_path, disk_key, entry.encoded);
++    if (!disk_hit) {
++      entry.encoded = VoxCPM2EncodedPrompt{};
++    }
++    debug::trace_log_scalar("voxcpm2.prompt_disk_cache.hit", disk_hit ? 1 : 0);
++  }
++  if (!disk_hit) {
++    entry.encoded =
++        decoder_->encode_prompt_audio(prompt_audio, prompt_text, reference_audio);
++    if (!disk_path.empty()) {
++      save_prompt_to_disk(disk_path, disk_key, entry.encoded);
++    }
++  }
+   const double encode_ms = engine::debug::elapsed_ms(encode_start);
+   if (encoded_prompt_cache_.capacity() == 0) {
+     uncached_encoded_prompt_ = std::move(entry);

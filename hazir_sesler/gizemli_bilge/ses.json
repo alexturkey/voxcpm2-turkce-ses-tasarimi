@@ -1,0 +1,28 @@
+{
+  "ad": "gizemli_bilge",
+  "gorunen_ad": "Gizemli Bilge",
+  "tanitim_tr": "Olgun, tok, kalın ve güçlü erkek anlatıcı; gizemli ve buyurgan. Belgesel, bilim, tarih ve gizem anlatımı.",
+  "tanitim_en": "Mature, deep, thick and powerful male narrator; mysterious and commanding. Documentary, science, history and mystery narration.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "tok",
+    "kalın",
+    "güçlü",
+    "gizemli",
+    "bilge",
+    "belgesel anlatıcı"
+  ],
+  "ses_yaratici_ingilizce_prompt": "An old wise Turkish man with a loud, powerful, booming voice. Mysterious and menacing tone, slow and commanding speech. Clean and smooth, no rasp, no breathiness, no hiss, recorded cleanly in a studio with no background noise.",
+  "ses_yaratilirken_okutulan_metin": "Ben dağların ardında, unutulmuş bir mağarada yaşayan bilgeyim. Yüzyıllardır yıldızları okur, rüzgârın fısıldadıklarını dinlerim. Sesim karanlık masallarda, gizemli hikâyelerde ve korku anlatılarında yankılanır. Bana gelen herkes bir sır öğrenir, ama hiçbiri geldiği gibi geri dönmez. Şimdi sus ve dinle, çünkü söyleyeceklerimi yalnızca bir kez söylerim.",
+  "tasarim_tohumu": 181413404,
+  "okuma_tohumu": 181413404,
+  "referans": "referans.flac",
+  "referans_sn": 23.52,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

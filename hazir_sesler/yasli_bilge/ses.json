@@ -1,0 +1,29 @@
+{
+  "ad": "yasli_bilge",
+  "gorunen_ad": "Yasli Bilge",
+  "tanitim_tr": "Yaşlı, bilge erkek; derin, kalın, gür, göğüs ve boğaz dolu, ağır ve buyurgan, hafif gizemli. Anlatım, masal, karanlık hikâye, belgesel.",
+  "tanitim_en": "Old wise man; deep, thick, booming, chest-and-throat-full, heavy and commanding, slightly mysterious. Narration, tales, dark stories, documentary.",
+  "karakter": [
+    "erkek",
+    "yaşlı",
+    "bilge",
+    "derin",
+    "kalın",
+    "gür",
+    "buyurgan",
+    "gizemli",
+    "anlatıcı"
+  ],
+  "ses_yaratici_ingilizce_prompt": "An old wise Turkish man with a deep, thick, booming voice. Full chest resonance, full rounded throat, heavy thick articulation, the sound resonating in the head. Mysterious and commanding tone, slow speech. Clean and smooth, no rasp, no breathiness, no hiss, recorded cleanly in a studio with no background noise.",
+  "ses_yaratilirken_okutulan_metin": "Ben dağların ardında, unutulmuş bir mağarada yaşayan bilgeyim. Yüzyıllardır yıldızları okur, rüzgârın fısıldadıklarını dinlerim. Sesim karanlık masallarda, gizemli hikâyelerde ve korku anlatılarında yankılanır. Bana gelen herkes bir sır öğrenir, ama hiçbiri geldiği gibi geri dönmez. Şimdi sus ve dinle, çünkü söyleyeceklerimi yalnızca bir kez söylerim.",
+  "tasarim_tohumu": 3489324867,
+  "okuma_tohumu": 3489324867,
+  "referans": "referans.flac",
+  "referans_sn": 26.24,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}

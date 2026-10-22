@@ -1,0 +1,27 @@
+{
+  "ad": "masal_cadisi",
+  "gorunen_ad": "Masal Cadisi",
+  "tanitim_tr": "Masal cadısı anlatıcı: pes, hafif genizli, ince pürüzlü, sinsi tatlı ve net. Korku ve masal anlatımı.",
+  "tanitim_en": "Fairy-tale witch narrator: low, slightly nasal, finely grainy, slyly sweet and crisp. Horror and fairy-tale narration.",
+  "karakter": [
+    "kadın",
+    "yaşlı",
+    "masal cadısı",
+    "pes",
+    "genizli",
+    "sinsi",
+    "korku anlatıcı"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A 75-year-old woman, like an old witch from a fairy tale, with a low, dry, slightly nasal voice and a faint raspy grain. She speaks slowly and softly with a sly smile in her voice, sweet and coaxing but mocking, her pitch sliding down at the ends of phrases. Her s sounds are sharp and hissing, and every word is crisp and clear.",
+  "ses_yaratilirken_okutulan_metin": "Hişt... yaklaş bakalım, daha yaklaş. Korkma, ısırmam... çoğu zaman. Beni tanımadın mı? Şaşırtıcı. Herkes tanır, ama kimse söylemez. Seni, sesini, sustuğun şeyleri bilirim. Sessiz sessiz oturursun, sonra bir şey fısıldar, işte o ben olurum. Hehehe... Kış gecesi uzundur, hikayem daha uzun. Ateş sönse de ben sönmem. Ben kapının ardında bekleyenim, adını bilenim. Şimdi sus ve dinle... sana güzel bir şey anlatacağım. Ya da korkunç. Aynı şey.",
+  "tasarim_tohumu": 1090468632,
+  "okuma_tohumu": 1090468632,
+  "referans": "referans.flac",
+  "referans_sn": 28.8,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+}
