@@ -1,0 +1,45 @@
+name: Özellik önerisi / Feature request
+description: Yeni bir özellik ya da iyileştirme önerin / Suggest a new feature or improvement
+title: "[öneri] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Öneri için teşekkürler. Fikir henüz netleşmediyse Discussions'taki Ideas bölümünde birlikte konuşabiliriz.
+        Thanks for the idea. If it is still taking shape, the Ideas category in Discussions is a good place to talk it through.
+  - type: textarea
+    id: ihtiyac
+    attributes:
+      label: Hangi ihtiyaç ya da sorun? / What need or problem?
+      description: Ne yapmaya çalışıyorsunuz, şu an ne zorluyor? / What are you trying to do, what gets in the way today?
+      placeholder: "Uzun metinlerde paragraf arası durağı ayarlamak istiyorum. / I want to tune the pause between paragraphs in long texts."
+    validations:
+      required: true
+  - type: textarea
+    id: oneri
+    attributes:
+      label: Önerdiğiniz çözüm / Proposed solution
+      description: Nasıl çalışsın? Komut, arayüz ya da örnek çıktı. / How should it work? Command, UI or example output.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatif
+    attributes:
+      label: Düşündüğünüz başka yollar / Alternatives considered
+  - type: dropdown
+    id: katki
+    attributes:
+      label: Katkı / Contribution
+      description: Zorunlu değil; her yanıt değerli. / Optional; every answer is welcome.
+      options:
+        - Deneyip sonucu yazabilirim / I can test and report
+        - PR göndermeyi denemek isterim / I would like to try a PR
+        - Şimdilik yalnız öneri / Just the idea for now
+  - type: checkboxes
+    id: etik
+    attributes:
+      label: Etik / Ethics
+      options:
+        - label: Öneri gerçek bir kişinin sesini kopyalamayı gerektirmiyor (ETHICS.md). / The idea does not require copying a real person's voice (ETHICS.md).
+          required: true

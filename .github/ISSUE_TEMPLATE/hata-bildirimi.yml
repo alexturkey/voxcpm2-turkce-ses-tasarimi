@@ -1,0 +1,65 @@
+name: Hata bildirimi / Bug report
+description: Kurulumdan sonra bir şey yanlış çalışıyor (ses, okuma, arayüz, belge) / Something works wrong after install (audio, reading, UI, docs)
+title: "[hata] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bildirdiğiniz için teşekkürler. Kurulum hiç bitmediyse "Kurulum sorunu" formunu kullanın; soru için Discussions daha hızlıdır.
+        Thanks for reporting. If the install never finished, use the "Install problem" form; for questions, Discussions is quicker.
+        Gerçek bir kişinin sesini ya da kaydını eklemeyin. / Do not attach a real person's voice or recording.
+  - type: textarea
+    id: ne_oldu
+    attributes:
+      label: Ne oldu? / What happened?
+      description: Kısa ve somut; beklediğinizle karşılaştırın. / Short and concrete; compare with what you expected.
+      placeholder: "Okuma bitti ama 3. cümle sessiz. / Reading finished but sentence 3 is silent."
+    validations:
+      required: true
+  - type: textarea
+    id: adimlar
+    attributes:
+      label: Nasıl tekrarlanır? / Steps to reproduce
+      description: Komut ya da arayüzde tıkladığınız adımlar; ses tarifi ve tohum varsa ekleyin. / Command or UI steps; include voice description and seed if any.
+      placeholder: |
+        1. .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti\deneme
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: beklenen
+    attributes:
+      label: Ne bekliyordunuz? / What did you expect?
+  - type: input
+    id: gpu
+    attributes:
+      label: Ekran kartı / GPU
+      description: "`nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader` çıktısı (AMD/Intel ise kartın adı)"
+      placeholder: "NVIDIA GeForce GTX 1050 Ti, 581.29, 4096 MiB"
+    validations:
+      required: true
+  - type: dropdown
+    id: arka_uc
+    attributes:
+      label: Arka uç / Backend
+      description: ayarlar.json içindeki "backend" / the "backend" value in ayarlar.json
+      options:
+        - cuda
+        - vulkan (deneysel / experimental)
+        - cpu
+        - Bilmiyorum / Not sure
+    validations:
+      required: true
+  - type: input
+    id: surum
+    attributes:
+      label: Sürüm / Version
+      description: "Release adı ya da `git rev-parse --short HEAD` / release name or commit"
+      placeholder: "v0.1.1"
+  - type: textarea
+    id: cikti
+    attributes:
+      label: Hata çıktısı / Error output
+      description: Komutun son 30 satırı. Kişisel klasör adınızı silebilirsiniz. / Last 30 lines; you may remove your personal folder names.
+      render: text

@@ -1,5 +1,14 @@
 blank_issues_enabled: true
 contact_links:
   - name: Soru-Cevap / Q&A (Discussions)
-    url: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions
+    url: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions/categories/q-a
     about: Kurulum ve kullanım soruları için önce buraya yazın. / Ask install and usage questions here first.
+  - name: Fikirler / Ideas (Discussions)
+    url: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions/categories/ideas
+    about: Henüz netleşmemiş fikirleri birlikte konuşalım. / Talk through ideas that are still taking shape.
+  - name: Sonuç ve ses paylaş / Show and tell (Discussions)
+    url: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions/categories/show-and-tell
+    about: Kartınızdaki süreler, tasarladığınız sesler. / Timings on your GPU, voices you designed.
+  - name: Güvenlik açığı / Security vulnerability
+    url: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/security/policy
+    about: Açığı herkese açık issue olarak yazmayın; SECURITY.md'deki yolu izleyin. / Do not file a public issue; follow SECURITY.md.
