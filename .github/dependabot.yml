@@ -9,6 +9,10 @@ updates:
       day: "monday"
     open-pull-requests-limit: 3
     labels: ["bagimlilik"]
+    # numpy 2.3+ Python 3.10'u desteklemiyor (2.5.x: >=3.12); README 3.10-3.13 sözü korunur.
+    ignore:
+      - dependency-name: "numpy"
+        versions: [">=2.3"]
     commit-message:
       prefix: "bagimlilik"
   # GitHub Actions workflow eklenirse eylem sürümlerini de izler (şu an workflow yok; zararsız).
