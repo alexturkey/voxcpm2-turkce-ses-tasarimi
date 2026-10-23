@@ -62,12 +62,15 @@ last line above. Git is only needed for the build-from-source path.
 before running it, as with any installer script. One command, ~10 min, ~3.7 GB download, everything sha256-verified: the model (2.95 GB), the CUDA 12.8 runtime DLLs as
 portable zips (no system install, PATH untouched), the **prebuilt engine** from the Releases page, a `.venv` with the two
 Python packages, `ayarlar.json`, and a final GPU check (`KONTROL_OK`). Re-run it after any failure; verified files are
-skipped. Then start the web UI:
+skipped. Then start the web UI: double-click **`baslat.bat`** in the repo folder. It starts the UI and opens
+**http://127.0.0.1:8765/** in your browser when it is ready; close the black window (or press Ctrl+C there) to stop it.
+The same from PowerShell:
 
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.arayuz
 ```
-and open **http://127.0.0.1:8765/** in your browser (the UI does not open it for you; it listens on localhost only).
+then open **http://127.0.0.1:8765/** yourself (started this way the UI does not open the browser; it listens on
+localhost only).
 
 > **The `audiocpp_cli.exe` in the release zip is not meant to be double-clicked.** It is a command-line engine that
 > needs the CUDA DLLs and the model next to it; `kur.ps1` puts everything in place and the Python package drives it.
@@ -105,7 +108,7 @@ nvcc fails on long paths. Step-by-step with checks: [AGENTS.md](AGENTS.md).
 | `motor ekran kartını görmedi` (the engine did not see the GPU) | Update the NVIDIA driver to 570 or newer; check that `nvidia-smi` runs. |
 | `indirme başarısız` / `sha256 tutmadı` (download failed / checksum mismatch) | Usually an interrupted download. Run the same command again; verified files are skipped. |
 | Build path: `nvcc` fails | Keep the install root short (`-Kok C:\vox`). |
-| The page does not open | The UI does not open the browser for you: open http://127.0.0.1:8765/ yourself. Port busy? Add `--port 8800`. |
+| The page does not open | Start the UI with `baslat.bat`, or open http://127.0.0.1:8765/ yourself. Port busy? Change `"port"` in `ayarlar.json`. |
 
 Problems? [Discussions (Q&A)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) or an
 [install issue](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml)

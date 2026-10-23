@@ -61,12 +61,15 @@ yalnız kaynaktan derleme yolunda gerekir.
 `scripts\kur.ps1`'i çalıştırmadan önce okuyun. Tek komut, ~10 dk, ~3,7 GB indirme, hepsi sha256 doğrulamalı: model (2,95 GB), CUDA 12.8 çalışma DLL'leri taşınabilir zip
 olarak (sistem kurulumu yok, PATH değişmez), Releases sayfasındaki **hazır derlenmiş motor**, iki Python paketiyle `.venv`,
 `ayarlar.json` ve sonda ekran kartı kontrolü (`KONTROL_OK`). Bir hata olursa aynı komutu yeniden çalıştırın; doğrulanmış
-dosyalar atlanır. Sonra web arayüzünü başlatın:
+dosyalar atlanır. Sonra web arayüzünü başlatın: repo klasöründeki **`baslat.bat`** dosyasına çift tıklayın. Arayüzü
+başlatır, hazır olunca tarayıcıda **http://127.0.0.1:8765/** adresini açar; kapatmak için siyah pencereyi kapatın (ya da
+orada Ctrl+C). Aynısı PowerShell'den:
 
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.arayuz
 ```
-ve tarayıcınızda **http://127.0.0.1:8765/** adresini açın (arayüz tarayıcıyı kendisi açmaz; yalnız bu bilgisayardan erişilir).
+sonra tarayıcıda **http://127.0.0.1:8765/** adresini siz açın (bu yolla arayüz tarayıcıyı kendisi açmaz; yalnız bu
+bilgisayardan erişilir).
 
 > **Sürüm zip'indeki `audiocpp_cli.exe` çift tıklanmaz.** Komut satırı motorudur; yanında CUDA DLL'leri ve model ister,
 > hepsini `kur.ps1` yerine koyar ve Python paketi sürer. Çift tıklayınca yalnız "cudart64_12.dll bulunamadı" görürsünüz.
@@ -103,7 +106,7 @@ uzun yolda düşer. Adım adım, kontrollü anlatım: [AGENTS.md](AGENTS.md).
 | `motor ekran kartını görmedi` | NVIDIA sürücüsünü 570 ya da üstüne güncelleyin; `nvidia-smi` çalışıyor mu bakın. |
 | `indirme başarısız` / `sha256 tutmadı` | Çoğunlukla yarıda kalan indirme. Aynı komutu yeniden çalıştırın; doğrulanmış dosyalar atlanır. |
 | Derleme yolunda `nvcc` düşüyor | Kurulum kökünü kısa tutun (`-Kok C:\vox`). |
-| Sayfa açılmıyor | Arayüz tarayıcıyı kendisi açmaz: http://127.0.0.1:8765/ adresini siz açın. Port doluysa `--port 8800` ekleyin. |
+| Sayfa açılmıyor | Arayüzü `baslat.bat` ile başlatın ya da http://127.0.0.1:8765/ adresini siz açın. Port doluysa `ayarlar.json` içindeki `"port"` değerini değiştirin. |
 
 Sorun mu var? [Discussions (Soru-Cevap)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) ya da
 [kurulum sorunu kaydı](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml):
