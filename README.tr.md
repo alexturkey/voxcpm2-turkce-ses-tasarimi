@@ -43,6 +43,9 @@ Kurulum modeli indirir, yamalı motoru Metal ile derler (~1 dk) ve her şeyi `~/
 sesi veriyor, RAM kullanımı en fazla ~5,3 GB ve 12 dk kesintisiz okumada ısınmadan kaynaklı yavaşlama olmadı. Ayrıntılar
 ve ölçümler: [docs/mac.md](docs/mac.md).
 
+**Native Mac uygulaması (Python, Homebrew ve Terminal gerekmez):** [macos/README.md](macos/README.md). Aynı yamalı
+motoru içinde taşır, modeli ilk açılışta indirir; şimdilik Xcode ile kaynaktan derlenir.
+
 ## Nasıl çalışır
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi

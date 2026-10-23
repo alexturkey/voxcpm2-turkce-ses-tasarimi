@@ -14,6 +14,9 @@ license. Nothing below is bundled in this repository except the patch in `patche
 | **NVIDIA CUDA 12.8 redistributables** | `cudart`, `cublas`, `cublasLt`, `cufft` runtime DLLs and `nvcc` for building (downloaded by `kur.ps1`, not in the repo) | NVIDIA CUDA Toolkit EULA | https://developer.download.nvidia.com/compute/cuda/redist/ |
 | NumPy, python-soundfile (libsndfile) | WAV/FLAC read and write in the Python code | BSD-3 / BSD-3 (libsndfile LGPL-2.1+) | PyPI |
 
+The native Mac app in `macos/` bundles the patched engine binary inside the .app; what it ships is listed in
+[`macos/THIRD_PARTY.md`](macos/THIRD_PARTY.md).
+
 ## Modifications to audio.cpp (Apache-2.0 §4)
 
 `patches/0001-voxcpm2-4gb-ve-hiz.patch` changes these audio.cpp v0.7.2 files (see `docs/4gb.md` for what and why):

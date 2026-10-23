@@ -43,6 +43,9 @@ Then double-click **`baslat.command`**. On a MacBook Air M4 16 GB: ~2 s of compu
 byte-identical audio, peak ~5.3 GB RAM, no thermal slowdown over 12 min of continuous reading. Details and
 measurements: [docs/mac.md](docs/mac.md).
 
+**Native Mac app (no Python, Homebrew or Terminal):** [macos/README.md](macos/README.md). It bundles the same
+patched engine and downloads the model on first launch; for now it is built from source with Xcode.
+
 ## How it works
 
 1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of

@@ -1,0 +1,583 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		116100881F5953A08A552CB1 /* OzSinama.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D9C917B861D919E26654D /* OzSinama.swift */; };
+		27C40E425A16EEE6F112E47D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 51478ADA7C51D651CEF724F8 /* LICENSE */; };
+		32A19DD066466566309BB196 /* Okunus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD37E216A30D6CD80B199BF /* Okunus.swift */; };
+		433A1731BD1E221CC3C99E99 /* hazir_sesler in Resources */ = {isa = PBXBuildFile; fileRef = E79409770B0739522A73E15D /* hazir_sesler */; };
+		60AACADF639B7D1E265AF09F /* Islemler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA10F7700D910A30705497 /* Islemler.swift */; };
+		6930280B70E9445EE0A5EC37 /* Sesler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A68F96C47A507E23A320791 /* Sesler.swift */; };
+		6AE5A6CF1DC3EB588158A15F /* ETHICS.md in Resources */ = {isa = PBXBuildFile; fileRef = 5E90B5EF8DBAB6DFEB95825E /* ETHICS.md */; };
+		779894148FC07FC257098E09 /* UygulamaDurumu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090954A83CF9AC8238D7ECAA /* UygulamaDurumu.swift */; };
+		84DCCFAE8383ADD9342464E1 /* Wav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F87BEDA88AB2FD9CF65E8D /* Wav.swift */; };
+		989FA69A0E537B2AE99CB164 /* OkunusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6826C02FAFEF68EBE3AD38D /* OkunusTests.swift */; };
+		A123B492E34EDAF9264CF89D /* audiocpp_cli in CopyFiles */ = {isa = PBXBuildFile; fileRef = 77EE64BEB7AF4740FC94BE78 /* audiocpp_cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A8ABF4FA5D995E88A369897A /* Motor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F3B291B9A6431D8B6ADFF2 /* Motor.swift */; };
+		B7646F7E55BF0BD21D762F8E /* ModelIndirici.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D33D41F77A22234501A2E0 /* ModelIndirici.swift */; };
+		BA61E0FA6D41F1B0531362F7 /* NOTICE in Resources */ = {isa = PBXBuildFile; fileRef = 3727967DC6EC2673D2B51E71 /* NOTICE */; };
+		C2C91F029CF99F19A6B713DE /* okunus_sozlugu.tsv in Resources */ = {isa = PBXBuildFile; fileRef = 9C6AC600DCACD97288880942 /* okunus_sozlugu.tsv */; };
+		E4EFE8E93080F07D78C2E6A0 /* Giris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377A45C63B4E140D4FAEB4D /* Giris.swift */; };
+		ECD99C26F9545A73659B21D9 /* Gorunumler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C2824D4E0422A39D00623 /* Gorunumler.swift */; };
+		EE673E43F6EECB5D96A646E8 /* Depo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3368FF81ABE129A777964C1C /* Depo.swift */; };
+		F21060F31AC38E554676EC3B /* THIRD_PARTY.md in Resources */ = {isa = PBXBuildFile; fileRef = 6D59A8C76591BC45E88011E3 /* THIRD_PARTY.md */; };
+		FC455EB80E59140F7518905D /* GPUBellek.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEECAA1CCA70231A21BB /* GPUBellek.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		530E0037969CF01B90893139 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90160DED7DB0B69726B1767A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A99FC7615F74A0754885B40;
+			remoteInfo = SesTasarimi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		658A054D26376B8D169EEBC0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				A123B492E34EDAF9264CF89D /* audiocpp_cli in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0377A45C63B4E140D4FAEB4D /* Giris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Giris.swift; sourceTree = "<group>"; };
+		090954A83CF9AC8238D7ECAA /* UygulamaDurumu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UygulamaDurumu.swift; sourceTree = "<group>"; };
+		0CEA10F7700D910A30705497 /* Islemler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Islemler.swift; sourceTree = "<group>"; };
+		2A68F96C47A507E23A320791 /* Sesler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sesler.swift; sourceTree = "<group>"; };
+		3368FF81ABE129A777964C1C /* Depo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Depo.swift; sourceTree = "<group>"; };
+		3727967DC6EC2673D2B51E71 /* NOTICE */ = {isa = PBXFileReference; path = NOTICE; sourceTree = "<group>"; };
+		395D9C917B861D919E26654D /* OzSinama.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OzSinama.swift; sourceTree = "<group>"; };
+		51478ADA7C51D651CEF724F8 /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
+		5391667B31831BA834BC8EB7 /* SesTasarimi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SesTasarimi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57F87BEDA88AB2FD9CF65E8D /* Wav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wav.swift; sourceTree = "<group>"; };
+		5E90B5EF8DBAB6DFEB95825E /* ETHICS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ETHICS.md; sourceTree = "<group>"; };
+		6D59A8C76591BC45E88011E3 /* THIRD_PARTY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = THIRD_PARTY.md; sourceTree = "<group>"; };
+		77EE64BEB7AF4740FC94BE78 /* audiocpp_cli */ = {isa = PBXFileReference; path = audiocpp_cli; sourceTree = "<group>"; };
+		9C6AC600DCACD97288880942 /* okunus_sozlugu.tsv */ = {isa = PBXFileReference; path = okunus_sozlugu.tsv; sourceTree = "<group>"; };
+		B3D33D41F77A22234501A2E0 /* ModelIndirici.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelIndirici.swift; sourceTree = "<group>"; };
+		B6826C02FAFEF68EBE3AD38D /* OkunusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OkunusTests.swift; sourceTree = "<group>"; };
+		B7A4EEF61553E37EAF0095F9 /* SesTasarimi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SesTasarimi.entitlements; sourceTree = "<group>"; };
+		C2F3B291B9A6431D8B6ADFF2 /* Motor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motor.swift; sourceTree = "<group>"; };
+		CDD37E216A30D6CD80B199BF /* Okunus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Okunus.swift; sourceTree = "<group>"; };
+		CFE2885A9E31A839CE869510 /* SesTasarimiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SesTasarimiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E79409770B0739522A73E15D /* hazir_sesler */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hazir_sesler; path = ../hazir_sesler; sourceTree = SOURCE_ROOT; };
+		EB5C2824D4E0422A39D00623 /* Gorunumler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gorunumler.swift; sourceTree = "<group>"; };
+		F646BEECAA1CCA70231A21BB /* GPUBellek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUBellek.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		051A3E4C0610527DC51D3A87 = {
+			isa = PBXGroup;
+			children = (
+				6D59A8C76591BC45E88011E3 /* THIRD_PARTY.md */,
+				C9E487E9044BAF4C997AC7EC /* SesTasarimi */,
+				51C2B5DECC2A72D01079BCA3 /* SesTasarimiTests */,
+				71D6B6FFFEABF854269600A6 /* Vendor */,
+				5B769FE895379C103382D5A2 /* voxcpm2-turkce-ses-tasarimi */,
+				569D0F77121CDC1277A9002F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		23736A21CA6ACEF47B85C84B /* Uygulama */ = {
+			isa = PBXGroup;
+			children = (
+				0377A45C63B4E140D4FAEB4D /* Giris.swift */,
+				EB5C2824D4E0422A39D00623 /* Gorunumler.swift */,
+				395D9C917B861D919E26654D /* OzSinama.swift */,
+				090954A83CF9AC8238D7ECAA /* UygulamaDurumu.swift */,
+			);
+			path = Uygulama;
+			sourceTree = "<group>";
+		};
+		51C2B5DECC2A72D01079BCA3 /* SesTasarimiTests */ = {
+			isa = PBXGroup;
+			children = (
+				B6826C02FAFEF68EBE3AD38D /* OkunusTests.swift */,
+			);
+			path = SesTasarimiTests;
+			sourceTree = "<group>";
+		};
+		569D0F77121CDC1277A9002F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5391667B31831BA834BC8EB7 /* SesTasarimi.app */,
+				CFE2885A9E31A839CE869510 /* SesTasarimiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5B769FE895379C103382D5A2 /* voxcpm2-turkce-ses-tasarimi */ = {
+			isa = PBXGroup;
+			children = (
+				5E90B5EF8DBAB6DFEB95825E /* ETHICS.md */,
+				E79409770B0739522A73E15D /* hazir_sesler */,
+				51478ADA7C51D651CEF724F8 /* LICENSE */,
+				3727967DC6EC2673D2B51E71 /* NOTICE */,
+				AD145BAE318535A58A445F65 /* ayarlar */,
+			);
+			name = "voxcpm2-turkce-ses-tasarimi";
+			path = ..;
+			sourceTree = "<group>";
+		};
+		6DD0FBE4C6B6C63D92AAA44D /* Mantik */ = {
+			isa = PBXGroup;
+			children = (
+				3368FF81ABE129A777964C1C /* Depo.swift */,
+				F646BEECAA1CCA70231A21BB /* GPUBellek.swift */,
+				0CEA10F7700D910A30705497 /* Islemler.swift */,
+				B3D33D41F77A22234501A2E0 /* ModelIndirici.swift */,
+				C2F3B291B9A6431D8B6ADFF2 /* Motor.swift */,
+				CDD37E216A30D6CD80B199BF /* Okunus.swift */,
+				2A68F96C47A507E23A320791 /* Sesler.swift */,
+				57F87BEDA88AB2FD9CF65E8D /* Wav.swift */,
+			);
+			path = Mantik;
+			sourceTree = "<group>";
+		};
+		71D6B6FFFEABF854269600A6 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				BF5CEB6A90B77358195CF9F5 /* motor */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		AD145BAE318535A58A445F65 /* ayarlar */ = {
+			isa = PBXGroup;
+			children = (
+				9C6AC600DCACD97288880942 /* okunus_sozlugu.tsv */,
+			);
+			path = ayarlar;
+			sourceTree = "<group>";
+		};
+		BF5CEB6A90B77358195CF9F5 /* motor */ = {
+			isa = PBXGroup;
+			children = (
+				77EE64BEB7AF4740FC94BE78 /* audiocpp_cli */,
+			);
+			path = motor;
+			sourceTree = "<group>";
+		};
+		C9E487E9044BAF4C997AC7EC /* SesTasarimi */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4EEF61553E37EAF0095F9 /* SesTasarimi.entitlements */,
+				6DD0FBE4C6B6C63D92AAA44D /* Mantik */,
+				23736A21CA6ACEF47B85C84B /* Uygulama */,
+			);
+			path = SesTasarimi;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7A99FC7615F74A0754885B40 /* SesTasarimi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2701650723778C07E773EAC /* Build configuration list for PBXNativeTarget "SesTasarimi" */;
+			buildPhases = (
+				D906FBFA77AAC45930107F6D /* Motor var mı / engine present */,
+				B345D8EE56910B4B369D245B /* Sources */,
+				18906EC8223165AC78B10FF9 /* Resources */,
+				658A054D26376B8D169EEBC0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SesTasarimi;
+			packageProductDependencies = (
+			);
+			productName = SesTasarimi;
+			productReference = 5391667B31831BA834BC8EB7 /* SesTasarimi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE6BEDF4906FB6850DC26916 /* SesTasarimiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEDDCB2C305FDC369B11D2B6 /* Build configuration list for PBXNativeTarget "SesTasarimiTests" */;
+			buildPhases = (
+				EED60CF2BEEC0295695EE0C8 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11DF010334CC242623CCB58A /* PBXTargetDependency */,
+			);
+			name = SesTasarimiTests;
+			packageProductDependencies = (
+			);
+			productName = SesTasarimiTests;
+			productReference = CFE2885A9E31A839CE869510 /* SesTasarimiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		90160DED7DB0B69726B1767A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					7A99FC7615F74A0754885B40 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					FE6BEDF4906FB6850DC26916 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B5997917BD02D5718117F92E /* Build configuration list for PBXProject "SesTasarimi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 051A3E4C0610527DC51D3A87;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 569D0F77121CDC1277A9002F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7A99FC7615F74A0754885B40 /* SesTasarimi */,
+				FE6BEDF4906FB6850DC26916 /* SesTasarimiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		18906EC8223165AC78B10FF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AE5A6CF1DC3EB588158A15F /* ETHICS.md in Resources */,
+				27C40E425A16EEE6F112E47D /* LICENSE in Resources */,
+				BA61E0FA6D41F1B0531362F7 /* NOTICE in Resources */,
+				F21060F31AC38E554676EC3B /* THIRD_PARTY.md in Resources */,
+				433A1731BD1E221CC3C99E99 /* hazir_sesler in Resources */,
+				C2C91F029CF99F19A6B713DE /* okunus_sozlugu.tsv in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D906FBFA77AAC45930107F6D /* Motor var mı / engine present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Vendor/motor/audiocpp_cli",
+			);
+			name = "Motor var mı / engine present";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -x \"${SRCROOT}/Vendor/motor/audiocpp_cli\" ]; then\n  echo \"error: Vendor/motor/audiocpp_cli yok. Önce: bash scripts/motoru_derle.sh\"\n  exit 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B345D8EE56910B4B369D245B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE673E43F6EECB5D96A646E8 /* Depo.swift in Sources */,
+				FC455EB80E59140F7518905D /* GPUBellek.swift in Sources */,
+				E4EFE8E93080F07D78C2E6A0 /* Giris.swift in Sources */,
+				ECD99C26F9545A73659B21D9 /* Gorunumler.swift in Sources */,
+				60AACADF639B7D1E265AF09F /* Islemler.swift in Sources */,
+				B7646F7E55BF0BD21D762F8E /* ModelIndirici.swift in Sources */,
+				A8ABF4FA5D995E88A369897A /* Motor.swift in Sources */,
+				32A19DD066466566309BB196 /* Okunus.swift in Sources */,
+				116100881F5953A08A552CB1 /* OzSinama.swift in Sources */,
+				6930280B70E9445EE0A5EC37 /* Sesler.swift in Sources */,
+				779894148FC07FC257098E09 /* UygulamaDurumu.swift in Sources */,
+				84DCCFAE8383ADD9342464E1 /* Wav.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EED60CF2BEEC0295695EE0C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				989FA69A0E537B2AE99CB164 /* OkunusTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		11DF010334CC242623CCB58A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A99FC7615F74A0754885B40 /* SesTasarimi */;
+			targetProxy = 530E0037969CF01B90893139 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0EF84FC7901A143B7EC2F8C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SesTasarimi/SesTasarimi.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ses Tasarımı";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Apache-2.0. VoxCPM2 (Apache-2.0), audio.cpp (Apache-2.0), ggml (MIT).";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sestasarimi.mac;
+				PRODUCT_NAME = SesTasarimi;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		103B2C34267B2FD34006A7D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sestasarimi.mac.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SesTasarimi.app/Contents/MacOS/SesTasarimi";
+			};
+			name = Release;
+		};
+		16266A6E42F70323718A8B4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2C33A8DB5860DF3DAA0718A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SesTasarimi/SesTasarimi.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ses Tasarımı";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Apache-2.0. VoxCPM2 (Apache-2.0), audio.cpp (Apache-2.0), ggml (MIT).";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sestasarimi.mac;
+				PRODUCT_NAME = SesTasarimi;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		851C833836998595F9E3FFE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E2DCC2B2CEAFF5BCFC655790 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sestasarimi.mac.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SesTasarimi.app/Contents/MacOS/SesTasarimi";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A2701650723778C07E773EAC /* Build configuration list for PBXNativeTarget "SesTasarimi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EF84FC7901A143B7EC2F8C7 /* Debug */,
+				2C33A8DB5860DF3DAA0718A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B5997917BD02D5718117F92E /* Build configuration list for PBXProject "SesTasarimi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				851C833836998595F9E3FFE4 /* Debug */,
+				16266A6E42F70323718A8B4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FEDDCB2C305FDC369B11D2B6 /* Build configuration list for PBXNativeTarget "SesTasarimiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2DCC2B2CEAFF5BCFC655790 /* Debug */,
+				103B2C34267B2FD34006A7D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 90160DED7DB0B69726B1767A /* Project object */;
+}
