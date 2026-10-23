@@ -172,6 +172,7 @@ Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi bir ilk adım:
 Ortak test seti: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); marka sesi rehberi:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); kod gönderme: [CONTRIBUTING.md](CONTRIBUTING.md).
 Kurulum sorunu: [sorun formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); soru ve sonuçlar: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+Katılan herkes [Davranış Kuralları](CODE_OF_CONDUCT.md)'na uyar: nazik olun, geri bildirimi işe yöneltin.
 
 ## Katkıda bulunanlar
 

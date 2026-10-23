@@ -174,6 +174,7 @@ Not sure where to start? These four small issues are a good first step:
 Shared test set: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); brand voice guide:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); how to send code: [CONTRIBUTING.md](CONTRIBUTING.md).
 Install problems: [issue form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); questions and results: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
+Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md): be kind, keep feedback about the work.
 
 ## Contributors
 
