@@ -55,7 +55,9 @@ def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None
     card = json.loads((voice_dir / "ses.json").read_text(encoding="utf-8"))
     seed = int(card["okuma_tohumu"])  # okumada sesin kendi tohumu sabittir (tutarlılık)
     parsed = okunus.lines(okunus.spoken(text))
-    out_dir = Path(out_dir)
+    # motor dizi.json içindeki göreli yolları dizi.json'un klasörüne göre çözer; göreli --cikti yolu ikilenmesin
+    # the engine resolves relative paths against dizi.json's folder; a relative --cikti would be doubled
+    out_dir = Path(out_dir).resolve()
     work_dir = out_dir / "_motor"
     reference = motor.reference_wav(voice_dir / card.get("referans", "referans.wav"), work_dir)
     requests = [motor.read_request(f"s{index}", line, seed, reference, card["ses_yaratilirken_okutulan_metin"])

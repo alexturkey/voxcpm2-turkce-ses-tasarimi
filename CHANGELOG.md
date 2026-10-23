@@ -3,6 +3,8 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- `oku`: komut satırında göreli `--cikti` yolu (ör. `cikti/deneme`) referans yolunu ikiliyor, motor "could not open WAV
+  input" ile düşüyordu; yol artık mutlak yapılıyor (her platformda; arayüz etkilenmiyordu).
 - `baslat.bat`: arayüzü çift tıkla başlatır, hazır olunca tarayıcıda açar; kurulum yoksa kurulum komutunu gösterir.
 - README TR/EN: Vulkan kurulum komutundaki bozuk `C:\vox` düzeltildi (AGENTS.md de); Git'siz kurulum (Download ZIP),
   "hangi kartım var" kontrolü, sık kurulum sorunları tablosu, "Katkıda bulunanlar" bölümü.
@@ -23,6 +25,8 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- `oku`: a relative `--cikti` path on the command line (e.g. `cikti/deneme`) doubled the reference path and the engine
+  failed with "could not open WAV input"; the path is now made absolute (all platforms; the web UI was not affected).
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
   nothing is installed yet.
 - README TR/EN: fixed the broken `C:\vox` in the Vulkan install command (AGENTS.md too); install without Git (Download
