@@ -4,10 +4,12 @@ Simple local web UI (127.0.0.1 only, stdlib http.server). Prints the address; do
 python -m ses_tasarim.arayuz [--ayarlar ayarlar.json] [--port 8765]
 
 Akış / flow: Tasarla → çeşitleri dinle → birini seç → Bu sesle oku → indir.  Hazır sesle oku: listeden seç → metin → oku.
+Klonla (3): kendi/izinli kayıt + birebir metni + onay → Klonla ve oku → indir. / Clone (3): own or consented recording
++ exact transcript + consent → clone and read → download.
 Ses tasarımı kayıt istemez. Ses klonlama bölümü yalnız kendi sesiniz ya da sahibinden açık izin alınmış ses içindir;
-onay kutusu işaretlenmeden çalışmaz, kayıt yalnız yerelde işlenir ve iş bitince silinir.
+onay kutusu işaretlenmeden çalışmaz, kayıt yalnız yerelde işlenir ve iş bitince (hata olsa da) silinir.
 Voice design needs no recording. The cloning section is only for your own or a consented voice; it requires the consent
-checkbox, processes the upload locally and deletes it when the job ends.
+checkbox, processes the upload locally and deletes it when the job ends (also on failure).
 """
 import argparse
 import base64
@@ -62,16 +64,16 @@ button:disabled{opacity:.5;cursor:default}
 <section><h2>2. Bu sesle oku <small>(read with the selected voice)</small></h2>
 <label>Ses (voice)</label><select id="ses"></select>
 <label>Okunacak metin: her satır bir cümle; satır sonuna "|| paragraf" uzun durak (text to read, one sentence per line)</label>
-<textarea id="okuma_metni" placeholder="Bu ses bir metin tarifinden tasarlandı.
-Gerçek bir kişiye ait değildir. || paragraf
+<textarea id="okuma_metni" placeholder="Bu ses yalnız bir metin tarifinden tasarlandı, bir kayıttan klonlanmadı.
+Yapay zekâ ile üretilmiş bir sestir. || paragraf
 Şimdi istediğiniz metni okuyabilir."></textarea>
 <button id="btn_oku">Bu sesle oku</button><div id="d_oku" class="durum"></div>
 <div id="sonuc"></div></section>
 
 <section><h2>3. Ses klonlama: kendi sesin ya da izinli ses <small>(voice cloning: own or consented voice)</small></h2>
-<div class="uyari">Yalnız kendi sesiniz ya da sahibinden açık izin aldığınız ses. Kayıt yalnız bu bilgisayarda işlenir, saklanmaz, hiçbir yere gönderilmez; iş bitince geçici dosya silinir.
-<br><small>Only your own voice or a voice whose owner gave explicit permission. The recording is processed on this computer only, never stored or sent anywhere; the temp file is deleted when the job ends.</small></div>
-<label>Ses kaydı: wav / mp3 / flac / ogg, 5-30 sn temiz konuşma önerilir, 36 sn üstü kırpılır (recording, 5-30 s advised, trimmed at 36 s)</label>
+<div class="uyari">Yalnız kendi sesiniz ya da sahibinden açık izin aldığınız ses. Kayıt yalnız bu bilgisayardaki yerel sunucuda işlenir, saklanmaz, ağa gönderilmez; iş bitince (hata olsa da) geçici dosya silinir, yalnız yapay çıktı kalır.
+<br><small>Only your own voice or a voice whose owner gave explicit permission. The recording is processed by the local server on this computer only, never stored or sent over the network; the temp files are deleted when the job ends (also on failure), only the synthetic output is kept.</small></div>
+<label>Ses kaydı: wav / mp3 / flac / ogg, 5-30 sn temiz konuşma önerilir, 3 sn altı reddedilir, 36 sn üstü kırpılır (recording, 5-30 s advised, under 3 s rejected, trimmed at 36 s)</label>
 <input id="klon_dosya" type="file" accept=".wav,.mp3,.flac,.ogg,audio/*"><div id="klon_bilgi" class="durum"></div>
 <label>Kaydın birebir metni, zorunlu: kayıtta ne söyleniyorsa aynısı (exact transcript of the recording, required)</label>
 <textarea id="klon_kayit_metni" placeholder="Kayıtta söylediğim cümleler kelimesi kelimesine buraya."></textarea>
@@ -115,7 +117,7 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;$('sonuc').i
 const klonHazir=()=>{$('btn_klon').disabled=!($('klon_onay').checked&&$('klon_dosya').files.length&&$('klon_kayit_metni').value.trim()&&$('klon_metin').value.trim());};
 ['klon_onay','klon_dosya','klon_kayit_metni','klon_metin'].forEach(id=>{$(id).addEventListener('input',klonHazir);$(id).addEventListener('change',klonHazir);});
 $('klon_dosya').addEventListener('change',()=>{const f=$('klon_dosya').files[0];if(!f)return;const u=URL.createObjectURL(f);const a=new Audio();a.onloadedmetadata=()=>{const d=a.duration;
- $('klon_bilgi').textContent=d.toFixed(1)+' sn'+(d>36?' · 36 sn üstü kırpılacak, kayıt metni ilk 36 sn ile eşleşmeli (trimmed to 36 s)':d<5?' · kısa, 5-30 sn önerilir':'');URL.revokeObjectURL(u);};a.src=u;});
+ $('klon_bilgi').textContent=d.toFixed(1)+' sn'+(d>36?' · 36 sn üstü kırpılacak, kayıt metni ilk 36 sn ile eşleşmeli (trimmed to 36 s, the transcript must match that part)':d<3?' · çok kısa, en az 3 sn gerekli (too short, at least 3 s)':d<5||d>30?' · 5-30 sn önerilir (5-30 s advised)':'');URL.revokeObjectURL(u);};a.src=u;});
 function b64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);}
 $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn_klon');b.disabled=true;$('klon_sonuc').innerHTML='';
  const f=$('klon_dosya').files[0];const j=await api('/api/klon',{onay:true,kayit:b64(await f.arrayBuffer()),kayit_metni:$('klon_kayit_metni').value,metin:$('klon_metin').value,tohum:+$('klon_tohum').value});
@@ -170,10 +172,12 @@ class Isler:
                 elif kind == "klon":
                     from . import klonla
                     data = base64.b64decode(payload.pop("kayit"))
-                    result = klonla.klonla(self.settings, data, payload["kayit_metni"], payload["metin"],
-                                           self.settings["sesler"] / "_okumalar" / job_id, payload.get("onay"),
-                                           payload.get("tohum"), progress)
-                    del data
+                    try:
+                        result = klonla.klonla(self.settings, data, payload["kayit_metni"], payload["metin"],
+                                               self.settings["sesler"] / "_okumalar" / job_id, payload.get("onay"),
+                                               payload.get("tohum"), progress)
+                    finally:
+                        data = None  # kayıt baytları hata yolunda da bellekte tutulmaz / drop bytes, also on failure
                     result["is"] = job_id
                     self._set(job_id, durum="bitti", sonuc=result, mesaj="bitti: yapay ses hazır (synthetic)")
                 else:

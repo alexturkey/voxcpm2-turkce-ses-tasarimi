@@ -5,8 +5,13 @@ Okuma yolunun aynısı: kayıt motorun iki girişine birden (audio + voice_ref),
 Same path as reading with a designed voice; the recording is fed to audio + voice_ref with its exact transcript.
 
 Gizlilik / privacy: yüklenen kayıt yalnız bu bilgisayarda, geçici klasörde işlenir; referans kodlama önbelleği de
-o geçici klasöre yazılır ve iş bitince (hata olsa da) hepsi silinir. Hiçbir yere gönderilmez.
-The upload is processed locally in a temp folder (reference-encoding cache too) and deleted when the job ends.
+o geçici klasöre yazılır ve iş bitince (hata olsa da) hepsi silinir; motor süreci de kapatılır. Ağa gönderilmez.
+Yalnız yapay çıktı kalır: --cikti klasöründe klon_synthetic.wav ve ozet.json (kayıt metni ozet.json'a yazılmaz).
+The upload is processed locally in a temp folder (reference-encoding cache too) and deleted when the job ends, also
+on failure; nothing goes over the network. Only the synthetic output (klon_synthetic.wav, ozet.json) is kept.
+
+Kayıt: 5-30 sn temiz konuşma önerilir, 3 sn altı reddedilir, 36 sn üstü kırpılır. --onay olmadan çalışmaz.
+Recording: 5-30 s of clean speech advised, under 3 s rejected, over 36 s trimmed. Refuses to run without --onay.
 
 python -m ses_tasarim.klonla --kayit benim_sesim.wav --kayit-metni @kayit_metni.txt --metin "Merhaba." \
     --cikti cikti/klon --onay
@@ -46,9 +51,10 @@ def check(reference_text: str, text: str, consent) -> list:
     """Üretimden önce düz Türkçe sorun listesi. / Plain problem list before any GPU work."""
     found = []
     if consent is not True:
-        found.append("onay kutusu işaretlenmedi: " + CONSENT_TR)
+        found.append("izin onayı yok (consent missing): " + CONSENT_TR + " / " + CONSENT_EN)
     if len(str(reference_text or "").strip()) < 10:
-        found.append("kaydın birebir metni (reference text) zorunlu: kayıtta ne söyleniyorsa aynısını yazın")
+        found.append("kaydın birebir metni zorunlu: kayıtta ne söyleniyorsa aynısını yazın "
+                     "(exact transcript of the recording required)")
     found += okunus.problems(text or "")
     return found
 
@@ -56,18 +62,21 @@ def check(reference_text: str, text: str, consent) -> list:
 def prepare_reference(data: bytes, work_dir: Path) -> dict:
     """Yüklenen baytları (wav/mp3/flac/ogg) mono WAV'a çevirir; 36 sn üstünü kırpar. / Decode, mono, trim to 36 s."""
     if not data:
-        raise KlonHatasi("ses dosyası boş")
+        raise KlonHatasi("ses dosyası boş (empty recording)")
     if len(data) > MAX_UPLOAD_BYTES:
-        raise KlonHatasi(f"ses dosyası çok büyük ({len(data) // 1_000_000} MB); 36 sn'lik bir kayıt yeter")
+        raise KlonHatasi(f"ses dosyası çok büyük ({len(data) // 1_000_000} MB); 36 sn'lik bir kayıt yeter "
+                         f"(file too large, max {MAX_UPLOAD_BYTES // 1_000_000} MB)")
     try:
         audio, rate = sf.read(io.BytesIO(data), dtype="float32", always_2d=True)
     except Exception as error:  # libsndfile çözemedi / could not decode
-        raise KlonHatasi(f"ses dosyası okunamadı (wav, mp3, flac ya da ogg olmalı): {error}") from None
+        raise KlonHatasi(f"ses dosyası okunamadı, wav, mp3, flac ya da ogg olmalı "
+                         f"(could not decode; use wav, mp3, flac or ogg): {error}") from None
     audio = audio.mean(axis=1).astype(np.float32)
     seconds = len(audio) / rate
     notes = []
     if seconds < MIN_SECONDS:
-        raise KlonHatasi(f"kayıt çok kısa ({seconds:.1f} sn); en az {MIN_SECONDS:.0f} sn, önerilen 5-30 sn")
+        raise KlonHatasi(f"kayıt çok kısa ({seconds:.1f} sn); en az {MIN_SECONDS:.0f} sn, önerilen 5-30 sn "
+                         f"(too short; at least {MIN_SECONDS:.0f} s, 5-30 s advised)")
     if seconds > MAX_SECONDS:
         audio = audio[: int(MAX_SECONDS * rate)]
         notes.append(f"kayıt {seconds:.1f} sn idi, ilk {MAX_SECONDS:.0f} sn kullanıldı; kayıt metni yalnız bu kısmı "
@@ -92,6 +101,17 @@ def write_synthetic_wav(source: Path, target: Path) -> None:
     tmp.replace(target)
 
 
+def _remove(folder: Path) -> None:
+    """Geçici klasörü siler; Windows'ta kilitli dosya için kısa yeniden deneme. / Delete temp folder, retry on lock."""
+    for _ in range(5):
+        shutil.rmtree(folder, ignore_errors=True)
+        if not folder.exists():
+            return
+        time.sleep(0.5)
+    print(f"uyarı: geçici klasör silinemedi, elle silin (temp folder not deleted, remove it by hand): {folder}",
+          file=sys.stderr, flush=True)
+
+
 def klonla(settings: dict, data: bytes, reference_text: str, text: str, out_dir: Path, consent, seed=None,
            progress=None) -> dict:
     found = check(reference_text, text, consent)
@@ -113,7 +133,7 @@ def klonla(settings: dict, data: bytes, reference_text: str, text: str, out_dir:
         wav = out_dir / "klon_synthetic.wav"
         write_synthetic_wav(temp / "okuma" / "okuma.wav", wav)
     finally:
-        shutil.rmtree(temp, ignore_errors=True)  # kayıt, metni ve kodlaması kalıcı tutulmaz / nothing persists
+        _remove(temp)  # kayıt, metni ve kodlaması kalıcı tutulmaz (hata olsa da) / nothing persists, also on failure
     result = {"tur": "klon", "tohum": seed, "adim": motor.FIXED["adim"], "cfg": motor.FIXED["cfg"],
               "referans_sn": ref["sn"], "notlar": ref["notlar"], "ses_sn": summary["ses_sn"],
               "sure_sn": summary["sure_sn"], "vram_tepe_mb": summary["vram_tepe_mb"], "wav": str(wav),
@@ -125,22 +145,37 @@ def klonla(settings: dict, data: bytes, reference_text: str, text: str, out_dir:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--ayarlar")
-    parser.add_argument("--kayit", type=Path, required=True, help="kendi sesiniz ya da izinli ses (wav/mp3/flac/ogg)")
-    parser.add_argument("--kayit-metni", required=True, help="kayıtta söylenenin birebir metni ya da @dosya")
-    parser.add_argument("--metin", required=True, help="okunacak metin ya da @dosya; satır = cümle")
-    parser.add_argument("--cikti", type=Path, required=True)
-    parser.add_argument("--tohum", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--onay", action="store_true", help=CONSENT_EN)
+    parser.add_argument("--ayarlar", help="ayarlar.json yolu / settings file")
+    parser.add_argument("--kayit", type=Path, required=True,
+                        help="kendi sesiniz ya da izinli ses, wav/mp3/flac/ogg, 5-30 sn önerilir / "
+                             "own or consented recording, 5-30 s advised")
+    parser.add_argument("--kayit-metni", required=True,
+                        help="kayıtta söylenenin birebir metni ya da @dosya / exact transcript or @file")
+    parser.add_argument("--metin", required=True,
+                        help="okunacak metin ya da @dosya; satır = cümle / text to read or @file, one sentence per line")
+    parser.add_argument("--cikti", type=Path, required=True,
+                        help="çıktı klasörü: klon_synthetic.wav, ozet.json / output folder")
+    parser.add_argument("--tohum", type=int, default=DEFAULT_SEED, help="tohum / seed (varsayılan / default 42)")
+    parser.add_argument("--onay", action="store_true", help="zorunlu / required: " + CONSENT_TR + " / " + CONSENT_EN)
     args = parser.parse_args(argv)
+    if not args.onay:  # kayıt okunmadan, motor açılmadan önce / before reading the file or starting the engine
+        parser.error("--onay olmadan klonlama yapılmaz (cloning requires --onay): " + CONSENT_TR + " / " + CONSENT_EN)
 
     def text_arg(value):
         return Path(value[1:]).read_text(encoding="utf-8") if value.startswith("@") else value
 
-    settings = ayarlar.load(args.ayarlar)
-    result = klonla(settings, args.kayit.read_bytes(), text_arg(args.kayit_metni), text_arg(args.metin), args.cikti,
-                    args.onay or None, args.tohum,
-                    lambda done, total, elapsed: print(f"  {done}/{total} cümle, {elapsed:.0f} sn", flush=True))
+    data = None
+    try:
+        data = args.kayit.read_bytes()
+        settings = ayarlar.load(args.ayarlar)
+        result = klonla(settings, data, text_arg(args.kayit_metni), text_arg(args.metin), args.cikti, True,
+                        args.tohum,
+                        lambda done, total, elapsed: print(f"  {done}/{total} cümle, {elapsed:.0f} sn", flush=True))
+    except (KlonHatasi, ayarlar.AyarHatasi, motor.MotorHatasi, OSError) as error:
+        print(f"hata (error): {error}", file=sys.stderr)
+        return 1
+    finally:
+        data = None
     for note in result["notlar"]:
         print("not:", note)
     print(f"bitti: {result['ses_sn']} sn yapay ses, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB "

@@ -24,7 +24,7 @@ The modified files carry the original copyright; the modifications are Apache-2.
 ## Bundled voices
 
 The seven voices in `hazir_sesler/` were generated with VoxCPM2 from text descriptions (prompts are in each `ses.json`).
-They are synthetic; no real person's voice was used. They are released under this repository's Apache-2.0 license.
+They are synthetic; no recording of a person was used or cloned. They are released under this repository's Apache-2.0 license.
 
 ## Model card notice (VoxCPM2)
 

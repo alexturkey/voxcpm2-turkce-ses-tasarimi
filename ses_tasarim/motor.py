@@ -136,10 +136,17 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
     with (work_dir / "stdout.txt").open("w", encoding="utf-8") as out, VramWatcher() as watcher:
         process = subprocess.Popen(command, env=engine_env(settings, work_dir), stdout=out, stderr=subprocess.STDOUT,
                                    creationflags=NO_WINDOW)
-        while process.poll() is None:
-            if progress:
-                progress(sum(_eos_by_block(log_path, len(requests))), len(requests), time.time() - started)
-            time.sleep(3)
+        try:
+            while process.poll() is None:
+                if progress:
+                    progress(sum(_eos_by_block(log_path, len(requests))), len(requests), time.time() - started)
+                time.sleep(3)
+        finally:
+            # hata ya da Ctrl+C: motor yetim kalmasın, çalışma klasöründeki dosyalar serbest kalsın (silinebilsin)
+            # on error or Ctrl+C: do not orphan the engine; release its files so the work folder can be deleted
+            if process.poll() is None:
+                process.kill()
+                process.wait()
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
         raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}")

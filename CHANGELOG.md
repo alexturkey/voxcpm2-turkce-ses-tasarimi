@@ -17,6 +17,10 @@
   izin onay kutusu işaretlenmeden düğme kapalı, sunucu da onaysız isteği reddeder. Kayıt ve referans kodlaması yalnız
   geçici klasörde işlenir, iş bitince silinir; çıktı `klon_synthetic.wav` (WAV INFO "synthetic" etiketi) ve
   "Yapay üretilmiş sestir" notu. Kalite sabit: 16 adım, cfg 2.0.
+- Klonlama metin ve teknik düzeltmeleri: "gerçek kişi değil" gibi eski cümleler (hazır ses notları, arayüz örnek
+  metni, README, issue/PR şablonları, CONTRIBUTING, THIRD_PARTY) yeni çizgiye göre yeniden yazıldı; motor hata ya
+  da Ctrl+C'de kapatılır, geçici klasör hata yolunda da silinir (kilitliyse yeniden denenir); komut satırı
+  `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
@@ -34,6 +38,10 @@
   button stays disabled until the consent box is ticked and the server rejects requests without consent. The recording
   and its reference encoding live only in a temp folder that is deleted when the job ends; output is
   `klon_synthetic.wav` (WAV INFO "synthetic" tag) with an "AI-generated" note. Fixed quality: 16 steps, cfg 2.0.
+- Cloning wording and hardening: old "not a real person" lines (bundled voice notes, UI sample text, README,
+  issue/PR templates, CONTRIBUTING, THIRD_PARTY) rewritten for the new policy; the engine is killed on error or
+  Ctrl+C and the temp folder is deleted on the failure path too (retried if locked); the CLI refuses without
+  `--onay` before reading the recording, errors and `--help` are TR/EN; UI warns under 3 s and for 30-36 s.
 
 ## v0.1.1 — 2026-10-23
 

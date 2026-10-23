@@ -41,5 +41,5 @@ body:
     attributes:
       label: Etik / Ethics
       options:
-        - label: Öneri gerçek bir kişinin sesini kopyalamayı gerektirmiyor (ETHICS.md). / The idea does not require copying a real person's voice (ETHICS.md).
+        - label: Öneri bir sesi sahibinin açık izni olmadan klonlamayı gerektirmiyor (ETHICS.md). / The idea does not require cloning a voice without its owner's explicit permission (ETHICS.md).
           required: true
