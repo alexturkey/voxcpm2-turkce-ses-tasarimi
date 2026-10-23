@@ -220,6 +220,7 @@ Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md): be kind,
 ## Contributors
 
 - [@alexturkey](https://github.com/alexturkey): maintainer; code, bundled voices, docs
+- [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal support, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 
 Your name belongs here too: a test result from your GPU, a sentence for the test set, a voice you designed, a clear bug
 report or a pull request all count as contributions. Thank you to everyone who tries it and writes back.

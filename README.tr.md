@@ -219,6 +219,7 @@ Katılan herkes [Davranış Kuralları](CODE_OF_CONDUCT.md)'na uyar: nazik olun,
 ## Katkıda bulunanlar
 
 - [@alexturkey](https://github.com/alexturkey): bakıcı; kod, hazır sesler, belgeler
+- [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal desteği, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 
 Adınız da burada yer alabilir: kendi kartınızdaki test sonucu, test setine bir cümle, tasarladığınız bir ses, açık bir
 hata bildirimi ya da bir PR, hepsi katkıdır. Deneyip geri yazan herkese teşekkürler.
