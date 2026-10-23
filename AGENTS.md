@@ -1,7 +1,7 @@
 # AGENTS.md — step-by-step install for an AI coding agent (Claude Code, Codex, Cursor...)
 
 This file is for an agent setting up the project on a **Windows 10/11 PC with an NVIDIA GPU (≥ 4 GB VRAM)**. Follow the
-steps in order. Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
+steps in order. **On a Mac (Apple Silicon) skip to "6b. macOS".** Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
 user-facing texts; commands are language-neutral. `CLAUDE.md` points here.
 
 Hard rules for agents working in this repo:
@@ -160,6 +160,24 @@ with `"hazir"` (7 items). Jobs run one at a time (`/api/is/<id>` → `durum` sir
 | EOS missing (`şu satırlar düzgün bitmedi`) | sentence too long or odd punctuation | split the sentence; remove digits and quotes (write numbers in words) |
 | `okunamayan işaret` | digits or quotes in text | write numbers in words (`iki bin yirmi altı`), remove quotes |
 | Build is slow / PC freezes | all cores used | `-Paralel 4` (kur.ps1 / derle.ps1) or `derle.ps1 -DusukOncelik` |
+
+## 6b. macOS (Apple Silicon, Metal)
+
+No prebuilt engine: the installer builds it from source with Metal (~1 min). Details and measurements: `docs/mac.md`.
+
+| Need | Check | If missing |
+|---|---|---|
+| Apple Silicon | `uname -m` → `arm64` | Intel Macs are untested |
+| Xcode Command Line Tools + Metal compiler | `xcrun --sdk macosx --find metal` → a path | `xcode-select --install` (full Xcode also works) |
+| cmake, Python 3.10-3.13 | `cmake --version`, `python3.12 --version` | `brew install cmake python@3.12` |
+
+```bash
+bash scripts/kur.sh            # root ~/vox; --kok <dir>; --adim model,kaynak,derle,python,ayar,kontrol
+```
+Expect `MODEL_OK`, `KAYNAK_OK`, `DERLE_OK`, `PYTHON_OK`, `AYAR_OK`, `KONTROL_OK` (with a `MTL:0 "Apple M…" [GPU]` line) and
+finally `KURULUM_OK`. `ayarlar.json` gets `"backend": "metal"`, `"cuda_bin": ""`. Smoke test (step 4) works the same with
+`.venv/bin/python`; the UI starts with `./baslat.command`. Determinism check: run the same reading twice, the two
+`okuma.wav` files must have the same `shasum`.
 
 ## 7. Layout
 
