@@ -175,6 +175,13 @@ Shared test set: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); bra
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); how to send code: [CONTRIBUTING.md](CONTRIBUTING.md).
 Install problems: [issue form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml); questions and results: [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
+## Contributors
+
+- [@alexturkey](https://github.com/alexturkey): maintainer; code, bundled voices, docs
+
+Your name belongs here too: a test result from your GPU, a sentence for the test set, a voice you designed, a clear bug
+report or a pull request all count as contributions. Thank you to everyone who tries it and writes back.
+
 ## License and credits
 
 Code and bundled voices: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. Built on VoxCPM2 (OpenBMB, Apache-2.0),
