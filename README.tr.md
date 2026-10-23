@@ -40,14 +40,22 @@ tanıtım), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`
 
 ## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
-Ön koşullar: NVIDIA sürücüsü ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10–3.13
-(`winget install Python.Python.3.12`). Başka bir şey yok: Visual Studio da CUDA kurulumu da gerekmez.
+Ön koşullar: NVIDIA sürücüsü ≥ 570 ve 64-bit Python 3.10–3.13 (`winget install Python.Python.3.12`). Başka bir şey
+yok: Visual Studio da CUDA kurulumu da gerekmez. Hangi kartınız olduğundan emin değil misiniz? PowerShell'de
+`nvidia-smi` yazın: kartın adını, sürücü sürümünü ve belleğini gösterir. NVIDIA kartınız yoksa aşağıdaki "AMD / Intel"
+bölümüne bakın.
+
+[Git](https://git-scm.com/download/win) ile:
 
 ```powershell
 git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
 cd voxcpm2-turkce-ses-tasarimi
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
+
+Git olmadan: bu sayfada **Code → Download ZIP**'e tıklayın, zip'i açın, çıkan `voxcpm2-turkce-ses-tasarimi-main`
+klasörüne girin, Gezgin'in adres çubuğuna `powershell` yazıp Enter'a basın ve yukarıdaki son satırı çalıştırın. Git
+yalnız kaynaktan derleme yolunda gerekir.
 
 `-ExecutionPolicy Bypass` yalnız bu süreç için geçerlidir, sistem ayarı değiştirmez; her kurulum betiğinde olduğu gibi
 `scripts\kur.ps1`'i çalıştırmadan önce okuyun. Tek komut, ~10 dk, ~3,7 GB indirme, hepsi sha256 doğrulamalı: model (2,95 GB), CUDA 12.8 çalışma DLL'leri taşınabilir zip
@@ -69,7 +77,7 @@ yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
 
 **AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
-`scripts\kur.ps1 -Kok C:ox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
+`scripts\kur.ps1 -Kok C:\vox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
 yavaş çalıştı ama aynı tohum aynı sesi verdi; o ölçüm sırasında disk başka bir işle doluydu, temiz hız karşılaştırması
 bekliyor); AMD ya da Intel donanımında **denenmedi**: denerseniz sonucu Discussions'a
 yazın. Birden çok Vulkan cihazı varsa (dahili + harici) kurulum harici kartın dizinini `ayarlar.json` içine `cihaz`
@@ -85,6 +93,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 Bu yol nvcc'yi de indirir, audio.cpp v0.7.2 kaynağını alır, `patches/0001-voxcpm2-4gb-ve-hiz.patch` yamasını uygular ve
 kartınız için derler (`-Mimari native`, varsayılan; ya da ör. `-Mimari 61`), ~15-25 dk. Kökü kısa tutun (`C:\vox`): nvcc
 uzun yolda düşer. Adım adım, kontrollü anlatım: [AGENTS.md](AGENTS.md).
+
+### Sık kurulum sorunları
+
+| Gördüğünüz | Anlamı, ne yapmalı |
+|---|---|
+| exe'ye çift tıklayınca `cudart64_12.dll bulunamadı` | Motor elle açılmak için değil. Yukarıdaki `kur.ps1` komutunu çalıştırın, sonra web arayüzünü başlatın. |
+| `64-bit Python 3.10+ bulunamadı` | Python kurun (`winget install Python.Python.3.12`), PowerShell'i kapatıp yenisini açın, aynı komutu yeniden çalıştırın. |
+| `motor ekran kartını görmedi` | NVIDIA sürücüsünü 570 ya da üstüne güncelleyin; `nvidia-smi` çalışıyor mu bakın. |
+| `indirme başarısız` / `sha256 tutmadı` | Çoğunlukla yarıda kalan indirme. Aynı komutu yeniden çalıştırın; doğrulanmış dosyalar atlanır. |
+| Derleme yolunda `nvcc` düşüyor | Kurulum kökünü kısa tutun (`-Kok C:\vox`). |
+| Sayfa açılmıyor | Arayüz tarayıcıyı kendisi açmaz: http://127.0.0.1:8765/ adresini siz açın. Port doluysa `--port 8800` ekleyin. |
 
 Sorun mu var? [Discussions (Soru-Cevap)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) ya da
 [kurulum sorunu kaydı](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml):

@@ -38,7 +38,7 @@ through the driver JIT (works, slower first start). Maxwell (GTX 9xx) and older:
 only on a GTX 1050 Ti 4 GB. Check what a given exe contains with `cuobjdump --list-elf audiocpp_cli.exe` (CUDA
 `cuda_cuobjdump` redist package).
 
-**Vulkan (experimental, AMD/Intel/NVIDIA).** Separate release zip `…-win64-vulkan.zip`; `kur.ps1 -Kok C:ox -Vulkan`
+**Vulkan (experimental, AMD/Intel/NVIDIA).** Separate release zip `…-win64-vulkan.zip`; `kur.ps1 -Kok C:\vox -Vulkan`
 runs `model,hazir,python,ayar,kontrol` (no `cuda` step), writes `"backend": "vulkan"`, `"cuda_bin": ""`; `kontrol`
 needs a `Vulkan:N` line from `--list-devices` and, when several devices are listed, writes the index of the `[GPU]` line as
 `"cihaz"` (passed to the engine as `--device N`; default device 0 may be an integrated GPU, where a design aborts with

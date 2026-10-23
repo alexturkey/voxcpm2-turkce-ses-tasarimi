@@ -42,14 +42,21 @@ description), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<n
 
 ## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
-Prerequisites: NVIDIA driver ≥ 570, [Git](https://git-scm.com/download/win), 64-bit Python 3.10–3.13
-(`winget install Python.Python.3.12`). Nothing else: no Visual Studio, no CUDA installer.
+Prerequisites: NVIDIA driver ≥ 570 and 64-bit Python 3.10–3.13 (`winget install Python.Python.3.12`). Nothing else:
+no Visual Studio, no CUDA installer. Not sure which card you have? Run `nvidia-smi` in PowerShell: it prints the GPU
+name, driver version and memory. No NVIDIA card? See "AMD / Intel" below.
+
+With [Git](https://git-scm.com/download/win):
 
 ```powershell
 git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
 cd voxcpm2-turkce-ses-tasarimi
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 ```
+
+Without Git: on this page click **Code → Download ZIP**, extract it, open the extracted
+`voxcpm2-turkce-ses-tasarimi-main` folder, type `powershell` in the Explorer address bar and press Enter, then run the
+last line above. Git is only needed for the build-from-source path.
 
 `-ExecutionPolicy Bypass` applies to this one process only and changes no system setting; read `scripts\kur.ps1`
 before running it, as with any installer script. One command, ~10 min, ~3.7 GB download, everything sha256-verified: the model (2.95 GB), the CUDA 12.8 runtime DLLs as
@@ -72,7 +79,7 @@ start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a 
 other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
-`scripts\kur.ps1 -Kok C:ox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it ran
+`scripts\kur.ps1 -Kok C:\vox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it ran
 slower than CUDA but gave the same audio for the same seed; that measurement was taken while the disk was busy with
 another job, so a clean speed comparison is still pending) and has **not** been tried on AMD or Intel hardware: if you try it,
 please post the result in Discussions. With more than one Vulkan device (integrated + discrete) the installer writes
@@ -88,6 +95,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 This also downloads nvcc, fetches the audio.cpp v0.7.2 source, applies `patches/0001-voxcpm2-4gb-ve-hiz.patch` and
 builds for your GPU (`-Mimari native`, default; or e.g. `-Mimari 61`), ~15-25 min. Keep the root short (`C:\vox`):
 nvcc fails on long paths. Step-by-step with checks: [AGENTS.md](AGENTS.md).
+
+### Common install problems
+
+| You see | What it means, what to do |
+|---|---|
+| `cudart64_12.dll not found` after double-clicking the exe | The engine is not meant to be started by hand. Run the `kur.ps1` command above, then start the web UI. |
+| `64-bit Python 3.10+ bulunamadı` (Python not found) | Install Python (`winget install Python.Python.3.12`), close PowerShell, open a new one and run the same command again. |
+| `motor ekran kartını görmedi` (the engine did not see the GPU) | Update the NVIDIA driver to 570 or newer; check that `nvidia-smi` runs. |
+| `indirme başarısız` / `sha256 tutmadı` (download failed / checksum mismatch) | Usually an interrupted download. Run the same command again; verified files are skipped. |
+| Build path: `nvcc` fails | Keep the install root short (`-Kok C:\vox`). |
+| The page does not open | The UI does not open the browser for you: open http://127.0.0.1:8765/ yourself. Port busy? Add `--port 8800`. |
 
 Problems? [Discussions (Q&A)](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) or an
 [install issue](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml)
