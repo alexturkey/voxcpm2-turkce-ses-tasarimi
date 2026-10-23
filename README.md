@@ -154,6 +154,8 @@ yourself (another port: `--port 8800`). Three boxes (description, creation text,
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
 Stop the server with Ctrl+C.
 
+**Voice cloning (your own or a consented voice).** In section 3 of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech; trimmed at 36 s), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording is processed only on your computer in a temp folder and deleted when the job ends; it is never sent anywhere. Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
+
 ## FAQ
 
 **Model or engine? What is what?** VoxCPM2 (OpenBMB) is the *model*: the 2-billion-parameter network that turns text

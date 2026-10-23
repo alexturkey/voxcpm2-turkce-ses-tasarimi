@@ -153,6 +153,8 @@ adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratı
 sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
 ile kapatın.
 
+**Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün 3. bölümünde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma; 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız bilgisayarınızda, geçici klasörde işlenir ve iş bitince silinir; hiçbir yere gönderilmez. Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
+
 ## Sık sorulanlar
 
 **Model mi, motor mu? Hangisi ne?** VoxCPM2 (OpenBMB) *model*dir: metni konuşmaya çeviren 2 milyar parametreli ağ.
