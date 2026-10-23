@@ -10,6 +10,8 @@
 - Davranış kuralları: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Türkçe özet; bildirim GitHub özel bildirim yolu).
 - `SECURITY.md`: sabit yanıt süresi kaldırıldı; bildirimlere en kısa sürede bakılır.
 - README TR/EN: en üstte "Hızlı başlangıç (3 adım)": kod zip'i ve CUDA / Vulkan motor paketlerinin doğrudan bağlantıları.
+- Ses klonlama politikası (README, ETHICS, AGENTS, marka sesi rehberi): klonlama yalnız kendi sesiniz ya da sahibinin
+  açık izniyle; arayüz izin onayı ister; yasak kullanımlar, sorumluluk ve kötüye kullanım bildirimi.
 
 **EN**
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
@@ -20,6 +22,8 @@
 - Code of Conduct: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Turkish summary; reports via GitHub private reporting).
 - `SECURITY.md`: removed the fixed reply time; reports are looked at as soon as we can.
 - README TR/EN: a 3-step "Quick start" at the top with direct links to the code zip and the CUDA / Vulkan engine packages.
+- Voice cloning policy (README, ETHICS, AGENTS, brand voice guide): cloning only with your own voice or the owner's
+  explicit permission; the UI asks you to confirm it; prohibited uses, responsibility and misuse reporting.
 
 ## v0.1.1 — 2026-10-23
 

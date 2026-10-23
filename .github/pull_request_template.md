@@ -11,7 +11,7 @@
 - [ ] İkili dosya eklemedim (exe, dll, zip, wav) / No binary files added (exe, dll, zip, wav)
 - [ ] Yeni ağ çağrısı yok; varsa adresini ve nedenini aşağıya yazdım / No new network call; if any, address and reason below
 - [ ] CI, GitHub Actions ya da dependabot değişikliği yok; varsa aşağıda açıkladım / No CI, Actions or dependabot change; if any, explained below
-- [ ] Gerçek bir kişinin sesi ya da kaydı yok / No real person's voice or recording
+- [ ] Repoya gerçek bir kişinin sesini ya da kaydını eklemedim / I did not add a real person's voice or recording
 
 ## Notlar / Notes
 

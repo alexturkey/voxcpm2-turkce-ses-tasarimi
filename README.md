@@ -7,8 +7,9 @@ ready-made synthetic voices.
 
 [Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
-> Every voice here is synthetic: designed from a text description, never recorded from or cloned off a real person.
-> Label what you generate as AI-generated. No audio upload, no voice cloning of real people.
+> The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
+> voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
+> fraud and deception are prohibited. Label what you generate as AI-generated. See [ETHICS.md](ETHICS.md).
 
 ## Quick start (Windows, 3 steps)
 
@@ -170,9 +171,11 @@ compute per 1 s of speech (real-time factor 1.9-2.8) after a one-time ~50 s refe
 disk) and 10-20 s model load per batch; peak VRAM 2.6-2.9 GB. Newer cards are faster; numbers and method:
 [docs/4gb.md](docs/4gb.md).
 
-**Does it clone real people?** No. There is no audio upload and no recording path: every voice starts from an English
-text description, and the "reference" used for reading is the model's own synthetic design recording. See
-[ETHICS.md](ETHICS.md). Label what you publish as AI-generated.
+**Can it clone a voice?** The underlying VoxCPM2 model can imitate a voice from a reference recording, and the cloning
+section uses that. Use it only with your own voice or with the explicit permission of the person whose voice it is; the
+UI asks you to confirm that permission. Voice design needs no recording: it starts from an English text description, and
+the "reference" used for reading a designed voice is the model's own synthetic design recording. Impersonation, fraud
+and deception are prohibited. See [ETHICS.md](ETHICS.md). Label what you publish as AI-generated.
 
 **How do I write a good voice description?** In English, 1-3 sentences: age and gender, timbre (deep/bright, warm,
 nasal, raspy), tone and role (calm documentary narrator, energetic presenter), tempo (slow, measured), and

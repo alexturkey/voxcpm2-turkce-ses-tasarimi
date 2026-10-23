@@ -7,7 +7,8 @@ user-facing texts; commands are language-neutral. `CLAUDE.md` points here.
 Hard rules for agents working in this repo:
 - Quality settings are fixed: 16 steps, cfg 2.0 (`ses_tasarim/motor.py: FIXED`). Never lower them "for speed".
 - One GPU job at a time. Do not run two engine processes concurrently (`GGML_ASSERT mem_buffer`).
-- No audio upload / real-voice cloning feature. See `ETHICS.md`. Do not add one.
+- Voice cloning is only for the user's own voice or a voice used with its owner's explicit permission. Keep the
+  permission confirmation and the AI-generated notice in the UI; do not remove or bypass them. See `ETHICS.md`.
 - Keep install paths short (`C:\vox`). Long paths break nvcc at the 260-character limit.
 - `patches/*.patch` are LF. Never convert them to CRLF (`.gitattributes` protects them).
 - Do not commit `ayarlar.json`, `sesler/`, `onbellek/`, models or build output (see `.gitignore`).

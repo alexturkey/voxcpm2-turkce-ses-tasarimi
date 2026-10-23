@@ -2,22 +2,29 @@
 
 **English**
 
-- Every voice this tool produces is **synthetic**: designed from a text description, not recorded from a person.
-  Label what you publish as AI-generated (in the EU this is also required by the AI Act, Art. 50).
-- This tool does **not** accept audio uploads and does **not** clone real voices. Reading always uses a voice that was
-  designed here (or one of the bundled synthetic voices). Please keep it that way in forks.
-- Do not use generated speech for impersonation, fraud, disinformation, harassment, robocalls or to present it as a real
-  person's statement. The VoxCPM2 model card forbids impersonation, fraud and disinformation.
+- The bundled voices and the voices designed from a description are **synthetic**, not recorded from a person.
+  Everything you generate, cloned voices included, should be labelled as AI-generated when published (in the EU this is
+  also required by the AI Act, Art. 50).
+- The voice cloning section imitates a voice from a reference recording (a capability of the underlying VoxCPM2 model).
+  Use it only with **your own voice** or with the **explicit permission** of the person whose voice it is; the UI asks
+  you to confirm that permission before cloning. Please keep that confirmation in forks.
+- Prohibited: impersonating a real person without permission, fraud, deception, phishing, disinformation, harassment,
+  robocalls, presenting generated speech as a real person's statement, and any unlawful use. The VoxCPM2 model card
+  forbids impersonation, fraud and disinformation.
 - The engine does not embed an audio watermark. We say so plainly; do not claim otherwise.
-- The software is provided "as is" (Apache-2.0 §7-8). You are responsible for how you use the output.
+- The software is provided "as is" (Apache-2.0 §7-8). You are responsible for the content you generate and how you use it.
+- To report misuse of this project, use the private reporting route in [SECURITY.md](SECURITY.md).
 
 **Türkçe**
 
-- Bu aracın ürettiği her ses **yapaydır**: bir metin tarifinden tasarlanır, bir kişiden kaydedilmez.
-  Yayımladığınız sesin yapay zekâ ürünü olduğunu belirtin (AB'de Yapay Zekâ Yasası md. 50 bunu ayrıca ister).
-- Araç dışarıdan **ses yüklemez**, gerçek kişi sesi **klonlamaz**. Okuma her zaman burada tasarlanmış bir sesle (ya da
-  repodaki yapay hazır seslerle) yapılır. Çatallarda (fork) da böyle kalsın.
-- Üretilen sesi taklit, dolandırıcılık, dezenformasyon, taciz, otomatik arama için ya da gerçek bir kişinin sözüymüş
-  gibi kullanmayın. VoxCPM2 model kartı taklit, dolandırıcılık ve dezenformasyonu yasaklar.
+- Hazır sesler ve tariften tasarlanan sesler **yapaydır**, bir kişiden kaydedilmez. Klonlanan sesler dahil
+  ürettiğiniz her sesi yayımlarken yapay zekâ ürünü olduğunu belirtin (AB'de Yapay Zekâ Yasası md. 50 bunu ayrıca ister).
+- Klonlama bölümü bir referans kayıttan sesi taklit eder (alttaki VoxCPM2 modelinin yeteneği). Yalnız **kendi
+  sesinizle** ya da ses sahibinin **açık izniyle** kullanın; arayüz klonlamadan önce bu izni onaylamanızı ister.
+  Çatallarda (fork) bu onay kalsın.
+- Yasaktır: gerçek bir kişiyi izinsiz taklit, dolandırıcılık, yanıltma, kimlik avı (phishing), dezenformasyon, taciz,
+  otomatik arama, üretilen sesi gerçek bir kişinin sözüymüş gibi sunmak ve her türlü yasa dışı kullanım. VoxCPM2 model
+  kartı taklit, dolandırıcılık ve dezenformasyonu yasaklar.
 - Motor sese filigran (watermark) gömmez; bunu açıkça söylüyoruz, aksini iddia etmeyin.
-- Yazılım olduğu gibi sunulur (Apache-2.0 §7-8); çıktının kullanımından siz sorumlusunuz.
+- Yazılım olduğu gibi sunulur (Apache-2.0 §7-8); ürettiğiniz içerikten ve kullanımından siz sorumlusunuz.
+- Bu projenin kötüye kullanıldığını görürseniz [SECURITY.md](SECURITY.md)'deki özel bildirim yolunu kullanın.

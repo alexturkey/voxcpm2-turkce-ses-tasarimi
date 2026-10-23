@@ -6,8 +6,9 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 
 [English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
-> Buradaki her ses yapaydır: bir metin tarifinden tasarlanmıştır, hiçbir gerçek kişiden kaydedilmemiş ya da
-> klonlanmamıştır. Ürettiğiniz sesi yapay zekâ ürünü olarak etiketleyin. Dışarıdan ses yükleme ve gerçek kişi klonlama yoktur.
+> Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
+> izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
+> yapay zekâ ürünü olarak etiketleyin. Bkz. [ETHICS.md](ETHICS.md).
 
 ## Hızlı başlangıç (Windows, 3 adım)
 
@@ -169,9 +170,11 @@ ses başına 1 sn için ≈ 2 sn hesap (gerçek zaman çarpanı 1,9-2,8); ses ba
 (diske önbelleklenir) ve parti başına 10-20 sn model yükleme eklenir; VRAM tepe 2,6-2,9 GB. Yeni kartlar daha hızlı;
 sayılar ve yöntem: [docs/4gb.md](docs/4gb.md).
 
-**Gerçek kişiyi klonlar mı?** Hayır. Ses yükleme ve kayıt yolu yoktur: her ses İngilizce bir metin tarifinden başlar,
-okumada kullanılan "referans" modelin kendi yapay tasarım kaydıdır. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay
-zekâ ürünü olarak etiketleyin.
+**Ses klonlayabilir mi?** Alttaki VoxCPM2 modeli bir referans kayıttan sesi taklit edebilir; klonlama bölümü bunu
+kullanır. Yalnız kendi sesinizle ya da ses sahibinin açık izniyle kullanın; arayüz izin onayı ister. Ses tasarımı kayıt
+gerektirmez: İngilizce bir metin tarifinden başlar, tasarlanan sesle okumada kullanılan "referans" modelin kendi yapay
+tasarım kaydıdır. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı
+yapay zekâ ürünü olarak etiketleyin.
 
 **İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,
 kısık), ton ve rol (sakin belgesel anlatıcısı, enerjik sunucu), tempo (yavaş, ölçülü) ve "clean studio recording, no
