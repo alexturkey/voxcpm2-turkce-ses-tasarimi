@@ -8,6 +8,7 @@
   "hangi kartım var" kontrolü, sık kurulum sorunları tablosu, "Katkıda bulunanlar" bölümü.
 - Issue formları: hata bildirimi ve özellik önerisi; Discussions (Q&A, Ideas, Show and tell) ve güvenlik yönlendirmesi.
 - Davranış kuralları: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Türkçe özet; bildirim GitHub özel bildirim yolu).
+- `SECURITY.md`: sabit yanıt süresi kaldırıldı; bildirimlere en kısa sürede bakılır.
 
 **EN**
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
@@ -16,6 +17,7 @@
   ZIP), a "which GPU do I have" check, a common install problems table, a "Contributors" section.
 - Issue forms: bug report and feature request; links to Discussions (Q&A, Ideas, Show and tell) and the security policy.
 - Code of Conduct: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Turkish summary; reports via GitHub private reporting).
+- `SECURITY.md`: removed the fixed reply time; reports are looked at as soon as we can.
 
 ## v0.1.1 — 2026-10-23
 

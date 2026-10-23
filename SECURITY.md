@@ -6,7 +6,7 @@ Bir güvenlik açığı bulduysanız lütfen herkese açık bir issue açmayın.
 repo sayfasında **Security → Report a vulnerability** (ya da doğrudan
 https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/security/advisories/new). Bildirim yalnız bakımcıya gider.
 
-Yazarken: hangi sürüm (`git log -1` ya da Release etiketi), nasıl tetiklendiği, etkisi. Yanıt hedefi: 7 gün içinde ilk cevap.
+Yazarken: hangi sürüm (`git log -1` ya da Release etiketi), nasıl tetiklendiği, etkisi. Bildirimlere en kısa sürede bakmaya çalışırız.
 Düzeltme yayınlanana kadar ayrıntıyı paylaşmamanızı rica ederiz; düzeltme notunda isminizle (isterseniz) teşekkür edilir.
 
 Kapsam: bu depodaki Python kodu, `scripts/` altındaki kurulum ve derleme betikleri, `patches/` yaması ve Releases'taki
@@ -23,8 +23,8 @@ If you find a security vulnerability, please do not open a public issue. Use Git
 **Security → Report a vulnerability** on the repository page (or
 https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/security/advisories/new). Reports reach only the maintainer.
 
-Please include the version (`git log -1` or the Release tag), how to trigger it and the impact. Target: first reply within
-7 days. Please hold details until a fix is published; the fix notes will credit you if you wish.
+Please include the version (`git log -1` or the Release tag), how to trigger it and the impact. We try to look at reports
+as soon as we can. Please hold details until a fix is published; the fix notes will credit you if you wish.
 
 Scope: the Python code in this repository, the install/build scripts under `scripts/`, the patch in `patches/` and the
 prebuilt engine zip on Releases. Out of scope: the VoxCPM2 model, audio.cpp itself and NVIDIA CUDA packages (report upstream).
