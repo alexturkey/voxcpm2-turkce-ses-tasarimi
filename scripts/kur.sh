@@ -75,7 +75,7 @@ if adim kaynak; then
 fi
 
 if adim derle; then
-    echo "== Metal derlemesi (~5-10 dk, $PARALEL iş)"
+    echo "== Metal derlemesi (~1 dk, $PARALEL iş)"
     for tool in cmake xcrun; do command -v "$tool" >/dev/null || { echo "eksik: $tool (brew install cmake; xcode-select --install)" >&2; exit 1; }; done
     xcrun --sdk macosx --find metal >/dev/null 2>&1 || { echo "Metal derleyicisi yok: Xcode ya da 'xcodebuild -downloadComponent MetalToolchain'" >&2; exit 1; }
     (cd "$KOK/motor/src" && scripts/build_metal.sh --build-dir "$KOK/motor/build" --build-type Release --archs "$(uname -m)" \
