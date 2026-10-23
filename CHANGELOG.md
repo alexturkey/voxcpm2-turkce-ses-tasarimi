@@ -12,6 +12,11 @@
 - README TR/EN: en üstte "Hızlı başlangıç (3 adım)": kod zip'i ve CUDA / Vulkan motor paketlerinin doğrudan bağlantıları.
 - Ses klonlama politikası (README, ETHICS, AGENTS, marka sesi rehberi): klonlama yalnız kendi sesiniz ya da sahibinin
   açık izniyle; arayüz izin onayı ister; yasak kullanımlar, sorumluluk ve kötüye kullanım bildirimi.
+- Arayüze "3. Ses klonlama" bölümü (`ses_tasarim/klonla.py`, CLI `python -m ses_tasarim.klonla`): kendi sesiniz ya da
+  izinli ses (wav/mp3/flac/ogg, 5-30 sn önerilir, 36 sn üstü kırpılır) + kaydın birebir metni + okunacak metin + tohum;
+  izin onay kutusu işaretlenmeden düğme kapalı, sunucu da onaysız isteği reddeder. Kayıt ve referans kodlaması yalnız
+  geçici klasörde işlenir, iş bitince silinir; çıktı `klon_synthetic.wav` (WAV INFO "synthetic" etiketi) ve
+  "Yapay üretilmiş sestir" notu. Kalite sabit: 16 adım, cfg 2.0.
 
 **EN**
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
@@ -24,6 +29,11 @@
 - README TR/EN: a 3-step "Quick start" at the top with direct links to the code zip and the CUDA / Vulkan engine packages.
 - Voice cloning policy (README, ETHICS, AGENTS, brand voice guide): cloning only with your own voice or the owner's
   explicit permission; the UI asks you to confirm it; prohibited uses, responsibility and misuse reporting.
+- New "3. Voice cloning" section in the UI (`ses_tasarim/klonla.py`, CLI `python -m ses_tasarim.klonla`): your own or a
+  consented voice (wav/mp3/flac/ogg, 5-30 s advised, trimmed at 36 s) + its exact transcript + text to read + seed; the
+  button stays disabled until the consent box is ticked and the server rejects requests without consent. The recording
+  and its reference encoding live only in a temp folder that is deleted when the job ends; output is
+  `klon_synthetic.wav` (WAV INFO "synthetic" tag) with an "AI-generated" note. Fixed quality: 16 steps, cfg 2.0.
 
 ## v0.1.1 — 2026-10-23
 

@@ -4,9 +4,14 @@ Simple local web UI (127.0.0.1 only, stdlib http.server). Prints the address; do
 python -m ses_tasarim.arayuz [--ayarlar ayarlar.json] [--port 8765]
 
 Akış / flow: Tasarla → çeşitleri dinle → birini seç → Bu sesle oku → indir.  Hazır sesle oku: listeden seç → metin → oku.
-Dışarıdan ses yükleme yoktur (gerçek kişi sesi klonlanmaz). / No audio upload: real voices are never cloned.
+Ses tasarımı kayıt istemez. Ses klonlama bölümü yalnız kendi sesiniz ya da sahibinden açık izin alınmış ses içindir;
+onay kutusu işaretlenmeden çalışmaz, kayıt yalnız yerelde işlenir ve iş bitince silinir.
+Voice design needs no recording. The cloning section is only for your own or a consented voice; it requires the consent
+checkbox, processes the upload locally and deletes it when the job ends.
 """
 import argparse
+import base64
+import binascii
 import json
 import mimetypes
 import queue
@@ -41,8 +46,8 @@ button:disabled{opacity:.5;cursor:default}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
 </style></head><body>
 <h1>VoxCPM2 Türkçe Ses Tasarımı <small>· 4 GB GPU</small></h1>
-<div class="uyari">Üretilen her ses yapay zekâ ürünüdür; paylaşırken belirtin. Gerçek kişi sesi yüklenmez, klonlanmaz.
-<br><small>Every generated voice is synthetic; label it as AI-generated when sharing. No real voice is uploaded or cloned.</small></div>
+<div class="uyari">Üretilen her ses yapay zekâ ürünüdür; paylaşırken belirtin. Ses tasarımı (1-2) kayıt istemez; ses klonlama (3) yalnız kendi sesiniz ya da sahibinden açık izin alınmış sesle.
+<br><small>Every generated voice is synthetic; label it as AI-generated when sharing. Voice design (1-2) needs no recording; voice cloning (3) only with your own voice or the owner's explicit permission.</small></div>
 
 <section><h2>1. Ses tasarla <small>(voice design)</small></h2>
 <div class="row"><div><label>Sesin adı (voice name)</label><input id="ad" placeholder="deniz_feneri"></div>
@@ -62,6 +67,22 @@ Gerçek bir kişiye ait değildir. || paragraf
 Şimdi istediğiniz metni okuyabilir."></textarea>
 <button id="btn_oku">Bu sesle oku</button><div id="d_oku" class="durum"></div>
 <div id="sonuc"></div></section>
+
+<section><h2>3. Ses klonlama: kendi sesin ya da izinli ses <small>(voice cloning: own or consented voice)</small></h2>
+<div class="uyari">Yalnız kendi sesiniz ya da sahibinden açık izin aldığınız ses. Kayıt yalnız bu bilgisayarda işlenir, saklanmaz, hiçbir yere gönderilmez; iş bitince geçici dosya silinir.
+<br><small>Only your own voice or a voice whose owner gave explicit permission. The recording is processed on this computer only, never stored or sent anywhere; the temp file is deleted when the job ends.</small></div>
+<label>Ses kaydı: wav / mp3 / flac / ogg, 5-30 sn temiz konuşma önerilir, 36 sn üstü kırpılır (recording, 5-30 s advised, trimmed at 36 s)</label>
+<input id="klon_dosya" type="file" accept=".wav,.mp3,.flac,.ogg,audio/*"><div id="klon_bilgi" class="durum"></div>
+<label>Kaydın birebir metni, zorunlu: kayıtta ne söyleniyorsa aynısı (exact transcript of the recording, required)</label>
+<textarea id="klon_kayit_metni" placeholder="Kayıtta söylediğim cümleler kelimesi kelimesine buraya."></textarea>
+<label>Okunacak metin: her satır bir cümle (text to read, one sentence per line)</label>
+<textarea id="klon_metin" placeholder="Bu kendi sesimin yapay bir kopyasıdır."></textarea>
+<div class="row"><div><label>Tohum (seed; aynı tohum = aynı sonuç)</label><input id="klon_tohum" type="number" value="42" min="0"></div>
+<div><label>Kalite (sabit / fixed)</label><input value="16 adım, cfg 2.0" disabled></div></div>
+<label style="color:var(--fg)"><input id="klon_onay" type="checkbox" style="width:auto"> Bu ses bana ait ya da sahibinden açık izin aldım; taklit/dolandırıcılık/yanıltma için kullanmayacağım.
+<br><small>This voice is mine or I have the owner's explicit permission; I will not use it for impersonation, fraud or deception.</small></label>
+<button id="btn_klon" disabled>Klonla ve oku (clone and read)</button><div id="d_klon" class="durum"></div>
+<div id="klon_sonuc"></div></section>
 
 <section><h2>Hazır sesler <small>(bundled voices)</small></h2><div id="hazir"></div></section>
 <script>
@@ -91,6 +112,18 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;$('sonuc').i
  const s=await bekle(j.is,$('d_oku'));b.disabled=false;if(s.durum!=='bitti')return;
  $('sonuc').innerHTML=`<audio controls src="/okuma/${s.sonuc.is}/okuma.wav"></audio> <a href="/okuma/${s.sonuc.is}/okuma.wav" download="okuma.wav"><button>İndir (download)</button></a>
   <div><small>${s.sonuc.ses_sn} sn ses, ${s.sonuc.sure_sn} sn üretim, VRAM tepe ${s.sonuc.vram_tepe_mb} MB, tohum ${s.sonuc.tohum}</small></div>`;};
+const klonHazir=()=>{$('btn_klon').disabled=!($('klon_onay').checked&&$('klon_dosya').files.length&&$('klon_kayit_metni').value.trim()&&$('klon_metin').value.trim());};
+['klon_onay','klon_dosya','klon_kayit_metni','klon_metin'].forEach(id=>{$(id).addEventListener('input',klonHazir);$(id).addEventListener('change',klonHazir);});
+$('klon_dosya').addEventListener('change',()=>{const f=$('klon_dosya').files[0];if(!f)return;const u=URL.createObjectURL(f);const a=new Audio();a.onloadedmetadata=()=>{const d=a.duration;
+ $('klon_bilgi').textContent=d.toFixed(1)+' sn'+(d>36?' · 36 sn üstü kırpılacak, kayıt metni ilk 36 sn ile eşleşmeli (trimmed to 36 s)':d<5?' · kısa, 5-30 sn önerilir':'');URL.revokeObjectURL(u);};a.src=u;});
+function b64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);}
+$('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn_klon');b.disabled=true;$('klon_sonuc').innerHTML='';
+ const f=$('klon_dosya').files[0];const j=await api('/api/klon',{onay:true,kayit:b64(await f.arrayBuffer()),kayit_metni:$('klon_kayit_metni').value,metin:$('klon_metin').value,tohum:+$('klon_tohum').value});
+ if(j.hata){$('d_klon').textContent=j.hata;$('d_klon').className='durum hata';klonHazir();return;}
+ const s=await bekle(j.is,$('d_klon'));klonHazir();if(s.durum!=='bitti')return;const r=s.sonuc;
+ $('klon_sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/${r.dosya}"></audio> <a href="/okuma/${r.is}/${r.dosya}" download="${r.dosya}"><button>İndir (download)</button></a>
+  <div class="uyari"><b>Yapay üretilmiş sestir.</b> Paylaşırken belirtin. <small>AI-generated synthetic speech; label it when sharing.</small></div>
+  <div><small>${r.ses_sn} sn ses, ${r.sure_sn} sn üretim, VRAM tepe ${r.vram_tepe_mb} MB, tohum ${r.tohum}, referans ${r.referans_sn} sn</small>${(r.notlar||[]).map(n=>'<br><small>'+esc(n)+'</small>').join('')}</div>`;};
 yenile();
 </script></body></html>
 """
@@ -134,6 +167,15 @@ class Isler:
                                              int(payload.get("cesit") or 3), None, progress)
                     self._set(job_id, durum="bitti", sonuc=result,
                               mesaj=f"bitti: {len(result['cesitler'])} çeşit, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB")
+                elif kind == "klon":
+                    from . import klonla
+                    data = base64.b64decode(payload.pop("kayit"))
+                    result = klonla.klonla(self.settings, data, payload["kayit_metni"], payload["metin"],
+                                           self.settings["sesler"] / "_okumalar" / job_id, payload.get("onay"),
+                                           payload.get("tohum"), progress)
+                    del data
+                    result["is"] = job_id
+                    self._set(job_id, durum="bitti", sonuc=result, mesaj="bitti: yapay ses hazır (synthetic)")
                 else:
                     voice_dir = oku.find_voice(self.settings, payload["ses"])
                     out_dir = self.settings["sesler"] / "_okumalar" / job_id
@@ -149,6 +191,7 @@ def make_handler(settings, jobs: Isler):
 
     class Handler(BaseHTTPRequestHandler):
         MAX_BODY = 1_000_000  # 1 MB: metin kutuları için fazlasıyla yeter / plenty for the text boxes
+        MAX_KLON_BODY = 35_000_000  # klon: base64 ses (25 MB dosya sınırı) + metin / cloning upload as base64
 
         def log_message(self, fmt, *args):  # sessiz / quiet
             pass
@@ -217,8 +260,9 @@ def make_handler(settings, jobs: Isler):
             if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
                 return self._json({"hata": "Content-Type: application/json gerekli"}, 415)
             length = int(self.headers.get("Content-Length") or 0)
-            if length <= 0 or length > self.MAX_BODY:
-                return self._json({"hata": f"istek gövdesi 1 ile {self.MAX_BODY} bayt arasında olmalı"}, 413)
+            limit = self.MAX_KLON_BODY if self.path == "/api/klon" else self.MAX_BODY
+            if length <= 0 or length > limit:
+                return self._json({"hata": f"istek gövdesi 1 ile {limit} bayt arasında olmalı"}, 413)
             try:
                 payload = json.loads(self.rfile.read(length) or b"{}")
             except (json.JSONDecodeError, UnicodeDecodeError):
@@ -242,6 +286,21 @@ def make_handler(settings, jobs: Isler):
                 if found:
                     return self._json({"hata": "\n".join(found)}, 400)
                 return self._json({"is": jobs.submit("oku", payload)})
+            if self.path == "/api/klon":
+                from . import klonla
+                found = klonla.check(payload.get("kayit_metni", ""), payload.get("metin", ""), payload.get("onay"))
+                try:
+                    data = base64.b64decode(str(payload.get("kayit") or ""), validate=True)
+                except (binascii.Error, ValueError):
+                    data = b""
+                if not data:
+                    found.append("ses kaydı yok ya da okunamadı (recording missing)")
+                elif len(data) > klonla.MAX_UPLOAD_BYTES:
+                    found.append("ses dosyası 25 MB'tan büyük")
+                if found:
+                    return self._json({"hata": "\n".join(found)}, 400)
+                return self._json({"is": jobs.submit("klon", {k: payload.get(k) for k in
+                                                              ("kayit", "kayit_metni", "metin", "onay", "tohum")})})
             self.send_error(404)
 
     return Handler
