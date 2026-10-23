@@ -10,6 +10,24 @@ ready-made synthetic voices.
 > Every voice here is synthetic: designed from a text description, never recorded from or cloned off a real person.
 > Label what you generate as AI-generated. No audio upload, no voice cloning of real people.
 
+## Quick start (Windows, 3 steps)
+
+1. **Download** the code: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
+   The ready-made engine package for your card is fetched by the installer in step 3:
+   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan package, experimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   (already downloaded one? add `-HazirZip <path to the zip>` to the command below).
+2. **Extract** the zip, open the `voxcpm2-turkce-ses-tasarimi-main` folder, type `powershell` in the Explorer address
+   bar and press Enter.
+3. **Run** the installer (needs 64-bit Python 3.10–3.13; NVIDIA driver ≥ 570 for CUDA), then double-click **`baslat.bat`**:
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
+   ```
+   AMD / Intel: add `-Vulkan` at the end. The UI opens at http://127.0.0.1:8765/.
+
+The engine zip is not a standalone app (its exe needs the model and DLLs that the installer sets up). Details, GPU
+list and common problems: "Quick install" below.
+
 ## How it works
 
 1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of

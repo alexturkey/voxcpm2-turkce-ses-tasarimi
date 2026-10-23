@@ -9,6 +9,25 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 > Buradaki her ses yapaydır: bir metin tarifinden tasarlanmıştır, hiçbir gerçek kişiden kaydedilmemiş ya da
 > klonlanmamıştır. Ürettiğiniz sesi yapay zekâ ürünü olarak etiketleyin. Dışarıdan ses yükleme ve gerçek kişi klonlama yoktur.
 
+## Hızlı başlangıç (Windows, 3 adım)
+
+1. **İndir:** kodu indirin: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
+   Kartınıza uygun hazır motor paketini 3. adımdaki kurulum kendisi indirir:
+   NVIDIA → [CUDA paketi](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan paketi, deneysel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   (paketi elle indirdiyseniz aşağıdaki komutun sonuna `-HazirZip <zip'in yolu>` ekleyin).
+2. **Aç:** zip'i açın, `voxcpm2-turkce-ses-tasarimi-main` klasörüne girin, Gezgin'in adres çubuğuna `powershell` yazıp
+   Enter'a basın.
+3. **Çalıştır:** kurulumu başlatın (64-bit Python 3.10–3.13 gerekir; CUDA için NVIDIA sürücüsü ≥ 570), sonra
+   **`baslat.bat`**'a çift tıklayın:
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
+   ```
+   AMD / Intel: sonuna `-Vulkan` ekleyin. Arayüz http://127.0.0.1:8765/ adresinde açılır.
+
+Motor zip'i tek başına çalışan bir uygulama değildir (içindeki exe, kurulumun yerleştirdiği modele ve DLL'lere ihtiyaç
+duyar). Ayrıntı, kart listesi ve sık sorunlar: aşağıdaki "Hızlı kurulum".
+
 ## Nasıl çalışır
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi

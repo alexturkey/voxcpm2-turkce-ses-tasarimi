@@ -9,6 +9,7 @@
 - Issue formları: hata bildirimi ve özellik önerisi; Discussions (Q&A, Ideas, Show and tell) ve güvenlik yönlendirmesi.
 - Davranış kuralları: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Türkçe özet; bildirim GitHub özel bildirim yolu).
 - `SECURITY.md`: sabit yanıt süresi kaldırıldı; bildirimlere en kısa sürede bakılır.
+- README TR/EN: en üstte "Hızlı başlangıç (3 adım)": kod zip'i ve CUDA / Vulkan motor paketlerinin doğrudan bağlantıları.
 
 **EN**
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
@@ -18,6 +19,7 @@
 - Issue forms: bug report and feature request; links to Discussions (Q&A, Ideas, Show and tell) and the security policy.
 - Code of Conduct: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, Turkish summary; reports via GitHub private reporting).
 - `SECURITY.md`: removed the fixed reply time; reports are looked at as soon as we can.
+- README TR/EN: a 3-step "Quick start" at the top with direct links to the code zip and the CUDA / Vulkan engine packages.
 
 ## v0.1.1 — 2026-10-23
 
