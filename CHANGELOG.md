@@ -3,6 +3,17 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- macOS (Apple Silicon, Metal) desteği: `scripts/kur.sh` (aynı sabit model ve kaynak, sha256 kontrolü, yama, ~1 dk Metal
+  derlemesi, `.venv`, `ayarlar.json` `"backend": "metal"`, GPU kontrolü) ve çift tıkla başlatan `baslat.command`. Yamada
+  değişiklik gerekmedi. `motor.py` macOS'ta GPU belleğini `ioreg` ile ölçer (arayüzdeki "VRAM tepe"). MacBook Air M4
+  16 GB ölçümleri (1 sn ses ≈ 2 sn, aynı tohum bayt bayt aynı, ~5,3 GB RAM, 12 dk'da ısınmadan kaynaklı yavaşlama yok):
+  `docs/mac.md`.
+- `oku`: komut satırında göreli `--cikti` yolu (ör. `cikti/deneme`) referans yolunu ikiliyor, motor "could not open WAV
+  input" ile düşüyordu; yol artık mutlak yapılıyor (her platformda; arayüz etkilenmiyordu).
+- `macos/`: native SwiftUI Mac uygulaması (Apple Silicon, macOS 14+). Web arayüzündeki üç bölüm; yamalı motor uygulamanın
+  içinde, model ilk açılışta indirilir (sha256, duraklat/sürdür). Klonlama izin kapısı korunur. `hazir_sesler/` ve
+  `ayarlar/okunus_sozlugu.tsv` repodan kullanılır, `ses.json` kartları iki sürüm arasında taşınabilir. Ayrıntılar:
+  `macos/README.md`.
 - `baslat.bat`: arayüzü çift tıkla başlatır, hazır olunca tarayıcıda açar; kurulum yoksa kurulum komutunu gösterir.
 - README TR/EN: Vulkan kurulum komutundaki bozuk `C:\vox` düzeltildi (AGENTS.md de); Git'siz kurulum (Download ZIP),
   "hangi kartım var" kontrolü, sık kurulum sorunları tablosu, "Katkıda bulunanlar" bölümü.
@@ -23,6 +34,16 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- macOS (Apple Silicon, Metal) support: `scripts/kur.sh` (same pinned model and source, sha256 checks, patch, ~1 min Metal
+  build, `.venv`, `ayarlar.json` with `"backend": "metal"`, GPU check) and a double-click `baslat.command`. The patch needed
+  no change. `motor.py` measures GPU memory with `ioreg` on macOS (the UI's "VRAM tepe"). MacBook Air M4 16 GB
+  measurements (~2 s per 1 s of audio, same seed byte-identical, ~5.3 GB RAM, no thermal slowdown over 12 min): `docs/mac.md`.
+- `oku`: a relative `--cikti` path on the command line (e.g. `cikti/deneme`) doubled the reference path and the engine
+  failed with "could not open WAV input"; the path is now made absolute (all platforms; the web UI was not affected).
+- `macos/`: native SwiftUI Mac app (Apple Silicon, macOS 14+) with the web UI's three sections; the patched engine is
+  inside the app, the model is downloaded on first launch (sha256, pause/resume). The cloning consent gate is kept.
+  Uses the repo's `hazir_sesler/` and `ayarlar/okunus_sozlugu.tsv`; `ses.json` cards move between both versions.
+  Details: `macos/README.md`.
 - `baslat.bat`: double-click to start the web UI; it opens the browser when ready and shows the install command if
   nothing is installed yet.
 - README TR/EN: fixed the broken `C:\vox` in the Vulkan install command (AGENTS.md too); install without Git (Download

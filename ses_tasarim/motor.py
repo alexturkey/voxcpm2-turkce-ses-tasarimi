@@ -27,8 +27,20 @@ class MotorHatasi(RuntimeError):
     pass
 
 
+def _gpu_used_mb() -> int:
+    """GPU'nun kullandığı bellek (MB). macOS: ioreg 'In use system memory' (birleşik bellek, sudo gerekmez).
+    GPU memory in use. macOS: ioreg 'In use system memory' (unified memory, no sudo)."""
+    if sys.platform == "darwin":
+        out = subprocess.run(["ioreg", "-r", "-d", "1", "-c", "IOAccelerator"], capture_output=True, text=True,
+                             timeout=5).stdout
+        return int(out.split('"In use system memory"=')[1].split(",")[0].split("}")[0]) // (1024 * 1024)
+    out = subprocess.run(["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
+                         capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
+    return int(out.strip().splitlines()[0])
+
+
 class VramWatcher:
-    """nvidia-smi ile VRAM tepe ölçümü (yoksa 0). / Peak VRAM via nvidia-smi."""
+    """VRAM tepe ölçümü: nvidia-smi, macOS'ta ioreg (yoksa 0). / Peak VRAM via nvidia-smi, or ioreg on macOS."""
 
     def __init__(self):
         self.peak_mb = 0
@@ -38,9 +50,7 @@ class VramWatcher:
     def _loop(self):
         while not self._stop.is_set():
             try:
-                out = subprocess.run(["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
-                                     capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
-                self.peak_mb = max(self.peak_mb, int(out.strip().splitlines()[0]))
+                self.peak_mb = max(self.peak_mb, _gpu_used_mb())
             except Exception:
                 pass
             self._stop.wait(0.5)

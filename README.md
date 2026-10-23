@@ -5,7 +5,7 @@ variant you like, then read any Turkish text with that voice. Includes a one-com
 [audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and seven
 ready-made synthetic voices.
 
-[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
+[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
 > The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
 > voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
@@ -28,6 +28,23 @@ ready-made synthetic voices.
 
 The engine zip is not a standalone app (its exe needs the model and DLLs that the installer sets up). Details, GPU
 list and common problems: "Quick install" below.
+
+## Quick start (macOS, Apple Silicon)
+
+Needs Xcode Command Line Tools (`xcode-select --install`) and [Homebrew](https://brew.sh):
+```bash
+brew install cmake python@3.12
+git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
+cd voxcpm2-turkce-ses-tasarimi
+bash scripts/kur.sh
+```
+The installer downloads the model, builds the patched engine with Metal (~1 min) and sets everything up under `~/vox`.
+Then double-click **`baslat.command`**. On a MacBook Air M4 16 GB: ~2 s of compute per 1 s of speech, same seed gives
+byte-identical audio, peak ~5.3 GB RAM, no thermal slowdown over 12 min of continuous reading. Details and
+measurements: [docs/mac.md](docs/mac.md).
+
+**Native Mac app (no Python, Homebrew or Terminal):** [macos/README.md](macos/README.md). It bundles the same
+patched engine and downloads the model on first launch; for now it is built from source with Xcode.
 
 ## How it works
 

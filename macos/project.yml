@@ -1,0 +1,85 @@
+name: SesTasarimi
+options:
+  bundleIdPrefix: com.sestasarimi
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ARCHS: arm64
+    # takım yok: yerel imzayla derlenir; dağıtım için Xcode'da kendi takımınızı seçin ya da DEVELOPMENT_TEAM=<takım> verin
+    # no team: builds with a local (ad-hoc) signature; pick your own team in Xcode or pass DEVELOPMENT_TEAM=<team>
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  SesTasarimi:
+    type: application
+    platform: macOS
+    sources:
+      - path: SesTasarimi
+      # reponun kendi dosyaları, kopya yok / the repo's own files, no copies
+      - path: ../hazir_sesler
+        type: folder
+        buildPhase: resources
+      - path: ../ayarlar/okunus_sozlugu.tsv
+        buildPhase: resources
+      - path: ../LICENSE
+        buildPhase: resources
+      - path: ../NOTICE
+        buildPhase: resources
+      - path: ../ETHICS.md
+        buildPhase: resources
+      - path: THIRD_PARTY.md
+        buildPhase: resources
+      - path: Vendor/motor/audiocpp_cli
+        buildPhase:
+          copyFiles:
+            destination: executables
+        attributes: [CodeSignOnCopy]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sestasarimi.mac
+        PRODUCT_NAME: SesTasarimi
+        INFOPLIST_KEY_CFBundleDisplayName: "Ses Tasarımı"
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Apache-2.0. VoxCPM2 (Apache-2.0), audio.cpp (Apache-2.0), ggml (MIT)."
+        GENERATE_INFOPLIST_FILE: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        CODE_SIGN_ENTITLEMENTS: SesTasarimi/SesTasarimi.entitlements
+    preBuildScripts:
+      - name: Motor var mı / engine present
+        script: |
+          if [ ! -x "${SRCROOT}/Vendor/motor/audiocpp_cli" ]; then
+            echo "error: Vendor/motor/audiocpp_cli yok. Önce: bash scripts/motoru_derle.sh"
+            exit 1
+          fi
+        inputFiles:
+          - $(SRCROOT)/Vendor/motor/audiocpp_cli
+  SesTasarimiTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - SesTasarimiTests
+    dependencies:
+      - target: SesTasarimi
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sestasarimi.mac.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/SesTasarimi.app/Contents/MacOS/SesTasarimi"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  SesTasarimi:
+    build:
+      targets:
+        SesTasarimi: all
+        SesTasarimiTests: [test]
+    test:
+      targets:
+        - SesTasarimiTests

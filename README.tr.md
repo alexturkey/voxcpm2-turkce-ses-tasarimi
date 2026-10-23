@@ -4,7 +4,7 @@
 seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, GTX 1050 Ti'ye (4 GB) sığdırılmış yamalı
 [audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve yedi hazır yapay ses içerir.
 
-[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
+[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
 > Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
 > izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
@@ -28,6 +28,23 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 
 Motor zip'i tek başına çalışan bir uygulama değildir (içindeki exe, kurulumun yerleştirdiği modele ve DLL'lere ihtiyaç
 duyar). Ayrıntı, kart listesi ve sık sorunlar: aşağıdaki "Hızlı kurulum".
+
+## Hızlı başlangıç (macOS, Apple Silicon)
+
+Xcode Command Line Tools (`xcode-select --install`) ve [Homebrew](https://brew.sh) gerekir:
+```bash
+brew install cmake python@3.12
+git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
+cd voxcpm2-turkce-ses-tasarimi
+bash scripts/kur.sh
+```
+Kurulum modeli indirir, yamalı motoru Metal ile derler (~1 dk) ve her şeyi `~/vox` altına kurar. Sonra
+**`baslat.command`** dosyasına çift tıklayın. MacBook Air M4 16 GB'ta 1 sn ses ≈ 2 sn sürüyor; aynı tohum bayt bayt aynı
+sesi veriyor, RAM kullanımı en fazla ~5,3 GB ve 12 dk kesintisiz okumada ısınmadan kaynaklı yavaşlama olmadı. Ayrıntılar
+ve ölçümler: [docs/mac.md](docs/mac.md).
+
+**Native Mac uygulaması (Python, Homebrew ve Terminal gerekmez):** [macos/README.md](macos/README.md). Aynı yamalı
+motoru içinde taşır, modeli ilk açılışta indirir; şimdilik Xcode ile kaynaktan derlenir.
 
 ## Nasıl çalışır
 
