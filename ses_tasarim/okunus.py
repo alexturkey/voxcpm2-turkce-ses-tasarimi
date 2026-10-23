@@ -59,7 +59,12 @@ def apply_dictionary(text: str, rules: tuple = None) -> str:
 
 
 def strip_quotes(text: str) -> str:
-    return re.sub(r"\s{2,}", " ", QUOTE_MARKS.sub("", text)).strip()
+    """Tırnakları atar, boşlukları sadeleştirir; satır sonu (boş satır dahil) cümle sınırı olarak kalır.
+
+    Removes quotes, collapses spaces; line breaks (blank lines too) stay as sentence boundaries.
+    """
+    text = re.sub(r"[^\S\n]*\n[^\S\n]*", "\n", QUOTE_MARKS.sub("", text))  # satır sonundaki boşluk ve \r gider
+    return re.sub(r"[^\S\n]{2,}", " ", text).strip()
 
 
 def spoken(text: str) -> str:

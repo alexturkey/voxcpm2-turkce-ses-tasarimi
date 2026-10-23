@@ -55,9 +55,11 @@ Sampled every second (`ps`, `ioreg` IOAccelerator, `memory_pressure`, `pmset -g 
 | Engine CPU | 15-24 % average | short peaks (up to ~6 cores) during reference encoding and final decode |
 
 What this means in practice:
-- **16 GB:** comfortable. You can keep a browser and other light apps open.
-- **8 GB:** not tested. The engine needs ~5.3 GB, so it should run with few other apps open; expect swapping, a slower run,
-  and close heavy apps first. Reports welcome in Discussions.
+- **16 GB:** comfortable, and recommended. You can keep a browser and other light apps open.
+- **8 GB:** not tested by us. The engine needs ~5.3 GB. One user report on an 8 GB M1 Air
+  ([Discussion #11](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions/11), audio.cpp Q8 GGUF, with
+  Whisper, a browser and other apps open): the rest of the system froze, swap reached ~11.4 GB, and under memory pressure
+  3.04 s of audio took 139.3 s. If you try 8 GB, close other apps first. Reports welcome in Discussions.
 - **Fanless Air:** no slowdown seen over 12 minutes of continuous load. The chassis gets warm. Much longer jobs (an
   hour of audio) were not tested.
 - One job at a time, as on Windows (the UI already queues jobs).
@@ -81,4 +83,7 @@ MacBook Air M4 16 GB (fansız) ölçümleri:
   boş bellek kaldı.
 - Yük: GPU %80-97 dolu, CPU ortalama %15-24.
 
-8 GB Mac'te ve M1-M3'te denenmedi; denerseniz sonucu Discussions'a yazın.
+16 GB bellek önerilir. 8 GB'lık M1 Air'de bir kullanıcı çok yavaş çalışma ve donma bildirdi
+([Discussions #11](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions/11); audio.cpp Q8 GGUF, yanında
+Whisper ve tarayıcı açık): takas ~11,4 GB'a çıktı, bellek baskısında 3,04 sn ses 139,3 sn sürdü. 8 GB'ta denerseniz önce
+diğer uygulamaları kapatın. Biz 8 GB Mac'te ve M1-M3'te denemedik; denerseniz sonucu Discussions'a yazın.

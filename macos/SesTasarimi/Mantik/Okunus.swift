@@ -100,7 +100,10 @@ enum Okunus {
 
     static func tirnaklariAt(_ metin: String) -> String {
         let temiz = String(metin.filter { !tirnaklar.contains($0) })
-        return temiz.replacingOccurrences(of: "\\s{2,}", with: " ", options: .regularExpression)
+        // Satır sonu (boş satır dahil) cümle sınırı olarak kalır; Python okunus.strip_quotes ile birebir.
+        // Line breaks (blank lines too) stay as sentence boundaries; mirrors Python okunus.strip_quotes.
+        return temiz.replacingOccurrences(of: "[^\\S\\n]*\\n[^\\S\\n]*", with: "\n", options: .regularExpression)
+            .replacingOccurrences(of: "[^\\S\\n]{2,}", with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 

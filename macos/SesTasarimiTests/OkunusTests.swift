@@ -50,8 +50,15 @@ final class OkunusTests: XCTestCase {
     }
 
     func testTirnakTemizligi() {
-        // Python: re.sub(r"\s{2,}", " ", ...) — iki ve daha fazla boşluk (satır sonu dahil) tek boşluk olur
+        // Python okunus.strip_quotes ile aynı: satır içi boşluk tek boşluk olur, satır sonu korunur
         XCTAssertEqual(Okunus.tirnaklariAt("  \"Merhaba\"   dünya  "), "Merhaba dünya")
+        XCTAssertEqual(Okunus.tirnaklariAt("A.\n\nB."), "A.\n\nB.")
+        XCTAssertEqual(Okunus.tirnaklariAt("A. \r\n  B."), "A.\nB.")
+    }
+
+    func testBosSatirCumleSiniri() throws {
+        // Boş satır iki cümleyi birleştirmez (PR #10 bulgusu) / A blank line no longer merges two sentences
+        XCTAssertEqual(try Okunus.satirlar(Okunus.tirnaklariAt("A.\n\nB.")).map(\.metin), ["A.", "B."])
     }
 
     func testKisaAdVeTasarimDenetimi() {
