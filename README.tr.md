@@ -2,13 +2,47 @@
 
 **4 GB ekran kartında VoxCPM2 ile Türkçe ses tasarımı.** Sesi İngilizce tarif edin, model yaratsın, beğendiğiniz çeşidi
 seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, GTX 1050 Ti'ye (4 GB) sığdırılmış yamalı
-[audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve yedi hazır yapay ses içerir.
+[audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve on dört hazır yapay ses içerir: yedi Türkçe ses ve İngilizce, Fransızca, Almanca,
+İspanyolca, Rusça, Çince, Japonca yedi yerli anlatıcı (toplam 8 dil).
 
 [English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
 > Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
 > izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
 > yapay zekâ ürünü olarak etiketleyin. Bkz. [ETHICS.md](ETHICS.md).
+
+## Çok dilli: 8 dil, yerli anlatıcılar, cümle cümle tutarlılık
+
+Bir Kapadokya tanıtım videosunu 8 dilde ürettik: Türkçe, İngilizce, Fransızca, Almanca, İspanyolca, Rusça, Çince ve
+Japonca. Her dilin kendi **yerli anlatıcısı** var; hepsi VoxCPM2 ile İngilizce bir tariften tasarlandı. Hepsi 4 GB'lık
+GTX 1050 Ti'de, tamamen yerelde, aynı sabit kaliteyle (16 adım, cfg 2.0) üretildi. Yedi yabancı dil anlatıcısı istemi,
+tasarım metni, tohumu ve referans kaydıyla burada.
+
+| Kod | Dil | Ses | Dinle | Video |
+|---|---|---|---|---|
+| `tr` | Türkçe | `hazir/belgesel_hanim` (ve 6 ses daha) | [örnek](hazir_sesler/belgesel_hanim/ornek_okuma.mp3) | |
+| `en` | İngilizce | `hazir/anlatici_en` | [örnek](hazir_sesler/anlatici_en/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791986763440439) |
+| `fr` | Fransızca | `hazir/anlatici_fr` | [örnek](hazir_sesler/anlatici_fr/ornek_okuma.mp3) | [video](https://x.com/i/status/2113790681575804962) |
+| `de` | Almanca | `hazir/anlatici_de` | [örnek](hazir_sesler/anlatici_de/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791351645262249) |
+| `es` | İspanyolca | `hazir/anlatici_es` | [örnek](hazir_sesler/anlatici_es/ornek_okuma.mp3) | [video](https://x.com/i/status/2113807365611122705) |
+| `ru` | Rusça | `hazir/anlatici_ru` | [örnek](hazir_sesler/anlatici_ru/ornek_okuma.mp3) | [video](https://x.com/i/status/2113801574136848884) |
+| `zh` | Çince (Mandarin) | `hazir/anlatici_zh` | [örnek](hazir_sesler/anlatici_zh/ornek_okuma.mp3) | [video](https://x.com/i/status/2113802229606121794) |
+| `ja` | Japonca | `hazir/anlatici_ja` | [örnek](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
+
+```powershell
+# dil sesin kartından gelir; --dil ile değiştirilebilir
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @metin_ja.txt --cikti cikti\ja
+# başka dilde ses tasarla: istem İngilizce, tasarım metni o dilde
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad anlatici_es_yeni --dil es --cesit 3 --tarif "A deep-voiced Spanish man ..." --metin @texto.txt
+```
+
+**Neden cümle cümle.** VoxCPM2 tek seferde uzun üretimde (yaklaşık 30 saniye üstü) kararlı değildir: ritim hızlanır,
+ses kayabilir. Burada sesi sabit bir referans kayıt ve tohum taşır, uzun metin satır satır (cümle cümle) okunur; tını ve
+tarz ilk cümleden son cümleye aynı kalır. Türkçe dışındaki dillerde Türkçe okunuş sözlüğü uygulanmaz. VoxCPM2'nin
+desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik. Dil dil komutlar ve bulduğumuz çözümler:
+[docs/cok_dilli.md](docs/cok_dilli.md). Bütün tasarım akışı için Claude Code becerisi:
+[.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
 ## Hızlı başlangıç (Windows, 3 adım)
 
@@ -60,7 +94,7 @@ için ≈ 2 sn. Ayrıntı ve ölçümler: [docs/4gb.md](docs/4gb.md).
 
 ## Hazır sesler (`hazir_sesler/`)
 
-Yedisi de `ses.json` içindeki tariflerden tasarlandı; hiçbiri bir kayıttan klonlanmadı (klonlama ayrı ve izin onaylı
+On dördü de `ses.json` içindeki tariflerden tasarlandı; hiçbiri bir kayıttan klonlanmadı (klonlama ayrı ve izin onaylı
 3. bölümdür).
 
 | Ses | Kısa tarif | Dinle |
@@ -72,9 +106,18 @@ Yedisi de `ses.json` içindeki tariflerden tasarlandı; hiçbiri bir kayıttan k
 | `masal_cadisi` | Masal cadısı: pes, hafif genizli, sinsi tatlı | [örnek](hazir_sesler/masal_cadisi/ornek_okuma.mp3) · [referans](hazir_sesler/masal_cadisi/referans.flac) |
 | `tok_anlatici` | Çok derin, tok, buyurgan erkek anlatıcı | [örnek](hazir_sesler/tok_anlatici/ornek_okuma.mp3) · [referans](hazir_sesler/tok_anlatici/referans.flac) |
 | `yasli_bilge` | Yaşlı bilge, derin ve gür, hafif gizemli | [örnek](hazir_sesler/yasli_bilge/ornek_okuma.mp3) · [referans](hazir_sesler/yasli_bilge/referans.flac) |
+| `anlatici_en` | Ellili yaşlarda yerli İngilizce erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_en/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_en/referans.flac) |
+| `anlatici_fr` | Ellili yaşlarda yerli Fransızca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_fr/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_fr/referans.flac) |
+| `anlatici_de` | Ellili yaşlarda yerli Almanca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_de/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_de/referans.flac) |
+| `anlatici_es` | Ellili yaşlarda yerli İspanyolca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_es/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_es/referans.flac) |
+| `anlatici_ru` | Ellili yaşlarda yerli Rusça erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_ru/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_ru/referans.flac) |
+| `anlatici_zh` | Ellili yaşlarda yerli Çince (Mandarin) erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_zh/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_zh/referans.flac) |
+| `anlatici_ja` | Ellili yaşlarda yerli Japonca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_ja/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_ja/referans.flac) |
 
 Her klasörde: `referans.flac` (kayıpsız tasarım kaydı), `ses.json` (tarif, metin, tasarım tohumu, okuma tohumu,
-tanıtım), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`.
+tanıtım; anlatıcılarda `dil`), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`.
+Anlatıcıların referans kayıtları kısadır (5,6-10 sn); örnekleri Kapadokya metninin ilk üç cümlesidir, üretimdeki tam
+okumadan kesildi.
 
 ## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
@@ -164,7 +207,9 @@ Komut satırı:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
-satır ≤ 2000 karakter. Yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
+satır ≤ 2000 karakter. Türkçe metindeki yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
+Başka diller: `--dil <kod>` (ya da sesin kartındaki `dil`); orada kesme işaretine izin verilir, Türkçe sözlük
+uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
 adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit

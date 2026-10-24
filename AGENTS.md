@@ -112,7 +112,8 @@ driver is too old.
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
 ```
-Expected: `Hazır sesler` followed by 7 voices (`hazir/belgesel_hanim` … `hazir/yasli_bilge`).
+Expected: `Hazır sesler` followed by 14 voices: `hazir/anlatici_de` … `hazir/anlatici_zh` (language column `de` … `zh`)
+and the 7 Turkish voices `hazir/belgesel_hanim` … `hazir/yasli_bilge` (`tr`).
 
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin "Merhaba, bu bir deneme okumasıdır." --cikti cikti\ilk
@@ -126,6 +127,13 @@ Design test (~1 min):
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deneme --cesit 1 --tohum 42 --tarif "A calm Turkish woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise." --metin "Merhaba, ben sakin sesli bir anlatıcıyım. Uzun yolculukları, eski şehirleri ve küçük insan hikâyelerini anlatmayı severim. Sesim yavaş ve sıcaktır; dinleyeni acele ettirmez, her cümleye nefes aldırır. Belgesellerde ve sesli kitaplarda yanınızdayım."
 ```
 Expected: `çeşit 1: tohum 42, ~20-30 sn → ...\sesler\deneme\cesit_01` and `süre ~55 sn, VRAM tepe ~2800 MB`.
+
+Other languages (tr, en, fr, de, es, ru, zh, ja tested): the language comes from the voice card (`dil`), `--dil` overrides.
+```powershell
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+```
+Expected: `bitti: ~11 sn ses, ...`. Offline unit tests (no GPU): `.venv\Scripts\python.exe -m unittest discover -s tests`
+→ `OK`. To design and audition a voice with the user, follow `.claude/skills/ses-tasarimi/SKILL.md`.
 
 ## 5. Web UI
 
@@ -183,7 +191,10 @@ finally `KURULUM_OK`. `ayarlar.json` gets `"backend": "metal"`, `"cuda_bin": ""`
 
 ```
 ses_tasarim/      Python package: ayarlar (settings), okunus (text prep), motor (engine), tasarla (step 1), oku (step 2), arayuz (web UI)
-hazir_sesler/     7 bundled synthetic voices: referans.flac + ses.json (+ ornek_okuma.mp3)
+hazir_sesler/     14 bundled synthetic voices (7 Turkish + anlatici_<en|fr|de|es|ru|zh|ja>): referans.flac + ses.json (+ ornek_okuma.mp3)
+.claude/skills/ses-tasarimi/  Claude Code skill: design, reference-based audition, sentence-by-sentence reading (EN + TR)
+docs/cok_dilli.md multilingual use, per-language commands, lessons
+tests/            offline unit tests (python -m unittest discover -s tests)
 patches/          0001-voxcpm2-4gb-ve-hiz.patch — audio.cpp v0.7.2 changes (LF, apply with git apply)
 scripts/          kur.ps1 (installer: prebuilt or -Derle), derle.ps1 (build), release_zip.ps1 (packs a release zip)
 ayarlar/          okunus_sozlugu.tsv pronunciation dictionary

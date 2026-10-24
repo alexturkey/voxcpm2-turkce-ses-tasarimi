@@ -2,6 +2,11 @@
 her tohum için bir tasarım kaydı (referans). / Step 1: voice design.
 
 python -m ses_tasarim.tasarla --ad deniz_feneri --tarif "A calm Turkish woman..." --metin @metin.txt --cesit 3
+python -m ses_tasarim.tasarla --ad narrator_fr --dil fr --tarif "A deep-voiced French man..." --metin @texte.txt --cesit 3
+
+Tarif her dilde İngilizcedir; tasarım metni sesin konuşacağı dilde yazılır; dil kartta ("dil") saklanır ve okumada
+kullanılır. / The description is always English; the design text is written in the voice's own language; the
+language is stored in the card ("dil") and used when reading.
 """
 import argparse
 import json
@@ -29,22 +34,23 @@ def slug(name: str) -> str:
     return "_".join("".join(ch if ch.isalnum() else " " for ch in ascii_name).split()) or "ses"
 
 
-def check(description: str, text: str) -> list:
+def check(description: str, text: str, dil: str = okunus.DEFAULT_LANGUAGE) -> list:
     found = []
     if not description.strip():
         found.append("tarif boş")
     if "(" in description or ")" in description:
         found.append("tarifte parantez olmaz (motor parantezi tarif sınırı sayar)")
-    found += okunus.problems(text, "ses yaratılırken okutulan metin")
+    found += okunus.problems(text, "ses yaratılırken okutulan metin", dil)
     return found
 
 
 def tasarla(settings: dict, name: str, description: str, text: str, count: int = None, seeds: list = None,
-            progress=None) -> dict:
-    found = check(description, text)
+            progress=None, dil: str = okunus.DEFAULT_LANGUAGE) -> dict:
+    found = check(description, text, dil)
     if found:
         raise ValueError("form eksik:\n  - " + "\n  - ".join(found))
-    spoken_text = " ".join(line for line, _ in okunus.lines(okunus.spoken(text)))
+    dil = okunus.language(dil)
+    spoken_text = " ".join(line for line, _ in okunus.lines(okunus.spoken(text, dil)))
     voice_dir = settings["sesler"] / slug(name)
     voice_dir.mkdir(parents=True, exist_ok=True)
     existing = sorted(p for p in voice_dir.glob("cesit_*") if p.is_dir())
@@ -63,7 +69,7 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
         trial.mkdir()
         motor.write_wav(trial / "referans.wav", audio)
         seconds = round(len(audio) / motor.SAMPLE_RATE, 2)
-        card = {"ad": voice_dir.name, "gorunen_ad": name.strip(), "cesit": number,
+        card = {"ad": voice_dir.name, "gorunen_ad": name.strip(), "cesit": number, "dil": dil,
                 "ses_yaratici_ingilizce_prompt": description.strip(),
                 "ses_yaratilirken_okutulan_metin": spoken_text,
                 "tasarim_tohumu": request["seed"], "okuma_tohumu": request["seed"],
@@ -87,7 +93,10 @@ def main(argv=None) -> int:
     parser.add_argument("--ayarlar", help="ayar dosyası (varsayılan ./ayarlar.json)")
     parser.add_argument("--ad", required=True, help="sesin adı / voice name")
     parser.add_argument("--tarif", required=True, help="İngilizce ses tarifi (parantezsiz) ya da @dosya")
-    parser.add_argument("--metin", required=True, help="ses yaratılırken okutulan Türkçe metin ya da @dosya (25-35 sn, rakamsız)")
+    parser.add_argument("--metin", required=True,
+                        help="ses yaratılırken okutulan metin, sesin dilinde, ya da @dosya (rakamsız)")
+    parser.add_argument("--dil", default=okunus.DEFAULT_LANGUAGE,
+                        help="sesin dili / voice language: " + ", ".join(okunus.LANGUAGES) + " (varsayılan tr)")
     parser.add_argument("--cesit", type=int, default=DEFAULT_VARIANTS, help="çeşit sayısı / number of variants")
     parser.add_argument("--tohum", type=int, nargs="*", help="tohumları kendin ver / explicit seeds")
     args = parser.parse_args(argv)
@@ -97,9 +106,9 @@ def main(argv=None) -> int:
     def progress(done, total, elapsed):
         print(f"  {done}/{total} çeşit, {elapsed:.0f} sn", flush=True)
 
-    print(f"tasarım: {args.ad}, {len(args.tohum) if args.tohum else args.cesit} çeşit, {motor.FIXED['adim']} adım, cfg {motor.FIXED['cfg']}",
+    print(f"tasarım: {args.ad} ({args.dil}), {len(args.tohum) if args.tohum else args.cesit} çeşit, {motor.FIXED['adim']} adım, cfg {motor.FIXED['cfg']}",
           flush=True)
-    result = tasarla(settings, args.ad, description, text, args.cesit, args.tohum, progress)
+    result = tasarla(settings, args.ad, description, text, args.cesit, args.tohum, progress, args.dil)
     for variant in result["cesitler"]:
         if "hata" in variant:
             print(f"  tohum {variant['tohum']}: {variant['hata']}")

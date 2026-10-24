@@ -1,0 +1,27 @@
+{
+  "ad": "anlatici_de",
+  "gorunen_ad": "Anlatici DE",
+  "dil": "de",
+  "tanitim_tr": "Ellili yaşlarda, derin sesli yerli Almanca erkek belgesel anlatıcısı; sakin, sıcak, acelesiz. Kapadokya tanıtım videosunun anlatıcısı.",
+  "tanitim_en": "Native German male documentary narrator in his fifties (Hochdeutsch); deep, calm, warm, unhurried. Narrator of our Cappadocia video.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "derin",
+    "sıcak",
+    "belgesel anlatıcı",
+    "yerli almanca"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A deep-voiced German man in his fifties, native German speaker with a clear standard Hochdeutsch accent, calm, warm and soulful documentary storytelling, unhurried pace, rich resonant voice, close-mic clean studio recording, no background noise",
+  "ses_yaratilirken_okutulan_metin": "Es gibt Orte, die sich schon beim ersten Besuch anfühlen, als hätten sie seit Jahren auf dich gewartet. Kappadokien ist so ein Ort.",
+  "tasarim_tohumu": 2665738982,
+  "okuma_tohumu": 2665738982,
+  "referans": "referans.flac",
+  "referans_sn": 8.0,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile yalniz bir metin tarifinden tasarlandi; hicbir kisinin kaydindan klonlanmadi. / Synthetic voice designed from a text description only; not cloned from anyone's recording."
+}

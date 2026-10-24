@@ -2,14 +2,49 @@
 
 **Turkish voice design with VoxCPM2 on a 4 GB GPU.** Describe a voice in English, let the model create it, pick the
 variant you like, then read any Turkish text with that voice. Includes a one-command installer, a patched
-[audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and seven
-ready-made synthetic voices.
+[audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and fourteen
+ready-made synthetic voices: seven Turkish and seven native narrators in English, French, German, Spanish,
+Russian, Chinese and Japanese (8 languages in total).
 
 [Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
 > The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
 > voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
 > fraud and deception are prohibited. Label what you generate as AI-generated. See [ETHICS.md](ETHICS.md).
+
+## Multilingual: 8 languages, native narrators, sentence-by-sentence consistency
+
+We made one Cappadocia documentary video in 8 languages: Turkish, English, French, German, Spanish, Russian, Chinese
+and Japanese. Each language has its own **native narrator**, designed with VoxCPM2 from an English description. All of
+it was generated fully locally on a 4 GB GTX 1050 Ti, with the same fixed quality (16 steps, cfg 2.0). The seven
+narrators are bundled here, with their prompt, design text, seed and reference recording.
+
+| Code | Language | Voice | Listen | Video |
+|---|---|---|---|---|
+| `tr` | Turkish | `hazir/belgesel_hanim` (and 6 more) | [sample](hazir_sesler/belgesel_hanim/ornek_okuma.mp3) | |
+| `en` | English | `hazir/anlatici_en` | [sample](hazir_sesler/anlatici_en/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791986763440439) |
+| `fr` | French | `hazir/anlatici_fr` | [sample](hazir_sesler/anlatici_fr/ornek_okuma.mp3) | [video](https://x.com/i/status/2113790681575804962) |
+| `de` | German | `hazir/anlatici_de` | [sample](hazir_sesler/anlatici_de/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791351645262249) |
+| `es` | Spanish | `hazir/anlatici_es` | [sample](hazir_sesler/anlatici_es/ornek_okuma.mp3) | [video](https://x.com/i/status/2113807365611122705) |
+| `ru` | Russian | `hazir/anlatici_ru` | [sample](hazir_sesler/anlatici_ru/ornek_okuma.mp3) | [video](https://x.com/i/status/2113801574136848884) |
+| `zh` | Chinese (Mandarin) | `hazir/anlatici_zh` | [sample](hazir_sesler/anlatici_zh/ornek_okuma.mp3) | [video](https://x.com/i/status/2113802229606121794) |
+| `ja` | Japanese | `hazir/anlatici_ja` | [sample](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
+
+```powershell
+# the language comes from the voice card; --dil overrides it
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @text_ja.txt --cikti cikti\ja
+# design a voice in another language: English prompt, design text in that language
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad narrator_es --dil es --cesit 3 --tarif "A deep-voiced Spanish man ..." --metin @texto.txt
+```
+
+**Why sentence by sentence.** VoxCPM2 is not stable for a single long generation (roughly above 30 seconds): the rhythm
+speeds up and the voice can drift. Here the voice is carried by a fixed reference recording and seed, and long text is
+read one sentence per line, so timbre and style stay the same from the first sentence to the last. For languages other
+than Turkish the Turkish pronunciation dictionary is not applied. Other languages VoxCPM2 supports should work with
+`--dil <code>`; we have not tested them. Per-language commands and the lessons we learned:
+[docs/cok_dilli.md](docs/cok_dilli.md). Claude Code skill for the whole design flow:
+[.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
 ## Quick start (Windows, 3 steps)
 
@@ -61,7 +96,7 @@ about 2 s of compute per 1 s of speech on a GTX 1050 Ti. Details and measurement
 
 ## Bundled voices (`hazir_sesler/`)
 
-All seven were designed from the prompts stored in their `ses.json`; none was cloned from a recording (cloning is the
+All fourteen were designed from the prompts stored in their `ses.json`; none was cloned from a recording (cloning is the
 separate, consent-gated section 3).
 
 | Voice | Short description | Listen |
@@ -73,9 +108,18 @@ separate, consent-gated section 3).
 | `masal_cadisi` | Fairy-tale witch: low, slightly nasal, slyly sweet | [sample](hazir_sesler/masal_cadisi/ornek_okuma.mp3) · [reference](hazir_sesler/masal_cadisi/referans.flac) |
 | `tok_anlatici` | Exceptionally deep, dense, commanding male narrator | [sample](hazir_sesler/tok_anlatici/ornek_okuma.mp3) · [reference](hazir_sesler/tok_anlatici/referans.flac) |
 | `yasli_bilge` | Old wise man, deep and booming, slightly mysterious | [sample](hazir_sesler/yasli_bilge/ornek_okuma.mp3) · [reference](hazir_sesler/yasli_bilge/referans.flac) |
+| `anlatici_en` | Native English male documentary narrator in his fifties (General American); deep, calm, warm | [sample](hazir_sesler/anlatici_en/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_en/referans.flac) |
+| `anlatici_fr` | Native French male documentary narrator in his fifties (Parisian); deep, calm, warm | [sample](hazir_sesler/anlatici_fr/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_fr/referans.flac) |
+| `anlatici_de` | Native German male documentary narrator in his fifties (Hochdeutsch); deep, calm, warm | [sample](hazir_sesler/anlatici_de/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_de/referans.flac) |
+| `anlatici_es` | Native Spanish male documentary narrator in his fifties (Castilian (Madrid)); deep, calm, warm | [sample](hazir_sesler/anlatici_es/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_es/referans.flac) |
+| `anlatici_ru` | Native Russian male documentary narrator in his fifties (Moscow); deep, calm, warm | [sample](hazir_sesler/anlatici_ru/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_ru/referans.flac) |
+| `anlatici_zh` | Native Chinese (Mandarin) male documentary narrator in his fifties (Beijing Putonghua); deep, calm, warm | [sample](hazir_sesler/anlatici_zh/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_zh/referans.flac) |
+| `anlatici_ja` | Native Japanese male documentary narrator in his fifties (Tokyo standard); deep, calm, warm | [sample](hazir_sesler/anlatici_ja/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_ja/referans.flac) |
 
 Each folder: `referans.flac` (lossless design recording), `ses.json` (prompt, transcript, design seed, reading seed,
-description), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<name>`.
+description; `dil` = language for the narrators), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<name>`.
+The narrators' reference recordings are short (5.6-10 s); their samples are the first three sentences of the
+Cappadocia script, cut from the full production reading.
 
 ## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
@@ -165,7 +209,9 @@ Command line:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
-≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words.
+≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words in Turkish text.
+Other languages: `--dil <code>` (or the voice card's `dil`); apostrophes are allowed there, the Turkish dictionary is
+skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
 yourself (another port: `--port 8800`). Three boxes (description, creation text, text to read) + variant count.

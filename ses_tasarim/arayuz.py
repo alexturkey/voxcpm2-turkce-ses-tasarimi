@@ -53,10 +53,11 @@ button:disabled{opacity:.5;cursor:default}
 
 <section><h2>1. Ses tasarla <small>(voice design)</small></h2>
 <div class="row"><div><label>Sesin adı (voice name)</label><input id="ad" placeholder="deniz_feneri"></div>
-<div><label>Çeşit sayısı (variants, her biri ayrı tohum)</label><input id="cesit" type="number" value="3" min="1" max="10"></div></div>
+<div><label>Çeşit sayısı (variants, her biri ayrı tohum)</label><input id="cesit" type="number" value="3" min="1" max="10"></div>
+<div><label>Dil (language)</label><select id="dil"><option value="tr">Türkçe</option><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="es">Español</option><option value="ru">Русский</option><option value="zh">中文</option><option value="ja">日本語</option></select></div></div>
 <label>İngilizce ses tarifi, parantezsiz (voice description in English)</label>
 <textarea id="tarif" placeholder="A calm Turkish woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
-<label>Ses yaratılırken okutulan Türkçe metin, 25-35 sn, rakam ve tırnak yok (text read while creating the voice)</label>
+<label>Ses yaratılırken okutulan metin, sesin dilinde, rakamsız; Türkçede tırnak yok (text read while creating the voice, in its language)</label>
 <textarea id="tasarim_metni" placeholder="Merhaba, ben bir belgesel anlatıcısıyım. Yıllardır tarihin derinliklerinden hikâyeler anlatırım..."></textarea>
 <button id="btn_tasarla">Tasarla</button><div id="d_tasarla" class="durum"></div>
 <div id="cesitler"></div></section>
@@ -93,15 +94,15 @@ async function api(yol,gov){const r=await fetch(yol,gov?{method:'POST',headers:{
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 let sesler={hazir:[],tasarlanan:[]};
 async function yenile(secili){sesler=await api('/api/sesler');const s=$('ses');s.innerHTML='';
- for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent='tasarlanan: '+k.kimlik+' (tohum '+k.okuma_tohumu+')';s.appendChild(o);}
- for(const k of sesler.hazir){const o=document.createElement('option');o.value=k.kimlik;o.textContent='hazır: '+k.gorunen_ad+' — '+(k.tanitim_tr||'').slice(0,60);s.appendChild(o);}
+ for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent='tasarlanan: '+k.kimlik+' ['+(k.dil||'tr')+'] (tohum '+k.okuma_tohumu+')';s.appendChild(o);}
+ for(const k of sesler.hazir){const o=document.createElement('option');o.value=k.kimlik;o.textContent='hazır: '+k.gorunen_ad+' ['+(k.dil||'tr')+'] — '+(k.tanitim_tr||'').slice(0,60);s.appendChild(o);}
  if(secili)s.value=secili;
  $('hazir').innerHTML=sesler.hazir.map(k=>`<div class="cesit"><div style="flex:1"><b>${esc(k.gorunen_ad)}</b> <small>tohum ${k.okuma_tohumu}</small><br><small>${esc(k.tanitim_tr)}</small></div>`+
   (k.ornek_okuma?`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma)}"></audio>`:`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.referans)}"></audio>`)+`</div>`).join('');}
 async function bekle(is,durum){for(;;){const j=await api('/api/is/'+is);durum.textContent=j.mesaj||j.durum;durum.className='durum '+(j.durum==='hata'?'hata':j.durum==='bitti'?'ok':'');
  if(j.durum==='bitti'||j.durum==='hata')return j;await new Promise(r=>setTimeout(r,2000));}}
 $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;$('cesitler').innerHTML='';
- const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value});
+ const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,dil:$('dil').value});
  if(j.hata){$('d_tasarla').textContent=j.hata;$('d_tasarla').className='durum hata';b.disabled=false;return;}
  const s=await bekle(j.is,$('d_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
  $('cesitler').innerHTML=s.sonuc.cesitler.map(c=>c.hata?`<div class="cesit hata">tohum ${c.tohum}: ${esc(c.hata)}</div>`:
@@ -166,7 +167,8 @@ class Isler:
             try:
                 if kind == "tasarla":
                     result = tasarla.tasarla(self.settings, payload["ad"], payload["tarif"], payload["metin"],
-                                             int(payload.get("cesit") or 3), None, progress)
+                                             int(payload.get("cesit") or 3), None, progress,
+                                             payload.get("dil") or "tr")
                     self._set(job_id, durum="bitti", sonuc=result,
                               mesaj=f"bitti: {len(result['cesitler'])} çeşit, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB")
                 elif kind == "klon":
@@ -183,7 +185,7 @@ class Isler:
                 else:
                     voice_dir = oku.find_voice(self.settings, payload["ses"])
                     out_dir = self.settings["sesler"] / "_okumalar" / job_id
-                    result = oku.oku(self.settings, voice_dir, payload["metin"], out_dir, progress)
+                    result = oku.oku(self.settings, voice_dir, payload["metin"], out_dir, progress, payload.get("dil"))
                     result["is"] = job_id
                     self._set(job_id, durum="bitti", sonuc=result, mesaj="bitti")
             except Exception as error:  # kullanıcıya düz metin hata, ayrıntı için iz / plain-text error + traceback
@@ -274,7 +276,7 @@ def make_handler(settings, jobs: Isler):
             if not isinstance(payload, dict):
                 return self._json({"hata": "JSON nesnesi bekleniyor"}, 400)
             if self.path == "/api/tasarla":
-                found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""))
+                found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""), payload.get("dil") or "tr")
                 if not str(payload.get("ad", "")).strip():
                     found.append("sesin adı boş")
                 if found:
@@ -282,10 +284,11 @@ def make_handler(settings, jobs: Isler):
                 return self._json({"is": jobs.submit("tasarla", payload)})
             if self.path == "/api/oku":
                 from . import okunus
-                found = okunus.problems(payload.get("metin", ""))
+                found = []
                 try:
-                    oku.find_voice(settings, str(payload.get("ses", "")))
-                except FileNotFoundError as error:
+                    voice_dir = oku.find_voice(settings, str(payload.get("ses", "")))
+                    found = okunus.problems(payload.get("metin", ""), dil=oku.voice_language(voice_dir, payload.get("dil")))
+                except (FileNotFoundError, ValueError) as error:
                     found.append(str(error))
                 if found:
                     return self._json({"hata": "\n".join(found)}, 400)

@@ -3,6 +3,13 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Çok dilli okuma ve tasarım: `--dil` (tr, en, fr, de, es, ru, zh, ja denendi). Tr dışındaki dillerde Türkçe okunuş
+  sözlüğü uygulanmaz, kesme işareti kalır; dil sesin kartına (`dil`) yazılır ve okumada oradan alınır; arayüzde dil seçimi.
+- Yedi yerli anlatıcı hazır ses olarak eklendi: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (istem, tasarım metni,
+  tohum, referans, Kapadokya metninden kısa örnek okuma).
+- `oku`: cümle cümle hız kapısı (`supheli_satirlar`): harf/sn değeri ortancadan çok sapan satırlar yazdırılır.
+- Claude Code becerisi `.claude/skills/ses-tasarimi/SKILL.md`: tarif → çeşitler → referanslı dinletme → seçim → cümle
+  cümle okuma. Belge `docs/cok_dilli.md`, çevrimdışı testler `tests/`.
 - macOS (Apple Silicon, Metal) desteği: `scripts/kur.sh` (aynı sabit model ve kaynak, sha256 kontrolü, yama, ~1 dk Metal
   derlemesi, `.venv`, `ayarlar.json` `"backend": "metal"`, GPU kontrolü) ve çift tıkla başlatan `baslat.command`. Yamada
   değişiklik gerekmedi. `motor.py` macOS'ta GPU belleğini `ioreg` ile ölçer (arayüzdeki "VRAM tepe"). MacBook Air M4
@@ -34,6 +41,14 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- Multilingual reading and design: `--dil` (tested: tr, en, fr, de, es, ru, zh, ja). Outside Turkish the Turkish
+  dictionary is skipped and apostrophes are kept; the language is stored in the voice card (`dil`) and used for reading;
+  language selector in the web UI.
+- Seven native narrators bundled: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (prompt, design text, seed,
+  reference, short sample from our Cappadocia script).
+- `oku`: sentence speed gate (`supheli_satirlar`): lines whose characters per second is far from the median are printed.
+- Claude Code skill `.claude/skills/ses-tasarimi/SKILL.md`: describe → variants → reference-based audition → pick →
+  sentence-by-sentence reading. Docs `docs/cok_dilli.md`, offline tests `tests/`.
 - macOS (Apple Silicon, Metal) support: `scripts/kur.sh` (same pinned model and source, sha256 checks, patch, ~1 min Metal
   build, `.venv`, `ayarlar.json` with `"backend": "metal"`, GPU check) and a double-click `baslat.command`. The patch needed
   no change. `motor.py` measures GPU memory with `ioreg` on macOS (the UI's "VRAM tepe"). MacBook Air M4 16 GB

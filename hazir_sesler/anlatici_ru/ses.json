@@ -1,0 +1,27 @@
+{
+  "ad": "anlatici_ru",
+  "gorunen_ad": "Anlatici RU",
+  "dil": "ru",
+  "tanitim_tr": "Ellili yaşlarda, derin sesli yerli Rusça erkek belgesel anlatıcısı; sakin, sıcak, acelesiz. Kapadokya tanıtım videosunun anlatıcısı.",
+  "tanitim_en": "Native Russian male documentary narrator in his fifties (Moscow); deep, calm, warm, unhurried. Narrator of our Cappadocia video.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "derin",
+    "sıcak",
+    "belgesel anlatıcı",
+    "yerli rusça"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A deep-voiced Russian man in his fifties, native Russian speaker from Moscow with a natural Russian accent, calm, warm and soulful documentary storytelling, unhurried pace, rich resonant voice, close-mic clean studio recording, no background noise",
+  "ses_yaratilirken_okutulan_metin": "Есть места, которые даже в первый раз кажутся такими, будто ждали тебя много лет. Каппадокия — именно такое место.",
+  "tasarim_tohumu": 3852407523,
+  "okuma_tohumu": 3852407523,
+  "referans": "referans.flac",
+  "referans_sn": 8.64,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile yalniz bir metin tarifinden tasarlandi; hicbir kisinin kaydindan klonlanmadi. / Synthetic voice designed from a text description only; not cloned from anyone's recording."
+}

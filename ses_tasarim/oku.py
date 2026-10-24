@@ -4,6 +4,14 @@ Step 2: reference-based reading with the designed (or bundled) voice.
 
 python -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti/deneme
 python -m ses_tasarim.oku --ses deniz_feneri/2 --metin "Merhaba dünya." --cikti cikti/deneme
+python -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @texte.txt --cikti cikti/fr   # dil sesin kartından (fr)
+python -m ses_tasarim.oku --ses hazir/anlatici_en --dil en --metin @text.txt --cikti cikti/en
+
+Dil / language: --dil verilmezse sesin kartındaki "dil" alanı, o da yoksa "tr". Türkçe dışı dilde Türkçe okunuş
+sözlüğü uygulanmaz. Uzun metin her zaman cümle cümle (satır = cümle) okunur: tek seferde uzun okuma (~30 sn üstü)
+kararlı değildir, cümle cümle okuma tını ve tarzı baştan sona korur.
+If --dil is omitted the voice card's "dil" is used (default "tr"). Long text is always read one sentence per line:
+a single long generation (over ~30 s) is not stable, sentence-by-sentence reading keeps timbre and style consistent.
 """
 import argparse
 import json
@@ -48,13 +56,34 @@ def find_voice(settings: dict, identity: str) -> Path:
     return folder
 
 
-def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None) -> dict:
-    found = okunus.problems(text)
+def speed_outliers(records: list, low: float = 0.55, high: float = 1.6) -> list:
+    """Cümle cümle hız kapısı: harf/sn değeri ortancanın 0,55 katından az ya da 1,6 katından çok olan satır numaraları.
+    Kesilen, uzayan ya da sona fazladan ses ekleyen satırı yakalar; toplam metin benzerliği bunu gizleyebilir.
+    Sentence speed gate: line numbers whose characters/second is far from the median (cut, stretched or padded lines).
+    """
+    rates = [len(r["metin"]) / max(r["t1"] - r["t0"], 0.01) for r in records]
+    if len(rates) < 3:
+        return []
+    median = sorted(rates)[len(rates) // 2]
+    return [r["satir"] for r, rate in zip(records, rates) if rate < low * median or rate > high * median]
+
+
+def voice_language(voice_dir: Path, dil: str = None) -> str:
+    """Okuma dili: açıkça verilen, yoksa sesin kartındaki, o da yoksa "tr". / Reading language."""
+    if dil:
+        return okunus.language(dil)
+    card = json.loads((Path(voice_dir) / "ses.json").read_text(encoding="utf-8"))
+    return okunus.language(card.get("dil"))
+
+
+def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None, dil: str = None) -> dict:
+    dil = voice_language(voice_dir, dil)
+    found = okunus.problems(text, dil=dil)
     if found:
         raise ValueError("metin:\n  - " + "\n  - ".join(found))
     card = json.loads((voice_dir / "ses.json").read_text(encoding="utf-8"))
     seed = int(card["okuma_tohumu"])  # okumada sesin kendi tohumu sabittir (tutarlılık)
-    parsed = okunus.lines(okunus.spoken(text))
+    parsed = okunus.lines(okunus.spoken(text, dil))
     # motor dizi.json içindeki göreli yolları dizi.json'un klasörüne göre çözer; göreli --cikti yolu ikilenmesin
     # the engine resolves relative paths against dizi.json's folder; a relative --cikti would be doubled
     out_dir = Path(out_dir).resolve()
@@ -76,10 +105,10 @@ def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None
         cursor += len(audio)
         records.append({"satir": index, "metin": line, "t0": round(start, 3), "t1": round(cursor / motor.SAMPLE_RATE, 3)})
         cursor += int(pause * motor.SAMPLE_RATE)
-    summary = {"ses": card.get("ad"), "kimlik_klasoru": str(voice_dir), "tohum": seed, "adim": motor.FIXED["adim"],
+    summary = {"ses": card.get("ad"), "dil": dil, "kimlik_klasoru": str(voice_dir), "tohum": seed, "adim": motor.FIXED["adim"],
                "cfg": motor.FIXED["cfg"], "ses_sn": round(len(joined) / motor.SAMPLE_RATE, 2),
                "sure_sn": result["seconds"], "vram_tepe_mb": result["vram_peak_mb"], "wav": str(wav),
-               "satirlar": records, "yapay": True, "tarih": time.strftime("%Y-%m-%d %H:%M")}
+               "satirlar": records, "supheli_satirlar": speed_outliers(records), "yapay": True, "tarih": time.strftime("%Y-%m-%d %H:%M")}
     (out_dir / "ozet.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return summary
 
@@ -91,6 +120,8 @@ def main(argv=None) -> int:
     parser.add_argument("--ses", help="hazir/<ad>, <ad>/<çeşit> ya da klasör")
     parser.add_argument("--metin", help="okunacak metin ya da @dosya; satır = cümle, 'cümle || paragraf' durak")
     parser.add_argument("--cikti", type=Path, help="çıktı klasörü (okuma.wav, ozet.json)")
+    parser.add_argument("--dil", help="metnin dili / text language: " + ", ".join(okunus.LANGUAGES)
+                        + " (boş: sesin kartı, yoksa tr)")
     args = parser.parse_args(argv)
     settings = ayarlar.load(args.ayarlar)
     if args.liste:
@@ -98,7 +129,7 @@ def main(argv=None) -> int:
         for group, title in (("hazir", "Hazır sesler"), ("tasarlanan", "Tasarlanan sesler")):
             print(title)
             for card in voices[group]:
-                print(f"  {card['kimlik']:28} tohum {card['okuma_tohumu']:<11} {card.get('tanitim_tr', card.get('ses_yaratici_ingilizce_prompt', ''))[:70]}")
+                print(f"  {card['kimlik']:28} {card.get('dil', 'tr'):3} tohum {card['okuma_tohumu']:<11} {card.get('tanitim_tr', card.get('ses_yaratici_ingilizce_prompt', ''))[:70]}")
         return 0
     if not (args.ses and args.metin and args.cikti):
         parser.error("--ses, --metin ve --cikti gerekli (ya da --liste)")
@@ -108,7 +139,9 @@ def main(argv=None) -> int:
     def progress(done, total, elapsed):
         print(f"  {done}/{total} cümle, {elapsed:.0f} sn", flush=True)
 
-    summary = oku(settings, voice_dir, text, args.cikti, progress)
+    summary = oku(settings, voice_dir, text, args.cikti, progress, args.dil)
+    if summary["supheli_satirlar"]:
+        print(f"  dinleyip kontrol et (hız kapısı / speed gate): satır {summary['supheli_satirlar']}")
     print(f"bitti: {summary['ses_sn']} sn ses, {summary['sure_sn']} sn, VRAM tepe {summary['vram_tepe_mb']} MB → {summary['wav']}")
     return 0
 

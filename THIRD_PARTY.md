@@ -26,7 +26,9 @@ The modified files carry the original copyright; the modifications are Apache-2.
 
 ## Bundled voices
 
-The seven voices in `hazir_sesler/` were generated with VoxCPM2 from text descriptions (prompts are in each `ses.json`).
+The fourteen voices in `hazir_sesler/` (seven Turkish voices and the seven `anlatici_<language>` narrators) were
+generated with VoxCPM2 from text descriptions (prompts are in each `ses.json`). The narrators' sample readings are
+cut from our own Cappadocia script, written by us.
 They are synthetic; no recording of a person was used or cloned. They are released under this repository's Apache-2.0 license.
 
 ## Model card notice (VoxCPM2)
