@@ -6,8 +6,8 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 
 [English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
-> Buradaki her ses yapaydır: bir metin tarifinden tasarlanmıştır, hiçbir gerçek kişiden kaydedilmemiş ya da
-> klonlanmamıştır. Ürettiğiniz sesi yapay zekâ ürünü olarak etiketleyin. Dışarıdan ses yükleme ve gerçek kişi klonlama yoktur.
+> Hazır sesler yapaydır. Kendi veya açıkça izinli ses kaydınızı da yerelde içe aktarabilirsiniz.
+> Ürettiğiniz sesi yapay zekâ ürünü olarak etiketleyin. Başkasının sesini izinsiz kullanmayın.
 
 ## Hızlı başlangıç (Windows, 3 adım)
 
@@ -169,8 +169,8 @@ ses başına 1 sn için ≈ 2 sn hesap (gerçek zaman çarpanı 1,9-2,8); ses ba
 (diske önbelleklenir) ve parti başına 10-20 sn model yükleme eklenir; VRAM tepe 2,6-2,9 GB. Yeni kartlar daha hızlı;
 sayılar ve yöntem: [docs/4gb.md](docs/4gb.md).
 
-**Gerçek kişiyi klonlar mı?** Hayır. Ses yükleme ve kayıt yolu yoktur: her ses İngilizce bir metin tarifinden başlar,
-okumada kullanılan "referans" modelin kendi yapay tasarım kaydıdır. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay
+**Kendi sesimi kullanabilir miyim?** Evet: `python -m ses_tasarim.aktar --ad kendi_sesim --kayit kayit.wav --metin @kayit_metni.txt`.
+Sekiz ile otuz beş saniyelik temiz bir kayıt ve birebir dökümünü kullanın. Yalnızca kendi veya izinli kayıtları ekleyin. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay
 zekâ ürünü olarak etiketleyin.
 
 **İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,

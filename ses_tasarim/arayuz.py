@@ -4,9 +4,12 @@ Simple local web UI (127.0.0.1 only, stdlib http.server). Prints the address; do
 python -m ses_tasarim.arayuz [--ayarlar ayarlar.json] [--port 8765]
 
 Akış / flow: Tasarla → çeşitleri dinle → birini seç → Bu sesle oku → indir.  Hazır sesle oku: listeden seç → metin → oku.
-Dışarıdan ses yükleme yoktur (gerçek kişi sesi klonlanmaz). / No audio upload: real voices are never cloned.
+İzinli yerel kayıtlar ses_tasarim.aktar ile eklenir. / Import authorized local recordings with ses_tasarim.aktar.
 """
 import argparse
+import base64
+import binascii
+import io
 import json
 import mimetypes
 import queue
@@ -18,8 +21,9 @@ import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
+import soundfile as sf
 
-from . import ayarlar, motor, oku, tasarla
+from . import aktar, ayarlar, motor, oku, tasarla
 
 HTML = r"""<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -39,10 +43,24 @@ button:disabled{opacity:.5;cursor:default}
 .cesit{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #2a2a2a}
 .cesit audio{flex:1;height:32px}small{color:var(--muted)}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
+input[type=checkbox]{width:auto;margin-right:8px} .kayit-onizleme{width:100%;margin-top:12px}
 </style></head><body>
 <h1>VoxCPM2 Türkçe Ses Tasarımı <small>· 4 GB GPU</small></h1>
-<div class="uyari">Üretilen her ses yapay zekâ ürünüdür; paylaşırken belirtin. Gerçek kişi sesi yüklenmez, klonlanmaz.
-<br><small>Every generated voice is synthetic; label it as AI-generated when sharing. No real voice is uploaded or cloned.</small></div>
+<div class="uyari">Üretilen her ses yapay zekâ ürünüdür; paylaşırken belirtin. Kendi veya açıkça izinli ses kayıtlarını kullanın.
+<br><small>Every generated voice is AI-generated; label it when sharing. Use your own or explicitly authorized voice recordings.</small></div>
+
+<section aria-labelledby="aktar-baslik"><h2 id="aktar-baslik">Kendi sesini ekle</h2>
+<p><small>Sekiz ile otuz beş saniyelik, tek kişinin konuştuğu temiz bir WAV veya FLAC kaydı seç. Arka planda müzik olmasın. Dosya bu bilgisayarda saklanır.</small></p>
+<form id="aktar_form">
+<div class="row"><div><label for="aktar_ad">Sesin adı</label><input id="aktar_ad" required maxlength="100" placeholder="Kendi sesim"></div>
+<div><label for="aktar_kayit">Ses kaydı · en fazla 16 MB</label><input id="aktar_kayit" type="file" accept=".wav,.flac,audio/wav,audio/flac" required></div></div>
+<audio id="aktar_onizleme" class="kayit-onizleme" controls hidden></audio>
+<label for="aktar_metin">Kayıtta söylediğin metin</label>
+<textarea id="aktar_metin" required maxlength="5000" placeholder="Kayıttaki konuşmayı kelimesi kelimesine yaz. Sayıları yazıyla yaz; tırnak kullanma."></textarea>
+<label><input id="aktar_izin" type="checkbox" required>Bu ses bana ait veya kullanmak için konuşmacının açık iznine sahibim.</label>
+<button id="btn_aktar" type="submit">Sesi ekle ve seç</button>
+<div id="d_aktar" class="durum" role="status" aria-live="polite"></div>
+</form></section>
 
 <section><h2>1. Ses tasarla <small>(voice design)</small></h2>
 <div class="row"><div><label>Sesin adı (voice name)</label><input id="ad" placeholder="deniz_feneri"></div>
@@ -57,9 +75,9 @@ button:disabled{opacity:.5;cursor:default}
 <section><h2>2. Bu sesle oku <small>(read with the selected voice)</small></h2>
 <label>Ses (voice)</label><select id="ses"></select>
 <label>Okunacak metin: her satır bir cümle; satır sonuna "|| paragraf" uzun durak (text to read, one sentence per line)</label>
-<textarea id="okuma_metni" placeholder="Bu ses bir metin tarifinden tasarlandı.
-Gerçek bir kişiye ait değildir. || paragraf
-Şimdi istediğiniz metni okuyabilir."></textarea>
+<textarea id="okuma_metni" placeholder="Widget nasıl eklenir?
+Önce düzenlemek istediğiniz sayfayı açın.
+Ardından ekleme menüsünden bir widget seçin."></textarea>
 <button id="btn_oku">Bu sesle oku</button><div id="d_oku" class="durum"></div>
 <div id="sonuc"></div></section>
 
@@ -70,7 +88,7 @@ async function api(yol,gov){const r=await fetch(yol,gov?{method:'POST',headers:{
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 let sesler={hazir:[],tasarlanan:[]};
 async function yenile(secili){sesler=await api('/api/sesler');const s=$('ses');s.innerHTML='';
- for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent='tasarlanan: '+k.kimlik+' (tohum '+k.okuma_tohumu+')';s.appendChild(o);}
+ for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent=(k.kaynak==='izinli_kayit'?'kayıt: ':'tasarlanan: ')+(k.gorunen_ad||k.kimlik)+' · '+k.kimlik;s.appendChild(o);}
  for(const k of sesler.hazir){const o=document.createElement('option');o.value=k.kimlik;o.textContent='hazır: '+k.gorunen_ad+' — '+(k.tanitim_tr||'').slice(0,60);s.appendChild(o);}
  if(secili)s.value=secili;
  $('hazir').innerHTML=sesler.hazir.map(k=>`<div class="cesit"><div style="flex:1"><b>${esc(k.gorunen_ad)}</b> <small>tohum ${k.okuma_tohumu}</small><br><small>${esc(k.tanitim_tr)}</small></div>`+
@@ -91,6 +109,17 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;$('sonuc').i
  const s=await bekle(j.is,$('d_oku'));b.disabled=false;if(s.durum!=='bitti')return;
  $('sonuc').innerHTML=`<audio controls src="/okuma/${s.sonuc.is}/okuma.wav"></audio> <a href="/okuma/${s.sonuc.is}/okuma.wav" download="okuma.wav"><button>İndir (download)</button></a>
   <div><small>${s.sonuc.ses_sn} sn ses, ${s.sonuc.sure_sn} sn üretim, VRAM tepe ${s.sonuc.vram_tepe_mb} MB, tohum ${s.sonuc.tohum}</small></div>`;};
+let kayitURL;
+$('aktar_kayit').onchange=()=>{if(kayitURL)URL.revokeObjectURL(kayitURL);const f=$('aktar_kayit').files[0];const a=$('aktar_onizleme');a.hidden=!f;if(f){kayitURL=URL.createObjectURL(f);a.src=kayitURL;}else{a.removeAttribute('src');a.load();}};
+$('aktar_form').onsubmit=async e=>{e.preventDefault();const b=$('btn_aktar'),d=$('d_aktar'),f=$('aktar_kayit').files[0];
+ b.disabled=true;d.className='durum';d.textContent='Kayıt ekleniyor…';
+ try{if(!f||f.size>16*1024*1024)throw Error('En fazla 16 MB bir WAV veya FLAC kaydı seç.');
+ const veri=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=()=>reject(Error('Dosya okunamadı.'));r.readAsDataURL(f);});
+ const r=await fetch('/api/aktar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ad:$('aktar_ad').value,metin:$('aktar_metin').value,kayit:veri})});
+ const j=await r.json();if(!r.ok)throw Error(j.hata||'Kayıt eklenemedi.');
+ await yenile(j.kimlik);d.className='durum ok';d.textContent='Ses eklendi ve seçildi. Aşağıya okutmak istediğin metni yaz.';
+ $('okuma_metni').focus();
+ }catch(err){d.className='durum hata';d.textContent=err.message||'Bağlantı kurulamadı.';}finally{b.disabled=false;}};
 yenile();
 </script></body></html>
 """
@@ -146,6 +175,7 @@ class Isler:
 
 def make_handler(settings, jobs: Isler):
     roots = {"hazir": settings["hazir_sesler"], "tasarlanan": settings["sesler"]}
+    import_lock = threading.Lock()
 
     class Handler(BaseHTTPRequestHandler):
         MAX_BODY = 1_000_000  # 1 MB: metin kutuları için fazlasıyla yeter / plenty for the text boxes
@@ -214,17 +244,41 @@ def make_handler(settings, jobs: Isler):
         def do_POST(self):
             if not self._host_ok():
                 return
+            origin = self.headers.get("Origin")
+            if origin and origin not in (f"http://127.0.0.1:{self.server.server_port}", f"http://localhost:{self.server.server_port}"):
+                return self._json({"hata": "Origin kabul edilmedi"}, 403)
             if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
                 return self._json({"hata": "Content-Type: application/json gerekli"}, 415)
-            length = int(self.headers.get("Content-Length") or 0)
-            if length <= 0 or length > self.MAX_BODY:
-                return self._json({"hata": f"istek gövdesi 1 ile {self.MAX_BODY} bayt arasında olmalı"}, 413)
+            try:
+                length = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                return self._json({"hata": "geçersiz Content-Length"}, 400)
+            limit = 24 * 1024 * 1024 if self.path == "/api/aktar" else self.MAX_BODY
+            if length <= 0 or length > limit:
+                return self._json({"hata": f"istek gövdesi 1 ile {limit} bayt arasında olmalı"}, 413)
             try:
                 payload = json.loads(self.rfile.read(length) or b"{}")
             except (json.JSONDecodeError, UnicodeDecodeError):
                 return self._json({"hata": "geçersiz JSON"}, 400)
             if not isinstance(payload, dict):
                 return self._json({"hata": "JSON nesnesi bekleniyor"}, 400)
+            if self.path == "/api/aktar":
+                name, text, encoded = (payload.get(k) for k in ("ad", "metin", "kayit"))
+                if not isinstance(name, str) or not name.strip() or len(name) > 100 or not isinstance(text, str) or len(text) > 5000 or not isinstance(encoded, str):
+                    return self._json({"hata": "Ses adı, kayıt ve birebir metin gerekli; alan sınırlarını kontrol edin."}, 400)
+                try:
+                    raw = base64.b64decode(encoded, validate=True)
+                    if len(raw) > 16 * 1024 * 1024:
+                        return self._json({"hata": "Kayıt en fazla 16 MB olabilir."}, 413)
+                    recording = io.BytesIO(raw)
+                    if sf.info(recording).format not in ("WAV", "WAVEX", "FLAC"):
+                        raise ValueError("WAV veya FLAC kaydı seçin.")
+                    recording.seek(0)
+                    with import_lock:
+                        identity = aktar.aktar(settings, name, recording, text)
+                except (ValueError, RuntimeError, binascii.Error) as error:
+                    return self._json({"hata": str(error)}, 400)
+                return self._json({"kimlik": identity}, 201)
             if self.path == "/api/tasarla":
                 found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""))
                 if not str(payload.get("ad", "")).strip():

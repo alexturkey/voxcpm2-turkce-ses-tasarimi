@@ -14,7 +14,7 @@ sağlam yapar. Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi b
 soruları doldur: ne değişti, nasıl test edildi (komut, kart, Windows sürümü), ikili dosya / ağ çağrısı / CI değişikliği
 var mı. Çalıştığını göstermenin en kısa yolu: `.venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2
 --metin @metin.txt --cikti cikti\deneme` komutunun çıktısı. Kurallar: ikili dosya (exe, dll, zip, wav) PR'a girmez,
-motor paketini bakımcı Releases'e koyar; gerçek bir kişinin sesi ya da kaydı hiçbir biçimde kabul edilmez
+motor paketini bakımcı Releases'e koyar; kişisel ses kayıtları PR'a girmez, kendi veya izinli kayıtlar yerelde kullanılabilir
 (`ETHICS.md`); kalite ayarları (16 adım, cfg 2.0) hız için düşürülmez.
 
 **Soru ve sonuç:** [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions). **Kurulum sorunu:** [sorun formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml).
@@ -34,7 +34,7 @@ Not sure where to start? These four small issues are a good first step:
 what changed, how it was tested (command, GPU, Windows version), whether there are binary files, network calls or CI
 changes. The shortest proof that it works is the output of `.venv\Scripts\python.exe -m ses_tasarim.oku --ses
 deniz_feneri/2 --metin @metin.txt --cikti cikti\deneme`. Rules: no binaries in PRs (exe, dll, zip, wav; the maintainer
-publishes engine packages on Releases); no real person's voice or recording in any form (`ETHICS.md`); quality settings
+publishes engine packages on Releases); keep personal recordings out of PRs; own or authorized recordings may be used locally (`ETHICS.md`); quality settings
 (16 steps, cfg 2.0) are not lowered for speed.
 
 **Questions and results:** [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions). **Install problems:** [issue form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml).
