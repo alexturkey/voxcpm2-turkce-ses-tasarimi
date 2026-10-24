@@ -1,0 +1,27 @@
+{
+  "ad": "anlatici_ja",
+  "gorunen_ad": "Anlatici JA",
+  "dil": "ja",
+  "tanitim_tr": "Ellili yaşlarda, derin sesli yerli Japonca erkek belgesel anlatıcısı; sakin, sıcak, acelesiz. Kapadokya tanıtım videosunun anlatıcısı.",
+  "tanitim_en": "Native Japanese male documentary narrator in his fifties (Tokyo standard); deep, calm, warm, unhurried. Narrator of our Cappadocia video.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "derin",
+    "sıcak",
+    "belgesel anlatıcı",
+    "yerli japonca"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A deep-voiced Japanese man in his fifties, native Japanese speaker from Tokyo with standard Japanese pronunciation, calm, warm and soulful documentary storytelling, unhurried pace, rich resonant voice, close-mic clean studio recording, no background noise",
+  "ses_yaratilirken_okutulan_metin": "初めて訪れたのに、まるで何年も自分を待っていてくれたように感じる場所があります。 カッパドキアは、そんな場所です。",
+  "tasarim_tohumu": 610902857,
+  "okuma_tohumu": 610902857,
+  "referans": "referans.flac",
+  "referans_sn": 7.2,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile yalniz bir metin tarifinden tasarlandi; hicbir kisinin kaydindan klonlanmadi. / Synthetic voice designed from a text description only; not cloned from anyone's recording."
+}

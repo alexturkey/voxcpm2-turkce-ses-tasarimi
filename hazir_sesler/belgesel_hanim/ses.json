@@ -24,5 +24,5 @@
   "adim": 16,
   "cfg": 2.0,
   "yapay": true,
-  "not": "Bu ses yapay zeka ile bir metin tarifinden tasarlandi; gercek bir kisiye ait degildir. / Synthetic voice designed from a text description; not a real person."
+  "not": "Bu ses yapay zeka ile yalniz bir metin tarifinden tasarlandi; hicbir kisinin kaydindan klonlanmadi. / Synthetic voice designed from a text description only; not cloned from anyone's recording."
 }

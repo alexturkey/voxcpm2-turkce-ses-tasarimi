@@ -23,8 +23,9 @@
    taşısın (sakin bir ses için sakin bir metin).
 5. **Kaydet:** tarifi, tohumu ve onay notunu birlikte sakla (`sesler/<ad>/cesit_N/ses.json` zaten tutar);
    marka sesin yeniden üretilebilir olsun. Paylaşmak istersen: [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8).
-6. **Etik sınır:** kendi veya açıkça izinli kayıtlar yerelde kullanılabilir (`ses_tasarim.aktar`). İzinsiz taklit yapma.
-   Yapay ses tasarlarken karakter ve his tarif et (`ETHICS.md`).
+6. **Etik sınır:** bu rehber tarifle ses tasarımı içindir. Var olan bir kişiye benzetme tarifi yazma; karakter ve his
+   tarif et. Klonlama bölümü yalnız kendi sesinle ya da ses sahibinin açık izniyle kullanılır; arayüz izin onayı ister.
+   İzinli bir kayıt `ses_tasarim.aktar` ile yerelde kitaplık sesi olarak eklenebilir (`ETHICS.md`).
 
 Not: 4 GB GTX 1050 Ti üzerinde bir çeşit yaklaşık 55 saniye, okumada 1 saniye ses yaklaşık 2 saniye sürer (README "Sık sorulanlar").
 
@@ -41,7 +42,9 @@ Not: 4 GB GTX 1050 Ti üzerinde bir çeşit yaklaşık 55 saniye, okumada 1 sani
    25-35 s Turkish paragraph without digits or quotes, in the character of the voice.
 5. **Save** prompt, seed and approval note together (`sesler/<name>/cesit_N/ses.json` already holds them) so the brand
    voice is reproducible. To share one: [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8).
-6. **Ethics:** own or explicitly authorized recordings may be imported locally (`ses_tasarim.aktar`). Do not impersonate
-   others without permission. Describe character and tone for synthetic designs (`ETHICS.md`).
+6. **Ethics:** this guide is about designing a voice from a description. Describe a character and a feel, not a real
+   person. The cloning section is only for your own voice or a voice used with its owner's explicit permission; the UI
+   asks you to confirm that permission. A consented recording can also be imported locally as a library voice with
+   `ses_tasarim.aktar` (`ETHICS.md`).
 
 Note: on a 4 GB GTX 1050 Ti one variant takes about 55 s and reading about 2 s of compute per 1 s of speech (README FAQ).

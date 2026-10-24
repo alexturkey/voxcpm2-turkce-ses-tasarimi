@@ -1,0 +1,27 @@
+{
+  "ad": "anlatici_fr",
+  "gorunen_ad": "Anlatici FR",
+  "dil": "fr",
+  "tanitim_tr": "Ellili yaşlarda, derin sesli yerli Fransızca erkek belgesel anlatıcısı; sakin, sıcak, acelesiz. Kapadokya tanıtım videosunun anlatıcısı.",
+  "tanitim_en": "Native French male documentary narrator in his fifties (Parisian); deep, calm, warm, unhurried. Narrator of our Cappadocia video.",
+  "karakter": [
+    "erkek",
+    "olgun",
+    "derin",
+    "sıcak",
+    "belgesel anlatıcı",
+    "yerli fransızca"
+  ],
+  "ses_yaratici_ingilizce_prompt": "A deep-voiced French man in his fifties, native French speaker from Paris with a natural Parisian accent, calm, warm and soulful documentary storytelling, unhurried pace, rich resonant voice, close-mic clean studio recording, no background noise",
+  "ses_yaratilirken_okutulan_metin": "Puis vint la pluie, puis la neige, puis le vent. Sans jamais se presser, sans jamais renoncer, ils ont creusé cette pierre.",
+  "tasarim_tohumu": 3943213915,
+  "okuma_tohumu": 3943213915,
+  "referans": "referans.flac",
+  "referans_sn": 5.6,
+  "ornek_okuma": "ornek_okuma.mp3",
+  "model": "voxcpm2-q8_0.gguf",
+  "adim": 16,
+  "cfg": 2.0,
+  "yapay": true,
+  "not": "Bu ses yapay zeka ile yalniz bir metin tarifinden tasarlandi; hicbir kisinin kaydindan klonlanmadi. / Synthetic voice designed from a text description only; not cloned from anyone's recording."
+}

@@ -5,10 +5,10 @@ from pathlib import Path
 
 ENV_NAME = "SES_TASARIM_AYARLAR"
 DEFAULTS = {
-    "motor": "",            # audiocpp_cli.exe (yamalı derleme) / patched audiocpp_cli.exe
+    "motor": "",            # audiocpp_cli.exe (macOS: audiocpp_cli) (yamalı derleme) / patched engine binary
     "model": "",            # voxcpm2-q8_0.gguf
     "cuda_bin": "",         # CUDA 12.8 bin klasörü (cudart64_12.dll, cublas64_12.dll, cublasLt64_12.dll, cufft64_11.dll)
-    "backend": "cuda",      # cuda | vulkan (deneysel, Vulkan derlemesi gerekir) | cpu (çok yavaş, yalnız deneme için)
+    "backend": "cuda",      # cuda | vulkan (deneysel, Vulkan derlemesi gerekir) | metal (macOS, Apple Silicon) | cpu (çok yavaş, yalnız deneme için)
     "sesler": "sesler",             # tasarlanan sesler (ayar dosyasına göre göreli) / designed voices
     "hazir_sesler": "hazir_sesler", # repodaki hazır sesler / bundled voices
     "onbellek": "onbellek",         # referans kodlama disk önbelleği / reference-encoding cache

@@ -8,7 +8,7 @@ body:
       value: |
         Bildirdiğiniz için teşekkürler. Kurulum hiç bitmediyse "Kurulum sorunu" formunu kullanın; soru için Discussions daha hızlıdır.
         Thanks for reporting. If the install never finished, use the "Install problem" form; for questions, Discussions is quicker.
-        Gerçek bir kişinin sesini ya da kaydını eklemeyin. / Do not attach a real person's voice or recording.
+        Ses kaydı eklemeyin (kendi sesiniz dahil); klonlama hatasında kaydın süresini ve biçimini yazın. / Do not attach any voice recording (your own included); for a cloning bug, describe the recording's length and format.
   - type: textarea
     id: ne_oldu
     attributes:

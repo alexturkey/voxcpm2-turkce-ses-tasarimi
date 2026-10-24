@@ -2,13 +2,50 @@
 
 **Turkish voice design with VoxCPM2 on a 4 GB GPU.** Describe a voice in English, let the model create it, pick the
 variant you like, then read any Turkish text with that voice. Includes a one-command installer, a patched
-[audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and seven
-ready-made synthetic voices.
+[audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and fourteen
+ready-made synthetic voices: seven Turkish and seven native narrators in English, French, German, Spanish,
+Russian, Chinese and Japanese (8 languages in total).
 
-[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
+[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
-> Bundled voices are synthetic. You may also import your own or explicitly authorized local recording.
-> Label generated speech as AI-generated. Do not use another person's voice without permission.
+> The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
+> voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. You can also
+> save a consented recording locally as a reusable library voice (`python -m ses_tasarim.aktar`). Impersonation, fraud
+> and deception are prohibited. Label what you generate as AI-generated. See [ETHICS.md](ETHICS.md).
+
+## Multilingual: 8 languages, native narrators, sentence-by-sentence consistency
+
+We made one Cappadocia documentary video in 8 languages: Turkish, English, French, German, Spanish, Russian, Chinese
+and Japanese. Each language has its own **native narrator**, designed with VoxCPM2 from an English description. All of
+it was generated fully locally on a 4 GB GTX 1050 Ti, with the same fixed quality (16 steps, cfg 2.0). The seven
+narrators are bundled here, with their prompt, design text, seed and reference recording.
+
+| Code | Language | Voice | Listen | Video |
+|---|---|---|---|---|
+| `tr` | Turkish | `hazir/belgesel_hanim` (and 6 more) | [sample](hazir_sesler/belgesel_hanim/ornek_okuma.mp3) | |
+| `en` | English | `hazir/anlatici_en` | [sample](hazir_sesler/anlatici_en/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791986763440439) |
+| `fr` | French | `hazir/anlatici_fr` | [sample](hazir_sesler/anlatici_fr/ornek_okuma.mp3) | [video](https://x.com/i/status/2113790681575804962) |
+| `de` | German | `hazir/anlatici_de` | [sample](hazir_sesler/anlatici_de/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791351645262249) |
+| `es` | Spanish | `hazir/anlatici_es` | [sample](hazir_sesler/anlatici_es/ornek_okuma.mp3) | [video](https://x.com/i/status/2113807365611122705) |
+| `ru` | Russian | `hazir/anlatici_ru` | [sample](hazir_sesler/anlatici_ru/ornek_okuma.mp3) | [video](https://x.com/i/status/2113801574136848884) |
+| `zh` | Chinese (Mandarin) | `hazir/anlatici_zh` | [sample](hazir_sesler/anlatici_zh/ornek_okuma.mp3) | [video](https://x.com/i/status/2113802229606121794) |
+| `ja` | Japanese | `hazir/anlatici_ja` | [sample](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
+
+```powershell
+# the language comes from the voice card; --dil overrides it
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @text_ja.txt --cikti cikti\ja
+# design a voice in another language: English prompt, design text in that language
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad narrator_es --dil es --cesit 3 --tarif "A deep-voiced Spanish man ..." --metin @texto.txt
+```
+
+**Why sentence by sentence.** VoxCPM2 is not stable for a single long generation (roughly above 30 seconds): the rhythm
+speeds up and the voice can drift. Here the voice is carried by a fixed reference recording and seed, and long text is
+read one sentence per line, so timbre and style stay the same from the first sentence to the last. For languages other
+than Turkish the Turkish pronunciation dictionary is not applied. Other languages VoxCPM2 supports should work with
+`--dil <code>`; we have not tested them. Per-language commands and the lessons we learned:
+[docs/cok_dilli.md](docs/cok_dilli.md). Claude Code skill for the whole design flow:
+[.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
 ## Quick start (Windows, 3 steps)
 
@@ -28,6 +65,23 @@ ready-made synthetic voices.
 The engine zip is not a standalone app (its exe needs the model and DLLs that the installer sets up). Details, GPU
 list and common problems: "Quick install" below.
 
+## Quick start (macOS, Apple Silicon)
+
+Needs Xcode Command Line Tools (`xcode-select --install`) and [Homebrew](https://brew.sh):
+```bash
+brew install cmake python@3.12
+git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
+cd voxcpm2-turkce-ses-tasarimi
+bash scripts/kur.sh
+```
+The installer downloads the model, builds the patched engine with Metal (~1 min) and sets everything up under `~/vox`.
+Then double-click **`baslat.command`**. On a MacBook Air M4 16 GB: ~2 s of compute per 1 s of speech, same seed gives
+byte-identical audio, peak ~5.3 GB RAM, no thermal slowdown over 12 min of continuous reading. Details and
+measurements: [docs/mac.md](docs/mac.md).
+
+**Native Mac app (no Python, Homebrew or Terminal):** [macos/README.md](macos/README.md). It bundles the same
+patched engine and downloads the model on first launch; for now it is built from source with Xcode.
+
 ## How it works
 
 1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of
@@ -43,7 +97,8 @@ about 2 s of compute per 1 s of speech on a GTX 1050 Ti. Details and measurement
 
 ## Bundled voices (`hazir_sesler/`)
 
-All seven were designed from the prompts stored in their `ses.json`; none is a real person.
+All fourteen were designed from the prompts stored in their `ses.json`; none was cloned from a recording (cloning is the
+separate, consent-gated section 3).
 
 | Voice | Short description | Listen |
 |---|---|---|
@@ -54,9 +109,18 @@ All seven were designed from the prompts stored in their `ses.json`; none is a r
 | `masal_cadisi` | Fairy-tale witch: low, slightly nasal, slyly sweet | [sample](hazir_sesler/masal_cadisi/ornek_okuma.mp3) · [reference](hazir_sesler/masal_cadisi/referans.flac) |
 | `tok_anlatici` | Exceptionally deep, dense, commanding male narrator | [sample](hazir_sesler/tok_anlatici/ornek_okuma.mp3) · [reference](hazir_sesler/tok_anlatici/referans.flac) |
 | `yasli_bilge` | Old wise man, deep and booming, slightly mysterious | [sample](hazir_sesler/yasli_bilge/ornek_okuma.mp3) · [reference](hazir_sesler/yasli_bilge/referans.flac) |
+| `anlatici_en` | Native English male documentary narrator in his fifties (General American); deep, calm, warm | [sample](hazir_sesler/anlatici_en/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_en/referans.flac) |
+| `anlatici_fr` | Native French male documentary narrator in his fifties (Parisian); deep, calm, warm | [sample](hazir_sesler/anlatici_fr/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_fr/referans.flac) |
+| `anlatici_de` | Native German male documentary narrator in his fifties (Hochdeutsch); deep, calm, warm | [sample](hazir_sesler/anlatici_de/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_de/referans.flac) |
+| `anlatici_es` | Native Spanish male documentary narrator in his fifties (Castilian (Madrid)); deep, calm, warm | [sample](hazir_sesler/anlatici_es/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_es/referans.flac) |
+| `anlatici_ru` | Native Russian male documentary narrator in his fifties (Moscow); deep, calm, warm | [sample](hazir_sesler/anlatici_ru/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_ru/referans.flac) |
+| `anlatici_zh` | Native Chinese (Mandarin) male documentary narrator in his fifties (Beijing Putonghua); deep, calm, warm | [sample](hazir_sesler/anlatici_zh/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_zh/referans.flac) |
+| `anlatici_ja` | Native Japanese male documentary narrator in his fifties (Tokyo standard); deep, calm, warm | [sample](hazir_sesler/anlatici_ja/ornek_okuma.mp3) · [reference](hazir_sesler/anlatici_ja/referans.flac) |
 
 Each folder: `referans.flac` (lossless design recording), `ses.json` (prompt, transcript, design seed, reading seed,
-description), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<name>`.
+description; `dil` = language for the narrators), `ornek_okuma.mp3` (+ its text). Use them directly: `--ses hazir/<name>`.
+The narrators' reference recordings are short (5.6-10 s); their samples are the first three sentences of the
+Cappadocia script, cut from the full production reading.
 
 ## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
@@ -146,12 +210,16 @@ Command line:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
-≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words.
+≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words in Turkish text.
+Other languages: `--dil <code>` (or the voice card's `dil`); apostrophes are allowed there, the Turkish dictionary is
+skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
 yourself (another port: `--port 8800`). Three boxes (description, creation text, text to read) + variant count.
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
 Stop the server with Ctrl+C.
+
+**Voice cloning (your own or a consented voice).** In section 3 of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
 
 ## FAQ
 
@@ -170,9 +238,14 @@ compute per 1 s of speech (real-time factor 1.9-2.8) after a one-time ~50 s refe
 disk) and 10-20 s model load per batch; peak VRAM 2.6-2.9 GB. Newer cards are faster; numbers and method:
 [docs/4gb.md](docs/4gb.md).
 
-**Can I use my own voice?** Yes: `python -m ses_tasarim.aktar --ad my_voice --kayit recording.wav --metin @transcript.txt`.
-Use a clean eight to thirty-five second recording and its exact transcript. Only use your own or authorized recordings. See
-[ETHICS.md](ETHICS.md). Label what you publish as AI-generated.
+**Can it clone a voice?** The underlying VoxCPM2 model can imitate a voice from a reference recording, and the cloning
+section uses that. Use it only with your own voice or with the explicit permission of the person whose voice it is; the
+UI asks you to confirm that permission. Voice design needs no recording: it starts from an English text description, and
+the "reference" used for reading a designed voice is the model's own synthetic design recording. To save a consented
+recording permanently as a reusable local library voice: `python -m ses_tasarim.aktar --ad my_voice --kayit
+recording.wav --metin @transcript.txt` (a clean 8-35 s recording and its exact transcript; stored locally, outside
+Git). Impersonation, fraud and deception are prohibited. See [ETHICS.md](ETHICS.md). Label what you publish as
+AI-generated.
 
 **How do I write a good voice description?** In English, 1-3 sentences: age and gender, timbre (deep/bright, warm,
 nasal, raspy), tone and role (calm documentary narrator, energetic presenter), tempo (slow, measured), and
@@ -197,6 +270,7 @@ Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md): be kind,
 ## Contributors
 
 - [@alexturkey](https://github.com/alexturkey): maintainer; code, bundled voices, docs
+- [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal support, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 
 Your name belongs here too: a test result from your GPU, a sentence for the test set, a voice you designed, a clear bug
 report or a pull request all count as contributions. Thank you to everyone who tries it and writes back.

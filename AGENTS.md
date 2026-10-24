@@ -1,13 +1,15 @@
 # AGENTS.md — step-by-step install for an AI coding agent (Claude Code, Codex, Cursor...)
 
 This file is for an agent setting up the project on a **Windows 10/11 PC with an NVIDIA GPU (≥ 4 GB VRAM)**. Follow the
-steps in order. Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
+steps in order. **On a Mac (Apple Silicon) skip to "6b. macOS".** Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
 user-facing texts; commands are language-neutral. `CLAUDE.md` points here.
 
 Hard rules for agents working in this repo:
 - Quality settings are fixed: 16 steps, cfg 2.0 (`ses_tasarim/motor.py: FIXED`). Never lower them "for speed".
 - One GPU job at a time. Do not run two engine processes concurrently (`GGML_ASSERT mem_buffer`).
-- Own-voice and explicitly authorized reference recordings are allowed. Keep recordings local and out of Git; do not enable impersonation or unauthorized voice use. See `ETHICS.md`.
+- Voice cloning and local voice import are only for the user's own voice or a voice used with its owner's explicit
+  permission. Keep the permission confirmation and the AI-generated notice in the UI; keep recordings local and out of
+  Git; do not remove or bypass the checks and never enable impersonation or unauthorized voice use. See `ETHICS.md`.
 - Keep install paths short (`C:\vox`). Long paths break nvcc at the 260-character limit.
 - `patches/*.patch` are LF. Never convert them to CRLF (`.gitattributes` protects them).
 - Do not commit `ayarlar.json`, `sesler/`, `onbellek/`, models or build output (see `.gitignore`).
@@ -111,7 +113,8 @@ driver is too old.
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
 ```
-Expected: `Hazır sesler` followed by 7 voices (`hazir/belgesel_hanim` … `hazir/yasli_bilge`).
+Expected: `Hazır sesler` followed by 14 voices: `hazir/anlatici_de` … `hazir/anlatici_zh` (language column `de` … `zh`)
+and the 7 Turkish voices `hazir/belgesel_hanim` … `hazir/yasli_bilge` (`tr`).
 
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin "Merhaba, bu bir deneme okumasıdır." --cikti cikti\ilk
@@ -125,6 +128,13 @@ Design test (~1 min):
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deneme --cesit 1 --tohum 42 --tarif "A calm Turkish woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise." --metin "Merhaba, ben sakin sesli bir anlatıcıyım. Uzun yolculukları, eski şehirleri ve küçük insan hikâyelerini anlatmayı severim. Sesim yavaş ve sıcaktır; dinleyeni acele ettirmez, her cümleye nefes aldırır. Belgesellerde ve sesli kitaplarda yanınızdayım."
 ```
 Expected: `çeşit 1: tohum 42, ~20-30 sn → ...\sesler\deneme\cesit_01` and `süre ~55 sn, VRAM tepe ~2800 MB`.
+
+Other languages (tr, en, fr, de, es, ru, zh, ja tested): the language comes from the voice card (`dil`), `--dil` overrides.
+```powershell
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+```
+Expected: `bitti: ~11 sn ses, ...`. Offline unit tests (no GPU): `.venv\Scripts\python.exe -m unittest discover -s tests`
+→ `OK`. To design and audition a voice with the user, follow `.claude/skills/ses-tasarimi/SKILL.md`.
 
 ## 5. Web UI
 
@@ -160,11 +170,32 @@ with `"hazir"` (7 items). Jobs run one at a time (`/api/is/<id>` → `durum` sir
 | `okunamayan işaret` | digits or quotes in text | write numbers in words (`iki bin yirmi altı`), remove quotes |
 | Build is slow / PC freezes | all cores used | `-Paralel 4` (kur.ps1 / derle.ps1) or `derle.ps1 -DusukOncelik` |
 
+## 6b. macOS (Apple Silicon, Metal)
+
+No prebuilt engine: the installer builds it from source with Metal (~1 min). Details and measurements: `docs/mac.md`.
+
+| Need | Check | If missing |
+|---|---|---|
+| Apple Silicon | `uname -m` → `arm64` | Intel Macs are untested |
+| Xcode Command Line Tools + Metal compiler | `xcrun --sdk macosx --find metal` → a path | `xcode-select --install` (full Xcode also works) |
+| cmake, Python 3.10-3.13 | `cmake --version`, `python3.12 --version` | `brew install cmake python@3.12` |
+
+```bash
+bash scripts/kur.sh            # root ~/vox; --kok <dir>; --adim model,kaynak,derle,python,ayar,kontrol
+```
+Expect `MODEL_OK`, `KAYNAK_OK`, `DERLE_OK`, `PYTHON_OK`, `AYAR_OK`, `KONTROL_OK` (with a `MTL:0 "Apple M…" [GPU]` line) and
+finally `KURULUM_OK`. `ayarlar.json` gets `"backend": "metal"`, `"cuda_bin": ""`. Smoke test (step 4) works the same with
+`.venv/bin/python`; the UI starts with `./baslat.command`. Determinism check: run the same reading twice, the two
+`okuma.wav` files must have the same `shasum`.
+
 ## 7. Layout
 
 ```
 ses_tasarim/      Python package: ayarlar (settings), okunus (text prep), motor (engine), tasarla (step 1), oku (step 2), arayuz (web UI)
-hazir_sesler/     7 bundled synthetic voices: referans.flac + ses.json (+ ornek_okuma.mp3)
+hazir_sesler/     14 bundled synthetic voices (7 Turkish + anlatici_<en|fr|de|es|ru|zh|ja>): referans.flac + ses.json (+ ornek_okuma.mp3)
+.claude/skills/ses-tasarimi/  Claude Code skill: design, reference-based audition, sentence-by-sentence reading (EN + TR)
+docs/cok_dilli.md multilingual use, per-language commands, lessons
+tests/            offline unit tests (python -m unittest discover -s tests)
 patches/          0001-voxcpm2-4gb-ve-hiz.patch — audio.cpp v0.7.2 changes (LF, apply with git apply)
 scripts/          kur.ps1 (installer: prebuilt or -Derle), derle.ps1 (build), release_zip.ps1 (packs a release zip)
 ayarlar/          okunus_sozlugu.tsv pronunciation dictionary

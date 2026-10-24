@@ -2,12 +2,48 @@
 
 **4 GB ekran kartında VoxCPM2 ile Türkçe ses tasarımı.** Sesi İngilizce tarif edin, model yaratsın, beğendiğiniz çeşidi
 seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, GTX 1050 Ti'ye (4 GB) sığdırılmış yamalı
-[audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve yedi hazır yapay ses içerir.
+[audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve on dört hazır yapay ses içerir: yedi Türkçe ses ve İngilizce, Fransızca, Almanca,
+İspanyolca, Rusça, Çince, Japonca yedi yerli anlatıcı (toplam 8 dil).
 
-[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
+[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
-> Hazır sesler yapaydır. Kendi veya açıkça izinli ses kaydınızı da yerelde içe aktarabilirsiniz.
-> Ürettiğiniz sesi yapay zekâ ürünü olarak etiketleyin. Başkasının sesini izinsiz kullanmayın.
+> Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
+> izniyle kullanılır; arayüz izin onayı ister. İzinli bir kaydı yerelde yeniden kullanılabilir bir kitaplık sesi olarak
+> da kaydedebilirsiniz (`python -m ses_tasarim.aktar`). İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
+> yapay zekâ ürünü olarak etiketleyin. Bkz. [ETHICS.md](ETHICS.md).
+
+## Çok dilli: 8 dil, yerli anlatıcılar, cümle cümle tutarlılık
+
+Bir Kapadokya tanıtım videosunu 8 dilde ürettik: Türkçe, İngilizce, Fransızca, Almanca, İspanyolca, Rusça, Çince ve
+Japonca. Her dilin kendi **yerli anlatıcısı** var; hepsi VoxCPM2 ile İngilizce bir tariften tasarlandı. Hepsi 4 GB'lık
+GTX 1050 Ti'de, tamamen yerelde, aynı sabit kaliteyle (16 adım, cfg 2.0) üretildi. Yedi yabancı dil anlatıcısı istemi,
+tasarım metni, tohumu ve referans kaydıyla burada.
+
+| Kod | Dil | Ses | Dinle | Video |
+|---|---|---|---|---|
+| `tr` | Türkçe | `hazir/belgesel_hanim` (ve 6 ses daha) | [örnek](hazir_sesler/belgesel_hanim/ornek_okuma.mp3) | |
+| `en` | İngilizce | `hazir/anlatici_en` | [örnek](hazir_sesler/anlatici_en/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791986763440439) |
+| `fr` | Fransızca | `hazir/anlatici_fr` | [örnek](hazir_sesler/anlatici_fr/ornek_okuma.mp3) | [video](https://x.com/i/status/2113790681575804962) |
+| `de` | Almanca | `hazir/anlatici_de` | [örnek](hazir_sesler/anlatici_de/ornek_okuma.mp3) | [video](https://x.com/i/status/2113791351645262249) |
+| `es` | İspanyolca | `hazir/anlatici_es` | [örnek](hazir_sesler/anlatici_es/ornek_okuma.mp3) | [video](https://x.com/i/status/2113807365611122705) |
+| `ru` | Rusça | `hazir/anlatici_ru` | [örnek](hazir_sesler/anlatici_ru/ornek_okuma.mp3) | [video](https://x.com/i/status/2113801574136848884) |
+| `zh` | Çince (Mandarin) | `hazir/anlatici_zh` | [örnek](hazir_sesler/anlatici_zh/ornek_okuma.mp3) | [video](https://x.com/i/status/2113802229606121794) |
+| `ja` | Japonca | `hazir/anlatici_ja` | [örnek](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
+
+```powershell
+# dil sesin kartından gelir; --dil ile değiştirilebilir
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
+.venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @metin_ja.txt --cikti cikti\ja
+# başka dilde ses tasarla: istem İngilizce, tasarım metni o dilde
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad anlatici_es_yeni --dil es --cesit 3 --tarif "A deep-voiced Spanish man ..." --metin @texto.txt
+```
+
+**Neden cümle cümle.** VoxCPM2 tek seferde uzun üretimde (yaklaşık 30 saniye üstü) kararlı değildir: ritim hızlanır,
+ses kayabilir. Burada sesi sabit bir referans kayıt ve tohum taşır, uzun metin satır satır (cümle cümle) okunur; tını ve
+tarz ilk cümleden son cümleye aynı kalır. Türkçe dışındaki dillerde Türkçe okunuş sözlüğü uygulanmaz. VoxCPM2'nin
+desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik. Dil dil komutlar ve bulduğumuz çözümler:
+[docs/cok_dilli.md](docs/cok_dilli.md). Bütün tasarım akışı için Claude Code becerisi:
+[.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
 ## Hızlı başlangıç (Windows, 3 adım)
 
@@ -28,6 +64,23 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 Motor zip'i tek başına çalışan bir uygulama değildir (içindeki exe, kurulumun yerleştirdiği modele ve DLL'lere ihtiyaç
 duyar). Ayrıntı, kart listesi ve sık sorunlar: aşağıdaki "Hızlı kurulum".
 
+## Hızlı başlangıç (macOS, Apple Silicon)
+
+Xcode Command Line Tools (`xcode-select --install`) ve [Homebrew](https://brew.sh) gerekir:
+```bash
+brew install cmake python@3.12
+git clone https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi.git
+cd voxcpm2-turkce-ses-tasarimi
+bash scripts/kur.sh
+```
+Kurulum modeli indirir, yamalı motoru Metal ile derler (~1 dk) ve her şeyi `~/vox` altına kurar. Sonra
+**`baslat.command`** dosyasına çift tıklayın. MacBook Air M4 16 GB'ta 1 sn ses ≈ 2 sn sürüyor; aynı tohum bayt bayt aynı
+sesi veriyor, RAM kullanımı en fazla ~5,3 GB ve 12 dk kesintisiz okumada ısınmadan kaynaklı yavaşlama olmadı. Ayrıntılar
+ve ölçümler: [docs/mac.md](docs/mac.md).
+
+**Native Mac uygulaması (Python, Homebrew ve Terminal gerekmez):** [macos/README.md](macos/README.md). Aynı yamalı
+motoru içinde taşır, modeli ilk açılışta indirir; şimdilik Xcode ile kaynaktan derlenir.
+
 ## Nasıl çalışır
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi
@@ -42,7 +95,8 @@ için ≈ 2 sn. Ayrıntı ve ölçümler: [docs/4gb.md](docs/4gb.md).
 
 ## Hazır sesler (`hazir_sesler/`)
 
-Yedisi de `ses.json` içindeki tariflerden tasarlandı; hiçbiri gerçek bir kişi değil.
+On dördü de `ses.json` içindeki tariflerden tasarlandı; hiçbiri bir kayıttan klonlanmadı (klonlama ayrı ve izin onaylı
+3. bölümdür).
 
 | Ses | Kısa tarif | Dinle |
 |---|---|---|
@@ -53,9 +107,18 @@ Yedisi de `ses.json` içindeki tariflerden tasarlandı; hiçbiri gerçek bir ki�
 | `masal_cadisi` | Masal cadısı: pes, hafif genizli, sinsi tatlı | [örnek](hazir_sesler/masal_cadisi/ornek_okuma.mp3) · [referans](hazir_sesler/masal_cadisi/referans.flac) |
 | `tok_anlatici` | Çok derin, tok, buyurgan erkek anlatıcı | [örnek](hazir_sesler/tok_anlatici/ornek_okuma.mp3) · [referans](hazir_sesler/tok_anlatici/referans.flac) |
 | `yasli_bilge` | Yaşlı bilge, derin ve gür, hafif gizemli | [örnek](hazir_sesler/yasli_bilge/ornek_okuma.mp3) · [referans](hazir_sesler/yasli_bilge/referans.flac) |
+| `anlatici_en` | Ellili yaşlarda yerli İngilizce erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_en/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_en/referans.flac) |
+| `anlatici_fr` | Ellili yaşlarda yerli Fransızca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_fr/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_fr/referans.flac) |
+| `anlatici_de` | Ellili yaşlarda yerli Almanca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_de/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_de/referans.flac) |
+| `anlatici_es` | Ellili yaşlarda yerli İspanyolca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_es/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_es/referans.flac) |
+| `anlatici_ru` | Ellili yaşlarda yerli Rusça erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_ru/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_ru/referans.flac) |
+| `anlatici_zh` | Ellili yaşlarda yerli Çince (Mandarin) erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_zh/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_zh/referans.flac) |
+| `anlatici_ja` | Ellili yaşlarda yerli Japonca erkek belgesel anlatıcısı; derin, sakin, sıcak | [örnek](hazir_sesler/anlatici_ja/ornek_okuma.mp3) · [referans](hazir_sesler/anlatici_ja/referans.flac) |
 
 Her klasörde: `referans.flac` (kayıpsız tasarım kaydı), `ses.json` (tarif, metin, tasarım tohumu, okuma tohumu,
-tanıtım), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`.
+tanıtım; anlatıcılarda `dil`), `ornek_okuma.mp3` (+ metni). Doğrudan kullanın: `--ses hazir/<ad>`.
+Anlatıcıların referans kayıtları kısadır (5,6-10 sn); örnekleri Kapadokya metninin ilk üç cümlesidir, üretimdeki tam
+okumadan kesildi.
 
 ## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
@@ -145,12 +208,16 @@ Komut satırı:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
-satır ≤ 2000 karakter. Yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
+satır ≤ 2000 karakter. Türkçe metindeki yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
+Başka diller: `--dil <kod>` (ya da sesin kartındaki `dil`); orada kesme işaretine izin verilir, Türkçe sözlük
+uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
 adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit
 sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
 ile kapatın.
+
+**Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün 3. bölümünde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
 
 ## Sık sorulanlar
 
@@ -169,9 +236,13 @@ ses başına 1 sn için ≈ 2 sn hesap (gerçek zaman çarpanı 1,9-2,8); ses ba
 (diske önbelleklenir) ve parti başına 10-20 sn model yükleme eklenir; VRAM tepe 2,6-2,9 GB. Yeni kartlar daha hızlı;
 sayılar ve yöntem: [docs/4gb.md](docs/4gb.md).
 
-**Kendi sesimi kullanabilir miyim?** Evet: `python -m ses_tasarim.aktar --ad kendi_sesim --kayit kayit.wav --metin @kayit_metni.txt`.
-Sekiz ile otuz beş saniyelik temiz bir kayıt ve birebir dökümünü kullanın. Yalnızca kendi veya izinli kayıtları ekleyin. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay
-zekâ ürünü olarak etiketleyin.
+**Ses klonlayabilir mi?** Alttaki VoxCPM2 modeli bir referans kayıttan sesi taklit edebilir; klonlama bölümü bunu
+kullanır. Yalnız kendi sesinizle ya da ses sahibinin açık izniyle kullanın; arayüz izin onayı ister. Ses tasarımı kayıt
+gerektirmez: İngilizce bir metin tarifinden başlar, tasarlanan sesle okumada kullanılan "referans" modelin kendi yapay
+tasarım kaydıdır. İzinli bir kaydı kalıcı, yeniden kullanılabilir bir yerel kitaplık sesi olarak kaydetmek için:
+`python -m ses_tasarim.aktar --ad kendi_sesim --kayit kayit.wav --metin @kayit_metni.txt` (8-35 sn temiz kayıt ve
+birebir dökümü; yalnız yerelde, Git dışında saklanır). İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır.
+Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı yapay zekâ ürünü olarak etiketleyin.
 
 **İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,
 kısık), ton ve rol (sakin belgesel anlatıcısı, enerjik sunucu), tempo (yavaş, ölçülü) ve "clean studio recording, no
@@ -196,6 +267,7 @@ Katılan herkes [Davranış Kuralları](CODE_OF_CONDUCT.md)'na uyar: nazik olun,
 ## Katkıda bulunanlar
 
 - [@alexturkey](https://github.com/alexturkey): bakıcı; kod, hazır sesler, belgeler
+- [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal desteği, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 
 Adınız da burada yer alabilir: kendi kartınızdaki test sonucu, test setine bir cümle, tasarladığınız bir ses, açık bir
 hata bildirimi ya da bir PR, hepsi katkıdır. Deneyip geri yazan herkese teşekkürler.
