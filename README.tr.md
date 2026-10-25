@@ -91,6 +91,14 @@ ve ölçümler: [docs/mac.md](docs/mac.md).
 **Native Mac uygulaması (Python, Homebrew ve Terminal gerekmez):** [macos/README.md](macos/README.md). Aynı yamalı
 motoru içinde taşır, modeli ilk açılışta indirir; şimdilik Xcode ile kaynaktan derlenir.
 
+## Mac (Apple Silicon) kullanıcıları için
+
+Apple Silicon Mac'ler için, VoxCPM2'yi Apple'ın MLX altyapısıyla çalıştıran, topluluk tarafından geliştirilmiş
+bağımsız bir uyarlama da var: **[emre-koc/voxcpm2-turkce-ses-tasarimi-mlx](https://github.com/emre-koc/voxcpm2-turkce-ses-tasarimi-mlx)**.
+Bu sürümü Emre Koç ([@emre-koc](https://github.com/emre-koc)) kendi reposunda geliştiriyor ve bakımını o yapıyor;
+bu repoda değil. Kurulum adımları ve destek soruları için onun reposuna bakın. Projeyi Mac'e taşıdığı için Emre'ye
+teşekkür ederiz!
+
 ## Nasıl çalışır
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi

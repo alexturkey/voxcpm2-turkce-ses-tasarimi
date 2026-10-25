@@ -92,6 +92,13 @@ measurements: [docs/mac.md](docs/mac.md).
 **Native Mac app (no Python, Homebrew or Terminal):** [macos/README.md](macos/README.md). It bundles the same
 patched engine and downloads the model on first launch; for now it is built from source with Xcode.
 
+## For Mac (Apple Silicon) users
+
+There is also an independent, community-made adaptation for Apple Silicon Macs that runs VoxCPM2 with Apple's
+MLX framework: **[emre-koc/voxcpm2-turkce-ses-tasarimi-mlx](https://github.com/emre-koc/voxcpm2-turkce-ses-tasarimi-mlx)**.
+It is developed and maintained by Emre Koç ([@emre-koc](https://github.com/emre-koc)) in his own repository, not
+here; installation steps and support questions go there. Thank you, Emre, for bringing this project to the Mac!
+
 ## How it works
 
 1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of
