@@ -9,6 +9,10 @@
   tarif* kutusu (dile göre süzülür), `GET /api/ornekler`, belge `docs/ornek_tarifler.md`, testler `tests/test_ornekler.py`.
   Henüz ölçülmedi: her örnek tek tek tasarlanıp dinlenmedi.
 - README ve AGENTS: video dublajı için DubWorld yönlendirmesi (tasarlanan ses orada `ses.voxcpm2_ses` ile kullanılır).
+- Ara dosyalar artık birikmiyor: motorun çalışma dosyaları (`motor.log` satır başına yaklaşık 3 MB, PCM dökümleri)
+  `_motor_is` klasöründe tutulur ve iş başarıyla bitince silinir; `tasarla` `_calisma/tasarim_*`, `oku` `<çıktı>/_motor`
+  bırakmaz. Motor hata verir ya da bir satır yarım kalırsa dosyalar inceleme için kalır; `SES_TASARIM_ARA_DOSYA_TUT=1`
+  her zaman saklar. macOS uygulaması zaten böyle çalışıyordu. Test: `tests/test_ara_dosya.py`.
 - Çok dilli okuma ve tasarım: `--dil` (tr, en, fr, de, es, ru, zh, ja denendi). Tr dışındaki dillerde Türkçe okunuş
   sözlüğü uygulanmaz, kesme işareti kalır; dil sesin kartına (`dil`) yazılır ve okumada oradan alınır; arayüzde dil seçimi.
 - Yedi yerli anlatıcı hazır ses olarak eklendi: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (istem, tasarım metni,
@@ -53,6 +57,10 @@
   `tasarla --ornek <id>`, an *Example prompt* picker in the web UI (filtered by language), `GET /api/ornekler`,
   `docs/ornek_tarifler.md`, tests in `tests/test_ornekler.py`. Not measured yet: not every example was designed and heard.
 - README and AGENTS: pointer to DubWorld for video dubbing (a voice designed here is used there via `ses.voxcpm2_ses`).
+- Scratch files no longer pile up: engine work files (`motor.log`, about 3 MB per line, PCM dumps) live in `_motor_is`
+  and are deleted after a successful run; `tasarla` leaves no `_calisma/tasarim_*`, `oku` no `<output>/_motor`. On an
+  engine error or an unfinished line they are kept for inspection; `SES_TASARIM_ARA_DOSYA_TUT=1` always keeps them.
+  The macOS app already worked this way. Test: `tests/test_ara_dosya.py`.
 - Multilingual reading and design: `--dil` (tested: tr, en, fr, de, es, ru, zh, ja). Outside Turkish the Turkish
   dictionary is skipped and apostrophes are kept; the language is stored in the voice card (`dil`) and used for reading;
   language selector in the web UI.

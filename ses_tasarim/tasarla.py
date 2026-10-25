@@ -12,6 +12,7 @@ language is stored in the card ("dil") and used when reading.
 import argparse
 import json
 import secrets
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -59,6 +60,7 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
     requests = [motor.design_request(f"t_{seed}", description, spoken_text, seed) for seed in seeds]
     work_dir = settings["onbellek"].parent / "_calisma" / f"tasarim_{time.strftime('%Y%m%d_%H%M%S')}"
     result = motor.run_sequence(settings, requests, work_dir, progress)
+    _remove_empty(work_dir)  # motor ara dosyalarını sildi; boş çalışma klasörü de kalmasın
     variants, number = [], len(existing)
     for request in requests:
         if request["id"] in result["bad"]:
@@ -83,6 +85,15 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
         variants.append({**card, "klasor": str(trial)})
     return {"ses": voice_dir.name, "klasor": str(voice_dir), "cesitler": variants,
             "sure_sn": result["seconds"], "vram_tepe_mb": result["vram_peak_mb"]}
+
+
+def _remove_empty(folder: Path) -> None:
+    """Boş kalan çalışma klasörünü ve boşsa üstündeki `_calisma` klasörünü siler (dolu klasöre dokunmaz)."""
+    for path in (folder, folder.parent):
+        try:
+            path.rmdir()
+        except OSError:
+            return
 
 
 def read_arg_text(value: str) -> str:

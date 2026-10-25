@@ -15,6 +15,8 @@ a single long generation (over ~30 s) is not stable, sentence-by-sentence readin
 """
 import argparse
 import json
+import os
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -95,6 +97,8 @@ def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None
     if result["bad"]:
         numbers = [int(b[1:]) for b in result["bad"]]
         raise motor.MotorHatasi(f"şu satırlar düzgün bitmedi (EOS yok): {numbers}; cümleyi kısalt ya da yeniden dene")
+    if os.environ.get(motor.KEEP_ENV) != "1":
+        shutil.rmtree(work_dir, ignore_errors=True)  # referans kopyası kalmıştı; motor ara dosyalarını zaten sildi
     audios = [result["audios"][r["id"]] for r in requests]
     joined = motor.join_lines(audios, [pause for _, pause in parsed])
     wav = out_dir / "okuma.wav"

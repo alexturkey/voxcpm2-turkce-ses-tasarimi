@@ -5,6 +5,7 @@ Fixed quality: 16 steps, cfg 2.0. The seed is not a quality knob.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -21,6 +22,10 @@ TEXT_CHUNK = 2048
 REFERENCE_OPTION = ("--session-option", "voxcpm2.audiovae_encoder_sample_capacity=576000")
 MIN_REFERENCE_SECONDS = 8.0
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
+# Motorun ara dosyaları (motor.log satır başına ~3 MB, PCM dökümleri) iş başarıyla bitince silinir; hata olursa kalır.
+# 1 = her zaman sakla (hata ayıklama). / Engine scratch files are deleted after a successful run, kept on failure.
+KEEP_ENV = "SES_TASARIM_ARA_DOSYA_TUT"
+ENGINE_DIR = "_motor_is"
 
 
 class MotorHatasi(RuntimeError):
@@ -127,8 +132,10 @@ def _eos_by_block(log_path: Path, count: int) -> list:
 def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) -> dict:
     """İstekleri tek motor oturumunda üretir. Dönen: audios {id: float32}, bad [id], seconds, vram_peak_mb.
 
-    Runs all requests in one engine session (model loaded once)."""
-    work_dir = Path(work_dir)
+    Motor dosyaları `work_dir/_motor_is` içine yazılır; iş bitince (sesler belleğe okununca) silinir, motor hata
+    verirse inceleme için kalır (`SES_TASARIM_ARA_DOSYA_TUT=1` her zaman saklar).
+    Runs all requests in one engine session (model loaded once); engine scratch files are removed afterwards."""
+    work_dir = Path(work_dir).resolve() / ENGINE_DIR
     work_dir.mkdir(parents=True, exist_ok=True)
     for request in requests:
         request.update({"num_inference_steps": FIXED["adim"], "guidance_scale": FIXED["cfg"],
@@ -171,6 +178,8 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
         if rate != SAMPLE_RATE:
             raise MotorHatasi(f"beklenmeyen örnekleme {rate}")
         audios[request["id"]] = audio
+    if not bad and os.environ.get(KEEP_ENV) != "1":  # yarım kalan satır varsa log inceleme için kalır
+        shutil.rmtree(work_dir, ignore_errors=True)
     return {"audios": audios, "bad": bad, "seconds": round(time.time() - started, 1), "vram_peak_mb": watcher.peak_mb}
 
 
