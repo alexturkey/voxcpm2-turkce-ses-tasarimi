@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import ayarlar, motor, oku, tasarla
+from . import ayarlar, motor, oku, ornekler, tasarla
 
 HTML = r"""<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -55,6 +55,8 @@ button:disabled{opacity:.5;cursor:default}
 <div class="row"><div><label>Sesin adı (voice name)</label><input id="ad" placeholder="deniz_feneri"></div>
 <div><label>Çeşit sayısı (variants, her biri ayrı tohum)</label><input id="cesit" type="number" value="3" min="1" max="10"></div>
 <div><label>Dil (language)</label><select id="dil"><option value="tr">Türkçe</option><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="es">Español</option><option value="ru">Русский</option><option value="zh">中文</option><option value="ja">日本語</option></select></div></div>
+<label>Örnek tarif (example prompt): seçince tarif, metin ve ad dolar; istediğin gibi değiştir</label>
+<select id="ornek"><option value="">— kendim yazacağım / I will write my own —</option></select>
 <label>İngilizce ses tarifi, parantezsiz (voice description in English)</label>
 <textarea id="tarif" placeholder="A calm Turkish woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
 <label>Ses yaratılırken okutulan metin, sesin dilinde, rakamsız; Türkçede tırnak yok (text read while creating the voice, in its language)</label>
@@ -92,6 +94,13 @@ Yapay zekâ ile üretilmiş bir sestir. || paragraf
 const $=id=>document.getElementById(id);
 async function api(yol,gov){const r=await fetch(yol,gov?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(gov)}:{});return r.json();}
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+let ornekler=[];
+function ornekDoldur(){const d=$('dil').value,s=$('ornek');s.innerHTML='<option value="">— kendim yazacağım / I will write my own —</option>';
+ for(const o of ornekler.filter(o=>o.dil===d)){const e=document.createElement('option');e.value=o.id;e.textContent=o.ad_tr+' / '+o.ad_en;s.appendChild(e);}}
+async function ornekYukle(){ornekler=await api('/api/ornekler');ornekDoldur();}
+$('dil').addEventListener('change',ornekDoldur);
+$('ornek').addEventListener('change',()=>{const o=ornekler.find(o=>o.id===$('ornek').value);if(!o)return;
+ $('tarif').value=o.tarif;$('tasarim_metni').value=o.metin;if(!$('ad').value.trim()||ornekler.some(x=>x.id===$('ad').value))$('ad').value=o.id;});
 let sesler={hazir:[],tasarlanan:[]};
 async function yenile(secili){sesler=await api('/api/sesler');const s=$('ses');s.innerHTML='';
  for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent='tasarlanan: '+k.kimlik+' ['+(k.dil||'tr')+'] (tohum '+k.okuma_tohumu+')';s.appendChild(o);}
@@ -127,7 +136,7 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
  $('klon_sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/${r.dosya}"></audio> <a href="/okuma/${r.is}/${r.dosya}" download="${r.dosya}"><button>İndir (download)</button></a>
   <div class="uyari"><b>Yapay üretilmiş sestir.</b> Paylaşırken belirtin. <small>AI-generated synthetic speech; label it when sharing.</small></div>
   <div><small>${r.ses_sn} sn ses, ${r.sure_sn} sn üretim, VRAM tepe ${r.vram_tepe_mb} MB, tohum ${r.tohum}, referans ${r.referans_sn} sn</small>${(r.notlar||[]).map(n=>'<br><small>'+esc(n)+'</small>').join('')}</div>`;};
-yenile();
+yenile();ornekYukle();
 </script></body></html>
 """
 
@@ -246,6 +255,8 @@ def make_handler(settings, jobs: Isler):
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif path == "/api/ornekler":
+                self._json(ornekler.listele())
             elif path == "/api/sesler":
                 self._json(oku.list_voices(settings))
             elif path.startswith("/api/is/"):

@@ -135,6 +135,14 @@ Other languages (tr, en, fr, de, es, ru, zh, ja tested): the language comes from
 Expected: `bitti: ~11 sn ses, ...`. Offline unit tests (no GPU): `.venv\Scripts\python.exe -m unittest discover -s tests`
 → `OK`. To design and audition a voice with the user, follow `.claude/skills/ses-tasarimi/SKILL.md`.
 
+Example prompts (no GPU): `.venv\Scripts\python.exe -m ses_tasarim.ornekler --dil en` → 18 lines (`en_belgesel_erkek`
+… `en_spor_erkek`). If the user does not know what to describe, offer these: `--ornek <id>` designs from one
+(`docs/ornek_tarifler.md`).
+
+If the user wants to **dub videos** with a voice, point them to [DubWorld](https://github.com/alexturkey/dubworld): it
+installs this repository as its VoxCPM2 engine (`scripts\kur.ps1 -Adim voxcpm2`, NVIDIA GPU) and reads a voice from
+here with `ses.voxcpm2_ses = "<name>/<variant>"` (or a voice folder path).
+
 ## 5. Web UI
 
 ```powershell
@@ -190,7 +198,8 @@ finally `KURULUM_OK`. `ayarlar.json` gets `"backend": "metal"`, `"cuda_bin": ""`
 ## 7. Layout
 
 ```
-ses_tasarim/      Python package: ayarlar (settings), okunus (text prep), motor (engine), tasarla (step 1), oku (step 2), arayuz (web UI)
+ses_tasarim/      Python package: ayarlar (settings), okunus (text prep), motor (engine), tasarla (step 1), oku (step 2), arayuz (web UI), ornekler (example prompts)
+ses_tasarim/ornek_tarifler/  roller.json (18 English role templates) + <lang>.json (nationality, accent, design texts): 144 examples, docs/ornek_tarifler.md
 hazir_sesler/     14 bundled synthetic voices (7 Turkish + anlatici_<en|fr|de|es|ru|zh|ja>): referans.flac + ses.json (+ ornek_okuma.mp3)
 .claude/skills/ses-tasarimi/  Claude Code skill: design, reference-based audition, sentence-by-sentence reading (EN + TR)
 docs/cok_dilli.md multilingual use, per-language commands, lessons

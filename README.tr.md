@@ -44,6 +44,17 @@ desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik. 
 [docs/cok_dilli.md](docs/cok_dilli.md). Bütün tasarım akışı için Claude Code becerisi:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
+**Başlamak için 144 örnek tarif.** 8 dilin her birinde 18 rol: belgesel anlatıcısı, haber spikeri, reklam sesi, sesli
+kitap, masal anlatan nine ve dede, podcast sunucusu, öğretmen, film fragmanı, meditasyon rehberi, spor spikeri ve
+dahası, kadın ve erkek. Tarif İngilizcedir, içinde konuşanın milliyeti ve yerli aksanı geçer; ses yaratılırken okutulan
+metin de o dilde ve role uygun olarak hazır gelir. Birini seç, çeşitleri dinle, beğendiğini tut:
+`python -m ses_tasarim.tasarla --ornek tr_masal_nine --cesit 3`, ya da arayüzde *Örnek tarif* kutusundan seç.
+Tam liste: [docs/ornek_tarifler.md](docs/ornek_tarifler.md).
+
+**Videolarını kendi tasarladığın sesle dublajla.** [DubWorld](https://github.com/alexturkey/dubworld) yerel video
+dublaj programımız; bu repoyu VoxCPM2 ses motoru olarak kurar. Burada tasarladığın ses orada
+`ses.voxcpm2_ses = "<ad>/<çeşit>"` ayarıyla kullanılır.
+
 ## Hızlı başlangıç (Windows, 3 adım)
 
 1. **İndir:** kodu indirin: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).

@@ -24,7 +24,9 @@ reference and seed, and the voice stays consistent from the first line to the la
 ## Steps
 
 1. **Ask and write the form.** The user describes the voice in their own words (who, age, gender, tone, pace, use).
-   Write:
+   First look for a close example: `python -m ses_tasarim.ornekler --dil <code> --tam` (144 examples, 18 roles × 8
+   languages, `docs/ornek_tarifler.md`). If one fits, start from it (`--ornek <id>` fills prompt, text, language and
+   name) and only change what the user asked for. Otherwise write:
    - `tarif`: the voice prompt, **always in English**, short, no parentheses (the engine treats `(` as the prompt
      boundary). Main axes: gender, age, nationality/native accent, tone, emotion, pace, recording quality. Example used
      for our French narrator: `A deep-voiced French man in his fifties, native French speaker from Paris with a natural
@@ -88,7 +90,9 @@ motora bu kayıt, birebir metni ve çeşidin kendi tohumu verilir; aynı referan
 tarz. VoxCPM2 tek seferde uzun üretimde (yaklaşık 30 saniye üstü) kararlı değildir; bu yüzden uzun metin **cümle cümle**
 okunur ve ses ilk satırdan son satıra kadar tutarlı kalır.
 
-1. **Tarif al, formu yaz.** Kullanıcı sesi kendi sözleriyle anlatır. Beceri yazar: İngilizce ses yaratıcı istem
+1. **Tarif al, formu yaz.** Kullanıcı sesi kendi sözleriyle anlatır. Önce yakın bir örnek aranır:
+   `python -m ses_tasarim.ornekler --dil <kod> --tam` (144 örnek, `docs/ornek_tarifler.md`); uyan varsa `--ornek <id>`
+   ile ondan başlanır, yalnız kullanıcının istediği değiştirilir. Yoksa beceri yazar: İngilizce ses yaratıcı istem
    (`--tarif`, parantezsiz, kısa; yabancı dilde yerli konuşan ve şehir/aksan yazılır), sesin kendi dilinde tasarım
    metni (`--metin`, rakamsız, 8-30 sn), dil kodu (`--dil`). Çeşit sayısını sorar (varsayılan 3).
 2. **Çeşitleri tasarla:** her çeşit kendi tohumuyla (`python -m ses_tasarim.tasarla ... --dil <kod> --cesit 3`).

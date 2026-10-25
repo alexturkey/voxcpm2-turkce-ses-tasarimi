@@ -46,6 +46,17 @@ than Turkish the Turkish pronunciation dictionary is not applied. Other language
 [docs/cok_dilli.md](docs/cok_dilli.md). Claude Code skill for the whole design flow:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
+**144 example prompts to start from.** 18 roles (documentary narrator, news anchor, commercial voice, audiobook,
+grandmother storyteller, podcast host, teacher, movie trailer, meditation guide, sports commentator and more, male and
+female) in each of the 8 languages. The prompt is English with the speaker's nationality and native accent; the text
+read while the voice is created comes with it, in that language and matched to the role. Pick one, listen to the
+variants, keep the one you like: `python -m ses_tasarim.tasarla --ornek fr_sesli_kitap_kadin --cesit 3`, or choose
+*Example prompt* in the web UI. Full list: [docs/ornek_tarifler.md](docs/ornek_tarifler.md).
+
+**Dub your videos with your own voice.** [DubWorld](https://github.com/alexturkey/dubworld) is our local video dubbing
+program; it installs this repository as its VoxCPM2 voice engine. A voice you design here is used there with
+`ses.voxcpm2_ses = "<name>/<variant>"`.
+
 ## Quick start (Windows, 3 steps)
 
 1. **Download** the code: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).

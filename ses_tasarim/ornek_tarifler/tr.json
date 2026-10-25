@@ -1,0 +1,17 @@
+{
+  "dil": "tr",
+  "man": "Turkish man",
+  "woman": "Turkish woman",
+  "native": "native Turkish speaker from Istanbul with clear standard Turkish diction",
+  "metinler": {
+    "belgesel": "Bazı yerler vardır, ilk gördüğünüz anda sizi yıllardır bekliyormuş gibi hissettirir. Rüzgârın şekillendirdiği kayalar, sessiz vadiler ve binlerce yıllık izler, burada zamanın nasıl aktığını usulca anlatır. Şimdi bu yolculuğa birlikte çıkalım.",
+    "haber": "İyi akşamlar, ana haber bültenine hoş geldiniz. Bu akşam önce ekonomideki son gelişmelere bakacağız, ardından hava durumuyla ilgili önemli bir uyarıyı paylaşacağız. Günün öne çıkan başlıklarını sizler için tek tek derledik.",
+    "tanitim": "Hayalinizdeki tatil artık bir tık uzağınızda. Denize sıfır oteller, güler yüzlü hizmet ve size özel fırsatlarla bu yaz bambaşka geçecek. Hemen yerinizi ayırtın, gerisini bize bırakın. Unutmayın, en güzel anılar erken planlananlardır.",
+    "hikaye": "Bir varmış bir yokmuş, uzak bir köyün kıyısında küçük bir değirmen varmış. Değirmenin yaşlı sahibi her akşam ateşin başına oturur, çocuklara rüzgârın getirdiği hikâyeleri anlatırmış. O gece ise kapı hiç beklenmedik bir anda çalınmış.",
+    "sohbet": "Selam arkadaşlar, bugün size geçen hafta başıma gelen çok komik bir olayı anlatacağım. Aslında her şey sıradan bir sabah kahvesiyle başladı ama sonu hiç beklediğim gibi bitmedi. Hazırsanız başlıyorum, sonuna kadar dinleyin.",
+    "egitim": "Bugünkü dersimizde suyun doğadaki yolculuğunu öğreneceğiz. Güneş denizleri ısıtır, su buhar olur ve gökyüzünde bulutları oluşturur. Bulutlar soğuyunca yağmur yağar ve su yeniden toprağa döner. Şimdi bu döngüyü adım adım inceleyelim.",
+    "fragman": "Bir dünya düşünün, karanlığın her köşeyi sardığı ve umudun neredeyse tükendiği. Tek bir kahraman, imkânsız görünen bir yolculuğa çıkmak zorunda. Kaderi değiştirecek o seçim şimdi onun ellerinde. Bu yaz her şey değişiyor.",
+    "meditasyon": "Gözlerinizi yavaşça kapatın ve derin bir nefes alın. Nefesin göğsünüzü nasıl doldurduğunu hissedin, sonra yavaşça bırakın. Omuzlarınız gevşiyor, zihniniz sakinleşiyor. Şu an buradasınız, güvendesiniz ve hiçbir acele yok.",
+    "spor": "Ve top orta sahada, hızlı bir atak başlıyor! Kanattan müthiş bir koşu, ceza sahasına giriyor, rakibini geçti, vuruyor ve gol! İnanılmaz bir gol, tribünler ayağa kalktı, stadyum adeta yıkılıyor!"
+  }
+}

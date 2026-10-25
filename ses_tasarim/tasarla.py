@@ -3,6 +3,7 @@ her tohum için bir tasarım kaydı (referans). / Step 1: voice design.
 
 python -m ses_tasarim.tasarla --ad deniz_feneri --tarif "A calm Turkish woman..." --metin @metin.txt --cesit 3
 python -m ses_tasarim.tasarla --ad narrator_fr --dil fr --tarif "A deep-voiced French man..." --metin @texte.txt --cesit 3
+python -m ses_tasarim.tasarla --ornek de_belgesel_erkek --cesit 3      # hazır örnek / ready example (ornekler.py)
 
 Tarif her dilde İngilizcedir; tasarım metni sesin konuşacağı dilde yazılır; dil kartta ("dil") saklanır ve okumada
 kullanılır. / The description is always English; the design text is written in the voice's own language; the
@@ -15,7 +16,7 @@ import sys
 import time
 from pathlib import Path
 
-from . import ayarlar, motor, okunus
+from . import ayarlar, motor, okunus, ornekler
 
 DEFAULT_VARIANTS = 3
 
@@ -91,15 +92,26 @@ def read_arg_text(value: str) -> str:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ayarlar", help="ayar dosyası (varsayılan ./ayarlar.json)")
-    parser.add_argument("--ad", required=True, help="sesin adı / voice name")
-    parser.add_argument("--tarif", required=True, help="İngilizce ses tarifi (parantezsiz) ya da @dosya")
-    parser.add_argument("--metin", required=True,
-                        help="ses yaratılırken okutulan metin, sesin dilinde, ya da @dosya (rakamsız)")
-    parser.add_argument("--dil", default=okunus.DEFAULT_LANGUAGE,
+    parser.add_argument("--ornek", help="örnek tarif kimliği / example id (python -m ses_tasarim.ornekler): tarif, "
+                        "metin, dil ve ad buradan gelir; --tarif / --metin / --ad verilirse onlar geçerli")
+    parser.add_argument("--ad", help="sesin adı / voice name (--ornek ile isteğe bağlı)")
+    parser.add_argument("--tarif", help="İngilizce ses tarifi (parantezsiz) ya da @dosya")
+    parser.add_argument("--metin", help="ses yaratılırken okutulan metin, sesin dilinde, ya da @dosya (rakamsız)")
+    parser.add_argument("--dil", default=None,
                         help="sesin dili / voice language: " + ", ".join(okunus.LANGUAGES) + " (varsayılan tr)")
     parser.add_argument("--cesit", type=int, default=DEFAULT_VARIANTS, help="çeşit sayısı / number of variants")
     parser.add_argument("--tohum", type=int, nargs="*", help="tohumları kendin ver / explicit seeds")
     args = parser.parse_args(argv)
+    if args.ornek:
+        item = ornekler.bul(args.ornek)
+        args.ad = args.ad or item["id"]
+        args.tarif = args.tarif or item["tarif"]
+        args.metin = args.metin or item["metin"]
+        args.dil = args.dil or item["dil"]
+    missing = [f"--{k}" for k in ("ad", "tarif", "metin") if not getattr(args, k)]
+    if missing:
+        parser.error(", ".join(missing) + " gerekli (ya da --ornek) / required (or --ornek)")
+    args.dil = args.dil or okunus.DEFAULT_LANGUAGE
     settings = ayarlar.load(args.ayarlar)
     description, text = read_arg_text(args.tarif), read_arg_text(args.metin)
 
