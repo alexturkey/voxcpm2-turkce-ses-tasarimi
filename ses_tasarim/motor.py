@@ -115,8 +115,10 @@ def read_request(request_id: str, text: str, seed: int, reference: Path, referen
             "reference_text": reference_text.strip()}
 
 
-def _eos_by_block(log_path: Path, count: int) -> list:
-    """Her istek bloğu 'toplu_coz.deferred' ile biter; EOS'suz blok yarım ses demektir. Log satır satır okunur."""
+def _eos_by_block(log_path: Path, count: int, cpu: bool = False) -> list:
+    """Her istek bloğu 'toplu_coz.deferred' ile biter; EOS'suz blok yarım ses demektir. Log satır satır okunur.
+    CPU arka ucunda toplu çözüm (yama c5) devreye girmez: her blok anında çözülür ve 'toplu_coz.deferred' yerine
+    'voxcpm2.audiovae_decoder_ms ' satırıyla biter; CPU'da o satır da blok sonu sayılır."""
     ok, block = [False] * count, 0
     if not log_path.exists():
         return ok
@@ -124,7 +126,7 @@ def _eos_by_block(log_path: Path, count: int) -> list:
         for line in handle:
             if block < count and "eos_accepted_at_patch" in line:
                 ok[block] = True
-            if "voxcpm2.toplu_coz.deferred" in line:
+            if "voxcpm2.toplu_coz.deferred" in line or (cpu and "voxcpm2.audiovae_decoder_ms " in line):
                 block += 1
     return ok
 
@@ -156,7 +158,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
         try:
             while process.poll() is None:
                 if progress:
-                    progress(sum(_eos_by_block(log_path, len(requests))), len(requests), time.time() - started)
+                    progress(sum(_eos_by_block(log_path, len(requests), settings.get("backend") == "cpu")), len(requests), time.time() - started)
                 time.sleep(3)
         finally:
             # hata ya da Ctrl+C: motor yetim kalmasın, çalışma klasöründeki dosyalar serbest kalsın (silinebilsin)
@@ -167,7 +169,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
         raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}")
-    ok = _eos_by_block(log_path, len(requests))
+    ok = _eos_by_block(log_path, len(requests), settings.get("backend") == "cpu")
     audios, bad = {}, []
     for request, finished in zip(requests, ok):
         wav = work_dir / "out" / f"{request['id']}.wav"
