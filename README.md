@@ -294,3 +294,9 @@ report or a pull request all count as contributions. Thank you to everyone who t
 Code and bundled voices: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. Built on VoxCPM2 (OpenBMB, Apache-2.0),
 audio.cpp (ShugoAI LLC, Apache-2.0) and the audio.cpp GGUF conversion. Full list: [THIRD_PARTY.md](THIRD_PARTY.md).
 Not affiliated with OpenBMB, ModelBest or the audio.cpp project.
+
+## Sürüm Notları
+
+### Güncelleme (PR #14)
+
+- CPU arka ucunda (--backend cpu) uzun metinlerde cümle sonu (EOS) algılama sorunu giderildi. Artık CPU'da da uzun metinler kesilmeden okunuyor. Ayrıca olası 'blok kayması' riskine karşı decoder_seen koruması eklendi. Katkılarından dolayı @grogureis'e teşekkürler.
