@@ -182,9 +182,11 @@ yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050
 **AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
 `scripts\kur.ps1 -Kok C:\vox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
 yavaş çalıştı ama aynı tohum aynı sesi verdi; o ölçüm sırasında disk başka bir işle doluydu, temiz hız karşılaştırması
-bekliyor); AMD ya da Intel donanımında **denenmedi**: denerseniz sonucu Discussions'a
+bekliyor); AMD ya da Intel donanımında **bizim tarafımızdan denenmedi**: denerseniz sonucu Discussions'a
 yazın. Birden çok Vulkan cihazı varsa (dahili + harici) kurulum harici kartın dizinini `ayarlar.json` içine `cihaz`
 olarak yazar.
+
+**Not:** Vulkan desteği şu an deneyseldir. GTX 1050 Ti üzerinde başarıyla derlenmiş ve test edilmiştir. Ayrıca harici bir kullanıcı (mitra_tr) tarafından AMD 6900 XT üzerinde de çalıştırıldığı bildirilmiştir. AMD/Intel kartlarda daha geniş testlere ihtiyaç vardır.
 
 ### Seçenek: motoru kaynaktan derlemek
 
@@ -246,7 +248,8 @@ Python paketi yalnız metni hazırlar, motoru çağırır ve dosyaları toplar.
 
 **Hangi kartlar?** Yukarıdaki "Desteklenen kartlar": GTX 10xx ve üstü NVIDIA, en az 4 GB VRAM, sürücü ≥ 570. Sürümde
 sm_61/75/86/89/120a için yerel kod var; Pascal ve sonrası diğer kartlar gömülü PTX ile çalışır (ilk açılış yavaş).
-AMD/Intel: deneysel Vulkan zip'i, `kur.ps1 -Vulkan`, AMD/Intel'de denenmedi (yukarıdaki "AMD / Intel"). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
+AMD/Intel: deneysel Vulkan zip'i, `kur.ps1 -Vulkan`; harici bir kullanıcı AMD 6900 XT'de çalıştırdığını bildirdi, ancak AMD/Intel'de
+daha geniş testler gerekiyor (yukarıdaki "AMD / Intel"). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
 GTX 1050 Ti'den ~6 kat yavaştır (motor ölçümü: 48 sn ses için 535 sn / 94 sn); desteklenen yol değildir.
 
 **Ne kadar hızlı?** GTX 1050 Ti 4 GB (i7-7700HQ) üzerinde ölçüldü: bir tasarım çeşidi (≈ 25 sn kayıt) 55 sn; okuma,

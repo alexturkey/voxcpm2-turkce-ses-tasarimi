@@ -183,9 +183,13 @@ other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-t
 **AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
 `scripts\kur.ps1 -Kok C:\vox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it ran
 slower than CUDA but gave the same audio for the same seed; that measurement was taken while the disk was busy with
-another job, so a clean speed comparison is still pending) and has **not** been tried on AMD or Intel hardware: if you try it,
-please post the result in Discussions. With more than one Vulkan device (integrated + discrete) the installer writes
-the discrete GPU's index as `cihaz` into `ayarlar.json`.
+another job, so a clean speed comparison is still pending) and we have **not** tested it on AMD or Intel hardware
+ourselves: if you try it, please post the result in Discussions. With more than one Vulkan device (integrated + discrete)
+the installer writes the discrete GPU's index as `cihaz` into `ayarlar.json`.
+
+**Not:** Vulkan desteği şu an deneyseldir. GTX 1050 Ti üzerinde başarıyla derlenmiş ve test edilmiştir. Ayrıca harici bir kullanıcı (mitra_tr) tarafından AMD 6900 XT üzerinde de çalıştırıldığı bildirilmiştir. AMD/Intel kartlarda daha geniş testlere ihtiyaç vardır.
+
+*Note: Vulkan support is experimental. It has been built and tested successfully on a GTX 1050 Ti. An external user (mitra_tr) has also reported running it on an AMD 6900 XT. Broader testing on AMD/Intel cards is still needed.*
 
 ### Alternative: build the engine from source
 
@@ -247,7 +251,8 @@ every time. The Python package in this repo only prepares text, calls the engine
 
 **Which GPUs?** See "Supported GPUs" above: NVIDIA from GTX 10xx up, 4 GB VRAM or more, driver ≥ 570. Native code is
 in the release for sm_61/75/86/89/120a; other Pascal-or-newer cards use the embedded PTX (slower first start). AMD/Intel:
-experimental Vulkan zip, `kur.ps1 -Vulkan`, untested on AMD/Intel (see "AMD / Intel" above). CPU-only (`"backend": "cpu"` in `ayarlar.json`) runs but is
+experimental Vulkan zip, `kur.ps1 -Vulkan`; an external user has reported running it on an AMD 6900 XT, but wider AMD/Intel
+testing is still needed (see "AMD / Intel" above). CPU-only (`"backend": "cpu"` in `ayarlar.json`) runs but is
 ~6× slower than a GTX 1050 Ti (engine measurement, 535 s vs 94 s for 48 s of speech); not a supported path.
 
 **How fast?** Measured on a GTX 1050 Ti 4 GB (i7-7700HQ): one design variant (≈ 25 s recording) 55 s; reading ≈ 2 s of
