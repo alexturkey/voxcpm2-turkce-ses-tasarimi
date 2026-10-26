@@ -116,18 +116,22 @@ def read_request(request_id: str, text: str, seed: int, reference: Path, referen
 
 
 def _eos_by_block(log_path: Path, count: int, cpu: bool = False) -> list:
-    """Her istek bloğu 'toplu_coz.deferred' ile biter; EOS'suz blok yarım ses demektir. Log satır satır okunur.
+    """Her istek bloğu 'toplu_coz.deferred' ile biter; CPU'da kod çözücü satırı blok sınırıdır ve aynı istekte
+    yalnız bir kez sayılır. EOS'suz blok yarım ses demektir. Log satır satır okunur.
     CPU arka ucunda toplu çözüm (yama c5) devreye girmez: her blok anında çözülür ve 'toplu_coz.deferred' yerine
     'voxcpm2.audiovae_decoder_ms ' satırıyla biter; CPU'da o satır da blok sonu sayılır."""
-    ok, block = [False] * count, 0
+    ok, block, decoder_seen = [False] * count, 0, False
     if not log_path.exists():
         return ok
     with open(log_path, encoding="utf-8", errors="replace") as handle:
         for line in handle:
             if block < count and "eos_accepted_at_patch" in line:
                 ok[block] = True
-            if "voxcpm2.toplu_coz.deferred" in line or (cpu and "voxcpm2.audiovae_decoder_ms " in line):
+                decoder_seen = False
+            if "voxcpm2.toplu_coz.deferred" in line or (
+                    cpu and "voxcpm2.audiovae_decoder_ms" in line and not decoder_seen):
                 block += 1
+                decoder_seen = cpu
     return ok
 
 
@@ -151,6 +155,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
                "--request-sequence", str(work_dir / "dizi.json"), *REFERENCE_OPTION,
                "--out-dir", str(work_dir / "out"), "--batch-manifest-out", str(work_dir / "manifest.json"),
                "--log", "--log-file", str(log_path), "--metrics"]
+    cpu = settings.get("backend", "cuda") == "cpu"
     started = time.time()
     with (work_dir / "stdout.txt").open("w", encoding="utf-8") as out, VramWatcher() as watcher:
         process = subprocess.Popen(command, env=engine_env(settings, work_dir), stdout=out, stderr=subprocess.STDOUT,
@@ -158,7 +163,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
         try:
             while process.poll() is None:
                 if progress:
-                    progress(sum(_eos_by_block(log_path, len(requests), settings.get("backend") == "cpu")), len(requests), time.time() - started)
+                    progress(sum(_eos_by_block(log_path, len(requests), cpu)), len(requests), time.time() - started)
                 time.sleep(3)
         finally:
             # hata ya da Ctrl+C: motor yetim kalmasın, çalışma klasöründeki dosyalar serbest kalsın (silinebilsin)
@@ -169,7 +174,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
         raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}")
-    ok = _eos_by_block(log_path, len(requests), settings.get("backend") == "cpu")
+    ok = _eos_by_block(log_path, len(requests), cpu)
     audios, bad = {}, []
     for request, finished in zip(requests, ok):
         wav = work_dir / "out" / f"{request['id']}.wav"
