@@ -114,7 +114,7 @@ için ≈ 2 sn. Ayrıntı ve ölçümler: [docs/4gb.md](docs/4gb.md).
 ## Hazır sesler (`hazir_sesler/`)
 
 On dördü de `ses.json` içindeki tariflerden tasarlandı; hiçbiri bir kayıttan klonlanmadı (klonlama ayrı ve izin onaylı
-3. bölümdür).
+*Ses klonlama* sekmesidir).
 
 | Ses | Kısa tarif | Dinle |
 |---|---|---|
@@ -237,7 +237,7 @@ adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratı
 sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
 ile kapatın.
 
-**Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün 3. bölümünde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
+**Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün *Ses klonlama* sekmesinde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
 
 ## Sık sorulanlar
 
@@ -259,7 +259,7 @@ sayılar ve yöntem: [docs/4gb.md](docs/4gb.md).
 
 **Ses klonlayabilir mi?** Alttaki VoxCPM2 modeli bir referans kayıttan sesi taklit edebilir; klonlama bölümü bunu
 kullanır. Yalnız kendi sesinizle ya da ses sahibinin açık izniyle kullanın; arayüz izin onayı ister. Ses tasarımı kayıt
-gerektirmez: İngilizce bir metin tarifinden başlar, tasarlanan sesle okumada kullanılan "referans" modelin kendi yapay
+gerektirmez: İngilizce ya da Çince bir metin tarifinden başlar, tasarlanan sesle okumada kullanılan "referans" modelin kendi yapay
 tasarım kaydıdır. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Bkz. [ETHICS.md](ETHICS.md). Yayınladığınızı
 yapay zekâ ürünü olarak etiketleyin.
 

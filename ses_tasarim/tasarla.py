@@ -65,6 +65,7 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
     result = motor.run_sequence(settings, requests, work_dir, progress)
     _remove_empty(work_dir)  # motor ara dosyalarını sildi; boş çalışma klasörü de kalmasın
     variants, number = [], len(existing)
+    run_id, run_date = time.strftime("%Y%m%d_%H%M%S"), time.strftime("%Y-%m-%d %H:%M")  # bir Tasarla = bir üretim
     for request in requests:
         if request["id"] in result["bad"]:
             variants.append({"tohum": request["seed"], "hata": "EOS gelmedi (yarım ses); başka tohumla yeniden dene"})
@@ -81,7 +82,7 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
                 "tasarim_tohumu": request["seed"], "okuma_tohumu": request["seed"],
                 "referans": "referans.wav", "referans_sn": seconds, "model": settings["model"].name,
                 "adim": motor.FIXED["adim"], "cfg": motor.FIXED["cfg"], "yapay": True,
-                "tarih": time.strftime("%Y-%m-%d %H:%M")}
+                "tarih": run_date, "uretim": run_id}
         (trial / "ses.json").write_text(json.dumps(card, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if seconds < motor.MIN_REFERENCE_SECONDS:
             card["uyari"] = f"referans {seconds} sn < {motor.MIN_REFERENCE_SECONDS} sn; tasarım metnini uzat"

@@ -115,7 +115,7 @@ about 2 s of compute per 1 s of speech on a GTX 1050 Ti. Details and measurement
 ## Bundled voices (`hazir_sesler/`)
 
 All fourteen were designed from the prompts stored in their `ses.json`; none was cloned from a recording (cloning is the
-separate, consent-gated section 3).
+separate, consent-gated *Voice cloning* tab).
 
 | Voice | Short description | Listen |
 |---|---|---|
@@ -240,7 +240,7 @@ yourself (another port: `--port 8800`). Three boxes (description, creation text,
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
 Stop the server with Ctrl+C.
 
-**Voice cloning (your own or a consented voice).** In section 3 of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
+**Voice cloning (your own or a consented voice).** In the *Voice cloning* tab of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
 
 ## FAQ
 
@@ -262,7 +262,7 @@ disk) and 10-20 s model load per batch; peak VRAM 2.6-2.9 GB. Newer cards are fa
 
 **Can it clone a voice?** The underlying VoxCPM2 model can imitate a voice from a reference recording, and the cloning
 section uses that. Use it only with your own voice or with the explicit permission of the person whose voice it is; the
-UI asks you to confirm that permission. Voice design needs no recording: it starts from an English text description, and
+UI asks you to confirm that permission. Voice design needs no recording: it starts from a text description in English or Chinese, and
 the "reference" used for reading a designed voice is the model's own synthetic design recording. Impersonation, fraud
 and deception are prohibited. See [ETHICS.md](ETHICS.md). Label what you publish as AI-generated.
 

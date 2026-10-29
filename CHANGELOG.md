@@ -24,7 +24,7 @@
   bırakmaz. Motor hata verir ya da bir satır yarım kalırsa dosyalar inceleme için kalır; `SES_TASARIM_ARA_DOSYA_TUT=1`
   her zaman saklar. macOS uygulaması zaten böyle çalışıyordu. Test: `tests/test_ara_dosya.py`.
 - Çok dilli okuma ve tasarım: `--dil` (tr, en, fr, de, es, ru, zh, ja denendi). Tr dışındaki dillerde Türkçe okunuş
-  sözlüğü uygulanmaz, kesme işareti kalır; dil sesin kartına (`dil`) yazılır ve okumada oradan alınır; arayüzde dil kutusu yok, dil metinden otomatik tanınır (`okunus.detect`; kararsızsa kart ya da örnek tarifin dili); sunucu eski istemcinin `dil` alanını yok sayar; `--dil` isteğe bağlı.
+  sözlüğü uygulanmaz, kesme işareti kalır; dil metinden otomatik tanınır (`okunus.detect`); kararsız kalınca tasarımda örnek tarifin dili, okumada sesin kartındaki dil (`dil`) kullanılır; tasarlanan sesin dili kartına yazılır; arayüzde dil kutusu yok; sunucu eski istemcinin `dil` alanını yok sayar; `--dil` isteğe bağlı.
 - Yedi yerli anlatıcı hazır ses olarak eklendi: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (istem, tasarım metni,
   tohum, referans, Kapadokya metninden kısa örnek okuma).
 - `oku`: cümle cümle hız kapısı (`supheli_satirlar`): harf/sn değeri ortancadan çok sapan satırlar yazdırılır.
@@ -85,8 +85,8 @@
   engine error or an unfinished line they are kept for inspection; `SES_TASARIM_ARA_DOSYA_TUT=1` always keeps them.
   The macOS app already worked this way. Test: `tests/test_ara_dosya.py`.
 - Multilingual reading and design: `--dil` (tested: tr, en, fr, de, es, ru, zh, ja). Outside Turkish the Turkish
-  dictionary is skipped and apostrophes are kept; the language is stored in the voice card (`dil`) and used for reading;
-  language selector in the web UI.
+  dictionary is skipped and apostrophes are kept; the language is detected from the text (`okunus.detect`); when unsure,
+  design falls back to the example's language and reading to the voice card's (`dil`); no language box in the web UI.
 - Seven native narrators bundled: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (prompt, design text, seed,
   reference, short sample from our Cappadocia script).
 - `oku`: sentence speed gate (`supheli_satirlar`): lines whose characters per second is far from the median are printed.
