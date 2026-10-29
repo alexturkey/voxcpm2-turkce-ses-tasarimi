@@ -33,7 +33,7 @@ DIL_KOKU = Path(__file__).resolve().parent / "arayuz_dilleri"  # arayüz metinle
 
 HTML = r"""<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VoxCPM2 Türkçe Ses Tasarımı</title>
+<title>VoxCPM2 Türkçe Ses Tasarımı</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='9' y='2' width='6' height='12' rx='3' fill='%23e3a33b'/%3E%3Cpath d='M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8' fill='none' stroke='%23e3a33b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 :root{--bg:#111;--panel:#1c1c1c;--fg:#eee;--muted:#9a9a9a;--soluk:#777;--alan:#0d0d0d;--cizgi:#333;--cizgi2:#2a2a2a;--acc:#ebbe6e;--baslik:#ebbe6e;--ok:#5fb36a;--err:#e06c6c;color-scheme:dark}
 :root[data-tema=acik]{--bg:#f5f5f3;--panel:#fff;--fg:#1d1d1f;--muted:#5f6368;--soluk:#80868b;--alan:#fff;--cizgi:#d4d4d4;--cizgi2:#e8e8e8;--acc:#e3a93f;--baslik:#9a6a10;--ok:#2e7d32;--err:#c62828;color-scheme:light}
