@@ -72,5 +72,8 @@
  "e_not_kirpildi": "{sn} seg ang recording; ang unang {max} seg lang ang ginamit, kaya iyon lang dapat ang nasa transcript.",
  "e_not_oneri": "{sn} seg ang recording; pinakamaganda ang resulta sa 5-30 segundong malinaw na pagsasalita.",
  "ad_ph": "Narrator ng dokumentaryo",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Bersyon",
+ "uretimler": "Mga resulta",
+ "uretim_yok": "Pindutin ang {dugme} at lalabas dito ang mga bersyon."
 }

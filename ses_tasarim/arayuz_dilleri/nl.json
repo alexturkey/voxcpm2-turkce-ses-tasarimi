@@ -72,5 +72,8 @@
  "e_not_kirpildi": "De opname duurde {sn} s; de eerste {max} s zijn gebruikt, de transcriptie mag alleen dat deel bevatten.",
  "e_not_oneri": "De opname duurt {sn} s; het beste resultaat met 5-30 s heldere spraak.",
  "ad_ph": "Documentaireverteller",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varianten",
+ "uretimler": "Resultaten",
+ "uretim_yok": "Klik op {dugme} en de varianten verschijnen hier."
 }

@@ -72,5 +72,8 @@
  "e_not_kirpildi": "The recording was {sn} s; the first {max} s were used, the transcript must match only that part.",
  "e_not_oneri": "The recording is {sn} s; best results with 5-30 s of clean speech.",
  "ad_ph": "Documentary narrator",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Variants",
+ "uretimler": "Results",
+ "uretim_yok": "Press {dugme} and the variants appear here."
 }

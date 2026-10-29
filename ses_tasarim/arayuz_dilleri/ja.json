@@ -72,5 +72,8 @@
  "e_not_kirpildi": "録音は{sn}秒でした。最初の{max}秒を使用したため、書き起こしはその部分だけにしてください。",
  "e_not_oneri": "録音は{sn}秒です。5〜30秒のクリアな音声が最適です。",
  "ad_ph": "ドキュメンタリーのナレーター",
- "etiket": "{ad}：{deger}"
+ "etiket": "{ad}：{deger}",
+ "cesit_kisa": "生成数",
+ "uretimler": "生成結果",
+ "uretim_yok": "「{dugme}」を押すと、ここに結果が表示されます。"
 }

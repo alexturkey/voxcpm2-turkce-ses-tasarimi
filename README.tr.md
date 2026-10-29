@@ -220,7 +220,7 @@ Komut satırı:
 ```powershell
 # sesleri listele
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
-# hazır sesle oku (satır = cümle; "|| paragraf" uzun durak)
+# hazır sesle oku (satır = cümle; boş satır ya da "|| paragraf" uzun durak)
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti\deneme
 # yeni ses tasarla: 3 çeşit, 3 tohum
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt

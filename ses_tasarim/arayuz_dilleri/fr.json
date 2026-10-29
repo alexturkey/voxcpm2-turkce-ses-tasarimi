@@ -72,5 +72,8 @@
  "e_not_kirpildi": "L'enregistrement durait {sn} s ; seules les {max} premières secondes sont utilisées, la transcription doit s'y limiter.",
  "e_not_oneri": "L'enregistrement dure {sn} s ; meilleur résultat avec 5-30 s de parole claire.",
  "ad_ph": "Narrateur documentaire",
- "etiket": "{ad} : {deger}"
+ "etiket": "{ad} : {deger}",
+ "cesit_kisa": "Variantes",
+ "uretimler": "Résultats",
+ "uretim_yok": "Cliquez sur {dugme} : les variantes s’affichent ici."
 }

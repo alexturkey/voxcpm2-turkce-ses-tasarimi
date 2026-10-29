@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Die Aufnahme war {sn} s lang; die ersten {max} s wurden verwendet, das Transkript darf nur diesen Teil enthalten.",
  "e_not_oneri": "Die Aufnahme ist {sn} s lang; am besten mit 5-30 s sauberer Sprache.",
  "ad_ph": "Doku-Sprecher",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varianten",
+ "uretimler": "Ergebnisse",
+ "uretim_yok": "Nach „{dugme}“ erscheinen die Varianten hier."
 }

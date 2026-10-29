@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Bản ghi dài {sn} giây; chỉ dùng {max} giây đầu, bản chép lời chỉ nên gồm phần đó.",
  "e_not_oneri": "Bản ghi dài {sn} giây; kết quả tốt nhất với 5-30 giây giọng nói rõ.",
  "ad_ph": "Người dẫn phim tài liệu",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Số biến thể",
+ "uretimler": "Kết quả",
+ "uretim_yok": "Nhấn {dugme}, các biến thể sẽ hiện ở đây."
 }

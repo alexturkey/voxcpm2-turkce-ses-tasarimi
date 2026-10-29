@@ -72,5 +72,8 @@
  "e_not_kirpildi": "录音时长 {sn} 秒，仅使用前 {max} 秒，文本只需包含这部分内容。",
  "e_not_oneri": "录音时长 {sn} 秒；5-30 秒清晰语音效果最佳。",
  "ad_ph": "纪录片旁白",
- "etiket": "{ad}：{deger}"
+ "etiket": "{ad}：{deger}",
+ "cesit_kisa": "版本数",
+ "uretimler": "生成结果",
+ "uretim_yok": "点击“{dugme}”后，各版本会显示在这里。"
 }

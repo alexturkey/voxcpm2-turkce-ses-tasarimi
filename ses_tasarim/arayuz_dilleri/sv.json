@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Inspelningen var {sn} s; de första {max} s användes, transkriptionen ska bara innehålla den delen.",
  "e_not_oneri": "Inspelningen är {sn} s; bäst med 5-30 s rent tal.",
  "ad_ph": "Dokumentärberättare",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varianter",
+ "uretimler": "Resultat",
+ "uretim_yok": "Klicka på {dugme} så visas varianterna här."
 }

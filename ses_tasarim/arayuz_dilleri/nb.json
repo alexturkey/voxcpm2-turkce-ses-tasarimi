@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Opptaket var {sn} s; de første {max} s ble brukt, transkripsjonen skal bare inneholde den delen.",
  "e_not_oneri": "Opptaket er {sn} s; best med 5-30 s ren tale.",
  "ad_ph": "Dokumentarforteller",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varianter",
+ "uretimler": "Resultater",
+ "uretim_yok": "Trykk på {dugme}, så vises variantene her."
 }

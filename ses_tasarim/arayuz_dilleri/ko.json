@@ -72,5 +72,8 @@
  "e_not_kirpildi": "녹음 길이는 {sn}초였습니다. 처음 {max}초만 사용했으니 받아쓰기도 그 부분만 적어 주세요.",
  "e_not_oneri": "녹음 길이는 {sn}초입니다. 깨끗한 음성 5~30초일 때 결과가 가장 좋습니다.",
  "ad_ph": "다큐멘터리 내레이터",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "변형 수",
+ "uretimler": "결과",
+ "uretim_yok": "{dugme} 버튼을 누르면 변형이 여기에 표시됩니다."
 }

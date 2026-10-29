@@ -3,6 +3,12 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Arayüz yerleşimi sadeleşti: dört sekme (Ses tasarla, Bu sesle oku, Ses klonlama, Hazır sesler), geniş ekranda sayfa
+  kaymaz, kaydırma yalnız listelerde. Ses tasarla iki sütun: solda ad, çeşit, örnek tarif, tarif ve metin; sağda
+  *Üretimler*: her Tasarla basışı bir üretimdir, seçince form o üretimin bilgileriyle dolar ve çeşitleri dinlenir;
+  her çeşitte *Bu sesle oku* düğmesi okuma sekmesine o sesle geçer. Dil seçimi tek düğmede açılır menü. Örnek tarifler
+  önce arayüz dilinde sıralanır. Okunacak metin kutusu çizgili ve satır numaralı (uzun cümle sarılsa da tek numara).
+- Okumada boş satır paragraf durağı sayılır (1 sn); satır sonundaki açık `||` işareti önce gelir. Test: `tests/test_bos_satir.py`.
 - Arayüz 30 dilde (VoxCPM2'nin desteklediği dillerin tamamı): üstte bayrak seçici, gece/gündüz düğmesi; seçim tarayıcıda
   saklanır, Arapça ve İbranice sağdan sola. Sunucu hata ve durumları kodla gönderir, arayüz seçili dilde yazar. Çeviriler
   `ses_tasarim/arayuz_dilleri/<kod>.json`, her dil o ülkenin yazılım alışkanlığına göre gözden geçirildi; bayraklar
@@ -55,6 +61,14 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- Simpler UI layout: four tabs (Design a voice, Read with this voice, Voice cloning, Bundled voices); on wide screens
+  the page does not scroll, only the lists do. Design is two columns: name, variants, example, description and text on
+  the left; *Generations* on the right: each Design click is one generation, selecting it refills the form and lists
+  its variants; every variant has a *Read with this voice* button that opens the reading tab with that voice. Language
+  picker is a single dropdown button. Example descriptions list the UI language first. The reading text box is ruled
+  and line-numbered (a wrapped long sentence keeps one number).
+- Reading: a blank line now means a paragraph pause (1 s); an explicit `||` marker at the end of a line wins. Test:
+  `tests/test_bos_satir.py`.
 - Interface in 30 languages (every language VoxCPM2 supports): flag picker and light/dark toggle at the top; the choice is
   remembered in the browser, Arabic and Hebrew are right-to-left. The server sends coded errors and states, the page
   writes them in the selected language. Translations in `ses_tasarim/arayuz_dilleri/<code>.json`, each reviewed for

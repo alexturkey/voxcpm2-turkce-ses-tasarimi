@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Optagelsen var {sn} s; de første {max} s blev brugt, transskriptionen må kun indeholde den del.",
  "e_not_oneri": "Optagelsen er {sn} s; bedst med 5-30 s ren tale.",
  "ad_ph": "Dokumentaroplæser",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varianter",
+ "uretimler": "Resultater",
+ "uretim_yok": "Klik på {dugme}, så vises varianterne her."
 }

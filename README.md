@@ -223,7 +223,7 @@ Command line:
 ```powershell
 # list voices
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
-# read with a bundled voice (one sentence per line; "|| paragraf" = longer pause)
+# read with a bundled voice (one sentence per line; blank line or "|| paragraf" = longer pause)
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti\deneme
 # design a new voice: 3 variants, 3 seeds
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt

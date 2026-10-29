@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Rekodi ilikuwa sek {sn}; sekunde {max} za kwanza ndizo zilizotumika, maandishi yawe ya sehemu hiyo tu.",
  "e_not_oneri": "Rekodi ni sek {sn}; matokeo bora ni kwa sekunde 5-30 za sauti safi.",
  "ad_ph": "Msimulizi wa makala",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Matoleo",
+ "uretimler": "Matokeo",
+ "uretim_yok": "Bonyeza {dugme} na matoleo yataonekana hapa."
 }

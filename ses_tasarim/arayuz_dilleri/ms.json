@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Rakaman ialah {sn} saat; hanya {max} saat pertama digunakan, transkrip perlu mengandungi bahagian itu sahaja.",
  "e_not_oneri": "Rakaman ialah {sn} saat; hasil terbaik dengan 5-30 saat pertuturan yang jelas.",
  "ad_ph": "Pencerita dokumentari",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varian",
+ "uretimler": "Hasil",
+ "uretim_yok": "Tekan {dugme}, varian akan dipaparkan di sini."
 }

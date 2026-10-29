@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Rekaman berdurasi {sn} dtk; hanya {max} dtk pertama yang dipakai, transkrip cukup berisi bagian itu.",
  "e_not_oneri": "Rekaman berdurasi {sn} dtk; hasil terbaik dengan 5-30 detik ucapan jernih.",
  "ad_ph": "Narator dokumenter",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Varian",
+ "uretimler": "Hasil",
+ "uretim_yok": "Tekan {dugme}, varian akan muncul di sini."
 }

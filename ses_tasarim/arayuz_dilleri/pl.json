@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Nagranie trwało {sn} s; użyto pierwszych {max} s, transkrypcja powinna obejmować tylko tę część.",
  "e_not_oneri": "Nagranie trwa {sn} s; najlepiej 5-30 s czystej mowy.",
  "ad_ph": "Lektor dokumentalny",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Warianty",
+ "uretimler": "Wyniki",
+ "uretim_yok": "Kliknij {dugme}, a warianty pojawią się tutaj."
 }

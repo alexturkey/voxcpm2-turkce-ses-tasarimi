@@ -194,5 +194,14 @@ def split_pause(line: str) -> tuple:
 
 
 def lines(text: str) -> list:
-    """Her satır bir cümle; sonundaki durak süresiyle. / One sentence per line with its pause."""
-    return [split_pause(line) for line in text.splitlines() if line.strip()]
+    """Her satır bir cümle; sonundaki durak süresiyle. Boş satır önceki cümleye paragraf durağı verir
+    (açık '||' işareti önce gelir). / One sentence per line with its pause; a blank line means a paragraph pause."""
+    parsed, marked = [], False
+    for line in text.splitlines():
+        if not line.strip():
+            if parsed and not marked:
+                parsed[-1] = (parsed[-1][0], PAUSES["paragraf"])
+            continue
+        marked = "||" in line
+        parsed.append(split_pause(line))
+    return parsed

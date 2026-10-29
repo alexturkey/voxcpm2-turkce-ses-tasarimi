@@ -72,5 +72,8 @@
  "e_not_kirpildi": "A gravação tinha {sn} s; foram usados os primeiros {max} s e a transcrição deve conter só essa parte.",
  "e_not_oneri": "A gravação tem {sn} s; melhores resultados com 5-30 s de fala limpa.",
  "ad_ph": "Narrador de documentário",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Variações",
+ "uretimler": "Resultados",
+ "uretim_yok": "Clique em {dugme} e as variações aparecem aqui."
 }

@@ -72,5 +72,8 @@
  "e_not_kirpildi": "Kayıt {sn} sn idi, ilk {max} sn kullanıldı; kayıt metni yalnız bu kısmı içermeli.",
  "e_not_oneri": "Kayıt {sn} sn; en iyi sonuç 5-30 sn temiz kayıtla.",
  "ad_ph": "Belgesel anlatıcısı",
- "etiket": "{ad}: {deger}"
+ "etiket": "{ad}: {deger}",
+ "cesit_kisa": "Çeşit",
+ "uretimler": "Üretimler",
+ "uretim_yok": "{dugme} düğmesine basınca çeşitler burada dinlenir."
 }
