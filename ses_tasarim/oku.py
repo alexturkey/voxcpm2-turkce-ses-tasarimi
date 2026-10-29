@@ -7,10 +7,10 @@ python -m ses_tasarim.oku --ses deniz_feneri/2 --metin "Merhaba dünya." --cikti
 python -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @texte.txt --cikti cikti/fr   # dil sesin kartından (fr)
 python -m ses_tasarim.oku --ses hazir/anlatici_en --dil en --metin @text.txt --cikti cikti/en
 
-Dil / language: --dil verilmezse sesin kartındaki "dil" alanı, o da yoksa "tr". Türkçe dışı dilde Türkçe okunuş
+Dil / language: --dil verilmezse metinden tanınır; kararsızsa sesin kartındaki "dil" alanı, o da yoksa "tr". Türkçe dışı dilde Türkçe okunuş
 sözlüğü uygulanmaz. Uzun metin her zaman cümle cümle (satır = cümle) okunur: tek seferde uzun okuma (~30 sn üstü)
 kararlı değildir, cümle cümle okuma tını ve tarzı baştan sona korur.
-If --dil is omitted the voice card's "dil" is used (default "tr"). Long text is always read one sentence per line:
+If --dil is omitted the language is detected from the text; if unsure the voice card's "dil" (default "tr") is used. Long text is always read one sentence per line:
 a single long generation (over ~30 s) is not stable, sentence-by-sentence reading keeps timbre and style consistent.
 """
 import argparse
@@ -54,7 +54,8 @@ def find_voice(settings: dict, identity: str) -> Path:
             trials = sorted(settings["sesler"].joinpath(identity).glob("cesit_*"))
             folder = trials[-1] if trials else folder
     if not (folder / "ses.json").is_file():
-        raise FileNotFoundError(f"ses bulunamadı: {identity} (bak: python -m ses_tasarim.oku --liste)")
+        raise FileNotFoundError(okunus.Sorun(f"ses bulunamadı: {identity} (bak: python -m ses_tasarim.oku --liste)",
+                                             "ses_yok", ses=identity))
     return folder
 
 
@@ -70,16 +71,19 @@ def speed_outliers(records: list, low: float = 0.55, high: float = 1.6) -> list:
     return [r["satir"] for r, rate in zip(records, rates) if rate < low * median or rate > high * median]
 
 
-def voice_language(voice_dir: Path, dil: str = None) -> str:
-    """Okuma dili: açıkça verilen, yoksa sesin kartındaki, o da yoksa "tr". / Reading language."""
+def voice_language(voice_dir: Path, dil: str = None, text: str = None) -> str:
+    """Okuma dili: açıkça verilen; yoksa metinden tanınan; kararsızsa sesin kartındaki, o da yoksa "tr".
+    Reading language: explicit, else detected from the text, else the voice card's, else "tr"."""
     if dil:
         return okunus.language(dil)
     card = json.loads((Path(voice_dir) / "ses.json").read_text(encoding="utf-8"))
-    return okunus.language(card.get("dil"))
+    if text is None:
+        return okunus.language(card.get("dil"))
+    return okunus.detect(text, card.get("dil"))
 
 
 def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None, dil: str = None) -> dict:
-    dil = voice_language(voice_dir, dil)
+    dil = voice_language(voice_dir, dil, text)
     found = okunus.problems(text, dil=dil)
     if found:
         raise ValueError("metin:\n  - " + "\n  - ".join(found))
@@ -125,7 +129,7 @@ def main(argv=None) -> int:
     parser.add_argument("--metin", help="okunacak metin ya da @dosya; satır = cümle, 'cümle || paragraf' durak")
     parser.add_argument("--cikti", type=Path, help="çıktı klasörü (okuma.wav, ozet.json)")
     parser.add_argument("--dil", help="metnin dili / text language: " + ", ".join(okunus.LANGUAGES)
-                        + " (boş: sesin kartı, yoksa tr)")
+                        + " (isteğe bağlı; boşsa metinden tanınır, kararsızsa sesin kartı)")
     args = parser.parse_args(argv)
     settings = ayarlar.load(args.ayarlar)
     if args.liste:

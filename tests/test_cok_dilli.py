@@ -77,3 +77,38 @@ class BundledVoices(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Detect(unittest.TestCase):
+    """Metinden dil tanıma / language detection from text (no GPU)."""
+
+    def test_samples_detected(self):
+        for dil, text in SAMPLES.items():
+            with self.subTest(dil=dil):
+                self.assertEqual(okunus.detect(text), dil)
+
+    def test_turkish_letters_win_over_card(self):
+        self.assertEqual(okunus.detect("Işık ağır ağır söndü.", "en"), "tr")
+
+    def test_unsure_uses_fallback_then_tr(self):
+        self.assertEqual(okunus.detect("Xyz qrt.", "de"), "de")
+        self.assertEqual(okunus.detect("Xyz qrt."), "tr")
+        self.assertEqual(okunus.detect("", None), "tr")
+
+    def test_all_examples_and_test_set(self):
+        from ses_tasarim import ornekler
+        for item in ornekler.listele():
+            with self.subTest(id=item["id"]):
+                self.assertEqual(okunus.detect(item["metin"]), item["dil"])
+        for line in (ROOT / "docs" / "test_seti" / "cumleler.txt").read_text(encoding="utf-8").splitlines():
+            if "|" in line and not line.startswith("#"):
+                with self.subTest(line=line[:40]):
+                    self.assertEqual(okunus.detect(line.split("|", 1)[1]), "tr")
+
+    def test_voice_language_from_text_and_card(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "ses.json").write_text('{"dil": "fr"}', encoding="utf-8")
+            self.assertEqual(oku.voice_language(Path(tmp)), "fr")
+            self.assertEqual(oku.voice_language(Path(tmp), None, "Kapadokya, Anadolunun kalbinde."), "tr")
+            self.assertEqual(oku.voice_language(Path(tmp), "en", "Kapadokya"), "en")

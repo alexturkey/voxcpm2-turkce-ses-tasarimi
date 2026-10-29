@@ -3,7 +3,7 @@
 Turkish text preparation: quote stripping, pronunciation dictionary, line/pause parsing, validation.
 Kural: rakam ve tırnak motora gitmez (rakamı yazıyla yaz: "iki bin yirmi altı"). / Digits and quotes are rejected.
 
-Çok dilli / multilingual: dil "tr" dışındaysa Türkçe okunuş sözlüğü ve Türkçe küçük harf kuralları UYGULANMAZ, kesme
+Dil metinden otomatik tanınır (detect). Çok dilli / multilingual: dil "tr" dışındaysa Türkçe okunuş sözlüğü ve Türkçe küçük harf kuralları UYGULANMAZ, kesme
 işareti (l'eau, don't) metinde kalır; yalnız çift tırnak atılır ve rakam reddedilir (sayıyı o dilde yazıyla yaz).
 For languages other than "tr" the Turkish dictionary is skipped and apostrophes are kept; only double quotes are removed.
 """
@@ -28,6 +28,19 @@ DOUBLE_QUOTES = re.compile("[\"“”„«»‹›`´]")
 UNSPOKEN_FOREIGN = re.compile("[\"“”„`´\\d]")
 
 
+class Sorun(str):
+    """Düz metin sorun (komut satırı için) + arayüzün kendi dilinde yazması için kod ve değerler.
+    A plain-text problem (for the CLI) plus a code and values so the web UI can phrase it in its own language."""
+
+    def __new__(cls, text: str, kod: str, **veri):
+        problem = super().__new__(cls, text)
+        problem.kod, problem.veri = kod, veri
+        return problem
+
+    def sozluk(self) -> dict:
+        return {"kod": self.kod, "veri": self.veri, "metin": str(self)}
+
+
 def language(code) -> str:
     """Dil kodunu doğrular ("tr", "en", ...); boşsa "tr". Listede olmayan kod da kabul edilir (ölçülmemiş).
     Normalizes a language code; empty means "tr". Codes outside LANGUAGES are allowed but untested."""
@@ -35,6 +48,52 @@ def language(code) -> str:
     if not re.fullmatch(r"[a-z]{2,3}(-[a-z0-9]{2,8})?", code):
         raise ValueError(f"dil kodu tanınmadı / bad language code: {code!r} (ör. tr, en, fr, de, es, ru, zh, ja)")
     return code
+
+
+# Metinden dil tanıma: ek paket yok, küçük kural kümesi. / Language detection from text: no extra packages, small rules.
+_SCRIPTS = (("ja", re.compile("[぀-ヿ]")), ("zh", re.compile("[一-鿿]")),
+            ("ru", re.compile("[Ѐ-ӿ]")))
+_TR_ONLY = re.compile("[ğşıİĞŞ]")
+_STOPWORDS = {
+    "tr": "ve bir bu da de için ile çok gibi daha ne ama var yok mı mi ben sen o biz siz her en kadar sonra olarak"
+          " değil çünkü kapadokya merhaba",
+    "en": "the and of to is in it that for with as was on are this be at by an or from you not have but one",
+    "fr": "le la les des est une un et en du de que qui dans pour pas sur au avec ce il elle nous vous sont l'un",
+    "de": "der die das und ist ein eine nicht mit von zu den dem auf für auch sich es im wie ich sie so",
+    "es": "el la los las es un una y en de que por con para no se su al lo como más pero uno esos esas",
+}
+_STOP_SETS = {code: set(words.split()) for code, words in _STOPWORDS.items()}
+_CHAR_HINTS = {"es": "ñ¿¡áíóú", "fr": "èêàâôîœëùû", "de": "äß"}
+
+
+def detect(text: str, fallback: str = None) -> str:
+    """Metinden dili tanır: Türkçeye özgü harf (ğ ş ı İ) → tr; kana → ja; Han → zh; Kiril → ru; Latin ve Türkçe harf
+    yoksa kısa sözcük/harf ipuçlarıyla en/fr/de/es/tr. İpucu yoksa fallback (kart ya da örnek dili), o da yoksa "tr".
+    Detects the language from text. Turkish-only letters → tr; kana → ja; Han → zh; Cyrillic → ru; otherwise
+    stopword/letter hints; no hint → fallback (voice card / example language), else "tr"."""
+    text = text or ""
+    counts = {code: len(rx.findall(text)) for code, rx in _SCRIPTS}
+    if counts["ja"]:
+        return "ja"  # kana varsa Han da Japonca olabilir / kanji mixes with kana in Japanese
+    if counts["zh"]:
+        return "zh"
+    if counts["ru"]:
+        return "ru"
+    if _TR_ONLY.search(text):
+        return "tr"
+    words = re.findall(r"[\w']+", text.lower())
+    scores = {code: sum(word in stops for word in words) for code, stops in _STOP_SETS.items()}
+    lowered = text.lower()
+    for code, chars in _CHAR_HINTS.items():
+        scores[code] += 2 * sum(lowered.count(ch) for ch in chars)
+    best = max(scores.values())
+    leaders = [code for code, score in scores.items() if score == best]
+    if best > 0 and len(leaders) == 1:
+        return leaders[0]
+    try:
+        return language(fallback) if fallback else DEFAULT_LANGUAGE
+    except ValueError:
+        return DEFAULT_LANGUAGE
 
 
 def turkish_lower(text: str) -> str:
@@ -108,14 +167,17 @@ def problems(text: str, where: str = "metin", dil: str = DEFAULT_LANGUAGE) -> li
         return [str(error)]
     marks = sorted(set((UNSPOKEN if turkish else UNSPOKEN_FOREIGN).findall(text)))
     if marks and turkish:
-        found.append(f"{where}: okunamayan işaret {marks}; tırnak ve kesme işaretini kaldır, rakamı yazıyla yaz")
+        found.append(Sorun(f"{where}: okunamayan işaret {marks}; tırnak ve kesme işaretini kaldır, rakamı yazıyla yaz",
+                           "isaret_tr", isaretler=" ".join(marks)))
     elif marks:
-        found.append(f"{where}: okunamayan işaret {marks}; rakamı o dilde yazıyla yaz / write numbers as words")
+        found.append(Sorun(f"{where}: okunamayan işaret {marks}; rakamı o dilde yazıyla yaz / write numbers as words",
+                           "isaret", isaretler=" ".join(marks)))
     for number, (line, _) in enumerate(lines(text), 1):
         if len(line) > MAX_LINE_CHARS:
-            found.append(f"{where}: {number}. satır {len(line)} karakter > {MAX_LINE_CHARS}; satırı böl")
+            found.append(Sorun(f"{where}: {number}. satır {len(line)} karakter > {MAX_LINE_CHARS}; satırı böl",
+                               "uzun_satir", satir=number, uzunluk=len(line), sinir=MAX_LINE_CHARS))
     if not text.strip():
-        found.append(f"{where}: boş")
+        found.append(Sorun(f"{where}: boş", "bos"))
     return found
 
 
@@ -125,7 +187,8 @@ def split_pause(line: str) -> tuple:
         text, name = line.rsplit("||", 1)
         name = name.strip()
         if name not in PAUSES:
-            raise ValueError(f"bilinmeyen durak '{name}'; seçenekler: {', '.join(PAUSES)}")
+            raise ValueError(Sorun(f"bilinmeyen durak '{name}'; seçenekler: {', '.join(PAUSES)}", "durak",
+                                   durak=name, secenekler=", ".join(PAUSES)))
         return text.strip(), PAUSES[name]
     return line.strip(), GAP_SECONDS
 

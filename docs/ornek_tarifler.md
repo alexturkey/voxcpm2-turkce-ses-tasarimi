@@ -14,7 +14,7 @@ python -m ses_tasarim.tasarla --ornek de_haber_kadin --cesit 3   # 3 variants, 3
 python -m ses_tasarim.oku --ses de_haber_kadin/2 --metin @text.txt --cikti cikti\de   # read with variant 2
 ```
 
-Web UI: section 1, choose the language, then *Example prompt*; the prompt, design text and name fill in.
+Web UI: section 1, pick from *Example prompt* (all 144, grouped by language); the prompt, design text and name fill in.
 Source files: `ses_tasarim/ornek_tarifler/roller.json` (English templates) and `<lang>.json` (person, accent,
 design texts). A new language = one new `<lang>.json` with the same nine text types; `tests/test_ornekler.py` checks it.
 

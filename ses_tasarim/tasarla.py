@@ -5,7 +5,7 @@ python -m ses_tasarim.tasarla --ad deniz_feneri --tarif "A calm Turkish woman...
 python -m ses_tasarim.tasarla --ad narrator_fr --dil fr --tarif "A deep-voiced French man..." --metin @texte.txt --cesit 3
 python -m ses_tasarim.tasarla --ornek de_belgesel_erkek --cesit 3      # hazır örnek / ready example (ornekler.py)
 
-Tarif her dilde İngilizcedir; tasarım metni sesin konuşacağı dilde yazılır; dil kartta ("dil") saklanır ve okumada
+Tarif her dilde İngilizcedir; tasarım metni sesin konuşacağı dilde yazılır; dil metinden tanınır (ya da --dil), kartta ("dil") saklanır ve okumada
 kullanılır. / The description is always English; the design text is written in the voice's own language; the
 language is stored in the card ("dil") and used when reading.
 """
@@ -15,6 +15,7 @@ import secrets
 import shutil
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 from . import ayarlar, motor, okunus, ornekler
@@ -33,25 +34,27 @@ def resolve_seeds(count: int = None, seeds: list = None) -> list:
 
 def slug(name: str) -> str:
     ascii_name = name.translate(str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosuCGIOSU")).lower()
-    return "_".join("".join(ch if ch.isalnum() else " " for ch in ascii_name).split()) or "ses"
+    keep = lambda ch: unicodedata.category(ch)[0] in "LNM"  # M: Tay, Hint, Birman ünlü işaretleri harfin parçası
+    return "_".join("".join(ch if keep(ch) else " " for ch in ascii_name).split()) or "ses"
 
 
-def check(description: str, text: str, dil: str = okunus.DEFAULT_LANGUAGE) -> list:
+def check(description: str, text: str, dil: str = None) -> list:
     found = []
     if not description.strip():
-        found.append("tarif boş")
+        found.append(okunus.Sorun("tarif boş", "tarif_bos"))
     if "(" in description or ")" in description:
-        found.append("tarifte parantez olmaz (motor parantezi tarif sınırı sayar)")
-    found += okunus.problems(text, "ses yaratılırken okutulan metin", dil)
+        found.append(okunus.Sorun("tarifte parantez olmaz (motor parantezi tarif sınırı sayar)", "tarif_parantez"))
+    found += okunus.problems(text, "ses yaratılırken okutulan metin", dil or okunus.detect(text))
     return found
 
 
 def tasarla(settings: dict, name: str, description: str, text: str, count: int = None, seeds: list = None,
-            progress=None, dil: str = okunus.DEFAULT_LANGUAGE) -> dict:
+            progress=None, dil: str = None) -> dict:
+    """dil verilmezse metinden tanınır (okunus.detect). / dil omitted: detected from the text."""
+    dil = okunus.language(dil) if dil else okunus.detect(text)
     found = check(description, text, dil)
     if found:
         raise ValueError("form eksik:\n  - " + "\n  - ".join(found))
-    dil = okunus.language(dil)
     spoken_text = " ".join(line for line, _ in okunus.lines(okunus.spoken(text, dil)))
     voice_dir = settings["sesler"] / slug(name)
     voice_dir.mkdir(parents=True, exist_ok=True)
@@ -109,7 +112,7 @@ def main(argv=None) -> int:
     parser.add_argument("--tarif", help="İngilizce ses tarifi (parantezsiz) ya da @dosya")
     parser.add_argument("--metin", help="ses yaratılırken okutulan metin, sesin dilinde, ya da @dosya (rakamsız)")
     parser.add_argument("--dil", default=None,
-                        help="sesin dili / voice language: " + ", ".join(okunus.LANGUAGES) + " (varsayılan tr)")
+                        help="isteğe bağlı / optional: " + ", ".join(okunus.LANGUAGES) + " (verilmezse metinden tanınır / auto-detected)")
     parser.add_argument("--cesit", type=int, default=DEFAULT_VARIANTS, help="çeşit sayısı / number of variants")
     parser.add_argument("--tohum", type=int, nargs="*", help="tohumları kendin ver / explicit seeds")
     args = parser.parse_args(argv)
@@ -122,7 +125,6 @@ def main(argv=None) -> int:
     missing = [f"--{k}" for k in ("ad", "tarif", "metin") if not getattr(args, k)]
     if missing:
         parser.error(", ".join(missing) + " gerekli (ya da --ornek) / required (or --ornek)")
-    args.dil = args.dil or okunus.DEFAULT_LANGUAGE
     settings = ayarlar.load(args.ayarlar)
     description, text = read_arg_text(args.tarif), read_arg_text(args.metin)
 

@@ -30,7 +30,7 @@ tasarım metni, tohumu ve referans kaydıyla burada.
 | `ja` | Japonca | `hazir/anlatici_ja` | [örnek](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
 
 ```powershell
-# dil sesin kartından gelir; --dil ile değiştirilebilir
+# dil metinden otomatik tanınır (kararsızsa sesin kartı); --dil isteğe bağlı
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @metin_ja.txt --cikti cikti\ja
 # başka dilde ses tasarla: istem İngilizce, tasarım metni o dilde
@@ -40,7 +40,7 @@ tasarım metni, tohumu ve referans kaydıyla burada.
 **Neden cümle cümle.** VoxCPM2 tek seferde uzun üretimde (yaklaşık 30 saniye üstü) kararlı değildir: ritim hızlanır,
 ses kayabilir. Burada sesi sabit bir referans kayıt ve tohum taşır, uzun metin satır satır (cümle cümle) okunur; tını ve
 tarz ilk cümleden son cümleye aynı kalır. Türkçe dışındaki dillerde Türkçe okunuş sözlüğü uygulanmaz. VoxCPM2'nin
-desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik. Dil dil komutlar ve bulduğumuz çözümler:
+desteklediği başka diller kendi dilinde metinle (ya da `--dil <kod>`) çalışmalı; onları denemedik. Dil dil komutlar ve bulduğumuz çözümler:
 [docs/cok_dilli.md](docs/cok_dilli.md). Bütün tasarım akışı için Claude Code becerisi:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
@@ -229,7 +229,7 @@ Komut satırı:
 ```
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
 satır ≤ 2000 karakter. Türkçe metindeki yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
-Başka diller: `--dil <kod>` (ya da sesin kartındaki `dil`); orada kesme işaretine izin verilir, Türkçe sözlük
+Dil metinden otomatik tanınır (Türkçe harfler, yazı sistemi, sık sözcükler; kararsızsa sesin kartındaki `dil`; `--dil <kod>` isteğe bağlı). Türkçe dışında kesme işaretine izin verilir, Türkçe sözlük
 uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/

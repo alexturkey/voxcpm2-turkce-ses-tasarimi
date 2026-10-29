@@ -3,10 +3,14 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Arayüz 30 dilde (VoxCPM2'nin desteklediği dillerin tamamı): üstte bayrak seçici, gece/gündüz düğmesi; seçim tarayıcıda
+  saklanır, Arapça ve İbranice sağdan sola. Sunucu hata ve durumları kodla gönderir, arayüz seçili dilde yazar. Çeviriler
+  `ses_tasarim/arayuz_dilleri/<kod>.json`, her dil o ülkenin yazılım alışkanlığına göre gözden geçirildi; bayraklar
+  flag-icons (MIT). Ses adı Tayca, Hintçe, Birmanca gibi yazılarda bozulmadan klasör adı olur. Test: `tests/test_arayuz_dilleri.py`.
 - Örnek ses tarifleri: 8 dilde 18 rol, toplam 144 örnek (belgesel, haber, reklam, sesli kitap, masal, podcast, öğretmen,
   fragman, meditasyon, spor; kadın ve erkek). Tarif İngilizce, içinde milliyet ve yerli aksan; ses yaratılırken okutulan
   metin rolün türüne göre o dilde hazır. `python -m ses_tasarim.ornekler`, `tasarla --ornek <id>`, arayüzde *Örnek
-  tarif* kutusu (dile göre süzülür), `GET /api/ornekler`, belge `docs/ornek_tarifler.md`, testler `tests/test_ornekler.py`.
+  tarif* kutusu (144 tarif dil başlıklarıyla gruplu), `GET /api/ornekler`, belge `docs/ornek_tarifler.md`, testler `tests/test_ornekler.py`.
   Henüz ölçülmedi: her örnek tek tek tasarlanıp dinlenmedi.
 - README ve AGENTS: video dublajı için DubWorld yönlendirmesi (tasarlanan ses orada `ses.voxcpm2_ses` ile kullanılır).
 - Ara dosyalar artık birikmiyor: motorun çalışma dosyaları (`motor.log` satır başına yaklaşık 3 MB, PCM dökümleri)
@@ -14,7 +18,7 @@
   bırakmaz. Motor hata verir ya da bir satır yarım kalırsa dosyalar inceleme için kalır; `SES_TASARIM_ARA_DOSYA_TUT=1`
   her zaman saklar. macOS uygulaması zaten böyle çalışıyordu. Test: `tests/test_ara_dosya.py`.
 - Çok dilli okuma ve tasarım: `--dil` (tr, en, fr, de, es, ru, zh, ja denendi). Tr dışındaki dillerde Türkçe okunuş
-  sözlüğü uygulanmaz, kesme işareti kalır; dil sesin kartına (`dil`) yazılır ve okumada oradan alınır; arayüzde dil seçimi.
+  sözlüğü uygulanmaz, kesme işareti kalır; dil sesin kartına (`dil`) yazılır ve okumada oradan alınır; arayüzde dil kutusu yok, dil metinden otomatik tanınır (`okunus.detect`; kararsızsa kart ya da örnek tarifin dili); sunucu eski istemcinin `dil` alanını yok sayar; `--dil` isteğe bağlı.
 - Yedi yerli anlatıcı hazır ses olarak eklendi: `hazir_sesler/anlatici_{en,fr,de,es,ru,zh,ja}` (istem, tasarım metni,
   tohum, referans, Kapadokya metninden kısa örnek okuma).
 - `oku`: cümle cümle hız kapısı (`supheli_satirlar`): harf/sn değeri ortancadan çok sapan satırlar yazdırılır.
@@ -51,6 +55,11 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- Interface in 30 languages (every language VoxCPM2 supports): flag picker and light/dark toggle at the top; the choice is
+  remembered in the browser, Arabic and Hebrew are right-to-left. The server sends coded errors and states, the page
+  writes them in the selected language. Translations in `ses_tasarim/arayuz_dilleri/<code>.json`, each reviewed for
+  local software conventions; flags from flag-icons (MIT). Voice names in Thai, Hindi, Burmese etc. stay intact as
+  folder names. Test: `tests/test_arayuz_dilleri.py`.
 - Example voice prompts: 18 roles in 8 languages, 144 in total (documentary, news, commercial, audiobook, fairy tale,
   podcast, teacher, trailer, meditation, sports; female and male). The prompt is English with nationality and native
   accent; the design text comes in that language, matched to the role. `python -m ses_tasarim.ornekler`,

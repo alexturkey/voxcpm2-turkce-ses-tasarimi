@@ -13,6 +13,7 @@ license. Nothing below is bundled in this repository except the patch in `patche
 | SentencePiece (bundled in audio.cpp) | engine dependency | Apache-2.0 | https://github.com/google/sentencepiece |
 | **NVIDIA CUDA 12.8 redistributables** | `cudart`, `cublas`, `cublasLt`, `cufft` runtime DLLs and `nvcc` for building (downloaded by `kur.ps1`, not in the repo) | NVIDIA CUDA Toolkit EULA | https://developer.download.nvidia.com/compute/cuda/redist/ |
 | NumPy, python-soundfile (libsndfile) | WAV/FLAC read and write in the Python code | BSD-3 / BSD-3 (libsndfile LGPL-2.1+) | PyPI |
+| flag-icons 7.2.3 (Panayiotis Lipiridis) | 30 flag SVGs in `ses_tasarim/bayraklar/` (web UI language row) | MIT | https://github.com/lipis/flag-icons |
 
 The native Mac app in `macos/` bundles the patched engine binary inside the .app; what it ships is listed in
 [`macos/THIRD_PARTY.md`](macos/THIRD_PARTY.md).

@@ -128,7 +128,7 @@ Design test (~1 min):
 ```
 Expected: `çeşit 1: tohum 42, ~20-30 sn → ...\sesler\deneme\cesit_01` and `süre ~55 sn, VRAM tepe ~2800 MB`.
 
-Other languages (tr, en, fr, de, es, ru, zh, ja tested): the language comes from the voice card (`dil`), `--dil` overrides.
+Other languages (tr, en, fr, de, es, ru, zh, ja tested): the language is detected from the text (voice card `dil` if unsure), `--dil` is optional and overrides.
 ```powershell
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
 ```

@@ -19,8 +19,8 @@ Türkçesi aşağıda. / Turkish below.
 read a full 24-sentence documentary script with it, and this repo's code read sentences in each language with the
 bundled voices. Other languages that VoxCPM2 supports should work with `--dil <code>`; we have not tested them.
 
-Language selection: `--dil` on the command line; if omitted, the `dil` field of the voice card; if that is missing,
-`tr`. For any language other than `tr` the Turkish dictionary is skipped, so foreign words are not rewritten.
+Language selection: detected automatically from the text (Turkish-only letters → `tr`, kana → `ja`, Han → `zh`, Cyrillic → `ru`,
+Latin text by common words); if unsure, the `dil` field of the voice card; if that is missing, `tr`. `--dil` is optional and overrides. For any language other than `tr` the Turkish dictionary is skipped, so foreign words are not rewritten.
 
 ## Example: one command per language
 
@@ -79,7 +79,7 @@ Denenen 8 dil: `tr en fr de es ru zh ja`. "Denendi" demek: kendi makinemizde (GT
 için yerli anlatıcı tasarlandı, 24 cümlelik belgesel metni okutuldu; bu repodaki kod da her dilde hazır seslerle cümle
 okuttu. VoxCPM2'nin desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik.
 
-Dil seçimi: komut satırında `--dil`; verilmezse sesin kartındaki `dil`; o da yoksa `tr`. `tr` dışındaki dillerde Türkçe
+Dil seçimi: metinden otomatik tanınır (Türkçeye özgü harf → `tr`, kana → `ja`, Han → `zh`, Kiril → `ru`, Latin metinde sık sözcükler); kararsızsa sesin kartındaki `dil`; o da yoksa `tr`. `--dil` isteğe bağlıdır ve önceliklidir. `tr` dışındaki dillerde Türkçe
 okunuş sözlüğü uygulanmaz, kesme işareti kalır, rakam reddedilir (sayıyı o dilde yazıyla yaz).
 
 Kullanım: yukarıdaki komutlar her dil için aynıdır; satır = cümle. Hazır seslerin klasöründeki

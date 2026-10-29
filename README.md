@@ -31,7 +31,7 @@ narrators are bundled here, with their prompt, design text, seed and reference r
 | `ja` | Japanese | `hazir/anlatici_ja` | [sample](hazir_sesler/anlatici_ja/ornek_okuma.mp3) | [video](https://x.com/i/status/2113800742100176923) |
 
 ```powershell
-# the language comes from the voice card; --dil overrides it
+# the language is detected from the text (voice card if unsure); --dil is optional
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_fr --metin @hazir_sesler/anlatici_fr/ornek_okuma_metni.txt --cikti cikti\fr
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/anlatici_ja --metin @text_ja.txt --cikti cikti\ja
 # design a voice in another language: English prompt, design text in that language
@@ -42,7 +42,7 @@ narrators are bundled here, with their prompt, design text, seed and reference r
 speeds up and the voice can drift. Here the voice is carried by a fixed reference recording and seed, and long text is
 read one sentence per line, so timbre and style stay the same from the first sentence to the last. For languages other
 than Turkish the Turkish pronunciation dictionary is not applied. Other languages VoxCPM2 supports should work with
-`--dil <code>`; we have not tested them. Per-language commands and the lessons we learned:
+a text in their language (or `--dil <code>`); we have not tested them. Per-language commands and the lessons we learned:
 [docs/cok_dilli.md](docs/cok_dilli.md). Claude Code skill for the whole design flow:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
@@ -232,7 +232,7 @@ Command line:
 ```
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
 ≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words in Turkish text.
-Other languages: `--dil <code>` (or the voice card's `dil`); apostrophes are allowed there, the Turkish dictionary is
+Language is detected from the text (Turkish letters, script, common words; the voice card's `dil` if unsure; `--dil <code>` is optional). For non-Turkish text apostrophes are allowed there, the Turkish dictionary is
 skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/

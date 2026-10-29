@@ -51,10 +51,10 @@ def check(reference_text: str, text: str, consent) -> list:
     """Üretimden önce düz Türkçe sorun listesi. / Plain problem list before any GPU work."""
     found = []
     if consent is not True:
-        found.append("izin onayı yok (consent missing): " + CONSENT_TR + " / " + CONSENT_EN)
+        found.append(okunus.Sorun("izin onayı yok (consent missing): " + CONSENT_TR + " / " + CONSENT_EN, "onay_yok"))
     if len(str(reference_text or "").strip()) < 10:
-        found.append("kaydın birebir metni zorunlu: kayıtta ne söyleniyorsa aynısını yazın "
-                     "(exact transcript of the recording required)")
+        found.append(okunus.Sorun("kaydın birebir metni zorunlu: kayıtta ne söyleniyorsa aynısını yazın "
+                                  "(exact transcript of the recording required)", "kayit_metni"))
     found += okunus.problems(text or "")
     return found
 
@@ -62,27 +62,32 @@ def check(reference_text: str, text: str, consent) -> list:
 def prepare_reference(data: bytes, work_dir: Path) -> dict:
     """Yüklenen baytları (wav/mp3/flac/ogg) mono WAV'a çevirir; 36 sn üstünü kırpar. / Decode, mono, trim to 36 s."""
     if not data:
-        raise KlonHatasi("ses dosyası boş (empty recording)")
+        raise KlonHatasi(okunus.Sorun("ses dosyası boş (empty recording)", "kayit_yok"))
     if len(data) > MAX_UPLOAD_BYTES:
-        raise KlonHatasi(f"ses dosyası çok büyük ({len(data) // 1_000_000} MB); 36 sn'lik bir kayıt yeter "
-                         f"(file too large, max {MAX_UPLOAD_BYTES // 1_000_000} MB)")
+        raise KlonHatasi(okunus.Sorun(f"ses dosyası çok büyük ({len(data) // 1_000_000} MB); 36 sn'lik bir kayıt yeter "
+                                      f"(file too large, max {MAX_UPLOAD_BYTES // 1_000_000} MB)",
+                                      "kayit_buyuk", mb=MAX_UPLOAD_BYTES // 1_000_000))
     try:
         audio, rate = sf.read(io.BytesIO(data), dtype="float32", always_2d=True)
     except Exception as error:  # libsndfile çözemedi / could not decode
-        raise KlonHatasi(f"ses dosyası okunamadı, wav, mp3, flac ya da ogg olmalı "
-                         f"(could not decode; use wav, mp3, flac or ogg): {error}") from None
+        raise KlonHatasi(okunus.Sorun(f"ses dosyası okunamadı, wav, mp3, flac ya da ogg olmalı "
+                                      f"(could not decode; use wav, mp3, flac or ogg): {error}",
+                                      "kayit_cozulemedi")) from None
     audio = audio.mean(axis=1).astype(np.float32)
     seconds = len(audio) / rate
     notes = []
     if seconds < MIN_SECONDS:
-        raise KlonHatasi(f"kayıt çok kısa ({seconds:.1f} sn); en az {MIN_SECONDS:.0f} sn, önerilen 5-30 sn "
-                         f"(too short; at least {MIN_SECONDS:.0f} s, 5-30 s advised)")
+        raise KlonHatasi(okunus.Sorun(f"kayıt çok kısa ({seconds:.1f} sn); en az {MIN_SECONDS:.0f} sn, önerilen 5-30 sn "
+                                      f"(too short; at least {MIN_SECONDS:.0f} s, 5-30 s advised)",
+                                      "kayit_kisa", sn=round(seconds, 1), min=int(MIN_SECONDS)))
     if seconds > MAX_SECONDS:
         audio = audio[: int(MAX_SECONDS * rate)]
-        notes.append(f"kayıt {seconds:.1f} sn idi, ilk {MAX_SECONDS:.0f} sn kullanıldı; kayıt metni yalnız bu kısmı "
-                     f"içermeli / trimmed to the first {MAX_SECONDS:.0f} s, the transcript must match that part")
+        notes.append(okunus.Sorun(f"kayıt {seconds:.1f} sn idi, ilk {MAX_SECONDS:.0f} sn kullanıldı; kayıt metni yalnız "
+                                  f"bu kısmı içermeli / trimmed to the first {MAX_SECONDS:.0f} s, the transcript must "
+                                  f"match that part", "not_kirpildi", sn=round(seconds, 1), max=int(MAX_SECONDS)))
     elif not ADVICE_SECONDS[0] <= seconds <= ADVICE_SECONDS[1]:
-        notes.append(f"kayıt {seconds:.1f} sn; en iyi sonuç 5-30 sn temiz kayıtla / best with 5-30 s clean speech")
+        notes.append(okunus.Sorun(f"kayıt {seconds:.1f} sn; en iyi sonuç 5-30 sn temiz kayıtla / best with 5-30 s clean "
+                                  f"speech", "not_oneri", sn=round(seconds, 1)))
     work_dir.mkdir(parents=True, exist_ok=True)
     wav = work_dir / "referans.wav"
     sf.write(wav, audio, rate, subtype="PCM_16")
