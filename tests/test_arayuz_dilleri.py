@@ -48,7 +48,7 @@ class ArayuzDilleri(unittest.TestCase):
 
     def test_every_used_key_exists(self):
         ref = load("tr")
-        used = set(re.findall(r'data-t(?:-ph|-val|-title)?="([a-z_0-9]+)"', arayuz.HTML))
+        used = set(re.findall(r'data-(?:t(?:-ph|-val|-title|-bas)?|sekme-t)="([a-z_0-9]+)"', arayuz.HTML))
         used |= set(re.findall(r"\bt\('([a-z_0-9]*[a-z0-9])'", arayuz.HTML))
         used |= {f"e_{c}" for c in CODES} | {f"d_{s}" for s in STATES}
         self.assertFalse(used - set(ref), used - set(ref))

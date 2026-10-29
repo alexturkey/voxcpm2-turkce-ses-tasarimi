@@ -75,10 +75,6 @@ class BundledVoices(unittest.TestCase):
                 self.assertLess(sum(f.stat().st_size for f in path.parent.iterdir()), 2_500_000)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class Detect(unittest.TestCase):
     """Metinden dil tanıma / language detection from text (no GPU)."""
 
@@ -112,3 +108,7 @@ class Detect(unittest.TestCase):
             self.assertEqual(oku.voice_language(Path(tmp)), "fr")
             self.assertEqual(oku.voice_language(Path(tmp), None, "Kapadokya, Anadolunun kalbinde."), "tr")
             self.assertEqual(oku.voice_language(Path(tmp), "en", "Kapadokya"), "en")
+
+
+if __name__ == "__main__":
+    unittest.main()

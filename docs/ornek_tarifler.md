@@ -264,7 +264,7 @@ python -m ses_tasarim.tasarla --ornek tr_masal_nine --cesit 3
 python -m ses_tasarim.oku --ses tr_masal_nine/1 --metin @masal.txt --cikti cikti\masal
 ```
 
-Arayüz: 1. bölümde dili seç, sonra *Örnek tarif*; tarif, metin ve ad kendiliğinden dolar.
+Arayüz: 1. bölümde *Örnek tarif* kutusundan seç (144 tarifin hepsi, dile göre gruplu); tarif, metin ve ad kendiliğinden dolar.
 **Henüz ölçülmedi:** bu 144 tarif yeni; kalıbı 8 hazır anlatıcımızla denedik, her örneği tek tek değil. Bazı tohumlar
 zayıf çeşit verir: 3 çeşit tasarla, gerçek metinden okutup dinleyerek seç.
 

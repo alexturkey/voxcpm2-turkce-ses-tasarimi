@@ -15,6 +15,10 @@ class BosSatir(unittest.TestCase):
         self.assertEqual(okunus.lines("Bir. || agir\n\n\nIki."),
                          [("Bir.", okunus.PAUSES["agir"]), ("Iki.", okunus.GAP_SECONDS)])
 
+    def test_uzun_satir_numarasi_fiziksel(self):
+        found = okunus.problems("Bir.\n\nIki.\n\n" + "y " * 1100)
+        self.assertEqual([f.veri["satir"] for f in found if f.kod == "uzun_satir"], [5])
+
     def test_bastaki_bos_satir_etkisiz(self):
         self.assertEqual(okunus.lines("\n\nBir.\nIki."), [("Bir.", okunus.GAP_SECONDS), ("Iki.", okunus.GAP_SECONDS)])
 

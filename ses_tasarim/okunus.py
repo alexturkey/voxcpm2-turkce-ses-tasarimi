@@ -172,7 +172,12 @@ def problems(text: str, where: str = "metin", dil: str = DEFAULT_LANGUAGE) -> li
     elif marks:
         found.append(Sorun(f"{where}: okunamayan işaret {marks}; rakamı o dilde yazıyla yaz / write numbers as words",
                            "isaret", isaretler=" ".join(marks)))
-    for number, (line, _) in enumerate(lines(text), 1):
+    # Numara metin kutusundaki fiziksel satırdır (boş satırlar dahil), arayüzdeki satır numarasıyla aynı.
+    # The number is the physical line (blank lines included), matching the UI's line numbers.
+    for number, raw in enumerate(text.splitlines(), 1):
+        if not raw.strip():
+            continue
+        line, _ = split_pause(raw)
         if len(line) > MAX_LINE_CHARS:
             found.append(Sorun(f"{where}: {number}. satır {len(line)} karakter > {MAX_LINE_CHARS}; satırı böl",
                                "uzun_satir", satir=number, uzunluk=len(line), sinir=MAX_LINE_CHARS))
