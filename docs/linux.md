@@ -73,6 +73,31 @@ Then open `http://127.0.0.1:8765/` on the client. No reverse proxy, authenticati
 
 ## Validation scope
 
+### Tested configuration (2026-10-31, Europe/Istanbul)
+
+Host: Ubuntu 26.04.1 x86-64, Intel i5-12400F, 30 GiB RAM, NVIDIA RTX 3060 Ti 8 GiB,
+driver 595.99.02, Docker 29.9.2. Container: Ubuntu 24.04, CUDA 12.8.1 (nvcc 12.8.93),
+GCC 13.3, Python 3.12, numpy 2.2.6, soundfile 0.14.0. Architecture: `86`.
+
+`docker build -f Dockerfile.linux --build-arg CUDA_ARCHITECTURES=86 -t voxcpm2-linux .`
+completed successfully; `docker run --rm --network none voxcpm2-linux python -m unittest discover -s tests`
+passed all 42 tests. GPU inference also ran without network access using the previously verified model.
+
+| Test | Audio duration | Engine sequence time | Peak GPU memory (total) |
+|---|---:|---:|---:|
+| `hazir/belgesel_hanim`, first reference encoding | 2.56 s | 24.0 s | 3057 MiB |
+| Same text/voice/seed, cached reference | 2.56 s | 6.0 s | 3057 MiB |
+| New voice design, seed 42 (AGENTS.md design test) | 16.64 s | 12.4 s | 2965 MiB |
+| Reading with that newly designed voice | 3.04 s | 21.0 s | 2943 MiB |
+
+Reading text: `Merhaba, bu bir deneme okumasıdır.` Quality: 16 steps, CFG 2.0 throughout.
+Both bundled-voice readings produced the same WAV SHA256:
+`9919e687e447a07cd508774deee12b30530602dfbac2be650270f88823fc15df`.
+GPU memory returned to its 77 MiB baseline after each bundled-voice reading and at the end of the sequence.
+The reading outputs were non-silent, finite, mono 48 kHz WAVs; these checks do not assess pronunciation or subjective quality.
+Times include engine/model startup and reference encoding when needed; they are short smoke tests, not throughput benchmarks.
+No other model was loaded on the GPU during these measurements.
+
 Linux support is initially experimental. A successful test on one GPU/distribution is not a guarantee for all
 Ubuntu versions or CUDA architectures. Include the host OS, container OS (if used), driver, toolkit, GPU, commands,
 timings, peak VRAM and whether memory returns after the engine exits when reporting results.

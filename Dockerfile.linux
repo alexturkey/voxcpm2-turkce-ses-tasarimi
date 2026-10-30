@@ -15,6 +15,7 @@ COPY ses_tasarim/ ses_tasarim/
 COPY hazir_sesler/ hazir_sesler/
 COPY ayarlar/ ayarlar/
 COPY tests/ tests/
+COPY docs/test_seti/ docs/test_seti/
 COPY LICENSE NOTICE THIRD_PARTY.md ./
 ENV PATH="/opt/voxcpm2/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1
