@@ -1,0 +1,24 @@
+# Ubuntu CUDA build/runtime. Local UI only; use Linux host networking + SSH forwarding.
+FROM nvidia/cuda:12.8.1-devel-ubuntu24.04
+ARG CUDA_ARCHITECTURES=86
+ARG BUILD_JOBS=4
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates curl git cmake build-essential python3 python3-venv libsndfile1 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /opt/voxcpm2
+COPY requirements.txt ./
+COPY scripts/kur-linux.sh scripts/kur-linux.sh
+COPY patches/ patches/
+RUN bash scripts/kur-linux.sh --kok /opt/vox --adim kaynak,derle,python \
+    --mimari "${CUDA_ARCHITECTURES}" --paralel "${BUILD_JOBS}"
+COPY ses_tasarim/ ses_tasarim/
+COPY hazir_sesler/ hazir_sesler/
+COPY ayarlar/ ayarlar/
+COPY tests/ tests/
+COPY LICENSE NOTICE THIRD_PARTY.md ./
+ENV PATH="/opt/voxcpm2/.venv/bin:${PATH}" \
+    PYTHONUNBUFFERED=1
+# The model is downloaded/verified at first start into the persistent /data volume.
+# Generated voices and reference caches also live there, not in the image layer.
+RUN printf '%s\n' '{"motor":"/opt/vox/motor/build/bin/audiocpp_cli","model":"/data/model/voxcpm2-q8_0.gguf","backend":"cuda","cuda_bin":"","sesler":"/data/sesler","onbellek":"/data/onbellek","hazir_sesler":"/opt/voxcpm2/hazir_sesler"}' > ayarlar.json
+CMD ["bash", "-c", "bash scripts/kur-linux.sh --kok /data --adim model && exec python -m ses_tasarim.arayuz"]

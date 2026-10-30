@@ -5,7 +5,7 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 [audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve on dört hazır yapay ses içerir: yedi Türkçe ses ve İngilizce, Fransızca, Almanca,
 İspanyolca, Rusça, Çince, Japonca yedi yerli anlatıcı (toplam 8 dil).
 
-[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
+[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
 > Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
 > izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
@@ -73,6 +73,13 @@ dublaj programımız; bu repoyu VoxCPM2 ses motoru olarak kurar. Burada tasarlad
 
 Motor zip'i tek başına çalışan bir uygulama değildir (içindeki exe, kurulumun yerleştirdiği modele ve DLL'lere ihtiyaç
 duyar). Ayrıntı, kart listesi ve sık sorunlar: aşağıdaki "Hızlı kurulum".
+
+## Ubuntu / Linux (NVIDIA CUDA, deneysel)
+
+`bash scripts/kur-linux.sh` ile yamalı motoru derleyin veya `Dockerfile.linux` ile Ubuntu 24.04 / CUDA 12.8.1
+ortamında çalıştırın. NVIDIA GPU ve uyumlu sürücü gerekir; doğrudan kurulum ayrıca CUDA toolkit ve Python 3.10–3.13
+ister. Uzak sunucuda da arayüz yalnız yereldedir; SSH tüneli kullanılır. Gereksinimler, komutlar ve test kapsamı:
+[docs/linux.md](docs/linux.md).
 
 ## Hızlı başlangıç (macOS, Apple Silicon)
 
