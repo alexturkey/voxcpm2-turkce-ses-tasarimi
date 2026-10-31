@@ -68,7 +68,10 @@ main.kart{background:var(--panel);border-radius:10px;margin:12px 0;overflow:hidd
 label.mini{display:flex;flex-direction:column;gap:4px;margin:0 0 8px;border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;color:var(--fg);font-size:.9rem;font-weight:600;min-width:0}
 label.mini:focus-within{border-color:var(--acc)}label.mini input,label.mini select{padding:5px 8px;font-size:.85rem;font-weight:400}
 .yanyana{display:flex;gap:8px}.yanyana>.mini{flex:1}#ornek{font-size:.85rem}#ornek optgroup{background:var(--cizgi2);color:var(--baslik);font-style:normal}#ornek option{background:var(--alan);color:var(--fg)}
-.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:28px;border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#satirno .sb{opacity:.4}#okuma_metni{flex:1;min-width:0;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:28px;padding:6px 12px;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:28px;padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}
+.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:28px;border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#satirno .sb{opacity:.4}#okuma_metni{flex:1;min-width:0;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:28px;padding:6px 12px;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:28px;padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.ilerle{flex:1;display:flex;align-items:center;gap:8px}.ilerle[hidden]{display:none}.pcubuk{flex:1;height:6px;border-radius:3px;background:var(--cizgi);overflow:hidden}
+.pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
+@keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:3.2em;text-align:right}
 .ubas{border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px}.ubas select{flex:1 1 100%;min-width:0;padding:5px 8px;font-size:.85rem}.ubas .durum:empty{display:none}.ubas b{font-size:.9rem;flex-basis:100%}.ubas .durum{flex-basis:100%;margin:4px 0 0;font-size:.85rem}
 #cesitler{display:grid;gap:6px;margin-top:8px;overflow-y:auto;border:1px solid var(--cizgi);border-radius:8px;padding:6px;align-content:start;max-height:494px}#cesitler .cesit{padding:6px 8px;gap:4px}#cesitler .cesit:has(input:checked){border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.bos{color:var(--soluk);font-size:.85rem;margin:2px 0}
 button{background:var(--acc);color:#111;border:0;border-radius:6px;padding:9px 16px;font-weight:600;cursor:pointer;margin-top:10px}
@@ -115,7 +118,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
 <small id="tmetin_ipucu" class="ipucu"></small>
-<div class="sag"><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
+<div class="sag ilerlesatir"><div id="p_tasarla" class="ilerle" hidden><div class="pcubuk"><i></i></div><span class="krono">0:00</span></div><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
 </div><div class="uretimler">
 <div class="ubas"><b data-t="uretimler">Üretimler</b><select id="uretim" data-t-title="uretimler"></select><div id="d_tasarla" class="durum" aria-live="polite"></div></div>
 <div id="cesitler"></div>
@@ -250,8 +253,15 @@ function sesListesi(){const s=$('ses'),secili=s.value;s.innerHTML='';
  $('hazir').innerHTML=sesler.hazir.map(k=>`<div class="cesit"><div style="flex:1"><b>${esc(k.gorunen_ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small><br><small>${esc(tanitim(k))}</small></div>`+
   `<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
 async function yenile(secili){sesler=await api('/api/sesler');sesListesi();cesitCiz();if(secili)$('ses').value=secili;}
-async function bekle(is,el){for(;;){const j=await api('/api/is/'+is);durumYaz(el,j);
- if(j.durum==='bitti'||j.durum==='hata')return j;await new Promise(r=>setTimeout(r,2000));}}
+// İlerleme: düğmenin yanında kronometre + çubuk. Model yüklenirken çubuk kayar, sonra hazır/toplam ile dolar.
+// Progress: stopwatch + bar beside the button; sliding while the model loads, then filled by done/total.
+function ilerle(p){if(!p)return null;const t0=Date.now(),k=p.querySelector('.krono'),i=p.querySelector('i');
+ const yaz=()=>{const s=Math.floor((Date.now()-t0)/1000);k.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+ p.hidden=false;p.classList.add('bekler');i.style.width='';yaz();const z=setInterval(yaz,1000);
+ return{j(j){const v=j.veri||{};if(j.kod==='ilerleme'&&v.total){p.classList.remove('bekler');i.style.width=Math.max(4,100*v.done/v.total)+'%';}},
+  son(ok){clearInterval(z);p.classList.remove('bekler');i.style.width=ok?'100%':'0';}};}
+async function bekle(is,el,p){const g=ilerle(p);for(;;){const j=await api('/api/is/'+is);durumYaz(el,j);if(g)g.j(j);
+ if(j.durum==='bitti'||j.durum==='hata'){if(g)g.son(j.durum==='bitti');return j;}await new Promise(r=>setTimeout(r,1000));}}
 
 let sonCesit=null,sonOkuma=null,sonKlon=null;
 // Üretim = bir Tasarla basışı: aynı ad, tarih, tarif ve metinle çıkan çeşitler. Diskten gelir (sesler.tasarlanan), en yeni üstte.
@@ -279,7 +289,7 @@ $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  sonCesit=null;cesitCiz();
  const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
  if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
- const s=await bekle(j.is,$('d_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
+ const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}};
 
 const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('indir'))}</button></a>`;
