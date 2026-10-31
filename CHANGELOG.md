@@ -5,7 +5,7 @@
 **TR**
 - Deneysel Ubuntu/Linux (NVIDIA CUDA) kurulumu: `scripts/kur-linux.sh` yamalı motoru kaynaktan derler (sabit URL ve
   sha256, sudo çalıştırmaz), isteğe bağlı `Dockerfile.linux`; belge `docs/linux.md`. Linux'ta ayar kontrolü Windows'a özgü
-  `cudart64_12.dll` dosyasını istiyordu, düzeltildi (Windows'ta kontrol aynen sürer). Katkı: @mslmyilmaz5 (Müslim Yılmaz), #15.
+  `cudart64_12.dll` dosyasını istiyordu, düzeltildi (Windows'ta kontrol aynen sürer). Katkı: @mslmyilmaz5 (Müslim Yılmaz), #15. Aynı Docker yolu GTX 1050 Ti 4 GB'de de denendi (Windows 10, Docker Desktop/WSL2, `CUDA_ARCHITECTURES=61`): komut satırı okuma ve tasarım çalışır, tepe VRAM 2849 MiB, aynı girdiyle iki okuma bit bit aynı; arayüz Windows tarayıcısından açılmaz, Windows'ta arayüz için `scripts\kur.ps1` kullanın. Ölçüm ve komutlar `docs/linux.md`.
 - Arayüz yerleşimi sadeleşti: dört sekme (Ses tasarla, Bu sesle oku, Ses klonlama, Hazır sesler), geniş ekranda sayfa
   kaymaz, kaydırma yalnız listelerde. Ses tasarla iki sütun: solda ad, çeşit, örnek tarif, tarif ve metin; sağda
   *Üretimler*: her Tasarla basışı bir üretimdir, seçince form o üretimin bilgileriyle dolar ve çeşitleri dinlenir;
@@ -67,7 +67,7 @@
 - Experimental Ubuntu/Linux (NVIDIA CUDA) install: `scripts/kur-linux.sh` builds the patched engine from source (pinned URLs
   and sha256, never runs sudo), optional `Dockerfile.linux`; guide `docs/linux.md`. On Linux the settings check wrongly
   required the Windows-only `cudart64_12.dll`; fixed (the Windows check is unchanged). Contributed by @mslmyilmaz5
-  (Müslim Yılmaz), #15.
+  (Müslim Yılmaz), #15. The same Docker path was also tried on a GTX 1050 Ti 4 GB (Windows 10, Docker Desktop/WSL2, `CUDA_ARCHITECTURES=61`): CLI reading and design work, peak VRAM 2849 MiB, two readings of the same input are bit-identical; the web UI does not open from a Windows browser, so use `scripts\kur.ps1` for the UI on Windows. Measurements and commands in `docs/linux.md`.
 - Simpler UI layout: four tabs (Design a voice, Read with this voice, Voice cloning, Bundled voices); on wide screens
   the page does not scroll, only the lists do. Design is two columns: name, variants, example, description and text on
   the left; *Generations* on the right: each Design click is one generation, selecting it refills the form and lists

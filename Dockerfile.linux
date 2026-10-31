@@ -1,5 +1,6 @@
 # Ubuntu CUDA build/runtime. Local UI only; use Linux host networking + SSH forwarding.
 FROM nvidia/cuda:12.8.1-devel-ubuntu24.04
+# 86 = RTX 30xx (default), 61 = GTX 10xx, 89 = RTX 40xx. Pass --build-arg CUDA_ARCHITECTURES=<n>.
 ARG CUDA_ARCHITECTURES=86
 ARG BUILD_JOBS=4
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \

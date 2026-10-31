@@ -184,7 +184,7 @@ localhost only).
 
 **Supported GPUs (release v0.1.1):** native code for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) and RTX 50xx (sm_120a); any other CUDA GPU from Pascal on runs the embedded PTX via the driver (slower first
-start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB by us; measured by @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
+start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB by us (also via Docker Desktop/WSL2 on Windows, CLI only); measured by @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (details in [docs/linux.md](docs/linux.md)). Reports from other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
