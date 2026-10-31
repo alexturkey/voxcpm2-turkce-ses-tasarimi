@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "변형 수",
  "uretimler": "결과",
- "uretim_yok": "{dugme} 버튼을 누르면 변형이 여기에 표시됩니다."
+ "uretim_yok": "{dugme} 버튼을 누르면 변형이 여기에 표시됩니다.",
+ "durak_sil": "{sure}을(를) 삭제할까요?",
+ "durak_sil_yer": "본문 {n}곳에서 사용 중입니다. 그곳은 기본 쉼으로 돌아갑니다.",
+ "evet": "예",
+ "hayir": "아니요"
 }

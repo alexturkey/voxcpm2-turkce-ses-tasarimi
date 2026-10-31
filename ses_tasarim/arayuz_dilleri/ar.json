@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "النسخ",
  "uretimler": "النتائج",
- "uretim_yok": "اضغط «{dugme}» وستظهر النسخ هنا."
+ "uretim_yok": "اضغط «{dugme}» وستظهر النسخ هنا.",
+ "durak_sil": "حذف {sure}؟",
+ "durak_sil_yer": "مستخدمة في {n} موضع في النص؛ ستعود إلى المدة الافتراضية.",
+ "evet": "نعم",
+ "hayir": "لا"
 }

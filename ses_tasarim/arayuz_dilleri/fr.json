@@ -77,5 +77,9 @@
  "etiket": "{ad} : {deger}",
  "cesit_kisa": "Variantes",
  "uretimler": "Résultats",
- "uretim_yok": "Cliquez sur {dugme} : les variantes s’affichent ici."
+ "uretim_yok": "Cliquez sur {dugme} : les variantes s’affichent ici.",
+ "durak_sil": "Supprimer {sure} ?",
+ "durak_sil_yer": "Utilisée à {n} endroits du texte ; ils reviennent à la pause par défaut.",
+ "evet": "Oui",
+ "hayir": "Non"
 }

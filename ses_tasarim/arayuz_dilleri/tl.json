@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Bersyon",
  "uretimler": "Mga resulta",
- "uretim_yok": "Pindutin ang {dugme} at lalabas dito ang mga bersyon."
+ "uretim_yok": "Pindutin ang {dugme} at lalabas dito ang mga bersyon.",
+ "durak_sil": "Burahin ang {sure}?",
+ "durak_sil_yer": "Ginagamit sa {n} lugar sa teksto; babalik ang mga iyon sa default na hinto.",
+ "evet": "Oo",
+ "hayir": "Hindi"
 }

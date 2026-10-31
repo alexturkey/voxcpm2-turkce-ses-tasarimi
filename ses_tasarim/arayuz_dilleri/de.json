@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Varianten",
  "uretimler": "Ergebnisse",
- "uretim_yok": "Nach „{dugme}“ erscheinen die Varianten hier."
+ "uretim_yok": "Nach „{dugme}“ erscheinen die Varianten hier.",
+ "durak_sil": "{sure} löschen?",
+ "durak_sil_yer": "Wird im Text an {n} Stellen verwendet; dort gilt wieder die Standardpause.",
+ "evet": "Ja",
+ "hayir": "Nein"
 }

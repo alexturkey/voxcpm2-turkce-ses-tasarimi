@@ -77,5 +77,9 @@
  "etiket": "{ad}：{deger}",
  "cesit_kisa": "版本数",
  "uretimler": "生成结果",
- "uretim_yok": "点击“{dugme}”后，各版本会显示在这里。"
+ "uretim_yok": "点击“{dugme}”后，各版本会显示在这里。",
+ "durak_sil": "删除 {sure}？",
+ "durak_sil_yer": "文中有 {n} 处在用；这些地方将恢复默认停顿。",
+ "evet": "是",
+ "hayir": "否"
 }

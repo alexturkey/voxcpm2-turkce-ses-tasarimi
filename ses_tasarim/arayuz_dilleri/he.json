@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "גרסאות",
  "uretimler": "תוצאות",
- "uretim_yok": "לחצו על {dugme} והגרסאות יופיעו כאן."
+ "uretim_yok": "לחצו על {dugme} והגרסאות יופיעו כאן.",
+ "durak_sil": "למחוק את {sure}?",
+ "durak_sil_yer": "בשימוש ב־{n} מקומות בטקסט; הם יחזרו להשהיה ברירת המחדל.",
+ "evet": "כן",
+ "hayir": "לא"
 }

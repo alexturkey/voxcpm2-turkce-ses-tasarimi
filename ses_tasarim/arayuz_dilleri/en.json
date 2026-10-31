@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Variants",
  "uretimler": "Results",
- "uretim_yok": "Press {dugme} and the variants appear here."
+ "uretim_yok": "Press {dugme} and the variants appear here.",
+ "durak_sil": "Delete {sure}?",
+ "durak_sil_yer": "Used in {n} places in the text; they go back to the default pause.",
+ "evet": "Yes",
+ "hayir": "No"
 }

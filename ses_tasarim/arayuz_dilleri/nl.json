@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Varianten",
  "uretimler": "Resultaten",
- "uretim_yok": "Klik op {dugme} en de varianten verschijnen hier."
+ "uretim_yok": "Klik op {dugme} en de varianten verschijnen hier.",
+ "durak_sil": "{sure} verwijderen?",
+ "durak_sil_yer": "Wordt op {n} plekken in de tekst gebruikt; daar geldt weer de standaardpauze.",
+ "evet": "Ja",
+ "hayir": "Nee"
 }

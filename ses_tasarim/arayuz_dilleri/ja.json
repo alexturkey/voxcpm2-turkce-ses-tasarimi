@@ -77,5 +77,9 @@
  "etiket": "{ad}：{deger}",
  "cesit_kisa": "生成数",
  "uretimler": "生成結果",
- "uretim_yok": "「{dugme}」を押すと、ここに結果が表示されます。"
+ "uretim_yok": "「{dugme}」を押すと、ここに結果が表示されます。",
+ "durak_sil": "{sure} を削除しますか？",
+ "durak_sil_yer": "本文の {n} か所で使われています。そこは既定の間に戻ります。",
+ "evet": "はい",
+ "hayir": "いいえ"
 }

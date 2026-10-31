@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Warianty",
  "uretimler": "Wyniki",
- "uretim_yok": "Kliknij {dugme}, a warianty pojawią się tutaj."
+ "uretim_yok": "Kliknij {dugme}, a warianty pojawią się tutaj.",
+ "durak_sil": "Usunąć {sure}?",
+ "durak_sil_yer": "Używana w {n} miejscach tekstu; wrócą do domyślnej pauzy.",
+ "evet": "Tak",
+ "hayir": "Nie"
 }

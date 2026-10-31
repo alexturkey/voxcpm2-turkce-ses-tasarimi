@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Varianter",
  "uretimler": "Resultater",
- "uretim_yok": "Klik på {dugme}, så vises varianterne her."
+ "uretim_yok": "Klik på {dugme}, så vises varianterne her.",
+ "durak_sil": "Slet {sure}?",
+ "durak_sil_yer": "Bruges {n} steder i teksten; de vender tilbage til standardpausen.",
+ "evet": "Ja",
+ "hayir": "Nej"
 }

@@ -77,5 +77,9 @@
  "etiket": "{ad}: {deger}",
  "cesit_kisa": "Varian",
  "uretimler": "Hasil",
- "uretim_yok": "Tekan {dugme}, varian akan muncul di sini."
+ "uretim_yok": "Tekan {dugme}, varian akan muncul di sini.",
+ "durak_sil": "Hapus {sure}?",
+ "durak_sil_yer": "Dipakai di {n} tempat dalam teks; tempat itu kembali ke jeda bawaan.",
+ "evet": "Ya",
+ "hayir": "Tidak"
 }
