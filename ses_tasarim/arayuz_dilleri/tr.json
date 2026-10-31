@@ -17,7 +17,7 @@
  "tasarla": "Tasarla",
  "s2": "2. Bu sesle oku",
  "ses": "Ses",
- "ometin": "Okunacak metin: her satır bir cümle; satırlar arası bekleme numaraların yanındaki çubuktan seçilir (boş satır = paragraf durağı)",
+ "ometin": "Okunacak metin: her satır bir cümle; iki satır arasındaki banda tıklayıp bekleme süresini seç (boş satır = paragraf durağı)",
  "ometin_ph": "Bu ses yalnız bir metin tarifinden tasarlandı, bir kayıttan klonlanmadı.\nYapay zekâ ile üretilmiş bir sestir.\n\nŞimdi istediğin metni okuyabilir.",
  "oku": "Bu sesle oku",
  "s3": "3. Ses klonlama: kendi sesin ya da izinli ses",

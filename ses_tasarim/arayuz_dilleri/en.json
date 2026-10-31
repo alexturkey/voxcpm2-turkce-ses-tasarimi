@@ -17,7 +17,7 @@
  "tasarla": "Design",
  "s2": "2. Read with this voice",
  "ses": "Voice",
- "ometin": "Text to read: one sentence per line; pick the pause between lines from the bar next to the line numbers (blank line = paragraph pause)",
+ "ometin": "Text to read: one sentence per line; click the band between two lines to pick the pause (blank line = paragraph pause)",
  "ometin_ph": "This voice was designed from a text description only, not cloned from a recording.\nIt is an AI-generated voice.\n\nNow it can read any text you like.",
  "oku": "Read with this voice",
  "s3": "3. Voice cloning: your own or a consented voice",

@@ -68,7 +68,7 @@ main.kart{background:var(--panel);border-radius:10px;margin:12px 0;overflow:hidd
 label.mini{display:flex;flex-direction:column;gap:4px;margin:0 0 8px;border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;color:var(--fg);font-size:.9rem;font-weight:600;min-width:0}
 label.mini:focus-within{border-color:var(--acc)}label.mini input,label.mini select{padding:5px 8px;font-size:.85rem;font-weight:400}
 .yanyana{display:flex;gap:8px}.yanyana>.mini{flex:1}#ornek{font-size:.85rem}#ornek optgroup{background:var(--cizgi2);color:var(--baslik);font-style:normal}#ornek option{background:var(--alan);color:var(--fg)}
-.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:28px;border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#satirno .sb{opacity:.4}#satirno{position:relative;min-width:64px}#satirno .durak{position:absolute;inset-inline-end:4px;width:58px;height:16px;margin:0;padding:0;border:0;border-radius:4px;background:transparent;display:flex;align-items:center;justify-content:flex-end;cursor:pointer}#satirno .durak i{display:block;height:5px;border-radius:3px;background:var(--soluk);opacity:.5}#satirno .durak.o i{background:var(--acc);opacity:.55}#satirno .durak.a i{background:var(--acc);opacity:1}#satirno .durak:hover i,#satirno .durak:focus-visible i{height:8px;opacity:1}#durakmenu{position:fixed;z-index:20;display:flex;flex-direction:column;gap:2px;padding:4px;background:var(--panel);border:1px solid var(--cizgi);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)}#durakmenu[hidden]{display:none}#durakmenu button{display:flex;align-items:center;gap:10px;margin:0;padding:5px 10px;background:transparent;color:var(--fg);font-weight:400;font-size:.8rem;border-radius:5px}#durakmenu button:hover{background:var(--cizgi2)}#durakmenu button[aria-pressed=true]{color:var(--acc);font-weight:600}#durakmenu i{display:block;height:5px;border-radius:3px;background:var(--acc)}#durakmenu span{margin-inline-start:auto;font-variant-numeric:tabular-nums}#durakmenu button{min-width:120px}#okuma_metni{flex:1;min-width:0;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:28px;padding:6px 12px;background-attachment:local;background-image:linear-gradient(transparent 27px,var(--cizgi2) 27px);background-size:100% 28px;background-position:0 6px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:28px;padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden;--sat:28px;--bant:calc(var(--sat) / 3);--satir:calc(var(--sat) + var(--bant))}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;position:relative;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:var(--satir);border-inline-end:1px solid var(--cizgi2);user-select:none}#satirno .sb{opacity:.4}#satirno .gbant{position:absolute;inset-inline:0;height:var(--bant);background:var(--cizgi2)}#yazikap{flex:1;min-width:0;position:relative}#okuma_metni{display:block;width:100%;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:var(--satir);padding:6px 12px;background:transparent}#bantlar{position:absolute;inset:0;overflow:hidden;pointer-events:none}#bantlar .durak{position:absolute;inset-inline:0;height:var(--bant);margin:0;padding:0 12px;border:0;border-radius:0;background:var(--cizgi2);display:flex;align-items:center;cursor:pointer;pointer-events:auto}#bantlar .durak:hover,#bantlar .durak:focus-visible{background:var(--cizgi)}#bantlar .durak i{display:block;height:max(3px,calc(var(--bant) - 5px));border-radius:3px;background:var(--soluk);opacity:.7}#bantlar .durak.o i{background:var(--acc);opacity:.6}#bantlar .durak.a i{background:var(--acc);opacity:1}#durakmenu{position:fixed;z-index:20;display:flex;flex-direction:column;gap:2px;padding:4px;background:var(--panel);border:1px solid var(--cizgi);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)}#durakmenu[hidden]{display:none}#durakmenu button{display:flex;align-items:center;gap:10px;margin:0;padding:5px 10px;background:transparent;color:var(--fg);font-weight:400;font-size:.8rem;border-radius:5px}#durakmenu button:hover{background:var(--cizgi2)}#durakmenu button[aria-pressed=true]{color:var(--acc);font-weight:600}#durakmenu i{display:block;height:5px;border-radius:3px;background:var(--acc)}#durakmenu span{margin-inline-start:auto;font-variant-numeric:tabular-nums}#durakmenu button{min-width:120px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:var(--satir);padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
 .ilerle{flex:1;display:flex;align-items:center;gap:8px}.ilerle[hidden]{display:none}.pcubuk{flex:1;height:6px;border-radius:3px;background:var(--cizgi);overflow:hidden}
 .pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
 @keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:3.2em;text-align:right}
@@ -127,7 +127,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <section id="p2" class="panel" role="tabpanel" hidden>
 <label for="ses" data-t="ses">Ses</label><select id="ses"></select>
 <label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label>
-<div id="defterkap"><div class="defter"><div id="satirno"></div><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea></div><div id="ayna" aria-hidden="true"></div></div><div id="durakmenu" role="menu" hidden></div>
+<div id="defterkap"><div class="defter"><div id="satirno"></div><div id="yazikap"><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea><div id="bantlar"><div></div></div></div></div><div id="ayna" aria-hidden="true"></div></div><div id="durakmenu" role="menu" hidden></div>
 <button id="btn_oku" data-t="oku">Bu sesle oku</button><div id="d_oku" class="durum" aria-live="polite"></div>
 <div id="sonuc"></div></section>
 
@@ -297,9 +297,9 @@ const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,to
 function okumaCiz(){const r=sonOkuma;if(!r)return;
  $('sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/okuma.wav"></audio> ${indir('/okuma/'+r.is+'/okuma.wav','okuma.wav')}<div><small>${esc(ozet(r))}</small></div>`;}
 // Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara o satırın başına yazılır.
-// Duraklar: iki cümle arasındaki bekleme, numara sütununda iki satırın sınırında boyu süreyle orantılı çubuk.
+// Duraklar: iki cümle arasında satır yüksekliğinin 1/3'ü kadar bant; içindeki çubuğun boyu bekleme süresi.
 // Metne '||' yazılmaz (yapıştırılan işaret çubuğa dönüşür); okurken eklenir. Boş satır = paragraf (sunucu kuralı).
-// Pauses: a bar on the line boundary in the number column, length proportional to seconds; markers are added on read.
+// Pauses: a band one third of the line height between sentences; the bar inside it is proportional to seconds.
 const DURAK={bagli:.25,normal:.5,paragraf:1,agir:1.5},VARSAYILAN=.35,DURAK_IZ=/\s*\|\|\s*(bagli|normal|paragraf|agir)\s*$/;
 let dur=[],eskiSatir=[];
 function durakHizala(ta){let c=ta.selectionStart,sil=0,isaret={};
@@ -314,30 +314,33 @@ function durakHizala(ta){let c=ta.selectionStart,sil=0,isaret={};
 const sn=x=>x.toLocaleString(document.documentElement.lang||undefined);
 function durakSure(s,i){return dur[i]?DURAK[dur[i]]:(s[i+1]!==undefined&&!s[i+1].trim()?DURAK.paragraf:VARSAYILAN);}
 const durakliMetin=()=>$('okuma_metni').value.split('\n').map((l,i)=>dur[i]&&l.trim()?l.replace(/\s+$/,'')+' || '+dur[i]:l).join('\n');
+const satirBoyu=()=>parseFloat(getComputedStyle($('okuma_metni')).lineHeight)||28;
+function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scrollTop;$('bantlar').firstElementChild.style.transform=`translateY(${-ta.scrollTop}px)`;}
 function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const s=durakHizala(ta);if(!ta.clientWidth)return;
- ay.style.width=ta.clientWidth+'px';ay.innerHTML=s.map(l=>`<div>${esc(l)||'&#8203;'}</div>`).join('');
- const h=[...ay.children].map(d=>d.offsetHeight);let y=6+h.reduce((a,b)=>a+b,0),i=h.length;
- let html=h.map((x,k)=>`<div style="height:${x}px">${k+1}</div>`).join('');
- for(;y<Math.max(ta.scrollHeight,ta.clientHeight)+28;y+=28)html+=`<div class="sb" style="height:28px">${++i}</div>`;
+ const R=satirBoyu(),B=R/4;ay.style.width=ta.clientWidth+'px';ay.innerHTML=s.map(l=>`<div>${esc(l)||'&#8203;'}</div>`).join('');
+ const h=[...ay.children].map(d=>d.getBoundingClientRect().height);let y=6+h.reduce((a,b)=>a+b,0),i=h.length;
+ let html=h.map((x,k)=>`<div style="height:${x}px">${k+1}</div>`).join(''),bant='';
+ for(;y<Math.max(ta.scrollHeight,ta.clientHeight)+R;y+=R)html+=`<div class="sb" style="height:${R}px">${++i}</div>`;
  const dolu=s.map(l=>!!l.trim());let alt=6;
- h.forEach((x,k)=>{alt+=x;if(!dolu[k])return;const j=dolu.indexOf(true,k+1);if(j<0)return;const z=durakSure(s,k);
-  html+=`<button type="button" class="durak ${dur[k]?'a':z===VARSAYILAN?'v':'o'}" data-i="${k}" style="top:${alt-8}px" title="${k+1} → ${j+1} · ${sn(z)} s" aria-label="${k+1} → ${j+1} · ${sn(z)} s"><i style="width:${z*36}px"></i></button>`;});
- no.innerHTML=html;no.scrollTop=ta.scrollTop;}
+ h.forEach((x,k)=>{alt+=x;if(!dolu[k])return;const j=dolu.indexOf(true,k+1);if(j<0)return;const z=durakSure(s,k),ust=alt-B/2,ad=`${k+1} → ${j+1} · ${sn(z)} s`;
+  html+=`<div class="gbant" style="top:${ust}px"></div>`;
+  bant+=`<button type="button" class="durak ${dur[k]?'a':z===VARSAYILAN?'v':'o'}" data-i="${k}" style="top:${ust}px" title="${ad}" aria-label="${ad}"><i style="width:${z*48}px"></i></button>`;});
+ no.innerHTML=html;$('bantlar').firstElementChild.innerHTML=bant;bantKaydir();}
 function durakMenu(b){const i=+b.dataset.i,m=$('durakmenu'),s=$('okuma_metni').value.split('\n'),z=durakSure(s,i);
  const ops=(s[i+1]!==undefined&&!s[i+1].trim()?[]:[['',VARSAYILAN]]).concat(Object.entries(DURAK));
- m.innerHTML=ops.map(([k,x])=>`<button type="button" data-k="${k}" aria-pressed="${(dur[i]||'')===k||(!dur[i]&&x===z&&!k)}"><i style="width:${x*36}px"></i><span>${sn(x)} s</span></button>`).join('');
+ m.innerHTML=ops.map(([k,x])=>`<button type="button" data-k="${k}" aria-pressed="${(dur[i]||'')===k||(!dur[i]&&x===z&&!k)}"><i style="width:${x*48}px"></i><span>${sn(x)} s</span></button>`).join('');
  const r=b.getBoundingClientRect(),rtl=document.documentElement.dir==='rtl';m.dataset.i=i;m.hidden=false;
  m.style.top=Math.min(r.top-6,innerHeight-m.offsetHeight-8)+'px';m.style.left=(rtl?r.left-m.offsetWidth-6:r.right+6)+'px';}
-$('satirno').addEventListener('click',e=>{const b=e.target.closest('.durak');if(b){e.stopPropagation();durakMenu(b);}});
+$('bantlar').addEventListener('click',e=>{const b=e.target.closest('.durak');if(b){e.stopPropagation();durakMenu(b);}});
 $('durakmenu').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const m=$('durakmenu');
  dur[+m.dataset.i]=b.dataset.k||null;m.hidden=true;defterNo();$('okuma_metni').focus();});
 document.addEventListener('click',e=>{if(!e.target.closest('#durakmenu'))$('durakmenu').hidden=true;});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('durakmenu').hidden=true;});
 // Kutu boyu tam satır sayısına oturur: üstte ve altta aynı küçük boşluk (6 px) kalır.
 function defterBoy(){const kap=$('defterkap'),d=kap.firstElementChild;
- if(getComputedStyle(kap).flexGrow!=='0')d.style.height=(Math.max(4,Math.floor((kap.clientHeight-14)/28))*28+12)+'px';else d.style.height='';defterNo();}
+ if(getComputedStyle(kap).flexGrow!=='0')d.style.height=(Math.max(4,Math.floor((kap.clientHeight-14)/satirBoyu()))*satirBoyu()+12)+'px';else d.style.height='';defterNo();}
 new ResizeObserver(defterBoy).observe($('defterkap'));$('okuma_metni').addEventListener('input',defterNo);
-$('okuma_metni').addEventListener('scroll',()=>{$('satirno').scrollTop=$('okuma_metni').scrollTop;$('durakmenu').hidden=true;});
+$('okuma_metni').addEventListener('scroll',()=>{bantKaydir();$('durakmenu').hidden=true;});
 $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=null;$('sonuc').innerHTML='';
  const j=await api('/api/oku',{ses:$('ses').value,metin:durakliMetin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
