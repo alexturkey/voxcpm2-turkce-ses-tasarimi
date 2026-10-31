@@ -19,6 +19,8 @@ UNSPOKEN = re.compile("[\"“”„«»‘’‚‹›`´'\\d]")
 MAX_LINE_CHARS = 2000          # motor metin bütçesi 2048 kod noktası / engine text budget
 GAP_SECONDS = 0.35             # satırlar arası varsayılan sessizlik / default gap between lines
 PAUSES = {"bagli": 0.25, "normal": 0.5, "paragraf": 1.0, "agir": 1.5}  # "metin || paragraf"
+MAX_PAUSE_SECONDS = 5.0        # özel durak üst sınırı ("metin || 0,8") / custom pause limit
+PAUSE_MARK = re.compile(r"\|\|[^\n]*$", re.M)  # satır sonu durak işareti, okunmaz / trailing pause marker, not spoken
 # kendi makinemizde uçtan uca denenen diller (2026-10-24); model başka dilleri de okuyabilir, onları ölçmedik
 # languages we tested end to end on our own machine; the model may read others, not measured by us
 LANGUAGES = {"tr": "Türkçe / Turkish", "en": "English", "fr": "Français", "de": "Deutsch", "es": "Español",
@@ -165,7 +167,7 @@ def problems(text: str, where: str = "metin", dil: str = DEFAULT_LANGUAGE) -> li
         turkish = language(dil) == "tr"
     except ValueError as error:
         return [str(error)]
-    marks = sorted(set((UNSPOKEN if turkish else UNSPOKEN_FOREIGN).findall(text)))
+    marks = sorted(set((UNSPOKEN if turkish else UNSPOKEN_FOREIGN).findall(PAUSE_MARK.sub("", text))))
     if marks and turkish:
         found.append(Sorun(f"{where}: okunamayan işaret {marks}; tırnak ve kesme işaretini kaldır, rakamı yazıyla yaz",
                            "isaret_tr", isaretler=" ".join(marks)))
@@ -186,15 +188,22 @@ def problems(text: str, where: str = "metin", dil: str = DEFAULT_LANGUAGE) -> li
     return found
 
 
+def pause_seconds(name: str) -> float:
+    """Durak adı ya da özel saniye ('0,8', '1.2s'; 0-5 sn). / Named pause or custom seconds."""
+    if name in PAUSES:
+        return PAUSES[name]
+    custom = re.fullmatch(r"(\d+(?:[.,]\d+)?)\s*s?", name)
+    if custom and float(custom.group(1).replace(",", ".")) <= MAX_PAUSE_SECONDS:
+        return float(custom.group(1).replace(",", "."))
+    options = f"{', '.join(PAUSES)}, 0-{MAX_PAUSE_SECONDS:g} s"
+    raise ValueError(Sorun(f"bilinmeyen durak '{name}'; seçenekler: {options}", "durak", durak=name, secenekler=options))
+
+
 def split_pause(line: str) -> tuple:
-    """'metin || paragraf' → (metin, saniye). / Trailing pause marker."""
+    """'metin || paragraf' ya da 'metin || 0,8' → (metin, saniye). / Trailing pause marker."""
     if "||" in line:
         text, name = line.rsplit("||", 1)
-        name = name.strip()
-        if name not in PAUSES:
-            raise ValueError(Sorun(f"bilinmeyen durak '{name}'; seçenekler: {', '.join(PAUSES)}", "durak",
-                                   durak=name, secenekler=", ".join(PAUSES)))
-        return text.strip(), PAUSES[name]
+        return text.strip(), pause_seconds(name.strip())
     return line.strip(), GAP_SECONDS
 
 
