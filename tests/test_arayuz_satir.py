@@ -18,7 +18,7 @@ JS = HTML.split("<script>")[-1].split("</script>")[0]
 MODUL = JS[JS.index("// ── Açılır menü"):JS.index("Acilir.kur();Durak.kur();Satir.kur();")]
 
 SAHTE = r"""
-const ta={value:'',selectionStart:0,selectionEnd:0};
+const ta={value:'',selectionStart:0,selectionEnd:0,focus(){},setSelectionRange(a,b){this.selectionStart=a;this.selectionEnd=b;}};
 const kap={setAttribute(){},removeAttribute(){},querySelectorAll(){return [];},querySelector(){return null;}};
 const $=id=>id==='okuma_metni'?ta:kap;
 const document={documentElement:{dir:'ltr',lang:'tr'}};
@@ -55,6 +55,14 @@ Acilir.sayiAc({querySelectorAll:()=>[],querySelector:()=>g},'1');R.sayi={value:g
 // Elle '|| 0.7': rakam yazılırken '|| 0' banda taşınmaz; bekleyen işaret metin()'de olduğu gibi gider
 ta.value='A || 0\nB';ta.selectionStart=ta.selectionEnd=6;Durak.eski=['A','B'];Durak.dur=[null,null];Durak.tur='insertText';
 R.bekle=Durak.isaretTasi(ta);Durak.tur=null;ta.value='A || 0.7\n\nB';Durak.dur=[null,null,null];R.ham=Durak.metin();
+// Görünen = giden: bant 1 sn iken satır sonunda '|| 0.7' bekliyorsa bant 0,7 gösterir, metin() 0.7 gönderir;
+// imleç başka satıra geçince işaret banda taşınır. Geçersiz işaret (9, '0.', bilinmeyen ad) banda çevrilmez, hata listesine girer.
+ta.value='A || 0.7\nB';ta.selectionStart=ta.selectionEnd=8;Durak.eski=['A','B'];Durak.dur=[1,null];Durak.tur='insertText';
+R.bekA=[Durak.isaretTasi(ta),Durak.bekleyen];Durak.tur=null;
+R.gorunen=[/"0,7"/.test(Durak.ciz(ta.value.split('\n'),[28,28],9).bant),Durak.metin()];
+ta.selectionStart=ta.selectionEnd=10;Durak.bekleyenTasi(false);R.tasindi=[ta.value,Durak.dur.slice(),Durak.bekleyen];
+ta.value='A || 9\nB || 0.\nC || hizli\nD';Durak.dur=[null,null,null,null];Durak.bekleyen=null;
+R.hata=Durak.hatalar().map(h=>[h.i,h.veri.durak]);R.yanlis=(Durak.ciz(ta.value.split('\n'),[28,28,28,28],9).bant.match(/yanlis/g)||[]).length;
 console.log(JSON.stringify(R));
 """
 
@@ -114,6 +122,8 @@ class ArayuzSatir(unittest.TestCase):
             "geri1": [None, None, 0.5, 1], "geri2": DA,
             "sayi": {"value": "1", "sel": [1, 1]},
             "bekle": False, "ham": "A || 0.7\n\nB",
+            "bekA": [False, 0], "gorunen": [True, "A || 0.7\nB"], "tasindi": ["A\nB", [0.7, None], None],
+            "hata": [[0, "9"], [1, "0."], [2, "hizli"]], "yanlis": 3,
         }
         for k, v in beklenen.items():
             self.assertEqual(R[k], v, k)
