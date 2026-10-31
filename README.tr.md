@@ -229,7 +229,7 @@ Komut satırı:
 ```powershell
 # sesleri listele
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
-# hazır sesle oku (satır = cümle; boş satır ya da "|| paragraf" uzun durak)
+# hazır sesle oku (satır = cümle; boş satır ya da "|| paragraf" uzun durak, "|| 0,8" = 0,8 sn)
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti\deneme
 # yeni ses tasarla: 3 çeşit, 3 tohum
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt
@@ -237,13 +237,16 @@ Komut satırı:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
-satır ≤ 2000 karakter. Türkçe metindeki yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
+satır ≤ 2000 karakter. Satır sonu durağı: `|| bagli` 0,25 sn, `|| normal` 0,5 sn, `|| paragraf` 1 sn, `|| agir` 1,5 sn
+ya da kendi süreniz `|| 0,8` (0-5 sn; işaretteki rakama izin verilir). Türkçe metindeki yabancı kelimelerin okunuşu: `ayarlar/okunus_sozlugu.tsv`.
 Dil metinden otomatik tanınır (Türkçe harfler, yazı sistemi, sık sözcükler; kararsızsa sesin kartındaki `dil`; `--dil <kod>` isteğe bağlı). Türkçe dışında kesme işaretine izin verilir, Türkçe sözlük
 uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
 adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit
-sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Sunucuyu Ctrl+C
+sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Okuma kutusunda satır
+numarasına tıklayınca satır menüsü açılır (taşı, çoğalt, sil; Alt+↑/↓), iki satır arasındaki ince banda tıklayınca durak
+süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Sunucuyu Ctrl+C
 ile kapatın.
 
 **Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün *Ses klonlama* sekmesinde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`

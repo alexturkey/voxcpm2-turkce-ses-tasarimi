@@ -231,7 +231,7 @@ Command line:
 ```powershell
 # list voices
 .venv\Scripts\python.exe -m ses_tasarim.oku --liste
-# read with a bundled voice (one sentence per line; blank line or "|| paragraf" = longer pause)
+# read with a bundled voice (one sentence per line; blank line or "|| paragraf" = longer pause, "|| 0,8" = 0.8 s)
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses hazir/belgesel_hanim --metin @metin.txt --cikti cikti\deneme
 # design a new voice: 3 variants, 3 seeds
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt
@@ -239,13 +239,16 @@ Command line:
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
 ```
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
-≤ 2000 characters per line. `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words in Turkish text.
+≤ 2000 characters per line. Pause after a line: `|| bagli` 0.25 s, `|| normal` 0.5 s, `|| paragraf` 1 s, `|| agir` 1.5 s
+or your own length `|| 0,8` (0-5 s; the digits of the marker are allowed). `ayarlar/okunus_sozlugu.tsv` fixes pronunciations of foreign words in Turkish text.
 Language is detected from the text (Turkish letters, script, common words; the voice card's `dil` if unsure; `--dil <code>` is optional). For non-Turkish text apostrophes are allowed there, the Turkish dictionary is
 skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
 yourself (another port: `--port 8800`). Three boxes (description, creation text, text to read) + variant count.
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
+In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
+between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
 Stop the server with Ctrl+C.
 
 **Voice cloning (your own or a consented voice).** In the *Voice cloning* tab of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`

@@ -64,15 +64,16 @@ SRC_URL="https://github.com/0xShug0/audio.cpp/archive/refs/tags/v0.7.2.tar.gz"
 SRC_SHA="cab8db31cec26ef8f1e39eabea1df5f02a87e8de87a5ae334b1e66217339c6bf"
 sha_ok() { [[ -f "$1" ]] && [[ "$(sha256sum "$1" | cut -d' ' -f1)" == "$2" ]]; }
 indir() {
+    local url="$1" out="$2" sha="$3"
     need curl; need sha256sum
-    if sha_ok "$2" "$3"; then echo "Verified, skipping: $2"; return; fi
-    mkdir -p "$(dirname "$2")"
-    curl -fL --retry 3 -C - -o "$2.part" "$1" || curl -fL --retry 3 -o "$2.part" "$1"
-    if ! sha_ok "$2.part" "$3"; then
-        rm -f "$2.part"
-        echo "SHA256 mismatch: $2" >&2; exit 1
+    if sha_ok "$out" "$sha"; then echo "Verified, skipping: $out"; return; fi
+    mkdir -p "$(dirname "$out")"
+    curl -fL --retry 3 -C - -o "$out.part" "$url" || curl -fL --retry 3 -o "$out.part" "$url"
+    if ! sha_ok "$out.part" "$sha"; then
+        rm -f "$out.part"
+        echo "SHA256 mismatch: $out" >&2; exit 1
     fi
-    mv "$2.part" "$2"
+    mv "$out.part" "$out"
 }
 if adim model; then
     indir "$MODEL_URL" "$MODEL" "$MODEL_SHA"

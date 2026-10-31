@@ -8,6 +8,25 @@
   sunucu da `tasarim_uzun` hatasıyla reddeder; *Okuma sekmesine taşı* düğmesi tam metni cümle cümle okuma kutusuna koyar,
   tasarımda ilk 1-2 cümle kalır. Hız: hazır seslerin kaydından ölçülen karakter/saniye (tr, en, de, fr, es, ru, ja, zh),
   ölçülmeyen dillerde varsayılan. 30 dilde metin; `POST /api/sure`. Test: `tests/test_tasarim_suresi.py`.
+- Okuma kutusunda satır menüsü: satır numarasına tıklayınca (ya da Alt+Enter) yukarı/aşağı taşı, sıraya taşı, çoğalt,
+  sil. Klavye: Alt+↑/↓ taşır, Alt+Shift+↓ çoğaltır; numaradan sürükleyip bırakmak da olur. Ctrl+Z metni ve durakları
+  birlikte geri alır. Sağdan sola dillerde (Arapça, İbranice) de çalışır; ekran okuyucu rolleri ve hareket azaltma
+  ayarı gözetilir.
+- Cümleler arası durak bandı: iki satır arasındaki ince banda tıklayınca durak süresi seçilir (bağlı 0,25 · normal 0,5 ·
+  paragraf 1 · ağır 1,5 sn). Dişli çarkla kendi süren (0-5 sn); en çok 6 özel süre tarayıcıda saklanır, kalple favori en
+  üstte; özel süre silinmeden önce sorulur, metinde kullanıldığı yerler varsayılana döner. Bant cümleyle birlikte taşınır
+  ve çoğalır. Elle yazılan `|| x` işareti banda taşınır; geçersiz işarette (0-5 sn dışı, yarım, bilinmeyen ad) satır
+  kırmızı olur ve okuma gönderilmez.
+- Arayüzde boş satır artık anlam taşımaz: paragraf = 1 sn ve üstü bant. Enter'a iki kez basmak, yapıştırma ve sayfa
+  açılışı boş satırı 1 sn'lik paragraf bandına çevirir. Komut satırında boş satır eskisi gibi paragraf durağıdır.
+- Okuma metninde özel durak süresi: satır sonunda `|| 0,8` ya da `|| 1.2s` (0-5 sn); işaretteki rakam "okunamayan
+  işaret" sayılmaz. Test: `tests/test_bos_satir.py`.
+- Arayüz metinleri 30 dilde yerli kullanıma göre yeniden gözden geçirildi (160 düzeltme: hitap ve terim tutarlılığı,
+  Arapça ve İbranicede sayı uyumu). Test: `tests/test_arayuz_dilleri.py`, `tests/test_arayuz_satir.py` (davranış
+  testleri node ister, yoksa atlanır).
+- Ses tasarla: *Tasarla* yanında kronometre ve ilerleme çubuğu; çeşit sayısı en fazla 50; metin kutularında yazım
+  denetimi (kırmızı dalgalı çizgi) kapalı; form değişince eski hata yazısı silinir.
+- Linux kurulum betiğinde indirme işlevi adlandırılmış değişkenlerle yazıldı (davranış aynı).
 - Deneysel Ubuntu/Linux (NVIDIA CUDA) kurulumu: `scripts/kur-linux.sh` yamalı motoru kaynaktan derler (sabit URL ve
   sha256, sudo çalıştırmaz), isteğe bağlı `Dockerfile.linux`; belge `docs/linux.md`. Linux'ta ayar kontrolü Windows'a özgü
   `cudart64_12.dll` dosyasını istiyordu, düzeltildi (Windows'ta kontrol aynen sürer). Katkı: @mslmyilmaz5 (Müslim Yılmaz), #15. Aynı Docker yolu GTX 1050 Ti 4 GB'de de denendi (Windows 10, Docker Desktop/WSL2, `CUDA_ARCHITECTURES=61`): komut satırı okuma ve tasarım çalışır, tepe VRAM 2849 MiB, aynı girdiyle iki okuma bit bit aynı; arayüz Windows tarayıcısından açılmaz, Windows'ta arayüz için `scripts\kur.ps1` kullanın. Ölçüm ve komutlar `docs/linux.md`.
@@ -75,6 +94,24 @@
   into the reading box one sentence per line and keeps the first 1-2 sentences in the design box. Rates are characters
   per second measured on the bundled voices (tr, en, de, fr, es, ru, ja, zh), a default elsewhere. Strings in all 30
   languages; `POST /api/sure`. Test: `tests/test_tasarim_suresi.py`.
+- Line menu in the reading box: click a line number (or Alt+Enter) to move up/down, move to a position, duplicate or
+  delete. Keyboard: Alt+↑/↓ moves, Alt+Shift+↓ duplicates; dragging by the number works too. Ctrl+Z undoes text and
+  pauses together. Works in right-to-left languages (Arabic, Hebrew); screen reader roles and reduced motion are respected.
+- Pause band between sentences: click the thin band between two lines to pick the pause (bagli 0.25 · normal 0.5 ·
+  paragraf 1 · agir 1.5 s). The gear adds your own length (0-5 s); up to 6 custom lengths are kept in the browser, the
+  heart pins favourites to the top; deleting a custom length asks first and its uses in the text revert to the default.
+  The band moves and duplicates with its sentence. A typed `|| x` marker is moved into the band; an invalid marker
+  (outside 0-5 s, incomplete, unknown name) turns the line red and the reading is not sent.
+- In the UI a blank line no longer carries meaning: a paragraph is a band of 1 s or more. Pressing Enter twice, pasting
+  and opening the page turn blank lines into a 1 s paragraph band. On the command line a blank line is still a paragraph pause.
+- Custom pause length in reading text: `|| 0,8` or `|| 1.2s` at the end of a line (0-5 s); the digits in the marker do
+  not count as an unreadable mark. Test: `tests/test_bos_satir.py`.
+- UI strings in all 30 languages reviewed again for native usage (160 fixes: consistent forms of address and terms,
+  number agreement in Arabic and Hebrew). Tests: `tests/test_arayuz_dilleri.py`, `tests/test_arayuz_satir.py`
+  (behaviour tests need node and are skipped without it).
+- Design a voice: a stopwatch and progress bar next to *Design*; up to 50 variants; spell check (red wavy underline)
+  off in text boxes; an old error message clears when the form changes.
+- Linux installer: the download function uses named variables (same behaviour).
 - Experimental Ubuntu/Linux (NVIDIA CUDA) install: `scripts/kur-linux.sh` builds the patched engine from source (pinned URLs
   and sha256, never runs sudo), optional `Dockerfile.linux`; guide `docs/linux.md`. On Linux the settings check wrongly
   required the Windows-only `cudart64_12.dll`; fixed (the Windows check is unchanged). Contributed by @mslmyilmaz5

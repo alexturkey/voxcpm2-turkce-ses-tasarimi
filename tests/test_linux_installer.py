@@ -55,12 +55,12 @@ class LinuxInstaller(unittest.TestCase):
     def test_bad_download_is_not_installed(self):
         fake_bin = self.root / 'bin'
         fake_bin.mkdir()
-        curl = fake_bin / 'curl'
-        curl.write_text('#!' + sys.executable + '\n'
+        fake_curl = fake_bin / 'curl'
+        fake_curl.write_text('#!' + sys.executable + '\n'
                         'import pathlib,sys\n'
                         'pathlib.Path(sys.argv[sys.argv.index("-o")+1]).write_bytes(b"bad download")\n',
                         encoding='utf-8')
-        curl.chmod(0o755)
+        fake_curl.chmod(0o755)
         env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ['PATH'])
         result = self.run_installer('--adim', 'model', env=env)
         self.assertNotEqual(result.returncode, 0)
