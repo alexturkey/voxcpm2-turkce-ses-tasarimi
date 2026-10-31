@@ -78,6 +78,14 @@ button:disabled{opacity:.5;cursor:default}
 .cesit{display:flex;flex-direction:column;gap:6px;padding:8px;border:1px solid var(--cizgi2);border-radius:6px}
 .cesit label{margin:0;color:var(--fg);font-size:.85rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.cesit input[type=radio]{width:auto;margin:0;flex:none}.cesit audio{width:100%;height:32px}.csat{display:flex;align-items:center;gap:6px}.csat label{flex:1}.okubtn{flex:none;margin:0;padding:3px 10px;font-size:.78rem;font-weight:600;background:transparent;color:var(--acc);border:1px solid var(--acc);border-radius:999px}.okubtn:hover{background:var(--acc);color:#111}small{color:var(--muted)}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
+/* Tasarım metni kısa örnektir: 3 satırlık kutu, altında süre çubuğu, sınır aşımında uyarı, kalıcı gri ipucu. */
+#tasarim_metni{flex:none;line-height:1.35;height:calc(4.05em + 18px);min-height:0;resize:none}
+.sure{display:flex;align-items:center;gap:8px;margin:5px 0 0;font-size:.78rem;color:var(--muted)}.sure[hidden]{display:none}
+.cubuk{flex:1;height:4px;background:var(--cizgi2);border-radius:2px;overflow:hidden}.cubuk i{display:block;height:100%;width:0;background:var(--acc);transition:width .2s}
+.sure.asti .cubuk i{background:var(--err)}.sure.asti span{color:var(--err)}.sure span{flex:none}
+.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
+.uzun button{padding:4px 10px;font-size:.8rem;font-weight:600;white-space:normal;text-align:start;max-width:100%}
+.ipucu{display:block;margin:5px 0 0;color:var(--soluk);font-size:.78rem;line-height:1.35}
 /* Uygulama düzeni: sayfa kaymaz, kart pencereyi doldurur; dar ya da kısa ekranda normal kayan sayfa. */
 @media(min-width:721px) and (min-height:560px){
 html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;padding:10px 16px}
@@ -102,8 +110,11 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <label class="mini" data-t-title="ornek_ipucu1"><span data-t="ornek">Örnek tarif</span><select id="ornek"></select></label>
 <label for="tarif" class="tarifbas" data-t-title="e_tarif_parantez"><span data-t-bas="tarif">Ses tarifi</span><img src="/bayrak/gb.svg" alt="English"><img src="/bayrak/cn.svg" alt="中文"></label>
 <textarea id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
-<label for="tasarim_metni" data-t="tmetin">Ses yaratılırken okutulan metin: sesin dilinde, rakamsız, tırnaksız</label>
-<textarea id="tasarim_metni" data-t-ph="tmetin_ph"></textarea>
+<label for="tasarim_metni" data-t="tmetin">Örnek cümle (sesi tanımak için, 1-2 cümle)</label>
+<textarea id="tasarim_metni" rows="3" data-t-ph="tmetin_ph" aria-describedby="sure_yazi tmetin_ipucu"></textarea>
+<div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
+<div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
+<small id="tmetin_ipucu" class="ipucu"></small>
 <div class="sag"><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
 </div><div class="uretimler">
 <div class="ubas"><b data-t="uretimler">Üretimler</b><select id="uretim" data-t-title="uretimler"></select><div id="d_tasarla" class="durum" aria-live="polite"></div></div>
@@ -164,7 +175,8 @@ async function dilYukle(k){const [s,y]=await Promise.all([api('/arayuz_dili/'+k+
  document.querySelectorAll('[data-t-title]').forEach(e=>{e.title=t(e.dataset.tTitle);e.setAttribute('aria-label',e.title);});
  document.querySelectorAll('#bayraklar button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dil===k));
  $('dil_dugme').innerHTML=`${KURE}<img src="/bayrak/${d[1]}.svg" alt=""><span>${k.toUpperCase()}</span>`;$('dil_dugme').title=d[2];$('dil_dugme').setAttribute('aria-label',d[2]);
- dosyaAdi();ornekDoldur();sesListesi();cesitCiz();okumaCiz();klonCiz();klonBilgi();
+ $('tmetin_ipucu').textContent=t('tmetin_ipucu',{dugme:t('oku')});
+ dosyaAdi();ornekDoldur();sesListesi();cesitCiz();okumaCiz();klonCiz();klonBilgi();sureCiz();
  for(const id of ['d_tasarla','d_oku','d_klon'])durumYaz($(id),$(id)._son);}
 // Sekmeler: tıklanan bölüm görünür, diğerleri gizli; son sekme hatırlanır.
 function sekmeAc(id){document.querySelectorAll('.sekmeler button').forEach(b=>b.setAttribute('aria-selected',b.dataset.sekme===id));
@@ -203,7 +215,28 @@ function ornekDoldur(){const s=$('ornek'),secili=s.value;s.innerHTML='';const bo
   const e=document.createElement('option');e.value=o.id;e.textContent=dil==='tr'?o.ad_tr:o.ad_en;g.appendChild(e);}
  s.value=secili;}
 $('ornek').addEventListener('change',()=>{const o=ornekler.find(o=>o.id===$('ornek').value);if(!o)return;
- $('tarif').value=o.tarif;$('tasarim_metni').value=o.metin;if(!$('ad').value.trim()||ornekler.some(x=>x.id===$('ad').value))$('ad').value=o.id;});
+ $('tarif').value=o.tarif;$('tasarim_metni').value=o.metin;if(!$('ad').value.trim()||ornekler.some(x=>x.id===$('ad').value))$('ad').value=o.id;sureGuncelle();});
+
+// Tasarım metni kısa bir örnektir (1-2 cümle). Süre tahmini ve sınır sunucuda tek yerde (tasarla.estimate_seconds,
+// dile göre karakter hızı); arayüz yalnız çizer. 20 sn üstü kırmızı, %10 pay (sert sınır) üstünde Tasarla başlamaz.
+// The design text is a short sample. The estimate and limits live on the server (one place); the UI only draws them.
+let sure=null,sureSayac=0,sureZaman=null;
+const sureOlc=metin=>api('/api/sure',{metin,ornek:$('ornek').value});
+async function sureSimdi(){clearTimeout(sureZaman);const n=++sureSayac;const s=await sureOlc($('tasarim_metni').value);
+ if(n===sureSayac){sure=s;sureCiz();}return s;}
+function sureGuncelle(){clearTimeout(sureZaman);sureZaman=setTimeout(()=>sureSimdi().catch(()=>{}),250);}
+function sureCiz(){const s=sure,bos=!$('tasarim_metni').value.trim();$('sure').hidden=!s||bos;$('uzun_uyari').hidden=!s||bos||s.sn<=s.sert;
+ if(!s||bos)return;$('sure').classList.toggle('asti',s.sn>s.sinir);$('sure_cubuk').style.width=Math.min(100,s.sn/s.sinir*100)+'%';
+ $('sure_yazi').textContent=t('sure_gosterge',{sn:Math.max(1,Math.round(s.sn)),sinir:Math.round(s.sinir)});}
+$('tasarim_metni').addEventListener('input',sureGuncelle);
+// Uzun metni okumaya taşı: tam metin cümle cümle okuma kutusuna (boşsa yerine, doluysa sonuna); tasarımda ilk 1-2 cümle kalır.
+const cumleler=m=>m.replace(/([.!?…؟।。！？])[ \t]+/g,'$1\n').replace(/([。！？])(?=\S)/g,'$1\n').split('\n').map(x=>x.trim()).filter(Boolean);
+$('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!m)return;const c=cumleler(m),o=$('okuma_metni');
+ o.value=o.value.trim()?o.value.replace(/\s+$/,'')+'\n'+c.join('\n'):c.join('\n');
+ const ayrac=/[぀-ヿ一-鿿]/.test(m)?'':' ';let kalan=c.slice(0,2).join(ayrac);
+ if(c.length>1){try{const s=await sureOlc(kalan);if(s.sn>s.sinir)kalan=c[0];}catch(e){kalan=c[0];}}
+ $('tasarim_metni').value=kalan;durumYaz($('d_tasarla'),null);sureSimdi().catch(()=>{});
+ sekmeAc('p2');defterNo();o.focus();o.setSelectionRange(o.value.length,o.value.length);o.scrollTop=o.scrollHeight;};
 
 let sesler={hazir:[],tasarlanan:[]};
 const tanitim=k=>dil==='tr'?k.tanitim_tr:(k.tanitim_en||k.tanitim_tr);
@@ -236,11 +269,13 @@ function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checke
 // Üretim seçilince form o üretimin ad, tarif ve metniyle dolar; çeşitleri listelenir, ilki okumada seçili ses olur.
 function uretimAc(k){const x=uretimler().find(x=>x.k===k);if(!x)return;seciliUretim=k;const c=x.cs[0];
  $('ad').value=c.gorunen_ad||c.ad;$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';$('ornek').value='';$('cesit').value=x.cs.length;
- cesitCiz();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}}
+ sureGuncelle();cesitCiz();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}}
 $('uretim').onchange=()=>uretimAc($('uretim').value);
-$('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;sonCesit=null;cesitCiz();
+$('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
+ const u=await sureSimdi().catch(()=>null);if(u&&u.sn>u.sert){b.disabled=false;$('okumaya_tasi').focus();return;}  // sınır aşıldı: üretim başlamaz
+ sonCesit=null;cesitCiz();
  const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
- if(j.hata){durumYaz($('d_tasarla'),j);b.disabled=false;return;}
+ if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
  const s=await bekle(j.is,$('d_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}};
 
@@ -284,7 +319,7 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
  if(j.hata){durumYaz($('d_klon'),j);klonHazir();return;}
  const s=await bekle(j.is,$('d_klon'));klonHazir();if(s.durum!=='bitti')return;sonKlon=s.sonuc;klonCiz();};
 
-(async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>sesler=s)]);await dilYukle(ilkDil());})();
+(async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>sesler=s)]);await dilYukle(ilkDil());sureGuncelle();})();
 </script></body></html>
 """
 
@@ -465,6 +500,14 @@ def make_handler(settings, jobs: Isler):
                 return self._json({"hata": "geçersiz JSON"}, 400)
             if not isinstance(payload, dict):
                 return self._json({"hata": "JSON nesnesi bekleniyor"}, 400)
+            if self.path == "/api/sure":
+                # Tasarım metninin canlı süre göstergesi; hesap ve sınır tek yerde (tasarla.py), arayüz kopyalamaz.
+                # Live length meter for the design text; the estimate and limits live only in tasarla.py.
+                text = str(payload.get("metin") or "")
+                dil = okunus.detect(text, _dil_ipucu(payload))
+                return self._json({"sn": tasarla.estimate_seconds(text, dil), "dil": dil,
+                                   "sinir": tasarla.DESIGN_LIMIT_SECONDS,
+                                   "sert": round(tasarla.DESIGN_HARD_LIMIT_SECONDS, 1)})
             if self.path == "/api/tasarla":
                 try:
                     found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""),

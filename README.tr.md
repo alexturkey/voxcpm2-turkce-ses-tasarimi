@@ -109,7 +109,8 @@ teşekkür ederiz!
 ## Nasıl çalışır
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi
-   tohumu vardır; motora `(tarif)metin` gider, her tohum için 20-35 sn'lik bir tasarım kaydı döner.
+   tohumu vardır; motora `(tarif)metin` gider, her tohum için bir tasarım kaydı döner. Metin sesi tanımak için kısa
+   bir örnektir: 1-2 cümle, en fazla ~20 sn (arayüz süreyi gösterir, 22 sn üstünü başlatmaz); uzun metin 2. adımda okunur.
 2. **Referanslı okuma.** Tasarım kaydı motorun **iki** girişine birden verilir (`audio` ve `voice_ref`), yanında o
    kaydın metni (`reference_text`), okunacak yeni metin ve aynı tohum. Sesi tarif değil kayıt taşır; metinden metne
    kaymaz. Metin cümle cümle okunur.

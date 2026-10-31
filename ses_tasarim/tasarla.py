@@ -11,6 +11,7 @@ language is stored in the card ("dil") and used when reading.
 """
 import argparse
 import json
+import re
 import secrets
 import shutil
 import sys
@@ -21,6 +22,40 @@ from pathlib import Path
 from . import ayarlar, motor, okunus, ornekler
 
 DEFAULT_VARIANTS = 3
+
+# Tasarım metni sesi tanımak için kısa bir örnektir (1-2 cümle). VoxCPM2 tek üretimde ~25 sn'yi aşınca ritim bozulur
+# (duraklama, es); uzun metin okuma adımında cümle cümle okunur. Arayüz 20 sn gösterir, %10 pay ile 22 sn üstü reddedilir.
+# The design text is a short sample to get to know the voice (1-2 sentences). Past ~25 s in one generation VoxCPM2
+# loses its rhythm; long text belongs in the reading step. The UI shows 20 s; above 22 s (10 % margin) it is rejected.
+DESIGN_LIMIT_SECONDS = 20.0
+DESIGN_HARD_LIMIT_SECONDS = DESIGN_LIMIT_SECONDS * 1.1
+# Konuşma hızı, karakter/saniye (boşluk ve noktalama dahil, ardışık boşluk tek sayılır). Ölçüm 2026-10-31: hazır seslerin
+# tasarım kaydı (metin + referans süresi) ve örnek okuması (metin + mp3 süresi, satır arası duraklar düşülerek).
+# Speaking rate in characters per second (spaces and punctuation count, runs of whitespace count once), measured on the
+# bundled voices' design recordings and sample readings.
+CHARS_PER_SECOND = {
+    "tr": 14.5,  # 78 tasarım kaydı medyanı 14,7 (10,5-18,9) + 7 okuma medyanı 14,0
+    "en": 17.0,  # tasarım 16,0 + okuma 17,9 (tek ses)
+    "de": 16.5,  # tasarım 16,4 + okuma 16,6 (tek ses)
+    "fr": 21.5,  # tasarım 22,0 + okuma 21,2 (tek ses)
+    "es": 13.5,  # tasarım 12,0 ve 13,8 + okuma 14,0
+    "ru": 14.0,  # tasarım 13,2 + okuma 15,4 (tek ses)
+    "ja": 7.5,   # tasarım 7,9 + okuma 7,6 (tek ses)
+    "zh": 5.0,   # tasarım 5,3 + okuma 4,7 (tek ses)
+    "ko": 7.0,   # ölçülmedi, varsayılan (hece yazısı, Japoncaya yakın) / not measured, default
+}
+DEFAULT_CHARS_PER_SECOND = 14.0  # ölçülmedi, varsayılan (diğer diller) / not measured, default for other languages
+_HANGUL = re.compile("[ᄀ-ᇿ㄰-㆏가-힯]")
+
+
+def estimate_seconds(text: str, dil: str = None) -> float:
+    """Metnin okunuş süresi tahmini (sn), dile göre karakter hızıyla. dil yoksa metinden tanınır.
+    Estimated spoken length in seconds from the character count and the language's rate."""
+    text = re.sub(r"\s+", " ", text or "").strip()
+    dil = dil or okunus.detect(text)
+    if _HANGUL.search(text) and dil not in ("ja", "zh"):
+        dil = "ko"  # okunus.detect Korece tanımaz / detect() has no Korean rule
+    return round(len(text) / CHARS_PER_SECOND.get(dil, DEFAULT_CHARS_PER_SECOND), 1)
 
 
 def resolve_seeds(count: int = None, seeds: list = None) -> list:
@@ -44,7 +79,15 @@ def check(description: str, text: str, dil: str = None) -> list:
         found.append(okunus.Sorun("tarif boş", "tarif_bos"))
     if "(" in description or ")" in description:
         found.append(okunus.Sorun("tarifte parantez olmaz (motor parantezi tarif sınırı sayar)", "tarif_parantez"))
-    found += okunus.problems(text, "ses yaratılırken okutulan metin", dil or okunus.detect(text))
+    dil = dil or okunus.detect(text)
+    found += okunus.problems(text, "ses yaratılırken okutulan metin", dil)
+    seconds = estimate_seconds(text, dil)
+    if seconds > DESIGN_HARD_LIMIT_SECONDS:
+        limit = round(DESIGN_LIMIT_SECONDS)
+        found.append(okunus.Sorun(f"ses yaratılırken okutulan metin örnek için çok uzun (~{seconds:.0f} sn > {limit} sn); "
+                                  "1-2 cümle yeter, uzun metni okuma adımında okut / design text too long, keep 1-2 "
+                                  "sentences and read long text in the reading step",
+                                  "tasarim_uzun", sn=round(seconds), sinir=limit))
     return found
 
 

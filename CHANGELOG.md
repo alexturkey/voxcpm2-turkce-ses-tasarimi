@@ -3,6 +3,11 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Ses tasarla: okutulan metin kutusu artık *Örnek cümle (sesi tanımak için, 1-2 cümle)*; kutu 3 satır, altında dile göre
+  canlı süre çubuğu (~N sn / en fazla 20 sn, aşınca kırmızı). Tahmini 22 sn'yi (%10 pay) aşan metinle Tasarla başlamaz,
+  sunucu da `tasarim_uzun` hatasıyla reddeder; *Okuma sekmesine taşı* düğmesi tam metni cümle cümle okuma kutusuna koyar,
+  tasarımda ilk 1-2 cümle kalır. Hız: hazır seslerin kaydından ölçülen karakter/saniye (tr, en, de, fr, es, ru, ja, zh),
+  ölçülmeyen dillerde varsayılan. 30 dilde metin; `POST /api/sure`. Test: `tests/test_tasarim_suresi.py`.
 - Deneysel Ubuntu/Linux (NVIDIA CUDA) kurulumu: `scripts/kur-linux.sh` yamalı motoru kaynaktan derler (sabit URL ve
   sha256, sudo çalıştırmaz), isteğe bağlı `Dockerfile.linux`; belge `docs/linux.md`. Linux'ta ayar kontrolü Windows'a özgü
   `cudart64_12.dll` dosyasını istiyordu, düzeltildi (Windows'ta kontrol aynen sürer). Katkı: @mslmyilmaz5 (Müslim Yılmaz), #15. Aynı Docker yolu GTX 1050 Ti 4 GB'de de denendi (Windows 10, Docker Desktop/WSL2, `CUDA_ARCHITECTURES=61`): komut satırı okuma ve tasarım çalışır, tepe VRAM 2849 MiB, aynı girdiyle iki okuma bit bit aynı; arayüz Windows tarayıcısından açılmaz, Windows'ta arayüz için `scripts\kur.ps1` kullanın. Ölçüm ve komutlar `docs/linux.md`.
@@ -64,6 +69,12 @@
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
 
 **EN**
+- Design a voice: the design text box is now *Sample sentence (to get to know the voice, 1-2 sentences)*; 3 lines high,
+  with a live per-language length bar below it (~N s / max 20 s, red when over). With an estimate above 22 s (10 %
+  margin) Design does not start and the server rejects it with `tasarim_uzun`; *Move to reading tab* puts the full text
+  into the reading box one sentence per line and keeps the first 1-2 sentences in the design box. Rates are characters
+  per second measured on the bundled voices (tr, en, de, fr, es, ru, ja, zh), a default elsewhere. Strings in all 30
+  languages; `POST /api/sure`. Test: `tests/test_tasarim_suresi.py`.
 - Experimental Ubuntu/Linux (NVIDIA CUDA) install: `scripts/kur-linux.sh` builds the patched engine from source (pinned URLs
   and sha256, never runs sudo), optional `Dockerfile.linux`; guide `docs/linux.md`. On Linux the settings check wrongly
   required the Windows-only `cudart64_12.dll`; fixed (the Windows check is unchanged). Contributed by @mslmyilmaz5

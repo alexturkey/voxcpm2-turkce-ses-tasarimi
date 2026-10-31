@@ -17,7 +17,7 @@ DILLER = re.findall(r"\['([a-z]{2})',\s*'([a-z]{2})'", arayuz.HTML.split("const 
 SOURCE = "\n".join(p.read_text(encoding="utf-8") for p in (ROOT / "ses_tasarim").glob("*.py"))
 CODES = {"ad_bos", "tarif_bos", "tarif_parantez", "isaret_tr", "isaret", "uzun_satir", "bos", "onay_yok",
          "kayit_metni", "kayit_yok", "kayit_buyuk", "ses_yok", "durak", "kayit_kisa", "kayit_cozulemedi",
-         "not_kirpildi", "not_oneri"}
+         "not_kirpildi", "not_oneri", "tasarim_uzun"}
 STATES = {"sirada", "yukleniyor", "ilerleme", "bitti_tasarla", "bitti_klon", "bitti", "is_yok"}
 
 

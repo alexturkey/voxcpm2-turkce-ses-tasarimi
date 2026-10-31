@@ -109,8 +109,9 @@ here; installation steps and support questions go there. Thank you, Emre, for br
 ## How it works
 
 1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of
-   variants. Each variant gets its own seed; the engine receives `(description)text` and returns a 20-35 s design
-   recording per seed.
+   variants. Each variant gets its own seed; the engine receives `(description)text` and returns a design recording
+   per seed. The text is a short sample to get to know the voice: 1-2 sentences, at most ~20 s (the UI shows the
+   estimate and will not start above 22 s); long text belongs in step 2.
 2. **Reference-based reading.** The design recording is passed to **both** engine inputs (`audio` and `voice_ref`),
    together with its transcript (`reference_text`) and the new text to read, with the same seed. The voice is carried by
    the recording, not by the description, so it does not drift from text to text. Text is read sentence by sentence.
