@@ -229,6 +229,9 @@ function sureCiz(){const s=sure,bos=!$('tasarim_metni').value.trim();$('sure').h
  if(!s||bos)return;$('sure').classList.toggle('asti',s.sn>s.sinir);$('sure_cubuk').style.width=Math.min(100,s.sn/s.sinir*100)+'%';
  $('sure_yazi').textContent=t('sure_gosterge',{sn:Math.max(1,Math.round(s.sn)),sinir:Math.round(s.sinir)});}
 $('tasarim_metni').addEventListener('input',sureGuncelle);
+// Form değişince eski hata yazısı kalmasın (ör. ad girildikten sonra "Sesin adı boş").
+// A stale error must not stay once the form changes (e.g. "name is empty" after typing a name).
+['ad','tarif','tasarim_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);}));
 // Uzun metni okumaya taşı: tam metin cümle cümle okuma kutusuna (boşsa yerine, doluysa sonuna); tasarımda ilk 1-2 cümle kalır.
 const cumleler=m=>m.replace(/([.!?…؟।。！？])[ \t]+/g,'$1\n').replace(/([。！？])(?=\S)/g,'$1\n').split('\n').map(x=>x.trim()).filter(Boolean);
 $('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!m)return;const c=cumleler(m),o=$('okuma_metni');
