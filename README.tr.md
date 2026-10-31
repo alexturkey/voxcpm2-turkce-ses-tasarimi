@@ -183,7 +183,8 @@ bilgisayardan erişilir).
 
 **Desteklenen kartlar (sürüm v0.1.1):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
 RTX 50xx (sm_120a) için yerel kod; Pascal ve sonrası başka CUDA kartlar gömülü PTX ile sürücü üzerinden çalışır (ilk açılış
-yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Yalnız GTX 1050 Ti 4 GB'de denendi; başka kart deneyimlerinizi
+yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Biz GTX 1050 Ti 4 GB'de denedik; @mslmyilmaz5'in ölçümü (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1
+(ayrıntı [docs/linux.md](docs/linux.md)). Başka kart deneyimlerinizi
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
 
 **AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
