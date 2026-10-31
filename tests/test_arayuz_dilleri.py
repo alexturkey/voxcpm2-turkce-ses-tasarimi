@@ -44,7 +44,9 @@ class ArayuzDilleri(unittest.TestCase):
             for key, text in data.items():
                 self.assertTrue(text.strip(), f"{code}.{key}")
                 self.assertEqual(holes(text), holes(ref[key]), f"{code}.{key}")
-            self.assertIn("|| paragraf", data["ometin"], code)
+            # Durak artık numara sütunundan seçiliyor; eski '||' ipucu kaldıysa işaret çevrilmemiş olmalı.
+            if "||" in data["ometin"]:
+                self.assertIn("|| paragraf", data["ometin"], code)
 
     def test_every_used_key_exists(self):
         ref = load("tr")
