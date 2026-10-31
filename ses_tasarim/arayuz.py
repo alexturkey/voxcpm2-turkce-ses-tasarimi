@@ -109,7 +109,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <section id="p1" class="panel" role="tabpanel"><div class="govde">
 <div class="form">
 <div class="yanyana"><label class="mini"><span data-t="ad">Sesin adı</span><input id="ad" spellcheck="false" data-t-ph="ad_ph"></label>
-<label class="mini" data-t-title="cesit"><span data-t="cesit_kisa">Çeşit</span><input id="cesit" type="number" value="3" min="1" max="10"></label></div>
+<label class="mini" data-t-title="cesit"><span data-t="cesit_kisa">Çeşit</span><input id="cesit" type="number" value="3" min="1" max="50"></label></div>
 <label class="mini" data-t-title="ornek_ipucu1"><span data-t="ornek">Örnek tarif</span><select id="ornek"></select></label>
 <label for="tarif" class="tarifbas" data-t-title="e_tarif_parantez"><span data-t-bas="tarif">Ses tarifi</span><img src="/bayrak/gb.svg" alt="English"><img src="/bayrak/cn.svg" alt="中文"></label>
 <textarea spellcheck="false" id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
@@ -394,7 +394,7 @@ class Isler:
             try:
                 if kind == "tasarla":
                     result = tasarla.tasarla(self.settings, payload["ad"], payload["tarif"], payload["metin"],
-                                             int(payload.get("cesit") or 3), None, progress,
+                                             max(1, min(50, int(payload.get("cesit") or 3))), None, progress,
                                              okunus.detect(payload["metin"], _dil_ipucu(payload)))
                     self._set(job_id, durum="bitti", sonuc=result, kod="bitti_tasarla",
                               veri={"n": len(result["cesitler"]), "sn": result["sure_sn"], "vram": result["vram_tepe_mb"]},
