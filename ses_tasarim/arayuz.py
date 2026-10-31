@@ -68,7 +68,7 @@ main.kart{background:var(--panel);border-radius:10px;margin:12px 0;overflow:hidd
 label.mini{display:flex;flex-direction:column;gap:4px;margin:0 0 8px;border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;color:var(--fg);font-size:.9rem;font-weight:600;min-width:0}
 label.mini:focus-within{border-color:var(--acc)}label.mini input,label.mini select{padding:5px 8px;font-size:.85rem;font-weight:400}
 .yanyana{display:flex;gap:8px}.yanyana>.mini{flex:1}#ornek{font-size:.85rem}#ornek optgroup{background:var(--cizgi2);color:var(--baslik);font-style:normal}#ornek option{background:var(--alan);color:var(--fg)}
-.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden;--sat:28px;--bant:calc(var(--sat) / 3);--satir:var(--sat)}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;position:relative;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:var(--satir);border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#satirno .sb{opacity:.4}#satirno .gbant{position:absolute;inset-inline:0;height:var(--bant);background:var(--cizgi2)}#yazikap{flex:1;min-width:0;position:relative}#okuma_metni{display:block;width:100%;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:var(--satir);padding:6px 12px;background-color:transparent;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#bantlar{position:absolute;inset:0;overflow:hidden;pointer-events:none}#bantlar .durak{position:absolute;inset-inline:0;height:var(--bant);margin:0;padding:0 12px;border:0;border-radius:0;background:var(--cizgi2);display:flex;align-items:center;cursor:pointer;pointer-events:auto}#bantlar .durak:hover,#bantlar .durak:focus-visible{background:var(--cizgi)}#bantlar .durak i{display:block;height:max(3px,calc(var(--bant) - 5px));border-radius:3px;background:var(--soluk);opacity:.7}#bantlar .durak.o i{background:var(--acc);opacity:.6}#bantlar .durak.a i{background:var(--acc);opacity:1}#durakmenu{position:fixed;z-index:20;display:flex;flex-direction:column;gap:2px;padding:4px;background:var(--panel);border:1px solid var(--cizgi);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)}#durakmenu[hidden]{display:none}#durakmenu button{display:flex;align-items:center;gap:10px;margin:0;padding:4px 9px;background:transparent;color:var(--fg);font-weight:400;font-size:.8rem;border:1px solid transparent;border-radius:5px}#durakmenu button:hover{background:var(--cizgi2)}#durakmenu button[aria-pressed=true]{color:var(--fg);font-weight:600;border-color:var(--acc);background:color-mix(in srgb,var(--acc) 16%,transparent)}#durakmenu .satir{display:flex;align-items:center;gap:2px}#durakmenu .satir>button[data-k]{flex:1}#durakmenu .satir .kalp,#durakmenu .satir .sil{min-width:0;width:24px;height:24px;padding:0;justify-content:center;color:var(--muted);fill:none;opacity:0}#durakmenu .satir:hover .kalp,#durakmenu .satir:hover .sil,#durakmenu .kalp:focus-visible,#durakmenu .sil:focus-visible{opacity:1}#durakmenu .satir .kalp[aria-pressed=true]{border-color:transparent;background:transparent}#durakmenu .kalp.dolu{opacity:1;color:var(--err);fill:var(--err)}#durakmenu .satir .kalp:hover{color:var(--err)}#durakmenu .satir .sil:hover{color:var(--fg)}#durakmenu span.sil{display:block;width:24px;flex:none}#durakmenu hr{border:0;border-top:3px solid var(--cizgi);border-radius:2px;margin:3px 2px;width:auto}#durakmenu .satir+.satir,#durakmenu .satir+.onay,#durakmenu .onay+.satir{border-top:1px solid var(--cizgi2);padding-top:2px}#durakmenu .ozel [hidden]{display:none}#durakmenu .onay{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 8px;border:1px solid var(--err);border-radius:6px;font-size:.8rem;max-width:230px}#durakmenu .onay span{margin:0;font-weight:600}#durakmenu .onay small{color:var(--muted)}#durakmenu .onay div{display:flex;gap:6px;justify-content:flex-end}#durakmenu .onay button{min-width:0;padding:3px 12px;font-weight:600}#durakmenu .onay .evet{background:var(--err);color:#fff;border-color:var(--err)}#durakmenu .onay .hayir{border-color:var(--cizgi)}#durakmenu .ozel{display:flex;align-items:center;gap:6px;margin-top:2px;padding-top:4px;border-top:1px solid var(--cizgi2)}#durakmenu .ozel button{min-width:0;padding:4px 7px;color:var(--muted)}#durakmenu .ozel button:hover{color:var(--fg)}#durakmenu .ozel input{width:5.5em;padding:3px 6px;font-size:.8rem;margin:0}#durakmenu .ozel small{color:var(--muted)}#durakmenu i{display:block;height:5px;border-radius:3px;background:var(--acc)}#durakmenu span{margin-inline-start:auto;font-variant-numeric:tabular-nums}#durakmenu button{min-width:120px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:var(--satir);padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden;--sat:28px;--bant:calc(var(--sat) / 3);--satir:var(--sat)}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;position:relative;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:var(--satir);border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#satirno .sb{opacity:.4}#satirno .gbant{position:absolute;inset-inline:0;height:var(--bant);background:var(--cizgi2)}#yazikap{flex:1;min-width:0;position:relative}#okuma_metni{display:block;width:100%;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:var(--satir);padding:6px 12px;background-color:transparent;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#bantlar{position:absolute;inset:0;overflow:hidden;pointer-events:none}#bantlar .durak{position:absolute;inset-inline:0;height:var(--bant);margin:0;padding:0 12px;border:0;border-radius:0;background:var(--cizgi2);display:flex;align-items:center;cursor:pointer;pointer-events:auto}#bantlar .durak:hover,#bantlar .durak:focus-visible{background:var(--cizgi)}#bantlar .durak i{display:block;height:max(3px,calc(var(--bant) - 5px));border-radius:3px;background:var(--soluk);opacity:.7}#bantlar .durak.secik{background:color-mix(in srgb,var(--acc) 45%,transparent)}#bantlar .durak.o i{background:var(--acc);opacity:.6}#bantlar .durak.a i{background:var(--acc);opacity:1}#durakmenu{position:fixed;z-index:20;display:flex;flex-direction:column;gap:2px;padding:4px;background:var(--panel);border:1px solid var(--cizgi);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)}#durakmenu[hidden]{display:none}#durakmenu button{display:flex;align-items:center;gap:10px;margin:0;padding:4px 9px;background:transparent;color:var(--fg);font-weight:400;font-size:.8rem;border:1px solid transparent;border-radius:5px}#durakmenu button:hover{background:var(--cizgi2)}#durakmenu button[aria-pressed=true]{color:var(--fg);font-weight:600;border-color:var(--acc);background:color-mix(in srgb,var(--acc) 16%,transparent)}#durakmenu .baslik{display:flex;align-items:baseline;gap:6px;width:0;min-width:100%;box-sizing:border-box;padding:3px 8px 6px;margin-bottom:2px;border-bottom:3px solid var(--cizgi);font-size:.75rem;color:var(--muted);white-space:nowrap}#durakmenu .baslik b{color:var(--fg);flex:none}#durakmenu .baslik span{margin:0;overflow:hidden;text-overflow:ellipsis}#durakmenu .satir{display:flex;align-items:center;gap:2px}#durakmenu .satir>button[data-k]{flex:1}#durakmenu .satir .kalp,#durakmenu .satir .sil{min-width:0;width:24px;height:24px;padding:0;justify-content:center;color:var(--muted);fill:none;opacity:0}#durakmenu .satir:hover .kalp,#durakmenu .satir:hover .sil,#durakmenu .kalp:focus-visible,#durakmenu .sil:focus-visible{opacity:1}#durakmenu .satir .kalp[aria-pressed=true]{border-color:transparent;background:transparent}#durakmenu .kalp.dolu{opacity:1;color:var(--err);fill:var(--err)}#durakmenu .satir .kalp:hover{color:var(--err)}#durakmenu .satir .sil:hover{color:var(--fg)}#durakmenu span.sil{display:block;width:24px;flex:none}#durakmenu hr{border:0;border-top:3px solid var(--cizgi);border-radius:2px;margin:3px 2px;width:auto}#durakmenu .satir+.satir,#durakmenu .satir+.onay,#durakmenu .onay+.satir{border-top:1px solid var(--cizgi2);padding-top:2px}#durakmenu .ozel [hidden]{display:none}#durakmenu .onay{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 8px;border:1px solid var(--err);border-radius:6px;font-size:.8rem;max-width:230px}#durakmenu .onay span{margin:0;font-weight:600}#durakmenu .onay small{color:var(--muted)}#durakmenu .onay div{display:flex;gap:6px;justify-content:flex-end}#durakmenu .onay button{min-width:0;padding:3px 12px;font-weight:600}#durakmenu .onay .evet{background:var(--err);color:#fff;border-color:var(--err)}#durakmenu .onay .hayir{border-color:var(--cizgi)}#durakmenu .ozel{display:flex;align-items:center;gap:6px;margin-top:2px;padding-top:4px;border-top:1px solid var(--cizgi2)}#durakmenu .ozel button{min-width:0;padding:4px 7px;color:var(--muted)}#durakmenu .ozel button:hover{color:var(--fg)}#durakmenu .ozel input{width:5.5em;padding:3px 6px;font-size:.8rem;margin:0}#durakmenu .ozel small{color:var(--muted)}#durakmenu i{display:block;height:5px;border-radius:3px;background:var(--acc)}#durakmenu span{margin-inline-start:auto;font-variant-numeric:tabular-nums}#durakmenu button{min-width:120px}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:var(--satir);padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
 .ilerle{flex:1;display:flex;align-items:center;gap:8px}.ilerle[hidden]{display:none}.pcubuk{flex:1;height:6px;border-radius:3px;background:var(--cizgi);overflow:hidden}
 .pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
 @keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:3.2em;text-align:right}
@@ -296,87 +296,104 @@ const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('i
 const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,tohum:r.tohum});
 function okumaCiz(){const r=sonOkuma;if(!r)return;
  $('sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/okuma.wav"></audio> ${indir('/okuma/'+r.is+'/okuma.wav','okuma.wav')}<div><small>${esc(ozet(r))}</small></div>`;}
-// Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara o satırın başına yazılır.
-// Duraklar: iki cümle arasında, satır sınırının üstünde satır yüksekliğinin 1/3'ü kadar bant (satır boyu değişmez); içindeki çubuğun boyu bekleme süresi.
-// Metne '||' yazılmaz (yapıştırılan işaret çubuğa dönüşür); okurken eklenir. Boş satır = paragraf (sunucu kuralı).
-// Pauses: a band one third of the line height between sentences; the bar inside it is proportional to seconds.
-const DURAK={bagli:.25,normal:.5,paragraf:1,agir:1.5},VARSAYILAN=.35,EN_COK=5,DURAK_IZ=/\s*\|\|\s*(bagli|normal|paragraf|agir|\d+(?:[.,]\d+)?)\s*s?\s*$/;
-// Durak değeri: null (varsayılan), ad ('agir') ya da özel saniye (0.8). / null, a name or custom seconds.
-const durakDeger=v=>v in DURAK?v:Math.min(EN_COK,Math.max(0,Math.round(parseFloat(String(v).replace(',','.'))*100)/100));
-let dur=[],eskiSatir=[];
-function durakHizala(ta){let c=ta.selectionStart,sil=0,isaret={};
- const s=ta.value.split('\n').map((l,i)=>{const m=l.match(DURAK_IZ);if(!m)return l;isaret[i]=durakDeger(m[1]);
-  const bas=ta.value.split('\n').slice(0,i).join('\n').length+(i?1:0)+m.index;if(c>bas)sil+=Math.min(c-bas,m[0].length);return l.slice(0,m.index);});
- if(Object.keys(isaret).length){ta.value=s.join('\n');ta.setSelectionRange(c-sil,c-sil);}
- // Değişmeyen baş ve son satırlar durağını korur; değişen bölge sondan eşlenir (satır bölme/birleştirmede durak cümlenin sonunda kalır).
- const n0=eskiSatir.length,n1=s.length;let p=0,q=0;while(p<n0&&p<n1&&eskiSatir[p]===s[p])p++;
- while(q<n0-p&&q<n1-p&&eskiSatir[n0-1-q]===s[n1-1-q])q++;
- dur=s.map((_,i)=>i<p?dur[i]:i>=n1-q?dur[i-n1+n0]:(n1-q-1-i<n0-q-p?dur[n0-q-1-(n1-q-1-i)]:null)??null);
- for(const i in isaret)dur[i]=isaret[i];eskiSatir=s;return s;}
-const sn=x=>x.toLocaleString(document.documentElement.lang||undefined);
-function durakSure(s,i){return dur[i]!=null?(typeof dur[i]==='number'?dur[i]:DURAK[dur[i]]):(s[i+1]!==undefined&&!s[i+1].trim()?DURAK.paragraf:VARSAYILAN);}
-const durakliMetin=()=>$('okuma_metni').value.split('\n').map((l,i)=>dur[i]!=null&&l.trim()?l.replace(/\s+$/,'')+' || '+dur[i]:l).join('\n');
-const satirBoyu=()=>parseFloat(getComputedStyle($('okuma_metni')).lineHeight)||28;
-function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scrollTop;$('bantlar').firstElementChild.style.transform=`translateY(${-ta.scrollTop}px)`;}
-function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const s=durakHizala(ta);if(!ta.clientWidth)return;
- const R=satirBoyu(),B=R/3;ay.style.width=ta.clientWidth+'px';ay.innerHTML=s.map(l=>`<div>${esc(l)||'&#8203;'}</div>`).join('');
- const h=[...ay.children].map(d=>d.getBoundingClientRect().height);let y=6+h.reduce((a,b)=>a+b,0),i=h.length;
- let html=h.map((x,k)=>`<div style="height:${x}px">${k+1}</div>`).join(''),bant='';
- for(;y<Math.max(ta.scrollHeight,ta.clientHeight)+R;y+=R)html+=`<div class="sb" style="height:${R}px">${++i}</div>`;
- const dolu=s.map(l=>!!l.trim());let alt=6;
- h.forEach((x,k)=>{alt+=x;if(!dolu[k])return;const j=dolu.indexOf(true,k+1);if(j<0)return;const z=durakSure(s,k),ust=alt-B/2,ad=`${k+1} → ${j+1} · ${sn(z)} s`;
-  html+=`<div class="gbant" style="top:${ust}px"></div>`;
-  bant+=`<button type="button" class="durak ${dur[k]!=null?'a':z===VARSAYILAN?'v':'o'}" data-i="${k}" style="top:${ust}px" title="${ad}" aria-label="${ad}"><i style="width:${Math.min(z,3)*48}px"></i></button>`;});
- no.innerHTML=html;$('bantlar').firstElementChild.innerHTML=bant;bantKaydir();}
-// Menü tıklanan noktanın altında açılır, pencereden taşmaz (altta yer yoksa bandın üstünde).
-// Seçili öğe çerçevelidir; dişli çark özel süre kutusunu açar (0-5 sn). / Selected item is framed; the gear opens a custom value.
-// Kişinin süreleri tarayıcıda kalır: özel süreler (en çok 6) ve ♥ favoriler (en üstte). Hazır süreler silinmez.
-// The user's own durations live in the browser: custom values (max 6) and ♥ favourites (on top). Presets cannot be deleted.
-const KALP='<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.2 8.2 3.1 4.8 6.6 4.8c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.5 0 5.4 3.4 3.8 6.6C19 15.6 12 20 12 20z"/></svg>';
-const liste=k=>{try{return JSON.parse(hafiza(k)||'[]');}catch(e){return [];}};
-const ozelKayit=n=>{if(Object.values(DURAK).includes(n)||n===VARSAYILAN)return;hafiza('durak_ozel',JSON.stringify([n,...liste('durak_ozel').filter(x=>x!==n)].slice(0,6)));};
-function durakMenu(b,x){const i=+b.dataset.i,m=$('durakmenu'),s=$('okuma_metni').value.split('\n'),z=durakSure(s,i),v=dur[i];m._b=b;m._x=x;
- const bos=s[i+1]!==undefined&&!s[i+1].trim(),ops=(bos?[]:[['',VARSAYILAN]]).concat(Object.entries(DURAK));
- const ozel=liste('durak_ozel');if(typeof v==='number'&&!ozel.includes(v))ozel.push(v);
- ozel.forEach(n=>{if(!ops.some(o=>o[1]===n))ops.push([String(n),n,1]);});  // özel değer hazır süreyle aynıysa ikinci satır açılmaz
- const ayni=typeof v==='number'?ops.find(o=>o[1]===v):null,secili=ayni?ayni[0]:v!=null?String(v):(bos?'paragraf':'');
- const fav=liste('durak_fav'),sira=(a,c)=>a[1]-c[1],ust=ops.filter(o=>fav.includes(o[0])).sort(sira),alt=ops.filter(o=>!fav.includes(o[0])).sort(sira);
- const satir=([k,x,oz])=>`<div class="satir"><button type="button" data-k="${k}" aria-pressed="${k===secili}"><i style="width:${Math.min(x,3)*48}px"></i><span>${sn(x)} s</span></button>`
-  +`<button type="button" class="kalp${fav.includes(k)?' dolu':''}" data-fav="${k}" aria-pressed="${fav.includes(k)}" aria-label="♥ ${sn(x)} s">${KALP}</button>`
-  +(oz?`<button type="button" class="sil" data-sil="${x}" aria-label="✕ ${sn(x)} s">✕</button>`:'<span class="sil"></span>')+'</div>';
- m.innerHTML=ust.map(satir).join('')+(ust.length&&alt.length?'<hr>':'')+alt.map(satir).join('')
-  +`<div class="ozel"><button type="button" class="disli" title="0 – ${sn(EN_COK)} s" aria-label="0 – ${sn(EN_COK)} s"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><input type="number" min="0" max="${EN_COK}" step="0.05" value="${z}" hidden><small hidden>s</small><button type="button" class="tamam" hidden>✓</button></div>`;
- const r=b.getBoundingClientRect(),rtl=document.documentElement.dir==='rtl';m.dataset.i=i;m.hidden=false;
- const w=m.offsetWidth,h=m.offsetHeight,sol=rtl?x-w:x;
- m.style.left=Math.max(8,Math.min(sol,innerWidth-w-8))+'px';m.style.top=(r.bottom+4+h<innerHeight-8?r.bottom+4:Math.max(8,r.top-h-4))+'px';}
-$('bantlar').addEventListener('click',e=>{const b=e.target.closest('.durak');if(b){e.stopPropagation();durakMenu(b,e.clientX);}});
-function durakSec(v){const m=$('durakmenu');dur[+m.dataset.i]=v;m.hidden=true;defterNo();$('okuma_metni').focus();}
-function ozelSure(){const g=$('durakmenu').querySelector('.ozel input'),n=parseFloat(g.value);if(!isFinite(n))return;const d=durakDeger(n);ozelKayit(d);durakSec(d);}
-// Bant yeniden çizilince eski düğme kopar: menü aynı bandın yeni düğmesine göre yeniden kurulur.
-function menuYenile(){const m=$('durakmenu'),b=document.querySelector(`#bantlar .durak[data-i="${m.dataset.i}"]`);if(b)durakMenu(b,m._x);else m.hidden=true;}
-$('durakmenu').addEventListener('click',e=>{const b=e.target.closest('button'),m=$('durakmenu');if(!b)return;e.stopPropagation();
- if(b.dataset.fav!==undefined){const f=liste('durak_fav'),k=b.dataset.fav;hafiza('durak_fav',JSON.stringify(f.includes(k)?f.filter(x=>x!==k):[...f,k]));return menuYenile();}
+// ── Duraklar: tek modül ─────────────────────────────────────────────────────────────────────────────────
+// İki cümle arasındaki bekleme. Tek kaynak: dur[i] = null (varsayılan) ya da saniye. Menü listesi her bant için aynıdır
+// (hazır süreler + kişinin süreleri, ♥ favoriler üstte); yalnız o bandın süresi çerçevelenir. Metne '||' yazılmaz:
+// yapıştırılan işaret banda dönüşür, okurken saniye olarak eklenir. Kişinin süreleri tarayıcıda kalır (sunucuya gitmez).
+// Pauses between sentences. Single source: dur[i] = null (default) or seconds. The menu list is the same for every band;
+// only that band's value is framed. Markers never show in the text; they are added as seconds when reading.
+const Durak={
+ HAZIR:{bagli:.25,normal:.5,paragraf:1,agir:1.5},VARSAYILAN:.35,EN_COK:5,EN_COK_OZEL:6,
+ IZ:/\s*\|\|\s*(bagli|normal|paragraf|agir|\d+(?:[.,]\d+)?)\s*s?\s*$/,
+ dur:[],eski:[],acik:null,x:0,
+ // ad ('agir') ya da yazı ('0,8') → 0-5 sn, 2 basamak / name or text → seconds
+ saniye(v){const n=v in this.HAZIR?this.HAZIR[v]:parseFloat(String(v).replace(',','.'));return Math.min(this.EN_COK,Math.max(0,Math.round(n*100)/100));},
+ hazirlar(){return [this.VARSAYILAN,...Object.values(this.HAZIR)];},
+ oku(k){try{return (JSON.parse(hafiza(k)||'[]')||[]).map(v=>this.saniye(v===''?this.VARSAYILAN:v)).filter(isFinite);}catch(e){return [];}},
+ yaz(k,a){hafiza(k,JSON.stringify([...new Set(a)]));},
+ ozelEkle(n){if(!this.hazirlar().includes(n))this.yaz('durak_ozel',[n,...this.oku('durak_ozel').filter(x=>x!==n)].slice(0,this.EN_COK_OZEL));},
+ bosSonra:(s,i)=>s[i+1]!==undefined&&!s[i+1].trim(),
+ sure(s,i){return this.dur[i]??(this.bosSonra(s,i)?this.HAZIR.paragraf:this.VARSAYILAN);},
+ metin(){return $('okuma_metni').value.split('\n').map((l,i)=>this.dur[i]!=null&&l.trim()?l.replace(/\s+$/,'')+' || '+this.dur[i]:l).join('\n');},
+ // Metindeki işaretleri banda taşır, sonra durakları satırlarla eşler: değişmeyen baş ve son satırlar durağını korur,
+ // değişen bölge sondan eşlenir (satır bölme/birleştirmede durak cümlenin sonunda kalır).
+ hizala(ta){const c=ta.selectionStart,isaret={};let sil=0,bas=0;
+  const s=ta.value.split('\n').map((l,i)=>{const m=l.match(this.IZ),b=bas;bas+=l.length+1;if(!m)return l;
+   isaret[i]=this.saniye(m[1]);this.ozelEkle(isaret[i]);if(c>b+m.index)sil+=Math.min(c-b-m.index,m[0].length);return l.slice(0,m.index);});
+  if(Object.keys(isaret).length){ta.value=s.join('\n');ta.setSelectionRange(c-sil,c-sil);}
+  const e=this.eski,d=this.dur,n0=e.length,n1=s.length;let p=0,q=0;
+  while(p<n0&&p<n1&&e[p]===s[p])p++;while(q<n0-p&&q<n1-p&&e[n0-1-q]===s[n1-1-q])q++;
+  this.dur=s.map((_,i)=>(i<p?d[i]:i>=n1-q?d[i-n1+n0]:(n1-q-1-i<n0-q-p?d[n0-q-1-(n1-q-1-i)]:null))??null);
+  for(const i in isaret)this.dur[i]=isaret[i];this.eski=s;return s;},
+ // Numara sütunu ve bant katmanı için çizim (h: satır yükseklikleri, B: bant yüksekliği) / draw bands
+ ciz(s,h,B){const dolu=s.map(l=>!!l.trim());let alt=6,oluk='',bant='';
+  h.forEach((x,k)=>{alt+=x;if(!dolu[k])return;const j=dolu.indexOf(true,k+1);if(j<0)return;
+   const z=this.sure(s,k),ust=alt-B/2,ad=`${k+1} → ${j+1} · ${sn(z)} s`,tur=this.dur[k]!=null?'a':z===this.VARSAYILAN?'v':'o';
+   oluk+=`<div class="gbant" style="top:${ust}px"></div>`;
+   bant+=`<button type="button" class="durak ${tur}${this.acik===k?' secik':''}" data-i="${k}" data-j="${j}" style="top:${ust}px" title="${ad}" aria-label="${ad}">${this.cubuk(z)}</button>`;});
+  return {oluk,bant};},
+ cubuk:z=>`<i style="width:${Math.min(z,3)*48}px"></i>`,
+ // Menü: üstte hangi iki satırın arası; liste her bantta aynı, o bandın süresi çerçeveli; tıklanan yerin altında açılır.
+ menu(b,x){const m=$('durakmenu'),i=+b.dataset.i,j=+b.dataset.j,s=$('okuma_metni').value.split('\n'),z=this.sure(s,i);
+  this.acik=i;this.x=x;document.querySelectorAll('#bantlar .secik').forEach(e=>e.classList.remove('secik'));b.classList.add('secik');
+  const ozel=this.oku('durak_ozel'),fav=this.oku('durak_fav'),hepsi=[...new Set([...this.hazirlar(),...ozel])].sort((a,c)=>a-c);
+  const satir=n=>`<div class="satir"><button type="button" data-sec="${n}" aria-pressed="${n===z}">${this.cubuk(n)}<span>${sn(n)} s</span></button>`
+   +`<button type="button" class="kalp${fav.includes(n)?' dolu':''}" data-fav="${n}" aria-pressed="${fav.includes(n)}" aria-label="♥ ${sn(n)} s">${KALP}</button>`
+   +(ozel.includes(n)&&!this.hazirlar().includes(n)?`<button type="button" class="sil" data-sil="${n}" aria-label="✕ ${sn(n)} s">✕</button>`:'<span class="sil"></span>')+'</div>';
+  const ust=hepsi.filter(n=>fav.includes(n)),alt=hepsi.filter(n=>!fav.includes(n));
+  m.innerHTML=`<div class="baslik"><b>${i+1} → ${j+1}</b><span>${esc(s[i])}</span></div>`
+   +ust.map(satir).join('')+(ust.length&&alt.length?'<hr>':'')+alt.map(satir).join('')
+   +`<div class="ozel"><button type="button" class="disli" title="0 – ${sn(this.EN_COK)} s" aria-label="0 – ${sn(this.EN_COK)} s">${DISLI}</button>`
+   +`<input type="number" min="0" max="${this.EN_COK}" step="0.05" value="${z}" hidden><small hidden>s</small><button type="button" class="tamam" hidden>✓</button></div>`;
+  m.hidden=false;const r=b.getBoundingClientRect(),w=m.offsetWidth,h=m.offsetHeight,sol=document.documentElement.dir==='rtl'?x-w:x;
+  m.style.left=Math.max(8,Math.min(sol,innerWidth-w-8))+'px';m.style.top=(r.bottom+4+h<innerHeight-8?r.bottom+4:Math.max(8,r.top-h-4))+'px';},
+ // Bant yeniden çizilince eski düğme kopar: menü aynı bandın yeni düğmesine göre yeniden kurulur.
+ yenile(){const b=document.querySelector(`#bantlar .durak[data-i="${this.acik}"]`);if(b)this.menu(b,this.x);else this.kapat();},
+ kapat(){$('durakmenu').hidden=true;this.acik=null;document.querySelectorAll('#bantlar .secik').forEach(e=>e.classList.remove('secik'));},
+ // Seçilen süre o satırın varsayılanıyla aynıysa işaret yazılmaz (null) / same as the line default → no marker
+ sec(n){const s=$('okuma_metni').value.split('\n'),i=this.acik;this.dur[i]=n===(this.bosSonra(s,i)?this.HAZIR.paragraf:this.VARSAYILAN)?null:n;
+  this.kapat();defterNo();$('okuma_metni').focus();},
+ ozelGir(){const n=parseFloat($('durakmenu').querySelector('.ozel input').value);if(!isFinite(n))return;const d=this.saniye(n);this.ozelEkle(d);this.sec(d);},
  // Silmeden önce sorulur; metinde kullanılıyorsa kaç yerde olduğu söylenir, Evet'te oralar varsayılana döner.
- if(b.dataset.sil!==undefined){const n=+b.dataset.sil,yer=dur.filter(d=>d===n).length;
+ silSor(b,n){const yer=this.dur.filter(d=>d===n).length;
   b.closest('.satir').outerHTML=`<div class="onay" role="alertdialog"><span>${esc(t('durak_sil',{sure:sn(n)+' s'}))}</span>${yer?`<small>${esc(t('durak_sil_yer',{n:yer}))}</small>`:''}`
    +`<div><button type="button" class="hayir">${esc(t('hayir'))}</button><button type="button" class="evet" data-evet="${n}">${esc(t('evet'))}</button></div></div>`;
-  m.querySelector('.onay .hayir').focus();return;}
- if(b.classList.contains('hayir'))return menuYenile();
- if(b.dataset.evet!==undefined){const n=+b.dataset.evet;hafiza('durak_ozel',JSON.stringify(liste('durak_ozel').filter(x=>x!==n)));
-  hafiza('durak_fav',JSON.stringify(liste('durak_fav').filter(x=>x!==String(n))));dur=dur.map(d=>d===n?null:d);defterNo();return menuYenile();}
- if(b.classList.contains('disli')){const o=b.parentElement;o.querySelectorAll('[hidden]').forEach(x=>x.hidden=false);const g=o.querySelector('input');g.focus();g.select();return;}
- if(b.classList.contains('tamam'))return ozelSure();
- const k=b.dataset.k;durakSec(k===''?null:durakDeger(k));});
-$('durakmenu').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('.ozel input')){e.preventDefault();ozelSure();}});
-document.addEventListener('click',e=>{if(!e.target.closest('#durakmenu'))$('durakmenu').hidden=true;});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('durakmenu').hidden=true;});
+  $('durakmenu').querySelector('.onay .hayir').focus();},
+ sil(n){this.yaz('durak_ozel',this.oku('durak_ozel').filter(x=>x!==n));this.yaz('durak_fav',this.oku('durak_fav').filter(x=>x!==n));
+  this.dur=this.dur.map(d=>d===n?null:d);defterNo();this.yenile();},
+ tikla(e){const b=e.target.closest('button'),d=b&&b.dataset;if(!b)return;e.stopPropagation();
+  if(d.fav!==undefined){const f=this.oku('durak_fav'),n=+d.fav;this.yaz('durak_fav',f.includes(n)?f.filter(x=>x!==n):[...f,n]);return this.yenile();}
+  if(d.sil!==undefined)return this.silSor(b,+d.sil);
+  if(d.evet!==undefined)return this.sil(+d.evet);
+  if(b.classList.contains('hayir'))return this.yenile();
+  if(b.classList.contains('disli')){const o=b.parentElement,g=o.querySelector('input');o.querySelectorAll('[hidden]').forEach(x=>x.hidden=false);g.focus();g.select();return;}
+  if(b.classList.contains('tamam'))return this.ozelGir();
+  if(d.sec!==undefined)this.sec(+d.sec);},
+ kur(){$('bantlar').addEventListener('click',e=>{const b=e.target.closest('.durak');if(b){e.stopPropagation();this.menu(b,e.clientX);}});
+  $('durakmenu').addEventListener('click',e=>this.tikla(e));
+  $('durakmenu').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('.ozel input')){e.preventDefault();this.ozelGir();}});
+  document.addEventListener('click',e=>{if(!$('durakmenu').hidden&&!e.target.closest('#durakmenu'))this.kapat();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('durakmenu').hidden)this.kapat();});}};
+const KALP='<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.2 8.2 3.1 4.8 6.6 4.8c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.5 0 5.4 3.4 3.8 6.6C19 15.6 12 20 12 20z"/></svg>';
+const DISLI='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+const sn=x=>x.toLocaleString(document.documentElement.lang||undefined);
+Durak.kur();
+// Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara o satırın başına yazılır.
+const satirBoyu=()=>parseFloat(getComputedStyle($('okuma_metni')).lineHeight)||28;
+function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scrollTop;$('bantlar').firstElementChild.style.transform=`translateY(${-ta.scrollTop}px)`;}
+function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const s=Durak.hizala(ta);if(!ta.clientWidth)return;
+ const R=satirBoyu();ay.style.width=ta.clientWidth+'px';ay.innerHTML=s.map(l=>`<div>${esc(l)||'&#8203;'}</div>`).join('');
+ const h=[...ay.children].map(d=>d.getBoundingClientRect().height);let y=6+h.reduce((a,b)=>a+b,0),i=h.length;
+ let html=h.map((x,k)=>`<div style="height:${x}px">${k+1}</div>`).join('');
+ for(;y<Math.max(ta.scrollHeight,ta.clientHeight)+R;y+=R)html+=`<div class="sb" style="height:${R}px">${++i}</div>`;
+ const d=Durak.ciz(s,h,R/3);no.innerHTML=html+d.oluk;$('bantlar').firstElementChild.innerHTML=d.bant;bantKaydir();}
 // Kutu boyu tam satır sayısına oturur: üstte ve altta aynı küçük boşluk (6 px) kalır.
 function defterBoy(){const kap=$('defterkap'),d=kap.firstElementChild;
  if(getComputedStyle(kap).flexGrow!=='0')d.style.height=(Math.max(4,Math.floor((kap.clientHeight-14)/satirBoyu()))*satirBoyu()+12)+'px';else d.style.height='';defterNo();}
 new ResizeObserver(defterBoy).observe($('defterkap'));$('okuma_metni').addEventListener('input',defterNo);
-$('okuma_metni').addEventListener('scroll',()=>{bantKaydir();$('durakmenu').hidden=true;});
+$('okuma_metni').addEventListener('scroll',()=>{bantKaydir();Durak.kapat();});
 $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=null;$('sonuc').innerHTML='';
- const j=await api('/api/oku',{ses:$('ses').value,metin:durakliMetin()});
+ const j=await api('/api/oku',{ses:$('ses').value,metin:Durak.metin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
  const s=await bekle(j.is,$('d_oku'));b.disabled=false;if(s.durum!=='bitti')return;sonOkuma=s.sonuc;okumaCiz();};
 
