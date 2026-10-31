@@ -108,13 +108,13 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <button type="button" role="tab" data-sekme="p1" data-sekme-t="s1"></button><button type="button" role="tab" data-sekme="p2" data-sekme-t="s2"></button><button type="button" role="tab" data-sekme="p3" data-sekme-t="s3"></button><button type="button" role="tab" data-sekme="p4" data-sekme-t="hazir"></button></nav>
 <section id="p1" class="panel" role="tabpanel"><div class="govde">
 <div class="form">
-<div class="yanyana"><label class="mini"><span data-t="ad">Sesin adı</span><input id="ad" data-t-ph="ad_ph"></label>
+<div class="yanyana"><label class="mini"><span data-t="ad">Sesin adı</span><input id="ad" spellcheck="false" data-t-ph="ad_ph"></label>
 <label class="mini" data-t-title="cesit"><span data-t="cesit_kisa">Çeşit</span><input id="cesit" type="number" value="3" min="1" max="10"></label></div>
 <label class="mini" data-t-title="ornek_ipucu1"><span data-t="ornek">Örnek tarif</span><select id="ornek"></select></label>
 <label for="tarif" class="tarifbas" data-t-title="e_tarif_parantez"><span data-t-bas="tarif">Ses tarifi</span><img src="/bayrak/gb.svg" alt="English"><img src="/bayrak/cn.svg" alt="中文"></label>
-<textarea id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
+<textarea spellcheck="false" id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
 <label for="tasarim_metni" data-t="tmetin">Örnek cümle (sesi tanımak için, 1-2 cümle)</label>
-<textarea id="tasarim_metni" rows="3" data-t-ph="tmetin_ph" aria-describedby="sure_yazi tmetin_ipucu"></textarea>
+<textarea spellcheck="false" id="tasarim_metni" rows="3" data-t-ph="tmetin_ph" aria-describedby="sure_yazi tmetin_ipucu"></textarea>
 <div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
 <small id="tmetin_ipucu" class="ipucu"></small>
@@ -127,7 +127,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <section id="p2" class="panel" role="tabpanel" hidden>
 <label for="ses" data-t="ses">Ses</label><select id="ses"></select>
 <label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label>
-<div id="defterkap"><div class="defter"><div id="satirno" aria-hidden="true"></div><textarea id="okuma_metni" data-t-ph="ometin_ph"></textarea></div><div id="ayna" aria-hidden="true"></div></div>
+<div id="defterkap"><div class="defter"><div id="satirno" aria-hidden="true"></div><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea></div><div id="ayna" aria-hidden="true"></div></div>
 <button id="btn_oku" data-t="oku">Bu sesle oku</button><div id="d_oku" class="durum" aria-live="polite"></div>
 <div id="sonuc"></div></section>
 
@@ -138,9 +138,9 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <button type="button" class="ikincil" id="dosya_btn" data-t="dosya_sec">Dosya seç</button><span id="dosya_ad" data-t="dosya_yok">Dosya seçilmedi</span></div>
 <div id="klon_bilgi" class="durum"></div>
 <label for="klon_kayit_metni" data-t="kayit_metni">Kaydın birebir metni (zorunlu)</label>
-<textarea id="klon_kayit_metni" data-t-ph="kayit_metni_ph"></textarea>
+<textarea spellcheck="false" id="klon_kayit_metni" data-t-ph="kayit_metni_ph"></textarea>
 <label for="klon_metin" data-t="klon_metin">Okunacak metin: her satır bir cümle</label>
-<textarea id="klon_metin" data-t-ph="klon_metin_ph"></textarea>
+<textarea spellcheck="false" id="klon_metin" data-t-ph="klon_metin_ph"></textarea>
 <div class="row"><div><label for="klon_tohum" data-t="tohum">Tohum (aynı tohum = aynı sonuç)</label><input id="klon_tohum" type="number" value="42" min="0"></div>
 <div><label data-t="kalite">Kalite (sabit)</label><input data-t-val="kalite_deger" value="16 adım, cfg 2.0" disabled></div></div>
 <label class="onay"><input id="klon_onay" type="checkbox"> <span data-t="onay"></span></label>
