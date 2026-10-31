@@ -332,8 +332,9 @@ function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const
 // Seçili öğe çerçevelidir; dişli çark özel süre kutusunu açar (0-5 sn). / Selected item is framed; the gear opens a custom value.
 function durakMenu(b,x){const i=+b.dataset.i,m=$('durakmenu'),s=$('okuma_metni').value.split('\n'),z=durakSure(s,i),v=dur[i];
  const bos=s[i+1]!==undefined&&!s[i+1].trim(),ops=(bos?[]:[['',VARSAYILAN]]).concat(Object.entries(DURAK));
- if(typeof v==='number')ops.push([String(v),v]);
- const secili=v!=null?String(v):(bos?'paragraf':'');
+ const ayni=typeof v==='number'?ops.find(o=>o[1]===v):null;  // özel değer hazır süreyle aynıysa ikinci satır açılmaz
+ if(typeof v==='number'&&!ayni)ops.push([String(v),v]);
+ const secili=ayni?ayni[0]:v!=null?String(v):(bos?'paragraf':'');
  m.innerHTML=ops.map(([k,x])=>`<button type="button" data-k="${k}" aria-pressed="${k===secili}"><i style="width:${Math.min(x,3)*48}px"></i><span>${sn(x)} s</span></button>`).join('')
   +`<div class="ozel"><button type="button" class="disli" title="0 – ${sn(EN_COK)} s" aria-label="0 – ${sn(EN_COK)} s"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><input type="number" min="0" max="${EN_COK}" step="0.05" value="${z}" hidden><small hidden>s</small><button type="button" class="tamam" hidden>✓</button></div>`;
  const r=b.getBoundingClientRect(),rtl=document.documentElement.dir==='rtl';m.dataset.i=i;m.hidden=false;
