@@ -17,7 +17,7 @@
  "tasarla": "Idisenyo",
  "s2": "2. Basahin gamit ang boses na ito",
  "ses": "Boses",
- "ometin": "Tekstong babasahin: isang pangungusap bawat linya. I-click ang numero para sa menu ng linya, ang guhit sa pagitan ng dalawang linya para sa hinto. Pindutin ang Enter nang dalawang beses para sa talata (1 s).",
+ "ometin": "Tekstong babasahin: isang pangungusap bawat linya. I-click ang numero para sa menu ng linya, at ang guhit sa pagitan ng dalawang linya para sa hinto. Pindutin ang Enter nang dalawang beses para sa talata (1 seg).",
  "ometin_ph": "Dinisenyo ang boses na ito mula lamang sa isang paglalarawan, hindi kinopya mula sa recording.\nIto ay boses na gawa ng AI.\nNgayon, kaya na nitong basahin ang kahit anong teksto.",
  "oku": "Basahin gamit ang boses na ito",
  "s3": "3. Voice cloning: sarili mong boses o boses na may pahintulot",
@@ -87,7 +87,7 @@
  "satir_yukari": "Ilipat pataas",
  "satir_asagi": "Ilipat pababa",
  "satir_sira": "Ilipat sa posisyon",
- "satir_cogalt": "Doblehin",
+ "satir_cogalt": "I-duplicate",
  "satir_sil": "Burahin",
  "satir_sil_soru": "Burahin ang linya {n}?",
  "satir_sil_bant": "Mabubura rin ang hinto nito ({sure}).",
@@ -95,8 +95,8 @@
  "satir_tasi_ayrinti": "Uusog nang isa ang mga linya sa pagitan; sasama ang hinto sa pangungusap.",
  "satir_sira_disi": "Maglagay ng numero mula 1 hanggang {n}.",
  "satir_oldu": "{islem}: linya {n}",
- "durak_son": "Pagkatapos ng huling pangungusap: hindi binabasa; babalik kapag inilipat pataas ang pangungusap.",
- "durak_eklendi": "{sure} na hinto pagkatapos ng linya {n}",
+ "durak_son": "Pagkatapos ng huling pangungusap: hindi gagamitin; babalik kapag inilipat pataas ang pangungusap.",
+ "durak_eklendi": "Nagdagdag ng {sure} na hinto pagkatapos ng linya {n}",
  "evet": "Oo",
  "hayir": "Hindi"
 }

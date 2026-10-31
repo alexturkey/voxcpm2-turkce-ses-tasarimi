@@ -81,7 +81,7 @@
  "durak_sil": "Padam {sure}?",
  "durak_sil_yer": "Digunakan di {n} tempat dalam teks; tempat itu kembali ke {v} s.",
  "satir_no": "Baris {n}",
- "satir_no_ipucu": "Klik untuk menu, seret untuk alih",
+ "satir_no_ipucu": "Klik untuk menu, seret untuk mengalihkan",
  "satir_ust": "Sisip baris di atas",
  "satir_alt": "Sisip baris di bawah",
  "satir_yukari": "Alih ke atas",
@@ -92,11 +92,11 @@
  "satir_sil_soru": "Padam baris {n}?",
  "satir_sil_bant": "Jedanya juga akan dipadam ({sure}).",
  "satir_tasi_soru": "Alih baris {n} ke kedudukan {m}?",
- "satir_tasi_ayrinti": "Baris di antaranya beranjak satu kedudukan; jeda bergerak bersama ayat.",
+ "satir_tasi_ayrinti": "Baris di antaranya beralih satu kedudukan; jeda turut bergerak bersama ayat.",
  "satir_sira_disi": "Masukkan nombor dari 1 hingga {n}.",
  "satir_oldu": "{islem}: baris {n}",
- "durak_son": "Selepas ayat terakhir: tidak dibaca; kembali apabila ayat dialih ke atas.",
- "durak_eklendi": "Jeda {sure} selepas baris {n}",
+ "durak_son": "Selepas ayat terakhir: tidak digunakan; kembali apabila ayat dialih ke atas.",
+ "durak_eklendi": "Jeda {sure} ditambah selepas baris {n}",
  "evet": "Ya",
  "hayir": "Tidak"
 }

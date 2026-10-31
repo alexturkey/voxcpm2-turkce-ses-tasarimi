@@ -17,7 +17,7 @@
  "tasarla": "Desain",
  "s2": "2. Bacakan dengan suara ini",
  "ses": "Suara",
- "ometin": "Teks yang dibacakan: satu kalimat per baris. Klik nomor untuk menu baris, klik pita di antara dua baris untuk jeda. Tekan Enter dua kali untuk paragraf (1 dtk).",
+ "ometin": "Teks yang dibacakan: satu kalimat per baris. Klik nomor untuk menu baris, klik bilah di antara dua baris untuk jeda. Tekan Enter dua kali untuk paragraf (1 dtk).",
  "ometin_ph": "Suara ini didesain hanya dari deskripsi teks, bukan dikloning dari rekaman.\nIni adalah suara buatan AI.\nSekarang suara ini bisa membacakan teks apa pun yang kamu mau.",
  "oku": "Bacakan dengan suara ini",
  "s3": "3. Kloning suara: suaramu sendiri atau suara dengan izin",
@@ -93,10 +93,10 @@
  "satir_sil_bant": "Jedanya juga ikut terhapus ({sure}).",
  "satir_tasi_soru": "Pindahkan baris {n} ke posisi {m}?",
  "satir_tasi_ayrinti": "Baris di antaranya bergeser satu posisi; jeda ikut bersama kalimat.",
- "satir_sira_disi": "Masukkan angka dari 1 sampai {n}.",
+ "satir_sira_disi": "Masukkan angka 1 sampai {n}.",
  "satir_oldu": "{islem}: baris {n}",
- "durak_son": "Setelah kalimat terakhir: tidak dibacakan; kembali saat kalimat dipindahkan ke atas.",
- "durak_eklendi": "Jeda {sure} setelah baris {n}",
+ "durak_son": "Setelah kalimat terakhir: tidak berlaku; aktif lagi saat kalimat dipindah ke atas.",
+ "durak_eklendi": "Jeda {sure} ditambahkan setelah baris {n}",
  "evet": "Ya",
  "hayir": "Tidak"
 }
