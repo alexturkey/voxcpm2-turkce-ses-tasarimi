@@ -195,6 +195,15 @@ finally `KURULUM_OK`. `ayarlar.json` gets `"backend": "metal"`, `"cuda_bin": ""`
 `.venv/bin/python`; the UI starts with `./baslat.command`. Determinism check: run the same reading twice, the two
 `okuma.wav` files must have the same `shasum`.
 
+## 6c. Ubuntu / Linux (NVIDIA CUDA, experimental)
+
+Follow `docs/linux.md`. `scripts/kur-linux.sh` builds the pinned, patched audio.cpp source with CUDA and creates
+`.venv` using Python 3.10–3.13; it never invokes sudo. Alternatively build `Dockerfile.linux` (Ubuntu 24.04,
+CUDA 12.8.1, default GPU architecture 86 / RTX 30xx; override for other cards). Run the offline tests and a real
+reading and design on the GPU before claiming support for a new platform. Keep quality settings and the
+loopback-only UI / Host checks unchanged. Use SSH forwarding for remote access. Do not call this stable across
+Ubuntu versions based on one machine's result.
+
 ## 7. Layout
 
 ```

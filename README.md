@@ -6,7 +6,7 @@ variant you like, then read any Turkish text with that voice. Includes a one-com
 ready-made synthetic voices: seven Turkish and seven native narrators in English, French, German, Spanish,
 Russian, Chinese and Japanese (8 languages in total).
 
-[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
+[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
 > The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
 > voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
@@ -74,6 +74,13 @@ program; it installs this repository as its VoxCPM2 voice engine. A voice you de
 
 The engine zip is not a standalone app (its exe needs the model and DLLs that the installer sets up). Details, GPU
 list and common problems: "Quick install" below.
+
+## Ubuntu / Linux (NVIDIA CUDA, experimental)
+
+Build the patched engine with `bash scripts/kur-linux.sh`, or use `Dockerfile.linux` to build and run in an
+Ubuntu 24.04 / CUDA 12.8.1 environment. Requires an NVIDIA GPU and a compatible driver; the native installer also
+needs the CUDA toolkit and Python 3.10–3.13. The UI stays loopback-only, including on remote servers (SSH forwarding).
+Prerequisites, commands, architecture selection and validation scope: [docs/linux.md](docs/linux.md).
 
 ## Quick start (macOS, Apple Silicon)
 

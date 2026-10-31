@@ -1,5 +1,6 @@
 # yerel ayar ve çıktılar / local settings and outputs
 ayarlar.json
+ayarlar.json.bak-*
 sesler/
 onbellek/
 _calisma/

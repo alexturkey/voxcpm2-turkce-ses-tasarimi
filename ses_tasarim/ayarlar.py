@@ -1,13 +1,14 @@
 """Ayar dosyası: motor, model ve klasör yolları. Kodda sabit yol yoktur. / Settings file: engine, model, folders."""
 import json
 import os
+import sys
 from pathlib import Path
 
 ENV_NAME = "SES_TASARIM_AYARLAR"
 DEFAULTS = {
     "motor": "",            # audiocpp_cli.exe (macOS: audiocpp_cli) (yamalı derleme) / patched engine binary
     "model": "",            # voxcpm2-q8_0.gguf
-    "cuda_bin": "",         # CUDA 12.8 bin klasörü (cudart64_12.dll, cublas64_12.dll, cublasLt64_12.dll, cufft64_11.dll)
+    "cuda_bin": "",         # Windows: CUDA DLL directory; Linux: leave empty, use system loader / Linux'ta boş
     "backend": "cuda",      # cuda | vulkan (deneysel, Vulkan derlemesi gerekir) | metal (macOS, Apple Silicon) | cpu (çok yavaş, yalnız deneme için)
     "sesler": "sesler",             # tasarlanan sesler (ayar dosyasına göre göreli) / designed voices
     "hazir_sesler": "hazir_sesler", # repodaki hazır sesler / bundled voices
@@ -44,7 +45,8 @@ def load(explicit=None) -> dict:
         problems.append(f"motor bulunamadı: {data['motor']}")
     if not data["model"] or not data["model"].is_file():
         problems.append(f"model bulunamadı: {data['model']}")
-    if data["backend"] == "cuda" and (not data["cuda_bin"] or not (data["cuda_bin"] / "cudart64_12.dll").is_file()):
+    if sys.platform == "win32" and data["backend"] == "cuda" and (
+            not data["cuda_bin"] or not (data["cuda_bin"] / "cudart64_12.dll").is_file()):
         problems.append(f"cuda_bin içinde cudart64_12.dll yok: {data['cuda_bin']}")
     if problems:
         raise AyarHatasi(f"{path}:\n  - " + "\n  - ".join(problems))
