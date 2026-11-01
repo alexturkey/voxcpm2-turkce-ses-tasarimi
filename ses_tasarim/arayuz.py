@@ -86,7 +86,9 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 #acilir .ses button[data-sec]{flex:1;min-width:0;justify-content:flex-start}#acilir .ses em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26em}
 #acilir .grup{padding:5px 9px 1px;font-size:.7rem;color:var(--muted)}
 .dilsira{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}.dilsira button b{font-weight:600;font-variant-numeric:tabular-nums}
-.csat{flex-wrap:wrap}.csat .nw{white-space:nowrap}.dugmeler{display:flex;gap:6px;flex:none;margin-inline-start:auto}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.csat{flex-wrap:wrap}.csat .nw{white-space:nowrap}.dugmeler{display:flex;gap:6px;flex:none;margin-inline-start:auto}
+/* Dar çeşit sütununda (sağ yarı pencere) düğmeler her kartta aynı yerde: başlığın altında, sağa yaslı. */
+#cesitler{container-type:inline-size}@container (max-width:470px){#cesitler .csat label{flex-basis:100%}}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .listebtn{display:inline-flex;align-items:center;gap:5px}.listebtn svg{fill:none;flex:none}.listebtn[aria-pressed=true] svg{color:var(--err);fill:var(--err)}.listebtn[aria-pressed=true]:hover svg{color:#111;fill:#111}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
 /* Tasarım metni kısa örnektir: 3 satırlık kutu, altında süre çubuğu, sınır aşımında uyarı, kalıcı gri ipucu. */
