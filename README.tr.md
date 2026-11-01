@@ -247,7 +247,9 @@ uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
 adresini kendiniz açın (başka port: `--port 8800`). Dört sekme: *Ses tasarla*, *Bu sesle oku*, *Ses klonlama*,
-*Hazır sesler*. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Okuma kutusunda satır
+*Hazır sesler*. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Beğendiğin
+sesi (tasarlanan çeşit ya da hazır ses) *Okuma listeme ekle* ile okuma sekmesindeki ses menüsünün en üstüne al; *Hazır sesler*
+sekmesinde bayrağa basınca o dilin sesleri görünür. Okuma kutusunda satır
 numarasına tıklayınca satır menüsü açılır (taşı, çoğalt, sil; Alt+↑/↓), iki satır arasındaki ince banda tıklayınca durak
 süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Sunucuyu Ctrl+C
 ile kapatın.

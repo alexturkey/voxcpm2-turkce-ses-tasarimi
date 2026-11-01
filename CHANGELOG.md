@@ -3,6 +3,21 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Okuma listesi: *Ses tasarla* çeşit kartında ve *Hazır sesler* kartında *Bu sesle oku*'nun yanında *Okuma listeme ekle*
+  düğmesi. Basınca ses (kendi referansı ve tohumuyla) listeye girer, düğme dolu kalple *Listede* olur ve kısa bir
+  *Okuma listesine eklendi* satırı çıkar; tekrar basınca çıkar. Liste tektir (iki sekmeden eklenen aynı yerde) ve
+  kullanıcının ses klasöründe `sesler/okuma_listesi.json` dosyasında durur (repoya girmez); uygulama yeniden açılınca da
+  kalır. `GET /api/sesler` cevabında `okuma_listesi`, değiştirmek için `POST /api/okuma_listesi {kimlik, ekle}`
+  (eklemede yalnız var olan ses kimliği; aynı Host/JSON/boyut kuralları).
+- *Bu sesle oku* sekmesinde uzun düz ses listesi kalktı: tek satırlık ses düğmesi (bayrak + ad). Basınca satır ve bekleme
+  menüsüyle aynı menü hemen altında açılır: başlıkta seçili ses, en üstte *Okuma listem* (kalpli sesler), çizgi, bayraklı
+  hazır sesler (önce arayüz dili), çizgi, tasarlanan sesler (*ad · çeşit N*). Seçili ses vurgulu; satırdaki kalp (üstüne
+  gelince görünür) listeye ekler/çıkarır; ↑/↓ ve Enter ile seçilir, Esc ya da dışarı tıklama kapatır. Son seçilen ses
+  hatırlanır.
+- *Hazır sesler* sekmesi: üstte yalnız hazır sesi olan dillerin bayrakları ve ses sayıları (*Tümü 14*, 🇹🇷 7, diğerleri 1);
+  bayrağa basınca o dilin sesleri görünür, seçim hatırlanır. Her kartta *Bu sesle oku* (okuma sekmesini o ses seçili açar)
+  ve *Okuma listeme ekle*. Yeni yazılar 30 dilde; sağdan sola dillerde Latin ad ve tanıtım doğru yönde.
+  Testler: `tests/test_okuma_listesi.py`, `tests/test_arayuz_ses_menusu.py`.
 - Ses tasarla: okutulan metin kutusu artık *Örnek cümle (sesi tanımak için, 1-2 cümle)*; kutu 3 satır, altında dile göre
   canlı süre çubuğu (~N sn / en fazla 20 sn, aşınca kırmızı). Tahmini 22 sn'yi (%10 pay) aşan metinle Tasarla başlamaz,
   sunucu da `tasarim_uzun` hatasıyla reddeder; *Okuma sekmesine taşı* düğmesi tam metni cümle cümle okuma kutusuna koyar,
@@ -90,6 +105,22 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Reading list: an *Add to my reading list* button next to *Read with this voice* on each variant card (*Design a voice*)
+  and on each bundled-voice card. The voice (with its own reference and seed) joins the list, the button turns into a
+  filled heart *In my list* and a short *Added to the reading list* line appears; press again to remove. There is one list
+  for both tabs, stored in the user's voice folder as `sesler/okuma_listesi.json` (never in the repository), so it
+  survives restarts. `GET /api/sesler` returns `okuma_listesi`; `POST /api/okuma_listesi {kimlik, ekle}` changes it
+  (adding accepts existing voice ids only; same Host/JSON/size rules).
+- *Read with this voice*: the long plain voice list is gone. A one-line voice button (flag + name) opens the same popup
+  menu as the line and pause menus, right below it: the selected voice in the header, *My reading list* (hearted voices)
+  on top, a divider, bundled voices with flags (interface language first), a divider, designed voices (*name · variant N*).
+  The selected voice is highlighted; the heart on each row (visible on hover) adds or removes it; ↑/↓ and Enter choose,
+  Esc or a click outside closes. The last chosen voice is remembered.
+- *Bundled voices* tab: a row of flags with voice counts, only for languages that have bundled voices (*All 14*, 🇹🇷 7,
+  the others 1); a flag filters the cards and the choice is remembered. Each card has *Read with this voice* (opens the
+  reading tab with that voice selected) and *Add to my reading list*. New strings in all 30 languages; Latin names and
+  descriptions keep their direction in right-to-left languages. Tests: `tests/test_okuma_listesi.py`,
+  `tests/test_arayuz_ses_menusu.py`.
 - Design a voice: the design text box is now *Sample sentence (to get to know the voice, 1-2 sentences)*; 3 lines high,
   with a live per-language length bar below it (~N s / max 20 s, red when over). With an estimate above 22 s (10 %
   margin) Design does not start and the server rejects it with `tasarim_uzun`; *Move to reading tab* puts the full text

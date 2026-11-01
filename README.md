@@ -250,6 +250,8 @@ skipped, digits are still refused. If a reading prints `speed gate: satır [...]
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
 yourself (another port: `--port 8800`). Four tabs: *Design a voice*, *Read with this voice*, *Voice cloning*, *Bundled voices*.
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
+*Add to my reading list* (on design variants and bundled voices) keeps the voices you like at the top of the voice
+menu in the reading tab; the *Bundled voices* tab filters by language flag.
 In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
 between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
 Stop the server with Ctrl+C.
