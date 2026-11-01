@@ -57,5 +57,40 @@ console.log(JSON.stringify([
             self.assertNotRegex(ad, r'[\\/:*?"<>|\x00-\x1f]')
 
 
+class MetinHafizasi(unittest.TestCase):
+    def test_tek_kapi(self):
+        # Kayıt defterNo'dan seyreltilerek tetiklenir, açılış bitmeden yazmaz, sayfadan çıkarken yazar
+        self.assertIn("Kayit.sonra();", kes("function defterNo(", "// Kutu boyu"))
+        self.assertIn("Durak.acilis();Kayit.hazir=true;", JS)
+        self.assertIn("addEventListener('pagehide',()=>Kayit.yaz())", JS)
+        self.assertIn("try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e)", JS)
+
+    @unittest.skipUnless(shutil.which("node"), "node yok")
+    def test_geri_gelir(self):
+        sahte = r"""
+const ta={value:'',clientWidth:0};const $=id=>ta;let D={},yazim=0;
+const hafiza=(k,v)=>{if(v===undefined)return k in D?D[k]:null;D[k]=String(v);yazim++;};
+const defterNo=()=>{},snb=x=>x+' s',t=k=>k,Satir={isik:()=>({k:new Set()})};
+"""
+        parca = kes("const Durak={", "const KALP=") + kes("const Kayit={", "addEventListener('pagehide'")
+        R = node(sahte + parca + r"""
+const R={};
+D={okuma_metni:'A\n\nB || 1,5\nC',okuma_bantlar:'[0.5,null,null,null]'};ta.value='';Durak.acilis();R.a=[ta.value,Durak.dur];
+D={};ta.value='X\nY';Durak.dur=[];Durak.eski=[];Durak.acilis();R.b=[ta.value,Durak.dur];
+D={okuma_metni:'K\nL',okuma_bantlar:'{'};Durak.acilis();R.c=[ta.value,Durak.dur];
+D={okuma_metni:'K\nL',okuma_bantlar:'[9,"x"]'};Durak.acilis();R.d=Durak.dur;
+D={};yazim=0;Kayit.hazir=false;Kayit.son=null;ta.value='M\nN';Durak.dur=[1,null];Kayit.yaz();R.e=[yazim,'okuma_metni' in D];
+Kayit.hazir=true;Kayit.yaz();Kayit.yaz();R.f=[yazim,D.okuma_metni,D.okuma_bantlar];
+Durak.dur=[1,null,0.7];Kayit.yaz();R.g=D.okuma_bantlar;
+console.log(JSON.stringify(R));""")
+        self.assertEqual(R["a"], ["A\nB\nC", [0.5, 1.5, None]])
+        self.assertEqual(R["b"], ["X\nY", [None, None]])
+        self.assertEqual(R["c"], ["K\nL", [None, None]])
+        self.assertEqual(R["d"], [5, None])
+        self.assertEqual(R["e"], [0, False])  # açılış bitmeden yazmaz / no write before load finishes
+        self.assertEqual(R["f"], [2, "M\nN", "[1,null]"])  # aynı içerik ikinci kez yazılmaz / unchanged content not rewritten
+        self.assertEqual(R["g"], "[1,null]")  # satır sayısı kadar bant / one band per line
+
+
 if __name__ == "__main__":
     unittest.main()

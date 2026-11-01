@@ -3,6 +3,8 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Okuma metni ve bekleme bantları sayfa yenilenince kaybolmaz: tarayıcının yerel belleğinde durur (yazarken 400 ms
+  seyreltilerek, sayfadan çıkarken hemen; açılış bitmeden hiçbir şey yazılmaz). Seçili ses zaten hatırlanıyordu.
 - İnen okumanın adı artık hep `okuma.wav` değil: ses adı + okuma zamanı (ör. `Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav`).
   Harfler (Türkçe, Arapça…) kalır; dosya adında yasak işaretler ve boşluk `_` olur. Test: `tests/test_arayuz_okuma.py`.
 - Başlıkta küçük, soluk sürüm yazısı: `v0.2.0 · <kısa commit>` (izlenen dosyada kaydedilmemiş değişiklik varsa
@@ -135,6 +137,8 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- The reading text and its pause bands survive a page reload: kept in the browser's local storage (debounced 400 ms
+  while typing, at once when the page is left; nothing is written before loading finishes). The chosen voice was already remembered.
 - The downloaded reading is no longer always `okuma.wav`: voice name + reading time (e.g.
   `Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav`). Letters stay; characters forbidden in file names and spaces become `_`.
 - A small, faint version in the header: `v0.2.0 · <short commit>` (`+` when tracked files have uncommitted changes;

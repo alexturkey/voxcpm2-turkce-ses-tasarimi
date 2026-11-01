@@ -566,9 +566,10 @@ const Durak={
   return {k,isaret,imlec};},
  bosEmekli(s,d){const r=this.emekli(s.map((l,i)=>({l,d:d[i]??null})),false);if(!r.k.length)r.k.push({l:'',d:null});
   return {s:r.k.map(e=>e.l),d:r.k.map(e=>e.d),isaret:r.isaret};},
- // Sayfa açılışı: tarayıcının geri getirdiği metindeki işaret ve boş satırlar banda çevrilir (geri alma geçmişi henüz yok).
- acilis(){const ta=$('okuma_metni'),s=this.hizala(ta),r=this.bosEmekli(s,this.dur);
-  if(r.s.join('\n')!==ta.value){ta.value=r.s.join('\n');this.dur=r.d;this.eski=r.s;}this.anlik();defterNo();},
+ // Sayfa açılışı: saklanan metin ve bantları (Kayit) geri gelir, yoksa tarayıcının geri getirdiği metin; işaret ve boş
+ // satırlar banda çevrilir (geri alma geçmişi henüz yok). / On load the saved text and bands come back.
+ acilis(){const ta=$('okuma_metni'),k=Kayit.oku();let s;if(k){s=k.s;this.eski=s;this.dur=k.d;}else s=this.hizala(ta);
+  const r=this.bosEmekli(s,this.dur);if(r.s.join('\n')!==ta.value)ta.value=r.s.join('\n');this.dur=r.d;this.eski=r.s;this.anlik();defterNo();},
  // Numara sütunu ve bant katmanı için çizim (h: satır yükseklikleri, B: bant yüksekliği). Son cümlenin bandı uygulanmaz;
  // değeri varsa kesik çizgili "askıda" bant olarak görünür (cümle yukarı taşınınca yerine döner). 1 sn ve üstü belirgin.
  ciz(s,h,B){const dolu=s.map(l=>!!l.trim()),p=Satir.isik();let alt=6,oluk='',bant='';
@@ -858,7 +859,17 @@ const SesYonet={k:null,tetik:null,geri:false,alt:false,rakamYok:true,
 // Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara (düğme) o satırın başına yazılır.
 const satirBoyu=()=>parseFloat(getComputedStyle($('okuma_metni')).lineHeight)||28;
 function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scrollTop;$('bantlar').firstElementChild.style.transform=`translateY(${-ta.scrollTop}px)`;}
-function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const s=Durak.hizala(ta);if(!ta.clientWidth)return;
+// Okuma metni ve bantları sayfa yenilenince kaybolmaz: tarayıcı belleğine (hafiza) yazarken seyreltilerek (400 ms),
+// sayfadan çıkarken hemen yazılır. Açılışta Durak.acilis geri getirir; o bitmeden hiçbir şey yazılmaz (boş metin üstüne yazmaz).
+// The reading text and its bands survive a reload: saved to browser storage, debounced while typing, at once on page hide.
+const Kayit={zaman:0,son:null,hazir:false,
+ oku(){const m=hafiza('okuma_metni');if(m==null)return null;let d;try{d=JSON.parse(hafiza('okuma_bantlar')||'[]');}catch(e){d=[];}
+  const s=m.split('\n');return {s,d:s.map((_,i)=>Array.isArray(d)&&typeof d[i]==='number'&&isFinite(d[i])?Durak.saniye(d[i]):null)};},
+ yaz(){clearTimeout(this.zaman);if(!this.hazir)return;const m=$('okuma_metni').value,d=JSON.stringify(m.split('\n').map((_,i)=>Durak.dur[i]??null));
+  if(this.son===m+'\0'+d)return;this.son=m+'\0'+d;hafiza('okuma_metni',m);hafiza('okuma_bantlar',d);},
+ sonra(){if(!this.hazir)return;clearTimeout(this.zaman);this.zaman=setTimeout(()=>this.yaz(),400);}};
+addEventListener('pagehide',()=>Kayit.yaz());
+function defterNo(){const ta=$('okuma_metni'),ay=$('ayna'),no=$('satirno');const s=Durak.hizala(ta);Kayit.sonra();if(!ta.clientWidth)return;
  const R=satirBoyu();ay.style.width=ta.clientWidth+'px';ay.innerHTML=s.map(l=>`<div>${esc(l)||'&#8203;'}</div>`).join('');
  const h=[...ay.children].map(d=>d.getBoundingClientRect().height),p=Satir.isik(),ipucu=esc(t('satir_no_ipucu')),yan=new Map(Durak.hatalar().map(x=>[x.i,esc(sorunMetni(x))]));let y=6,i=h.length,html='',isik='';
  Satir.ust=[];Satir.boy=h;
@@ -901,7 +912,7 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
  const s=await bekle(j.is,$('d_klon'));klonHazir();if(s.durum!=='bitti')return;sonKlon=s.sonuc;klonCiz();};
 
 (async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>{sesler=s;okumaListesi=s.okuma_listesi||[];})]);await dilYukle(ilkDil());
- SesMenu.sec(SesMenu.varsayilan(),false);Durak.acilis();sureGuncelle();})();
+ SesMenu.sec(SesMenu.varsayilan(),false);Durak.acilis();Kayit.hazir=true;Kayit.yaz();sureGuncelle();})();
 </script></body></html>
 """
 
