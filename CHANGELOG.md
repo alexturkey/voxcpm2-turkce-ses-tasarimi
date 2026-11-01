@@ -3,6 +3,14 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Sade ses akışı: *Sesin adı* etiketi *Üretim adı* oldu (30 dilde, her dilin kendi doğal karşılığıyla); çeşit kartında
+  *Okuma listeme ekle* iki düğmenin yerinde ad kutusu açar (✓ önce adı sonra listeyi yazar, *Vazgeç* hiçbir şey yazmaz,
+  kart yerinden ve boyundan oynamaz). *Hazır sesler* sekmesi kalktı: hazır sesler okuma sekmesindeki ses menüsünde
+  bayraklı durur, tanıtımı satırın ipucunda. Ses menüsü yalnız *Okuma listem* + *Hazır sesler*; tasarlanan çeşit listeye
+  eklenince görünür. Her satırda ▶ dinle (tek ortak çalar; ikinci basış durdurur, menü kapanınca susar, Boşluk tuşu da
+  çalar), kalp ve ⋯ hep görünür. Adı değiştirilmiş çeşit menüde iki satır: üstte kendi adı, altta gri köken
+  (*üretim adı · çeşit N*); ⋯ alt menüde *Üretimine git* (Ses tasarla o üretimle açılır, kart vurgulanır). Ses listesindeki
+  ⋯ alt menü olarak açılır, liste açık kalır; menüler kullanıcının gerçekten gördüğü alanda açılır.
 - Okuma listesi: *Ses tasarla* çeşit kartında ve *Hazır sesler* kartında *Bu sesle oku*'nun yanında *Okuma listeme ekle*
   düğmesi. Basınca ses (kendi referansı ve tohumuyla) listeye girer, düğme dolu kalple *Listede* olur ve kısa bir
   *Okuma listesine eklendi* satırı çıkar; tekrar basınca çıkar. Liste tektir (iki sekmeden eklenen aynı yerde) ve
@@ -117,6 +125,15 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Simpler voice flow: the *Voice name* label is now *Generation name* (30 languages, each in its own natural wording); on a
+  variant card *Add to my reading list* opens a name box in place of the two buttons (✓ saves the name, then the list;
+  *Cancel* writes nothing; the card keeps its place and size). The *Bundled voices* tab is gone: bundled voices live in the
+  reading tab's voice menu with flags, their description in the row tooltip. The voice menu shows only *My reading list*
+  and *Bundled voices*; a designed variant appears once it is added to the list. Each row has ▶ listen (one shared player;
+  a second press stops, closing the menu stops it, Space plays too), the heart and ⋯, always visible. A renamed variant
+  takes two lines: its own name above a grey origin (*generation name · variant N*); the ⋯ submenu has *Go to generation*
+  (opens Design a voice on that generation and highlights the card). The ⋯ in the voice list opens as a submenu and the
+  list stays open; menus open inside the area the user can actually see.
 - Reading list: an *Add to my reading list* button next to *Read with this voice* on each variant card (*Design a voice*)
   and on each bundled-voice card. The voice (with its own reference and seed) joins the list, the button turns into a
   filled heart *In my list* and a short *Added to the reading list* line appears; press again to remove. There is one list

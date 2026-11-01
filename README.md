@@ -248,10 +248,11 @@ Language is detected from the text (Turkish letters, script, common words; the v
 skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
-yourself (another port: `--port 8800`). Four tabs: *Design a voice*, *Read with this voice*, *Voice cloning*, *Bundled voices*.
+yourself (another port: `--port 8800`). Three tabs: *Design a voice*, *Read with this voice*, *Voice cloning*.
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
-*Add to my reading list* (on design variants and bundled voices) keeps the voices you like at the top of the voice
-menu in the reading tab; the *Bundled voices* tab filters by language flag.
+The *generation name* goes to every variant of that run; when you add the variant you like with *Add to my reading list*,
+you give it its own name. The voice menu in the reading tab shows *My reading list* and the bundled voices (with flags);
+each row has ▶ listen, the heart and ⋯.
 In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
 between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
 Stop the server with Ctrl+C.

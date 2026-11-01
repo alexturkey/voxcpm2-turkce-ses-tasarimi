@@ -39,7 +39,7 @@ const sesler={hazir:[h('anlatici_fr','fr','Anlatici FR'),h('anlatici_en','en','A
 """
 
 DENEME = r"""
-const ad=g=>({liste:g.liste.map(k=>k.kimlik),hazir:g.hazir.map(k=>k.kimlik),tasarlanan:g.tasarlanan.map(k=>k.kimlik)});
+const ad=g=>({liste:g.liste.map(k=>k.kimlik),hazir:g.hazir.map(k=>k.kimlik)});
 const R={};
 R.tr=ad(SesMenu.bolumler(sesler,['deniz/2','hazir/anlatici_fr','yok/1'],'tr'));
 R.fr=ad(SesMenu.bolumler(sesler,[],'fr'));
@@ -78,7 +78,6 @@ class SesMenusu(unittest.TestCase):
 
     def test_choices_are_remembered(self):
         self.assertIn("hafiza('ses',", JS)
-        self.assertIn("hafiza('hazir_dil'", JS)
 
     def test_popup_owners_unchanged_for_line_menu_tests(self):
         # test_arayuz_satir.py bu aralığı keser; ses menüsü dışında kalmalı / the line-menu test cuts this range
@@ -93,12 +92,10 @@ class SesMenusu(unittest.TestCase):
         R = json.loads(out.stdout.strip().splitlines()[-1])
         # Okuma listesi üstte, eklenme sırasıyla; silinmiş ses (yok/1) çizilmez; listedeki ses aşağıda tekrar etmez.
         self.assertEqual(R["tr"], {"liste": ["deniz/2", "hazir/anlatici_fr"],
-                                   "hazir": ["hazir/belgesel_hanim", "hazir/yasli_bilge", "hazir/anlatici_en"],
-                                   "tasarlanan": ["yeni/1", "deniz/1"]})
+                                   "hazir": ["hazir/belgesel_hanim", "hazir/yasli_bilge", "hazir/anlatici_en"]})
         # Arayüz dili önce, sonra dil listesi sırası (tr, en, ...); dil alanı olmayan eski kart Türkçe sayılır.
         self.assertEqual(R["fr"]["hazir"], ["hazir/anlatici_fr", "hazir/belgesel_hanim", "hazir/yasli_bilge",
                                             "hazir/anlatici_en"])
-        self.assertEqual(R["fr"]["tasarlanan"], ["yeni/1", "deniz/1", "deniz/2"])
         self.assertEqual(R["bayrak"], ["tr", '<img src="/bayrak/gb.svg" alt="">', ""])
         self.assertEqual(R["adlar"][0], "Anlatici FR")
         self.assertTrue(R["adlar"][1].startswith("Deniz · cesit_n"), R["adlar"][1])
@@ -114,8 +111,8 @@ class SesMenusu(unittest.TestCase):
         self.assertEqual(hazir, ["geri:‹ geri", "oku:oku", "liste:liste_ekle",
                                  'asil:asil_ada_don{"ad":"Belgesel Hanim"}', "sil:gizle"])
         self.assertTrue(sahip and kutu)
-        self.assertEqual([x.split(":")[0] for x in R["yt"]], ["oku", "liste", "sil"])
-        self.assertEqual(R["yt"][1:], ["liste:listede ✓", "sil:sil_ses"])
+        self.assertEqual([x.split(":")[0] for x in R["yt"]], ["oku", "uretim", "liste", "sil"])  # tasarlanan: "Üretimine git"
+        self.assertEqual(R["yt"][2:], ["liste:listede ✓", "sil:sil_ses"])
         self.assertEqual(R["yyok"], "")
 
 
