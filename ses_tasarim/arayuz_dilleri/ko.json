@@ -132,5 +132,7 @@
  "d_ses_geri": "목소리를 복원했습니다",
  "e_ad_uzun": "이름은 최대 {n}자까지 가능합니다.",
  "e_hedef_dolu": "{ses} 자리에 이미 다른 목소리가 있어 복원하지 못했습니다.",
- "e_islem_yok": "알 수 없는 작업: {islem}"
+ "e_islem_yok": "알 수 없는 작업: {islem}",
+ "ad_ver": "이 목소리 이름 짓기",
+ "vazgec": "취소"
 }

@@ -132,5 +132,7 @@
  "d_ses_geri": "Suara dipulihkan",
  "e_ad_uzun": "Nama paling banyak {n} karakter.",
  "e_hedef_dolu": "Sudah ada suara lain di tempat {ses}; tidak dapat dipulihkan.",
- "e_islem_yok": "Tindakan tidak dikenal: {islem}"
+ "e_islem_yok": "Tindakan tidak dikenal: {islem}",
+ "ad_ver": "Beri nama suara ini",
+ "vazgec": "Batal"
 }

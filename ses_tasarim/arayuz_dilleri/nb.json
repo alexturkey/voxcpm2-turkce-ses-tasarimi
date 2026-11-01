@@ -132,5 +132,7 @@
  "d_ses_geri": "Stemmen er gjenopprettet",
  "e_ad_uzun": "Et navn kan være på høyst {n} tegn.",
  "e_hedef_dolu": "Det ligger allerede en annen stemme på plassen til {ses}; kunne ikke gjenopprettes.",
- "e_islem_yok": "Ukjent handling: {islem}"
+ "e_islem_yok": "Ukjent handling: {islem}",
+ "ad_ver": "Gi stemmen et navn",
+ "vazgec": "Avbryt"
 }

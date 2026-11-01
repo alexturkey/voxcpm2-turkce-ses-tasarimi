@@ -132,5 +132,7 @@
  "d_ses_geri": "Voice restored",
  "e_ad_uzun": "A name can be at most {n} characters.",
  "e_hedef_dolu": "Another voice is already in the place of {ses}; it could not be restored.",
- "e_islem_yok": "Unknown action: {islem}"
+ "e_islem_yok": "Unknown action: {islem}",
+ "ad_ver": "Name this voice",
+ "vazgec": "Cancel"
 }

@@ -132,5 +132,7 @@
  "d_ses_geri": "Ses geri getirildi",
  "e_ad_uzun": "Ad en çok {n} karakter olabilir.",
  "e_hedef_dolu": "{ses} yerinde başka bir ses var; geri getirilemedi.",
- "e_islem_yok": "Bilinmeyen işlem: {islem}"
+ "e_islem_yok": "Bilinmeyen işlem: {islem}",
+ "ad_ver": "Bu sese ad ver",
+ "vazgec": "Vazgeç"
 }

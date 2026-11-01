@@ -132,5 +132,7 @@
  "d_ses_geri": "Suara dipulihkan",
  "e_ad_uzun": "Nama paling panjang {n} aksara.",
  "e_hedef_dolu": "Sudah ada suara lain di tempat {ses}; tidak dapat dipulihkan.",
- "e_islem_yok": "Tindakan tidak dikenali: {islem}"
+ "e_islem_yok": "Tindakan tidak dikenali: {islem}",
+ "ad_ver": "Namakan suara ini",
+ "vazgec": "Batal"
 }

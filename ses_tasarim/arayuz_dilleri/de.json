@@ -132,5 +132,7 @@
  "d_ses_geri": "Stimme wiederhergestellt",
  "e_ad_uzun": "Ein Name darf höchstens {n} Zeichen lang sein.",
  "e_hedef_dolu": "Am Platz von {ses} liegt bereits eine andere Stimme; Wiederherstellen nicht möglich.",
- "e_islem_yok": "Unbekannte Aktion: {islem}"
+ "e_islem_yok": "Unbekannte Aktion: {islem}",
+ "ad_ver": "Stimme benennen",
+ "vazgec": "Abbrechen"
 }

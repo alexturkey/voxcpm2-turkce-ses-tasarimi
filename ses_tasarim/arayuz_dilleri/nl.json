@@ -132,5 +132,7 @@
  "d_ses_geri": "Stem teruggezet",
  "e_ad_uzun": "Een naam mag hoogstens {n} tekens zijn.",
  "e_hedef_dolu": "Op de plek van {ses} staat al een andere stem; terugzetten mislukt.",
- "e_islem_yok": "Onbekende actie: {islem}"
+ "e_islem_yok": "Onbekende actie: {islem}",
+ "ad_ver": "Geef deze stem een naam",
+ "vazgec": "Annuleren"
 }

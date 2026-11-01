@@ -132,5 +132,7 @@
  "d_ses_geri": "Głos przywrócony",
  "e_ad_uzun": "Nazwa może mieć najwyżej {n} znaków.",
  "e_hedef_dolu": "Na miejscu {ses} jest już inny głos; nie udało się przywrócić.",
- "e_islem_yok": "Nieznana operacja: {islem}"
+ "e_islem_yok": "Nieznana operacja: {islem}",
+ "ad_ver": "Nazwij ten głos",
+ "vazgec": "Anuluj"
 }

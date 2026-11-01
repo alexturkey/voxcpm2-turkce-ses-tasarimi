@@ -132,5 +132,7 @@
  "d_ses_geri": "ボイスを元に戻しました",
  "e_ad_uzun": "名前は {n} 文字以内です。",
  "e_hedef_dolu": "{ses} の場所に別のボイスがあるため、元に戻せませんでした。",
- "e_islem_yok": "不明な操作：{islem}"
+ "e_islem_yok": "不明な操作：{islem}",
+ "ad_ver": "この声に名前を付ける",
+ "vazgec": "キャンセル"
 }

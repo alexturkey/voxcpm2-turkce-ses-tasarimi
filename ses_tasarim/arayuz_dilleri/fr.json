@@ -132,5 +132,7 @@
  "d_ses_geri": "Voix restaurée",
  "e_ad_uzun": "Un nom peut compter au plus {n} caractères.",
  "e_hedef_dolu": "Une autre voix occupe déjà la place de {ses} ; restauration impossible.",
- "e_islem_yok": "Action inconnue : {islem}"
+ "e_islem_yok": "Action inconnue : {islem}",
+ "ad_ver": "Nommer cette voix",
+ "vazgec": "Annuler"
 }

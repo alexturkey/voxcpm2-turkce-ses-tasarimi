@@ -132,5 +132,7 @@
  "d_ses_geri": "Rösten har återställts",
  "e_ad_uzun": "Ett namn får vara högst {n} tecken.",
  "e_hedef_dolu": "Det finns redan en annan röst på platsen för {ses}; kunde inte återställas.",
- "e_islem_yok": "Okänd åtgärd: {islem}"
+ "e_islem_yok": "Okänd åtgärd: {islem}",
+ "ad_ver": "Ge rösten ett namn",
+ "vazgec": "Avbryt"
 }

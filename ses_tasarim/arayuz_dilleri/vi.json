@@ -132,5 +132,7 @@
  "d_ses_geri": "Đã khôi phục giọng",
  "e_ad_uzun": "Tên dài tối đa {n} ký tự.",
  "e_hedef_dolu": "Vị trí của {ses} đã có giọng khác; không khôi phục được.",
- "e_islem_yok": "Thao tác không xác định: {islem}"
+ "e_islem_yok": "Thao tác không xác định: {islem}",
+ "ad_ver": "Đặt tên cho giọng này",
+ "vazgec": "Hủy"
 }

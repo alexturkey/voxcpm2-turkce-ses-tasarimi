@@ -132,5 +132,7 @@
  "d_ses_geri": "Ääni palautettu",
  "e_ad_uzun": "Nimessä voi olla enintään {n} merkkiä.",
  "e_hedef_dolu": "Äänen {ses} paikalla on jo toinen ääni; palautus ei onnistunut.",
- "e_islem_yok": "Tuntematon toiminto: {islem}"
+ "e_islem_yok": "Tuntematon toiminto: {islem}",
+ "ad_ver": "Nimeä tämä ääni",
+ "vazgec": "Peruuta"
 }

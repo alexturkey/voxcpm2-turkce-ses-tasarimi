@@ -132,5 +132,7 @@
  "d_ses_geri": "Sauti imerejeshwa",
  "e_ad_uzun": "Jina linaweza kuwa na herufi {n} tu kwa upeo.",
  "e_hedef_dolu": "Tayari kuna sauti nyingine mahali pa {ses}; haikuweza kurejeshwa.",
- "e_islem_yok": "Kitendo kisichojulikana: {islem}"
+ "e_islem_yok": "Kitendo kisichojulikana: {islem}",
+ "ad_ver": "Ipe sauti hii jina",
+ "vazgec": "Ghairi"
 }

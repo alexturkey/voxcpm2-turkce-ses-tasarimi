@@ -132,5 +132,7 @@
  "d_ses_geri": "Naibalik ang boses",
  "e_ad_uzun": "Hanggang {n} karakter lang ang pangalan.",
  "e_hedef_dolu": "May ibang boses na sa lugar ng {ses}; hindi maibalik.",
- "e_islem_yok": "Hindi kilalang aksyon: {islem}"
+ "e_islem_yok": "Hindi kilalang aksyon: {islem}",
+ "ad_ver": "Pangalanan ang boses na ito",
+ "vazgec": "Kanselahin"
 }

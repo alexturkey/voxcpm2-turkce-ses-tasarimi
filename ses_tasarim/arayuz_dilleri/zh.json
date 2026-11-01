@@ -132,5 +132,7 @@
  "d_ses_geri": "声音已恢复",
  "e_ad_uzun": "名称最多 {n} 个字符。",
  "e_hedef_dolu": "{ses} 的位置已有另一个声音，无法恢复。",
- "e_islem_yok": "未知操作：{islem}"
+ "e_islem_yok": "未知操作：{islem}",
+ "ad_ver": "为这个声音命名",
+ "vazgec": "取消"
 }

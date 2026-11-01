@@ -132,5 +132,7 @@
  "d_ses_geri": "Stemmen er gendannet",
  "e_ad_uzun": "Et navn må højst være {n} tegn.",
  "e_hedef_dolu": "Der ligger allerede en anden stemme på {ses}s plads; kunne ikke gendannes.",
- "e_islem_yok": "Ukendt handling: {islem}"
+ "e_islem_yok": "Ukendt handling: {islem}",
+ "ad_ver": "Giv stemmen et navn",
+ "vazgec": "Annuller"
 }
