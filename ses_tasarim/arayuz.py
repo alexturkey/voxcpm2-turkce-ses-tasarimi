@@ -401,9 +401,9 @@ const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,to
 // İnen okumanın adı: ses adı + okuma zamanı (Zeynep_Belgesel_Anlatici_2026-11-02_0152.wav). Harfler (Türkçe, Arapça…) kalır;
 // Windows/macOS'ta yasak işaretler, yön işaretleri ve boşluk '_' olur, baştaki/sondaki nokta atılır. Zaman sunucunun özetinden.
 // Downloaded reading name: voice name + reading time; letters stay, characters forbidden in file names become '_'.
-const indirmeAdi=(ad,tarih)=>{const a=String(ad||'').normalize('NFC').replace(/[\\/:*?"<>|\u0000-\u001f\u007f\u200E\u200F\u202A-\u202E\u2066-\u2069]+/g,' ')
-  .trim().replace(/\s+/g,'_').replace(/^[._]+|[._]+$/g,'').slice(0,60).replace(/[._]+$/,'')||'okuma';
- const z=String(tarih||'').match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})/);return `${a}${z?`_${z[1]}_${z[2]}${z[3]}`:''}.wav`;};
+const indirmeAdi=(ad,tarih)=>{const a=String(ad||'').normalize('NFC').replace(/[\\/:*?"<>|\u0000-\u001f\u007f\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]+/g,' ')
+  .trim().replace(/\s+/g,'_').replace(/^[._]+|[._]+$/g,'');const b=Array.from(a).slice(0,60).join('').replace(/[._]+$/,'')||'okuma';
+ const z=String(tarih||'').match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})/);return `${b}${z?`_${z[1]}_${z[2]}${z[3]}`:''}.wav`;};
 function okumaCiz(){const r=sonOkuma;if(!r)return;const k=SesMenu.bul(r.kimlik),ad=indirmeAdi(k?adGoster(k):r.ses,r.tarih);
  $('sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/okuma.wav"></audio> ${indir('/okuma/'+r.is+'/okuma.wav',ad)}<div><small>${esc(ozet(r))}</small></div>`;
  Okunan.bagla($('sonuc').querySelector('audio'));}

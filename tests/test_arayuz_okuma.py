@@ -44,7 +44,9 @@ console.log(JSON.stringify([
  indirmeAdi('\u2068صوت الراوي\u2069',T),
  indirmeAdi('Ad',undefined),
  indirmeAdi('x'.repeat(200),T).length,
- indirmeAdi('a\\b\tc',T)]));""")
+ indirmeAdi('a\\b\tc',T),
+ Array.from(indirmeAdi('a'+'\u{1F600}'.repeat(80),T)).some(c=>c.length===1&&/[\uD800-\uDFFF]/.test(c)),
+ indirmeAdi('\u061C\u200BAd\uFEFF\u2060',T)]));""")
         self.assertEqual(R[0], "Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav")
         self.assertEqual(R[1], "Şule_Gece_Ölçü_2026-11-02_0152.wav")
         self.assertEqual(R[2], "gizli_2026-11-02_0152.wav")
@@ -53,7 +55,9 @@ console.log(JSON.stringify([
         self.assertEqual(R[5], "Ad.wav")
         self.assertEqual(R[6], 60 + len("_2026-11-02_0152.wav"))
         self.assertEqual(R[7], "a_b_c_2026-11-02_0152.wav")
-        for ad in R[:6] + R[7:]:
+        self.assertFalse(R[8])  # yarım vekil çift yok / no lone surrogate after the length cut
+        self.assertEqual(R[9], "Ad_2026-11-02_0152.wav")
+        for ad in R[:6] + [R[7], R[9]]:
             self.assertNotRegex(ad, r'[\\/:*?"<>|\x00-\x1f]')
 
 
