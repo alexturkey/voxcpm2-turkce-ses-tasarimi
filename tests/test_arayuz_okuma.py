@@ -92,5 +92,25 @@ console.log(JSON.stringify(R));""")
         self.assertEqual(R["g"], "[1,null]")  # satır sayısı kadar bant / one band per line
 
 
+class KisaYol(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("node"), "node yok")
+    def test_ctrl_enter(self):
+        R = node(kes("const anaIs=", "const KISAYOL=") + r"""
+const E=o=>({key:'Enter',ctrlKey:false,metaKey:false,altKey:false,shiftKey:false,isComposing:false,repeat:false,defaultPrevented:false,...o});
+console.log(JSON.stringify([anaIs(E({ctrlKey:true}),'p1'),anaIs(E({metaKey:true}),'p2'),anaIs(E({ctrlKey:true}),'p3'),
+ anaIs(E({}),'p2'),anaIs(E({altKey:true}),'p2'),anaIs(E({ctrlKey:true,altKey:true}),'p2'),anaIs(E({ctrlKey:true,shiftKey:true}),'p2'),
+ anaIs(E({ctrlKey:true,isComposing:true}),'p2'),anaIs(E({ctrlKey:true,repeat:true}),'p2'),anaIs(E({ctrlKey:true,defaultPrevented:true}),'p1'),
+ anaIs(E({ctrlKey:true,key:'a'}),'p1')]));""")
+        self.assertEqual(R, ["btn_tasarla", "btn_oku", None, None, None, None, None, None, None, None, None])
+
+    def test_pasif_dugme_ve_menu(self):
+        k = kes("const anaIs=", "function dosyaAdi")
+        self.assertIn("if(Acilir.acikMi())return;", k)
+        self.assertIn("if(!b.disabled)b.click();", k)
+        self.assertNotIn(".focus(", k)  # kısayol odak taşımaz / the shortcut never moves focus
+        # Defterin kendi Enter'ı Ctrl/Meta'lı Enter'a karışmaz / the notebook's own Enter ignores Ctrl/Meta+Enter
+        self.assertIn("if(e.key!=='Enter'||e.shiftKey||e.ctrlKey||e.metaKey", JS)
+
+
 if __name__ == "__main__":
     unittest.main()

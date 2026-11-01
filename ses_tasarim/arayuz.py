@@ -891,6 +891,15 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=nul
  const ses=SesMenu.deger,j=await api('/api/oku',{ses,metin:Durak.metin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
  const s=await bekle(j.is,$('d_oku'),$('p_oku'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;sonOkuma={...s.sonuc,kimlik:ses};okumaCiz();};
+// Ctrl+Enter (Mac'te ⌘+Enter): açık sekmenin ana işini başlatır (Tasarla / Bu sesle oku); düğme pasifse hiçbir şey olmaz.
+// Alt'lı ve Shift'li Enter (defter kısayolları), menü/ad kutusunun kendi Enter'ı (preventDefault) ve açık menü etkilenmez; odak taşınmaz.
+// Ctrl/Cmd+Enter starts the open tab's main action; a disabled button does nothing; other Enter shortcuts are untouched.
+const anaIs=(e,panel)=>e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.altKey&&!e.shiftKey&&!e.isComposing&&!e.repeat&&!e.defaultPrevented
+ ?({p1:'btn_tasarla',p2:'btn_oku'}[panel]||null):null;
+const KISAYOL=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'')?'⌘ Enter':'Ctrl+Enter';
+['btn_tasarla','btn_oku'].forEach(id=>{$(id).setAttribute('aria-keyshortcuts','Control+Enter Meta+Enter');$(id).title=KISAYOL;});
+document.addEventListener('keydown',e=>{if(Acilir.acikMi())return;const id=anaIs(e,(document.querySelector('.kart>.panel:not([hidden])')||{}).id),b=id&&$(id);
+ if(!b)return;e.preventDefault();if(!b.disabled)b.click();});
 
 function dosyaAdi(){const f=$('klon_dosya').files[0];$('dosya_ad').textContent=f?f.name:t('dosya_yok');}
 $('dosya_btn').onclick=()=>$('klon_dosya').click();

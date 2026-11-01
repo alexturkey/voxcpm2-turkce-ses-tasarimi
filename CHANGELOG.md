@@ -3,6 +3,8 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Ctrl+Enter (Mac'te ⌘+Enter): *Ses tasarla* sekmesinde *Tasarla*'yı, okuma sekmesinde *Bu sesle oku*'yu başlatır
+  (düğme pasifken ya da menü açıkken hiçbir şey yapmaz; defterin Enter ve Alt kısayolları aynı kalır; odak yerinde kalır).
 - Okuma metni ve bekleme bantları sayfa yenilenince kaybolmaz: tarayıcının yerel belleğinde durur (yazarken 400 ms
   seyreltilerek, sayfadan çıkarken hemen; açılış bitmeden hiçbir şey yazılmaz). Seçili ses zaten hatırlanıyordu.
 - İnen okumanın adı artık hep `okuma.wav` değil: ses adı + okuma zamanı (ör. `Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav`).
@@ -137,6 +139,8 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Ctrl+Enter (⌘+Enter on Mac) starts *Design* on the design tab and *Read with this voice* on the reading tab (nothing
+  happens while the button is disabled or a menu is open; the notebook's Enter and Alt shortcuts are unchanged; focus stays put).
 - The reading text and its pause bands survive a page reload: kept in the browser's local storage (debounced 400 ms
   while typing, at once when the page is left; nothing is written before loading finishes). The chosen voice was already remembered.
 - The downloaded reading is no longer always `okuma.wav`: voice name + reading time (e.g.
