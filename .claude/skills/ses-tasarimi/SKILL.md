@@ -1,9 +1,9 @@
 ---
 name: ses-tasarimi
-description: "Design a new synthetic voice with VoxCPM2 in this repo and read long text with it consistently, in any of the 8 tested languages (tr, en, fr, de, es, ru, zh, ja): the user describes the voice, the skill writes the English voice prompt and the design text, designs several variants (one seed each), lets the user listen to each variant reading real text with its own reference and seed, fixes the chosen one, then reads long text sentence by sentence. Use when the user says 'design a voice', 'new voice', 'narrator voice', 'ses tasarla', 'yeni ses', 'şöyle bir ses istiyorum', 'read this text', 'seslendir', or asks for a voice in another language."
+description: "Design a new synthetic voice with VoxCPM2 in this repo and read long text with it consistently, in any of the 30 VoxCPM2 languages (all tested; bundled voices: tr, en, fr, de, es, ru, zh, ja): the user describes the voice, the skill writes the English voice prompt and the design text, designs several variants (one seed each), lets the user listen to each variant reading real text with its own reference and seed, fixes the chosen one, then reads long text sentence by sentence. Use when the user says 'design a voice', 'new voice', 'narrator voice', 'ses tasarla', 'yeni ses', 'şöyle bir ses istiyorum', 'read this text', 'seslendir', or asks for a voice in another language."
 ---
 
-# Ses tasarımı / Voice design (VoxCPM2, 8 languages)
+# Ses tasarımı / Voice design (VoxCPM2, 30 languages)
 
 Türkçe özet aşağıda. / Turkish summary below.
 

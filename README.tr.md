@@ -3,7 +3,10 @@
 **4 GB ekran kartında VoxCPM2 ile Türkçe ses tasarımı.** Sesi İngilizce tarif edin, model yaratsın, beğendiğiniz çeşidi
 seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, GTX 1050 Ti'ye (4 GB) sığdırılmış yamalı
 [audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve on dört hazır yapay ses içerir: yedi Türkçe ses ve İngilizce, Fransızca, Almanca,
-İspanyolca, Rusça, Çince, Japonca yedi yerli anlatıcı (toplam 8 dil).
+İspanyolca, Rusça, Çince, Japonca yedi yerli anlatıcı.
+
+- Uygulama 30 dilde okur, arayüzü de 30 dildir.
+- Hazır gelen 14 ses: 7 Türkçe, ayrıca İngilizce, Fransızca, Almanca, İspanyolca, Rusça, Çince ve Japonca birer ses.
 
 [English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
@@ -11,7 +14,7 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 > izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
 > yapay zekâ ürünü olarak etiketleyin. Bkz. [ETHICS.md](ETHICS.md).
 
-## Çok dilli: 8 dil, yerli anlatıcılar, cümle cümle tutarlılık
+## 30 dil
 
 Bir Kapadokya tanıtım videosunu 8 dilde ürettik: Türkçe, İngilizce, Fransızca, Almanca, İspanyolca, Rusça, Çince ve
 Japonca. Her dilin kendi **yerli anlatıcısı** var; hepsi VoxCPM2 ile İngilizce bir tariften tasarlandı. Hepsi 4 GB'lık
@@ -40,7 +43,7 @@ tasarım metni, tohumu ve referans kaydıyla burada.
 **Neden cümle cümle.** VoxCPM2 tek seferde uzun üretimde (yaklaşık 30 saniye üstü) kararlı değildir: ritim hızlanır,
 ses kayabilir. Burada sesi sabit bir referans kayıt ve tohum taşır, uzun metin satır satır (cümle cümle) okunur; tını ve
 tarz ilk cümleden son cümleye aynı kalır. Türkçe dışındaki dillerde Türkçe okunuş sözlüğü uygulanmaz. VoxCPM2'nin
-desteklediği başka diller kendi dilinde metinle (ya da `--dil <kod>`) çalışmalı; onları denemedik. Dil dil komutlar ve bulduğumuz çözümler:
+desteklediği 30 dilin hepsi denendi ve çalışıyor; hazır sesi olmayan diller için `--dil <kod>` kullanılır. Dil dil komutlar ve bulduğumuz çözümler:
 [docs/cok_dilli.md](docs/cok_dilli.md). Bütün tasarım akışı için Claude Code becerisi:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
@@ -108,7 +111,7 @@ teşekkür ederiz!
 
 ## Nasıl çalışır
 
-1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan Türkçe *metin* + çeşit sayısı. Her çeşidin kendi
+1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan, sesin dilinde *metin* + çeşit sayısı. Her çeşidin kendi
    tohumu vardır; motora `(tarif)metin` gider, her tohum için bir tasarım kaydı döner. Metin sesi tanımak için kısa
    bir örnektir: 1-2 cümle, en fazla ~20 sn (arayüz süreyi gösterir, 22 sn üstünü başlatmaz); uzun metin 2. adımda okunur.
 2. **Referanslı okuma.** Tasarım kaydı motorun **iki** girişine birden verilir (`audio` ve `voice_ref`), yanında o
@@ -243,8 +246,8 @@ Dil metinden otomatik tanınır (Türkçe harfler, yazı sistemi, sık sözcükl
 uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
 Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
-adresini kendiniz açın (başka port: `--port 8800`). Üç kutu (tarif, yaratılırken okunan metin, okunacak metin) + çeşit
-sayısı. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Okuma kutusunda satır
+adresini kendiniz açın (başka port: `--port 8800`). Dört sekme: *Ses tasarla*, *Bu sesle oku*, *Ses klonlama*,
+*Hazır sesler*. *Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. Okuma kutusunda satır
 numarasına tıklayınca satır menüsü açılır (taşı, çoğalt, sil; Alt+↑/↓), iki satır arasındaki ince banda tıklayınca durak
 süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Sunucuyu Ctrl+C
 ile kapatın.
@@ -278,7 +281,7 @@ yapay zekâ ürünü olarak etiketleyin.
 **İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,
 kısık), ton ve rol (sakin belgesel anlatıcısı, enerjik sunucu), tempo (yavaş, ölçülü) ve "clean studio recording, no
 background noise". Tarif olsun, senaryo olmasın; parantez kullanmayın. 3-5 çeşit isteyip dinleyin: tohum sesi çok
-değiştirir. Yaratılırken okunan metin için istediğiniz havada 3-5 doğal Türkçe cümle (≈ 20-30 sn konuşma). Okumada
+değiştirir. Yaratılırken okunan metin için istediğiniz havada, sesin dilinde 1-2 doğal cümle (en fazla ~20 sn konuşma). Okumada
 satır başına bir cümle; uzun cümleyi bölün, rakamı yazıyla yazın.
 
 ## Katkı
@@ -299,6 +302,7 @@ Katılan herkes [Davranış Kuralları](CODE_OF_CONDUCT.md)'na uyar: nazik olun,
 
 - [@alexturkey](https://github.com/alexturkey): bakıcı; kod, hazır sesler, belgeler
 - [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal desteği, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
+- [@grogureis](https://github.com/grogureis): CPU arka ucunda çok cümleli okumada cümle sonu (EOS) düzeltmesi, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
 
 Adınız da burada yer alabilir: kendi kartınızdaki test sonucu, test setine bir cümle, tasarladığınız bir ses, açık bir
 hata bildirimi ya da bir PR, hepsi katkıdır. Deneyip geri yazan herkese teşekkürler.

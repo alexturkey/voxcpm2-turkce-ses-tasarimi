@@ -44,8 +44,8 @@ class Sorun(str):
 
 
 def language(code) -> str:
-    """Dil kodunu doğrular ("tr", "en", ...); boşsa "tr". Listede olmayan kod da kabul edilir (ölçülmemiş).
-    Normalizes a language code; empty means "tr". Codes outside LANGUAGES are allowed but untested."""
+    """Dil kodunu doğrular ("tr", "en", ...); boşsa "tr". Listede olmayan kod da kabul edilir (denendi; hazır sesi ve sözlüğü yok).
+    Normalizes a language code; empty means "tr". Codes outside LANGUAGES are allowed (tested; no bundled voice or dictionary)."""
     code = str(code or DEFAULT_LANGUAGE).strip().lower()
     if not re.fullmatch(r"[a-z]{2,3}(-[a-z0-9]{2,8})?", code):
         raise ValueError(f"dil kodu tanınmadı / bad language code: {code!r} (ör. tr, en, fr, de, es, ru, zh, ja)")

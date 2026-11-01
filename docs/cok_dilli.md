@@ -2,7 +2,7 @@
 
 Türkçesi aşağıda. / Turkish below.
 
-## 8 tested languages
+## 8 languages with bundled voices
 
 | Code | Language | Bundled voice | Text rules |
 |---|---|---|---|
@@ -17,7 +17,7 @@ Türkçesi aşağıda. / Turkish below.
 
 "Tested" means: on our own machine (GTX 1050 Ti 4 GB, fully local) we designed a native narrator for each language and
 read a full 24-sentence documentary script with it, and this repo's code read sentences in each language with the
-bundled voices. Other languages that VoxCPM2 supports should work with `--dil <code>`; we have not tested them.
+bundled voices. All 30 languages VoxCPM2 supports were tested and work; use `--dil <code>` for the ones without a bundled voice.
 
 Language selection: detected automatically from the text (Turkish-only letters → `tr`, kana → `ja`, Han → `zh`, Cyrillic → `ru`,
 Latin text by common words); if unsure, the `dil` field of the voice card; if that is missing, `tr`. `--dil` is optional and overrides. For any language other than `tr` the Turkish dictionary is skipped, so foreign words are not rewritten.
@@ -75,9 +75,9 @@ So: same reference + same seed + same transcript gives the same voice, and sente
 
 ## Türkçe
 
-Denenen 8 dil: `tr en fr de es ru zh ja`. "Denendi" demek: kendi makinemizde (GTX 1050 Ti 4 GB, tamamen yerel) her dil
+Hazır sesi olan 8 dil: `tr en fr de es ru zh ja`. "Denendi" demek: kendi makinemizde (GTX 1050 Ti 4 GB, tamamen yerel) her dil
 için yerli anlatıcı tasarlandı, 24 cümlelik belgesel metni okutuldu; bu repodaki kod da her dilde hazır seslerle cümle
-okuttu. VoxCPM2'nin desteklediği başka diller `--dil <kod>` ile çalışmalı; onları denemedik.
+okuttu. VoxCPM2'nin desteklediği 30 dilin hepsi denendi ve çalışıyor; hazır sesi olmayan diller için `--dil <kod>` kullanılır.
 
 Dil seçimi: metinden otomatik tanınır (Türkçeye özgü harf → `tr`, kana → `ja`, Han → `zh`, Kiril → `ru`, Latin metinde sık sözcükler); kararsızsa sesin kartındaki `dil`; o da yoksa `tr`. `--dil` isteğe bağlıdır ve önceliklidir. `tr` dışındaki dillerde Türkçe
 okunuş sözlüğü uygulanmaz, kesme işareti kalır, rakam reddedilir (sayıyı o dilde yazıyla yaz).

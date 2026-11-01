@@ -86,6 +86,8 @@
   metni, README, issue/PR şablonları, CONTRIBUTING, THIRD_PARTY) yeni çizgiye göre yeniden yazıldı; motor hata ya
   da Ctrl+C'de kapatılır, geçici klasör hata yolunda da silinir (kilitliyse yeniden denenir); komut satırı
   `--onay` yoksa kaydı okumadan reddeder, hata mesajları ve `--help` TR/EN; arayüz 3 sn altı ve 30-36 sn uyarısı.
+- CPU arka ucunda (`ayarlar.json` içinde `"backend": "cpu"`) çok cümleli okumada cümle sonu (EOS) tespiti
+  düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
 - Design a voice: the design text box is now *Sample sentence (to get to know the voice, 1-2 sentences)*; 3 lines high,
@@ -176,6 +178,8 @@
   issue/PR templates, CONTRIBUTING, THIRD_PARTY) rewritten for the new policy; the engine is killed on error or
   Ctrl+C and the temp folder is deleted on the failure path too (retried if locked); the CLI refuses without
   `--onay` before reading the recording, errors and `--help` are TR/EN; UI warns under 3 s and for 30-36 s.
+- CPU backend (`"backend": "cpu"` in `ayarlar.json`): end-of-sentence (EOS) detection fixed for multi-sentence
+  reading, long text is no longer cut; `decoder_seen` guard against block drift. Contributed by @grogureis, #14.
 
 ## v0.1.1 — 2026-10-23
 

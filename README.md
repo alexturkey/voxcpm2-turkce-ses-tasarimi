@@ -4,7 +4,10 @@
 variant you like, then read any Turkish text with that voice. Includes a one-command installer, a patched
 [audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and fourteen
 ready-made synthetic voices: seven Turkish and seven native narrators in English, French, German, Spanish,
-Russian, Chinese and Japanese (8 languages in total).
+Russian, Chinese and Japanese.
+
+- The app reads in 30 languages; the interface is in 30 languages too.
+- 14 ready-made voices: 7 Turkish, plus one each in English, French, German, Spanish, Russian, Chinese and Japanese.
 
 [Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
@@ -12,7 +15,7 @@ Russian, Chinese and Japanese (8 languages in total).
 > voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
 > fraud and deception are prohibited. Label what you generate as AI-generated. See [ETHICS.md](ETHICS.md).
 
-## Multilingual: 8 languages, native narrators, sentence-by-sentence consistency
+## 30 languages
 
 We made one Cappadocia documentary video in 8 languages: Turkish, English, French, German, Spanish, Russian, Chinese
 and Japanese. Each language has its own **native narrator**, designed with VoxCPM2 from an English description. All of
@@ -41,8 +44,8 @@ narrators are bundled here, with their prompt, design text, seed and reference r
 **Why sentence by sentence.** VoxCPM2 is not stable for a single long generation (roughly above 30 seconds): the rhythm
 speeds up and the voice can drift. Here the voice is carried by a fixed reference recording and seed, and long text is
 read one sentence per line, so timbre and style stay the same from the first sentence to the last. For languages other
-than Turkish the Turkish pronunciation dictionary is not applied. Other languages VoxCPM2 supports should work with
-a text in their language (or `--dil <code>`); we have not tested them. Per-language commands and the lessons we learned:
+than Turkish the Turkish pronunciation dictionary is not applied. All 30 languages VoxCPM2 supports were tested and work; use
+`--dil <code>` for the ones without a bundled voice. Per-language commands and the lessons we learned:
 [docs/cok_dilli.md](docs/cok_dilli.md). Claude Code skill for the whole design flow:
 [.claude/skills/ses-tasarimi/SKILL.md](.claude/skills/ses-tasarimi/SKILL.md).
 
@@ -108,7 +111,7 @@ here; installation steps and support questions go there. Thank you, Emre, for br
 
 ## How it works
 
-1. **Voice design.** An English *voice description* + a Turkish *text read while the voice is created* + a number of
+1. **Voice design.** An English *voice description* + a *text read while the voice is created* (in the voice's language) + a number of
    variants. Each variant gets its own seed; the engine receives `(description)text` and returns a design recording
    per seed. The text is a short sample to get to know the voice: 1-2 sentences, at most ~20 s (the UI shows the
    estimate and will not start above 22 s); long text belongs in step 2.
@@ -245,7 +248,7 @@ Language is detected from the text (Turkish letters, script, common words; the v
 skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
 Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
-yourself (another port: `--port 8800`). Three boxes (description, creation text, text to read) + variant count.
+yourself (another port: `--port 8800`). Four tabs: *Design a voice*, *Read with this voice*, *Voice cloning*, *Bundled voices*.
 *Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
 In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
 between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
@@ -280,8 +283,8 @@ and deception are prohibited. See [ETHICS.md](ETHICS.md). Label what you publish
 **How do I write a good voice description?** In English, 1-3 sentences: age and gender, timbre (deep/bright, warm,
 nasal, raspy), tone and role (calm documentary narrator, energetic presenter), tempo (slow, measured), and
 "clean studio recording, no background noise". Keep it a description, not a script; no parentheses. Ask for 3-5
-variants and listen: the seed changes the voice a lot. For the creation text use 3-5 natural Turkish sentences in the
-mood you want (≈ 20-30 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
+variants and listen: the seed changes the voice a lot. For the creation text use 1-2 natural sentences in the voice's language, in the
+mood you want (at most ~20 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
 
 ## Contributing
 
@@ -301,6 +304,7 @@ Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md): be kind,
 
 - [@alexturkey](https://github.com/alexturkey): maintainer; code, bundled voices, docs
 - [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal support, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
+- [@grogureis](https://github.com/grogureis): end-of-sentence (EOS) fix for multi-sentence reading on the CPU backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
 
 Your name belongs here too: a test result from your GPU, a sentence for the test set, a voice you designed, a clear bug
 report or a pull request all count as contributions. Thank you to everyone who tries it and writes back.
@@ -310,9 +314,3 @@ report or a pull request all count as contributions. Thank you to everyone who t
 Code and bundled voices: Apache-2.0, Copyright 2026 Ali Haydar Ozturk. Built on VoxCPM2 (OpenBMB, Apache-2.0),
 audio.cpp (ShugoAI LLC, Apache-2.0) and the audio.cpp GGUF conversion. Full list: [THIRD_PARTY.md](THIRD_PARTY.md).
 Not affiliated with OpenBMB, ModelBest or the audio.cpp project.
-
-## Sürüm Notları
-
-### Güncelleme (PR #14)
-
-- CPU arka ucunda (--backend cpu) uzun metinlerde cümle sonu (EOS) algılama sorunu giderildi. Artık CPU'da da uzun metinler kesilmeden okunuyor. Ayrıca olası 'blok kayması' riskine karşı decoder_seen koruması eklendi. Katkılarından dolayı @grogureis'e teşekkürler.

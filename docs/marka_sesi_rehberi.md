@@ -19,7 +19,7 @@
    .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad marka --tarif "middle-aged woman, warm and confident, medium pace, quiet studio" --metin @yaratim_metni.txt --cesit 4
    .venv\Scripts\python.exe -m ses_tasarim.oku --ses marka/2 --metin @metin.txt --cikti cikti\marka
    ```
-   Yaratılırken okunan metin 25-35 saniyelik, rakamsız, tırnaksız Türkçe bir paragraf olsun; sesin karakterini
+   Yaratılırken okunan metin 1-2 cümlelik (en fazla ~20 saniye), rakamsız, tırnaksız Türkçe bir metin olsun; sesin karakterini
    taşısın (sakin bir ses için sakin bir metin).
 5. **Kaydet:** tarifi, tohumu ve onay notunu birlikte sakla (`sesler/<ad>/cesit_N/ses.json` zaten tutar);
    marka sesin yeniden üretilebilir olsun. Paylaşmak istersen: [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8).
@@ -38,8 +38,8 @@ Not: 4 GB GTX 1050 Ti üzerinde bir çeşit yaklaşık 55 saniye, okumada 1 sani
    neutral narrator, cheerful teen).
 4. **Variants and seeds:** generate several variants for the same prompt, listen, pick the best. The same seed gives
    the same voice; the chosen seed stays fixed for reading (stored in `ses.json`). Commands as above
-   (`ses_tasarim.tasarla --cesit 4`, then `ses_tasarim.oku --ses <name>/<variant>`). The creation text is a
-   25-35 s Turkish paragraph without digits or quotes, in the character of the voice.
+   (`ses_tasarim.tasarla --cesit 4`, then `ses_tasarim.oku --ses <name>/<variant>`). The creation text is
+   1-2 Turkish sentences (at most ~20 s) without digits or quotes, in the character of the voice.
 5. **Save** prompt, seed and approval note together (`sesler/<name>/cesit_N/ses.json` already holds them) so the brand
    voice is reproducible. To share one: [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8).
 6. **Ethics:** this guide is about designing a voice from a description. Describe a character and a feel, not a real

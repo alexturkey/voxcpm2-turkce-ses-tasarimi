@@ -1,11 +1,11 @@
 # Ses Tasarımı: macOS app / Mac uygulaması
 
-Native SwiftUI app with the same three sections as the web UI (`ses_tasarim/arayuz.py`): design a voice, read with it
+Native SwiftUI app with three of the web UI's sections (`ses_tasarim/arayuz.py`): design a voice, read with it
 (or with a bundled voice), clone your own or a consented voice. Apple Silicon, macOS 14+. The user needs no Python,
 Homebrew or Terminal: the patched engine is inside the app and the model is downloaded on first launch (2.96 GB, pinned
 revision, sha256-verified, pause/resume). For the Python route on a Mac see [`../docs/mac.md`](../docs/mac.md).
 
-Türkçe: web arayüzüyle aynı üç bölümlü Mac uygulaması. Kullanıcı Python, Homebrew ya da Terminal kurmaz; yamalı motor
+Türkçe: web arayüzünün üç bölümünü (tasarla, oku, klonla) taşıyan Mac uygulaması. Kullanıcı Python, Homebrew ya da Terminal kurmaz; yamalı motor
 uygulamanın içindedir, model ilk açılışta bir kez indirilir (sha256 doğrulanır, duraklatılıp sürdürülebilir).
 
 ## What maps to what
