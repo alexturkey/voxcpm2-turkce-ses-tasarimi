@@ -283,8 +283,8 @@ function hazirCiz(){const h=sesler.hazir,say={};for(const k of h)say[sesDili(k)]
  const d=Object.keys(say).sort((a,b)=>dilSira(a,dil)-dilSira(b,dil));let s=hafiza('hazir_dil');if(!say[s])s='tumu';
  $('hazir_diller').innerHTML=`<button type="button" data-hdil="tumu" aria-pressed="${s==='tumu'}"><span>${esc(t('tumu'))}</span><b>${h.length}</b></button>`
   +d.map(x=>{const a=DIL_ADI(x);return `<button type="button" data-hdil="${esc(x)}" aria-pressed="${s===x}" title="${esc(a)}" aria-label="${esc(t('hazir_sayi',{dil:a,n:say[x]}))}">${bayrakImg(x)||`<span>${esc(x)}</span>`}<b>${say[x]}</b></button>`;}).join('');
- $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b>${esc(k.gorunen_ad||k.ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
-  +`<button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}</div><small>${esc(tanitim(k))}</small>`
+ $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b dir="auto">${esc(k.gorunen_ad||k.ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
+  +`<button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}</div><small dir="auto">${esc(tanitim(k))}</small>`
   +`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
 $('hazir_diller').onclick=e=>{const b=e.target.closest('[data-hdil]');if(!b)return;hafiza('hazir_dil',b.dataset.hdil);hazirCiz();
  const y=$('hazir_diller').querySelector(`[data-hdil="${b.dataset.hdil}"]`);if(y)y.focus();};
@@ -657,10 +657,10 @@ const SesMenu={deger:'',
   return (sesSirala(sesler.hazir,dil)[0]||sesler.tasarlanan[0]||{}).kimlik||'';},
  sec(k,kalici=true){this.deger=k||'';if(kalici&&k)hafiza('ses',k);this.ciz();},
  ciz(){const k=this.bul(this.deger),b=$('ses'),ad=k?sesAdi(k):'—';
-  b.innerHTML=(k?bayrakImg(sesDili(k)):'')+`<em>${esc(ad)}</em><i aria-hidden="true">▾</i>`;b.title=t('ses_sec',{ad});b.setAttribute('aria-label',b.title);},
+  b.innerHTML=(k?bayrakImg(sesDili(k)):'')+`<em dir="auto">${esc(ad)}</em><i aria-hidden="true">▾</i>`;b.title=t('ses_sec',{ad});b.setAttribute('aria-label',b.title);},
  menu(){const b=$('ses'),g=this.bolumler(sesler,okumaListesi,dil),r=b.getBoundingClientRect(),secili=this.bul(this.deger);
   const satir=k=>{const f=okumaListesi.includes(k.kimlik),ad=sesAdi(k);
-   return `<div class="satir ses" role="group"><button type="button" role="menuitemradio" data-sec="${esc(k.kimlik)}" aria-checked="${k.kimlik===this.deger}" title="${esc(t('tohum_n',{n:k.okuma_tohumu}))}">${bayrakImg(sesDili(k))}<em>${esc(ad)}</em></button>`
+   return `<div class="satir ses" role="group"><button type="button" role="menuitemradio" data-sec="${esc(k.kimlik)}" aria-checked="${k.kimlik===this.deger}" title="${esc(t('tohum_n',{n:k.okuma_tohumu}))}">${bayrakImg(sesDili(k))}<em dir="auto">${esc(ad)}</em></button>`
     +`<button type="button" role="menuitemcheckbox" class="kalp${f?' dolu':''}" data-fav="${esc(k.kimlik)}" aria-checked="${f}" aria-label="${esc(t(f?'kalp_cikar':'kalp_ekle',{ses:ad}))}">${KALP}</button></div>`;};
   const grup=(ad,l)=>l.length?`<div class="grup" aria-hidden="true">${esc(ad)}</div>`+l.map(satir).join(''):'';
   const govde=[grup(t('okuma_listem'),g.liste),grup(t('hazir'),g.hazir),grup(t('tasarlanan_sesler'),g.tasarlanan)].filter(Boolean).join('<hr>');
