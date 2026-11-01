@@ -22,6 +22,14 @@
   Spikeri*, *Masal Cadısı*, *Tok Sesli Anlatıcı*, *Yaşlı Bilge*, *Gizemli Bilge*; yabancı dildekiler *Fransızca Belgesel
   Anlatıcı* kalıbında. Yalnız `gorunen_ad` değişti; klasör adı ve kimlik (`hazir/belgesel_hanim` vb.) aynı, komut satırı ve
   okuma listesi etkilenmez.
+- Ses yönetimi: *Bu sesle oku* ses menüsünde her satırın ⋯ düğmesi (üstüne gelince görünür), *Ses tasarla* çeşit kartı ve
+  *Hazır sesler* kartındaki ⋯ aynı menüyü açar: *Bu sesle oku*, okuma listesine ekle/çıkar, *Yeniden adlandır* (menüde
+  kutu, Enter ya da ✓; boş bırakınca asıl ad döner; *Asıl ada dön*), tasarlanan seste *Sil*, hazır seste *Gizle*. Silme
+  ve gizleme önce onay sorar. Silinen ses `sesler/_cop/` altına taşınır, gizlenen hazır ses repodaki dosyaya yazılmaz;
+  takma adlar ve gizlenenler `sesler/yerel_katman.json` dosyasında durur (repoya girmez). Ses menüsünün altındaki
+  *Gizlenen ve silinen sesler (N)* bölümünden *Geri getir*. `GET /api/sesler` cevabında `gizli` ve `cop`;
+  `POST /api/ses_yonet {kimlik, islem, ad?, cop?}` (`islem`: ad, gizle, goster, sil, geri; aynı Host/JSON/boyut
+  kuralları). 30 dilde. Test: `tests/test_ses_yonetimi.py`.
 - Ses tasarla: okutulan metin kutusu artık *Örnek cümle (sesi tanımak için, 1-2 cümle)*; kutu 3 satır, altında dile göre
   canlı süre çubuğu (~N sn / en fazla 20 sn, aşınca kırmızı). Tahmini 22 sn'yi (%10 pay) aşan metinle Tasarla başlamaz,
   sunucu da `tasarim_uzun` hatasıyla reddeder; *Okuma sekmesine taşı* düğmesi tam metni cümle cümle okuma kutusuna koyar,
@@ -129,6 +137,15 @@
   Spikeri*, *Masal Cadısı*, *Tok Sesli Anlatıcı*, *Yaşlı Bilge*, *Gizemli Bilge*; the other languages follow *Fransızca
   Belgesel Anlatıcı* (French documentary narrator). Only `gorunen_ad` changed; folder names and ids (`hazir/belgesel_hanim`
   etc.) are the same, so the command line and the reading list are unaffected.
+- Voice management: a ⋯ button on each row of the voice menu in *Read with this voice* (visible on hover), on each
+  variant card in *Design a voice* and on each bundled-voice card opens the same menu: *Read with this voice*, add to or
+  remove from the reading list, *Rename* (a box in the menu, Enter or ✓; leaving it empty restores the original name;
+  *Back to original name*), *Delete* for designed voices, *Hide* for bundled ones. Deleting and hiding ask first. A
+  deleted voice moves to `sesler/_cop/`; hiding a bundled voice never writes its repository files. Custom names and
+  hidden voices live in `sesler/yerel_katman.json` (never in the repository). *Hidden and deleted voices (N)* at the
+  bottom of the voice menu has *Restore*. `GET /api/sesler` returns `gizli` and `cop`;
+  `POST /api/ses_yonet {kimlik, islem, ad?, cop?}` (`islem`: ad, gizle, goster, sil, geri; same Host/JSON/size rules).
+  All 30 languages. Test: `tests/test_ses_yonetimi.py`.
 - Design a voice: the design text box is now *Sample sentence (to get to know the voice, 1-2 sentences)*; 3 lines high,
   with a live per-language length bar below it (~N s / max 20 s, red when over). With an estimate above 22 s (10 %
   margin) Design does not start and the server rejects it with `tasarim_uzun`; *Move to reading tab* puts the full text
