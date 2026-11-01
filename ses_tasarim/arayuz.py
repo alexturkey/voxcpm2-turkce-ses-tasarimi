@@ -86,7 +86,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 #acilir .ses button[data-sec]{flex:1;min-width:0;justify-content:flex-start}#acilir .ses em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26em}
 #acilir .grup{padding:5px 9px 1px;font-size:.7rem;color:var(--muted)}
 .dilsira{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}.dilsira button b{font-weight:600;font-variant-numeric:tabular-nums}
-.csat{flex-wrap:wrap}.csat small{white-space:nowrap}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.csat{flex-wrap:wrap}.csat .nw{white-space:nowrap}.dugmeler{display:flex;gap:6px;flex:none;margin-inline-start:auto}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .listebtn{display:inline-flex;align-items:center;gap:5px}.listebtn svg{fill:none;flex:none}.listebtn[aria-pressed=true] svg{color:var(--err);fill:var(--err)}.listebtn[aria-pressed=true]:hover svg{color:#111;fill:#111}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
 /* Tasarım metni kısa örnektir: 3 satırlık kutu, altında süre çubuğu, sınır aşımında uyarı, kalıcı gri ipucu. */
@@ -289,7 +289,7 @@ function hazirCiz(){const h=sesler.hazir,say={};for(const k of h)say[sesDili(k)]
  $('hazir_diller').innerHTML=`<button type="button" data-hdil="tumu" aria-pressed="${s==='tumu'}"><span>${esc(t('tumu'))}</span><b>${h.length}</b></button>`
   +d.map(x=>{const a=DIL_ADI(x);return `<button type="button" data-hdil="${esc(x)}" aria-pressed="${s===x}" title="${esc(a)}" aria-label="${esc(t('hazir_sayi',{dil:a,n:say[x]}))}">${bayrakImg(x)||`<span>${esc(x)}</span>`}<b>${say[x]}</b></button>`;}).join('');
  $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b dir="auto">${esc(k.gorunen_ad||k.ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
-  +`<button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}</div><small dir="auto">${esc(tanitim(k))}</small>`
+  +`<span class="dugmeler"><button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}</span></div><small dir="auto">${esc(tanitim(k))}</small>`
   +`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
 $('hazir_diller').onclick=e=>{const b=e.target.closest('[data-hdil]');if(!b)return;hafiza('hazir_dil',b.dataset.hdil);hazirCiz();
  const y=$('hazir_diller').querySelector(`[data-hdil="${b.dataset.hdil}"]`);if(y)y.focus();};
@@ -319,7 +319,7 @@ function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checke
  $('uretim').innerHTML=u.map(x=>`<option value="${esc(x.k)}">${esc(x.cs[0].gorunen_ad||x.cs[0].ad)} · ${esc((x.cs[0].tarih||'').slice(5))} · ${esc(t('cesit_kisa'))} ${x.cs.length}</option>`).join('');
  $('uretim').value=seciliUretim||'';$('uretim').hidden=!u.length;
  const hatalar=(sonCesit?sonCesit.cesitler:[]).filter(c=>c.hata).map(c=>`<div class="cesit hata">${esc(t('tohum_n',{n:c.tohum}))}: ${esc(c.hata)}</div>`);
- const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small>${esc(t('tohum_n',{n:c.tasarim_tohumu}))}, ${esc(t('sn',{n:c.referans_sn}))}</small></label><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}</div><audio controls preload="none" src="/dosya/${esc(c.kimlik)}/referans.wav"></audio></div>`);
+ const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small><span class="nw">${esc(t('tohum_n',{n:c.tasarim_tohumu}))},</span> <span class="nw">${esc(t('sn',{n:c.referans_sn}))}</span></small></label><span class="dugmeler"><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}</span></div><audio controls preload="none" src="/dosya/${esc(c.kimlik)}/referans.wav"></audio></div>`);
  $('cesitler').innerHTML=hatalar.concat(kartlar).join('')||`<p class="bos">${esc(t('uretim_yok',{dugme:t('tasarla')}))}</p>`;
  document.querySelectorAll('input[name=sec]').forEach(r=>{r.checked=r.value===secili;r.onchange=()=>SesMenu.sec(r.value);});
  document.querySelectorAll('#cesitler [data-oku]').forEach(b=>b.onclick=()=>{const r=[...document.querySelectorAll('input[name=sec]')].find(x=>x.value===b.dataset.oku);if(r)r.checked=true;
