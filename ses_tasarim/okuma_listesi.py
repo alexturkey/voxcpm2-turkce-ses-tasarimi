@@ -47,7 +47,10 @@ def oku(settings: dict) -> list:
     """Dosyadaki bütün kimlikler (silinmiş sesler dahil), eklenme sırasıyla; dosya yok ya da bozuksa boş liste.
     Okuma yan etkisizdir: bozuk dosya ilk yazımda kenara alınır.
     All identities in the file (deleted voices included), in order; empty if missing or corrupt. Reading has no side effects."""
-    return _ham(yol(settings)) or []
+    # Kilit altında: Windows'ta açık dosyanın üzerine os.replace PermissionError verir (eş zamanlı yazım).
+    # Under the lock: on Windows os.replace fails while another thread has the file open.
+    with _KILIT:
+        return _ham(yol(settings)) or []
 
 
 def bicim_dogru(kimlik) -> bool:
