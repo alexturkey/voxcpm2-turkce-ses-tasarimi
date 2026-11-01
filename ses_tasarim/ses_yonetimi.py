@@ -10,7 +10,6 @@ Voice management: rename, hide and move to trash; all in the user's voice folder
 """
 import json
 import os
-import shutil
 import threading
 import time
 from pathlib import Path
@@ -163,7 +162,7 @@ def yonet(settings: dict, kimlik, islem, ad=None, gecerli=(), cop=None) -> None:
         while target.exists():
             n += 1
             target = root / f"{stamp}_{n}__{name}__{folder.name}"
-        shutil.move(str(folder), str(target))
+        _tasi(folder, target)
         (target / "kaynak.json").write_text(json.dumps({"kimlik": kimlik, "silinme": time.strftime("%Y-%m-%d %H:%M")},
                                                        ensure_ascii=False) + "\n", encoding="utf-8")
     return None
@@ -183,8 +182,17 @@ def _geri(settings: dict, cop) -> None:
         if target.exists():
             raise _sorun(f"yerinde başka ses var: {kayit['kimlik']}", "hedef_dolu", ses=kayit["kimlik"])
         target.parent.mkdir(exist_ok=True)
-        shutil.move(str(folder), str(target))
+        _tasi(folder, target)
         (target / "kaynak.json").unlink(missing_ok=True)
+
+
+def _tasi(kaynak: Path, hedef: Path):
+    """Klasör taşıma; kilitli dosya (ör. çalınan ses) varsa düz metin hata, yarım iş kalmaz.
+    Move a folder; a locked file (e.g. audio being played) gives a plain error."""
+    try:
+        os.rename(kaynak, hedef)  # aynı disk: tek adım / same volume: one atomic step
+    except OSError as error:
+        raise ValueError(f"taşınamadı / could not move: {error.strerror or error}") from None
 
 
 def _katman_degistir(settings: dict, fn) -> None:
