@@ -86,7 +86,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 #acilir .ses button[data-sec]{flex:1;min-width:0;justify-content:flex-start}#acilir .ses em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26em}
 #acilir .grup{padding:5px 9px 1px;font-size:.7rem;color:var(--muted)}
 .dilsira{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}.dilsira button b{font-weight:600;font-variant-numeric:tabular-nums}
-.csat{flex-wrap:wrap}.csat .nw{white-space:nowrap}.dugmeler{display:flex;gap:6px;flex:none;margin-inline-start:auto}.yonetbtn{display:inline-flex;align-items:center;padding:3px 7px}#acilir .ozel.ad input{width:14em}#acilir .soluk{color:var(--muted)}#acilir .gad{display:flex;align-items:center;gap:10px;flex:1;min-width:0;padding:4px 9px;font-size:.8rem}#acilir .gad em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#acilir .baslik img{width:18px;height:13.5px;border-radius:2px}
+.csat{flex-wrap:wrap}.csat .nw{white-space:nowrap}.dugmeler{display:flex;gap:6px;flex:none;margin-inline-start:auto}.yonetbtn{display:inline-flex;align-items:center;padding:3px 7px}#acilir .ozel.ad input{width:14em}#acilir:has(.kalpoge){min-width:19em}#acilir button.kalpoge{justify-content:flex-start}#acilir button.kalpoge span{margin:0;color:inherit;font-size:inherit;padding:0}#acilir .kalpoge svg{fill:none;flex:none}#acilir .kalpoge.dolu svg{color:var(--err);fill:var(--err)}#acilir .soluk{color:var(--muted)}#acilir .gad{display:flex;align-items:center;gap:10px;flex:1;min-width:0;padding:4px 9px;font-size:.8rem}#acilir .gad em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#acilir .baslik img{width:18px;height:13.5px;border-radius:2px}
 /* Dar çeşit sütununda (sağ yarı pencere) düğmeler her kartta aynı yerde: başlığın altında, sağa yaslı. */
 #cesitler{container-type:inline-size}@container (max-width:470px){#cesitler .csat label{flex-basis:100%}}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .listebtn{display:inline-flex;align-items:center;gap:5px}.listebtn svg{fill:none;flex:none}.listebtn[aria-pressed=true] svg{color:var(--err);fill:var(--err)}.listebtn[aria-pressed=true]:hover svg{color:#111;fill:#111}
@@ -267,13 +267,18 @@ const dilSira=(d,ui)=>d===ui?-1:(i=>i<0?999:i)(DILLER.findIndex(x=>x[0]===d));  
 // (HTML'de <bdi>, düz yazıda FSI/PDI yalıtımı). / The name keeps its own direction, the variant suffix follows the UI.
 // Aynı adla birden çok Tasarla basışı (üretim) varsa ekte üretimin zamanı da yazar (Üretimler listesindeki biçim: AA-GG SS:DD).
 // When one name has several productions, the suffix also carries the production time (same format as the Productions list).
+// Ham klasör adı (Tasarla'ya yazılan, takma ad yok) yalnız görünümde güzelleşir: '_' boşluk, ilk harf sesin dilinde büyük;
+// dosyaya yazılmaz, bilerek yazılmış ad aynen kalır. / A raw folder name is prettified for display only, never written.
+const adGuzel=(g,ad,dil)=>{if(!g||g!==ad)return g;const [b,...r]=[...g.replace(/_+/g,' ').replace(/\s+/g,' ').trim()];if(!b)return g;
+ let B;try{B=b.toLocaleUpperCase(dil||undefined);}catch(e){B=b.toUpperCase();}return B+r.join('');};
+const adGoster=k=>k.asil_ad!==undefined?k.gorunen_ad:adGuzel(k.gorunen_ad||k.ad||'',k.ad,sesDili(k));
 const uretimAnahtari=c=>c.uretim?c.ad+'|'+c.uretim:[c.ad,c.tarih,c.ses_yaratici_ingilizce_prompt,c.ses_yaratilirken_okutulan_metin].join('|');
 const cokUretimli=k=>new Set(sesler.tasarlanan.filter(c=>c.ad===k.ad).map(uretimAnahtari)).size>1;
-const sesAdi=k=>[k.gorunen_ad||k.ad,sesEki(k)].filter(Boolean).join(' · '),sesEki=k=>k.kimlik.startsWith('hazir/')?''
+const sesAdi=k=>[adGoster(k),sesEki(k)].filter(Boolean).join(' · '),sesEki=k=>k.kimlik.startsWith('hazir/')?''
  :(cokUretimli(k)&&k.tarih?(k.tarih||'').slice(5)+' · ':'')+t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()});
-const sesAdiYalitik=k=>sesEki(k)?`\u2068${k.gorunen_ad||k.ad}\u2069 · ${sesEki(k)}`:sesAdi(k);
-const sesAdiHtml=k=>`<bdi>${esc(k.gorunen_ad||k.ad)}</bdi>`+(sesEki(k)?' · '+esc(sesEki(k)):'');
-const sesSirala=(l,ui)=>l.slice().sort((a,b)=>dilSira(sesDili(a),ui)-dilSira(sesDili(b),ui)||(a.gorunen_ad||a.ad||'').localeCompare(b.gorunen_ad||b.ad||''));
+const sesAdiYalitik=k=>sesEki(k)?`\u2068${adGoster(k)}\u2069 · ${sesEki(k)}`:sesAdi(k);
+const sesAdiHtml=k=>`<bdi>${esc(adGoster(k))}</bdi>`+(sesEki(k)?' · '+esc(sesEki(k)):'');
+const sesSirala=(l,ui)=>l.slice().sort((a,b)=>dilSira(sesDili(a),ui)-dilSira(sesDili(b),ui)||adGoster(a).localeCompare(adGoster(b)));
 // Okuma listesi düğmesi (tasarla çeşit kartı, hazır ses kartı): "Bu sesle oku"nun yanında, aynı hap; listedeyse dolu kalp + "Listede".
 // Reading-list button next to "Read with this voice"; filled heart + "In list" when listed. State updates in place (audio keeps playing).
 const listeDugmesi=k=>{const v=okumaListesi.includes(k);return `<button type="button" class="okubtn listebtn" data-liste="${esc(k)}" aria-pressed="${v}">${KALP}<span>${esc(t(v?'listede':'liste_ekle'))}</span></button>`;};
@@ -297,7 +302,7 @@ function hazirCiz(){const h=sesler.hazir,say={};for(const k of h)say[sesDili(k)]
  const d=Object.keys(say).sort((a,b)=>dilSira(a,dil)-dilSira(b,dil));let s=hafiza('hazir_dil');if(!say[s])s='tumu';
  $('hazir_diller').innerHTML=`<button type="button" data-hdil="tumu" aria-pressed="${s==='tumu'}"><span>${esc(t('tumu'))}</span><b>${h.length}</b></button>`
   +d.map(x=>{const a=DIL_ADI(x);return `<button type="button" data-hdil="${esc(x)}" aria-pressed="${s===x}" title="${esc(a)}" aria-label="${esc(t('hazir_sayi',{dil:a,n:say[x]}))}">${bayrakImg(x)||`<span>${esc(x)}</span>`}<b>${say[x]}</b></button>`;}).join('');
- $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b dir="auto">${esc(k.gorunen_ad||k.ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
+ $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b dir="auto">${esc(adGoster(k))}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
   +`<span class="dugmeler"><button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}${yonetDugmesi(k.kimlik)}</span></div><small dir="auto">${esc(tanitim(k))}</small>`
   +`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
 $('hazir_diller').onclick=e=>{const b=e.target.closest('[data-hdil]');if(!b)return;hafiza('hazir_dil',b.dataset.hdil);hazirCiz();
@@ -325,7 +330,7 @@ function uretimler(liste=sesler.tasarlanan){const g=new Map();
  return [...g].map(([k,cs])=>({k,cs:cs.sort((a,b)=>a.cesit-b.cesit)})).sort((a,b)=>(b.cs[0].tarih||'').localeCompare(a.cs[0].tarih||'')||b.cs[0].cesit-a.cs[0].cesit);}
 function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checked')||{}).value,u=uretimler();
  if(!u.some(x=>x.k===seciliUretim))seciliUretim=u.length?u[0].k:null;
- $('uretim').innerHTML=u.map(x=>`<option value="${esc(x.k)}">${esc(x.cs[0].gorunen_ad||x.cs[0].ad)} · ${esc((x.cs[0].tarih||'').slice(5))} · ${esc(t('cesit_kisa'))} ${x.cs.length}</option>`).join('');
+ $('uretim').innerHTML=u.map(x=>`<option value="${esc(x.k)}">${esc(adGoster(x.cs[0]))} · ${esc((x.cs[0].tarih||'').slice(5))} · ${esc(t('cesit_kisa'))} ${x.cs.length}</option>`).join('');
  $('uretim').value=seciliUretim||'';$('uretim').hidden=!u.length;
  const hatalar=(sonCesit?sonCesit.cesitler:[]).filter(c=>c.hata).map(c=>`<div class="cesit hata">${esc(t('tohum_n',{n:c.tohum}))}: ${esc(c.hata)}</div>`);
  const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small><span class="nw">${esc(t('tohum_n',{n:c.tasarim_tohumu}))},</span> <span class="nw">${esc(t('sn',{n:c.referans_sn}))}</span></small></label><span class="dugmeler"><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}${yonetDugmesi(c.kimlik)}</span></div><audio controls preload="none" src="/dosya/${esc(c.kimlik)}/referans.wav"></audio></div>`);
@@ -706,11 +711,12 @@ const SesYonet={k:null,tetik:null,geri:false,rakamYok:true,
   const hazir=k.startsWith('hazir/'),f=okumaListesi.includes(k),takma=s.asil_ad!==undefined&&s.asil_ad!==s.gorunen_ad;
   const oge=(is,ad,sinif)=>`<button type="button" role="menuitem" data-is="${is}"${sinif?` class="${sinif}"`:''}>${esc(ad)}</button>`;
   const html=Acilir.baslik(bayrakImg(sesDili(s)),sesAdiYalitik(s))+(geri?oge('geri','‹ '+t('geri'))+'<hr>':'')
-   +oge('oku',t('oku'))+oge('liste',t(f?'kalp_cikar':'kalp_ekle',{ses:sesAdi(s)}))
+   +oge('oku',t('oku'))+`<button type="button" role="menuitemcheckbox" data-is="liste" class="kalpoge${f?' dolu':''}" aria-checked="${f}" `
+   +`aria-label="${esc(t(f?'kalp_cikar':'kalp_ekle',{ses:sesAdi(s)}))}">${KALP}<span>${esc(t(f?'listede':'liste_ekle'))}</span></button>`
    +`<div class="ozel ad"><button type="button" role="menuitem" class="disli oge">${esc(t('yeniden_adlandir'))}</button>`
-   +`<input type="text" maxlength="80" spellcheck="false" value="${esc(s.gorunen_ad||s.ad)}" aria-label="${esc(t('yeniden_adlandir'))}" hidden>`
+   +`<input type="text" maxlength="80" spellcheck="false" value="${esc(adGoster(s))}" aria-label="${esc(t('yeniden_adlandir'))}" hidden>`
    +`<button type="button" class="tamam" aria-label="✓" hidden>✓</button></div>`
-   +(takma?oge('asil',t('asil_ada_don',{ad:s.asil_ad||s.ad})):'')+'<hr>'+oge('sil',t(hazir?'gizle':'sil_ses'),'tehlike');
+   +(takma?oge('asil',t('asil_ada_don',{ad:adGuzel(s.asil_ad,s.ad,sesDili(s))||s.ad})):'')+'<hr>'+oge('sil',t(hazir?'gizle':'sil_ses'),'tehlike');
   const r=tetik.getBoundingClientRect();Acilir.ac(tetik,rtl()?r.right:r.left,html,this,t('yonet'));},
  // Gizlenen hazır sesler ve çöpteki tasarlananlar: her satırda "Geri getir" / hidden and binned voices with "Restore"
  gizliMenu(){const b=$('ses'),r=b.getBoundingClientRect(),l=[...(sesler.gizli||[]).map(k=>({k,is:'goster'})),...(sesler.cop||[]).map(k=>({k,is:'geri'}))];
@@ -726,7 +732,8 @@ const SesYonet={k:null,tetik:null,geri:false,rakamYok:true,
  // Odak: menü yeniden çizildiyse tetik kopmuş olabilir; o zaman ses düğmesi / the trigger may be gone after a redraw
  odak(){if(this.tetik&&this.tetik.isConnected)return this.tetik;return [...document.querySelectorAll('[data-yonet]')].find(x=>x.dataset.yonet===this.k&&x.offsetParent)||$('ses');},
  kapandi(){},
- gir(){const g=$('acilir').querySelector('.ozel.ad input');if(!g||!this.k)return;const v=g.value.trim();
+ gir(){const g=$('acilir').querySelector('.ozel.ad input');if(!g||!this.k)return;const v=g.value.trim(),s=SesMenu.bul(this.k);
+  if(s&&s.asil_ad===undefined&&v===adGoster(s))return this.sonra(Promise.resolve(true));
   if(v.length>80){g.classList.add('yanlis');setTimeout(()=>g.classList.remove('yanlis'),1000);return;}
   this.sonra(this.yonet(this.k,'ad',v));},
  // İşlemden sonra: ses menüsünden gelindiyse ses menüsüne dönülür, karttan gelindiyse menü kapanır.
