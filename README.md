@@ -255,7 +255,10 @@ you give it its own name. The voice menu in the reading tab shows *My reading li
 each row has ▶ listen, the heart and ⋯.
 In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
 between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
-Stop the server with Ctrl+C.
+Ctrl+Enter (⌘+Enter on Mac) starts *Design* or *Read with this voice* on the open tab. The text and its pauses survive a
+page reload (browser storage). While the result plays, the line being read glows and scrolls into view; *Listen from here*
+in the line menu plays from that line. The download is named after the voice and time (`Voice_Name_2026-11-02_0152.wav`);
+the header shows the version and short commit. Stop the server with Ctrl+C.
 
 **Voice cloning (your own or a consented voice).** In the *Voice cloning* tab of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
 

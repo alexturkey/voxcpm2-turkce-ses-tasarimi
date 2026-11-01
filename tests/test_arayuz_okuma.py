@@ -92,6 +92,99 @@ console.log(JSON.stringify(R));""")
         self.assertEqual(R["g"], "[1,null]")  # satır sayısı kadar bant / one band per line
 
 
+class OkunanSatir(unittest.TestCase):
+    def test_baglanti(self):
+        self.assertIn("Okunan.bagla(", kes("function okumaCiz(", "const Okunan={"))
+        self.assertIn("...kaynak};okumaCiz();", JS)  # gönderilen metnin satırları sonuçla saklanır
+        self.assertIn("Okunan.i===k", kes("function defterNo(", "// Kutu boyu"))
+        menu = kes(" menu(i,x,b){", " yenile(){")
+        self.assertIn("t('buradan_dinle')", menu)
+        self.assertIn("if(d.is==='dinle')Okunan.dinle(i);", JS)
+        self.assertNotIn(".focus(", kes("const Okunan={", "// ── Açılır menü"))  # parlama odak almaz
+
+    @unittest.skipUnless(shutil.which("node"), "node yok")
+    def test_bos_satir_ve_bant_eslemesi(self):
+        sahte = r"""
+const $=id=>({value:''});const hafiza=()=>null,defterNo=()=>{},snb=x=>x+' s',t=k=>k,Satir={isik:()=>({k:new Set()})};let sonOkuma=null;
+"""
+        parca = kes("const Durak={", "const KALP=") + kes("const Okunan={", "// ── Açılır menü")
+        R = node(sahte + parca + r"""
+const R={},gonderilen=['A','','B || 0.7','C'],k=Okunan.kaynak(gonderilen);
+// Sunucu: boş satırı atlar, 3 kayıt (oku.py satirlar) / the server skips the blank line
+const r={satirlar:[{satir:1,t0:0,t1:1.5},{satir:2,t0:2,t1:3.5},{satir:3,t0:4,t1:5}],...k};
+R.kaynak=k;R.esle=[0,1,2].map(j=>Okunan.satir(r,j,['A','','B','C']));
+R.duzenlendi=[0,1,2].map(j=>Okunan.satir(r,j,['X','A','B','C']));
+R.silindi=Okunan.satir(r,0,['B','C']);
+R.zaman=[-1,0,1.6,1.9,2,3.9,4.5,99].map(x=>Okunan.kayit(r.satirlar,x));
+R.bul=[0,1,2,3].map(i=>Okunan.kayitBul(r,i,['A','','B','C']));
+R.tutmaz=Okunan.kayitBul({...r,satirlar:r.satirlar.slice(0,2)},0,['A','','B','C']);
+R.eski=Okunan.kayitBul({satirlar:r.satirlar},0,['A']);
+console.log(JSON.stringify(R));""")
+        self.assertEqual(R["kaynak"], {"kaynak": ["A", "", "B", "C"], "dolu": [0, 2, 3]})
+        self.assertEqual(R["esle"], [0, 2, 3])  # bekleyen işaret banda taşınmış olsa da aynı satır
+        self.assertEqual(R["duzenlendi"], [1, 2, 3])  # üste satır eklendi: cümle aranır
+        self.assertEqual(R["silindi"], -1)
+        self.assertEqual(R["zaman"], [-1, 0, 0, 0, 1, 1, 2, 2])  # bekleme önceki cümlenin
+        self.assertEqual(R["bul"], [0, -1, 1, 2])  # boş satırda "Buradan dinle" yok
+        self.assertEqual(R["tutmaz"], -1)  # sayı tutmazsa eşleme yok
+        self.assertEqual(R["eski"], -1)  # kaynak yoksa (eski sonuç) eşleme yok
+
+
+class SunucuSatirSirasi(unittest.TestCase):
+    def test_kayit_sirasi_dolu_satirlar(self):
+        # Arayüz eşlemesinin dayandığı sözleşme: sunucu (oku.py satirlar ← okunus.lines) yalnız dolu satırları, sırayla verir.
+        # The UI mapping relies on this: the server yields only non-blank lines, in order.
+        from ses_tasarim import okunus
+        gonderilen = "Bir. || 0.35\n\nIki uzun cumle. || 1\n   \nUc."
+        satirlar = okunus.lines(okunus.spoken(gonderilen, "tr"))
+        dolu = [i for i, l in enumerate(gonderilen.split("\n")) if l.strip()]
+        self.assertEqual(len(satirlar), len(dolu))
+        self.assertEqual([m for m, _ in satirlar], ["Bir.", "Iki uzun cumle.", "Uc."])
+
+
+class AralikIstegi(unittest.TestCase):
+    def test_aralik_ayristir(self):
+        A = arayuz._aralik
+        self.assertIsNone(A(None, 100))
+        self.assertEqual(A("bytes=0-", 100), (0, 99))
+        self.assertEqual(A("bytes=10-19", 100), (10, 19))
+        self.assertEqual(A("bytes=90-500", 100), (90, 99))
+        self.assertEqual(A("bytes=-10", 100), (90, 99))
+        self.assertEqual(A("bytes=100-", 100), "gecersiz")
+        self.assertEqual(A("bytes=20-10", 100), "gecersiz")
+        self.assertIsNone(A("bytes=0-1,5-6", 100))  # çoklu aralık: tam dosya
+        self.assertIsNone(A("items=0-1", 100))
+        self.assertIsNone(A("bytes=x-1", 100))
+
+    def test_oynatici_atlayabilir(self):
+        import tempfile
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "_okumalar" / "is1"
+            d.mkdir(parents=True)
+            (d / "okuma.wav").write_bytes(bytes(range(200)))
+            server = ThreadingHTTPServer(("127.0.0.1", 0), arayuz.make_handler({"hazir_sesler": Path(tmp), "sesler": Path(tmp)}, None))
+            threading.Thread(target=server.serve_forever, daemon=True).start()
+            url = f"http://127.0.0.1:{server.server_address[1]}/okuma/is1/okuma.wav"
+            try:
+                with urllib.request.urlopen(url, timeout=10) as r:
+                    tam = (r.status, r.headers["Accept-Ranges"], len(r.read()))
+                with urllib.request.urlopen(urllib.request.Request(url, headers={"Range": "bytes=100-109"}), timeout=10) as r:
+                    parca = (r.status, r.headers["Content-Range"], r.read())
+                with self.assertRaises(urllib.error.HTTPError) as h:
+                    urllib.request.urlopen(urllib.request.Request(url, headers={"Range": "bytes=500-"}), timeout=10)
+            finally:
+                server.shutdown()
+                server.server_close()
+        self.assertEqual(tam, (200, "bytes", 200))
+        self.assertEqual(parca, (206, "bytes 100-109/200", bytes(range(100, 110))))
+        self.assertEqual(h.exception.code, 416)
+
+
 class KisaYol(unittest.TestCase):
     @unittest.skipUnless(shutil.which("node"), "node yok")
     def test_ctrl_enter(self):

@@ -251,8 +251,11 @@ adresini kendiniz açın (başka port: `--port 8800`). Üç sekme: *Ses tasarla*
 çeşitlere gider; beğendiğin çeşidi *Okuma listeme ekle* ile listene eklerken ona kendi adını verirsin. Okuma sekmesindeki ses
 menüsünde *Okuma listem* ve bayraklı hazır sesler durur; her satırda ▶ dinle, kalp ve ⋯ var. Okuma kutusunda satır
 numarasına tıklayınca satır menüsü açılır (taşı, çoğalt, sil; Alt+↑/↓), iki satır arasındaki ince banda tıklayınca durak
-süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Sunucuyu Ctrl+C
-ile kapatın.
+süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Ctrl+Enter (Mac'te
+⌘+Enter) açık sekmede *Tasarla*'yı ya da *Bu sesle oku*'yu başlatır. Metin ve durakları sayfa yenilenince kalır (tarayıcı
+belleği). Sonuç çalarken okunan satır parlar ve görünür alana gelir; satır menüsündeki *Buradan dinle* o satırdan çalar.
+İnen dosya ses adı ve saatle adlanır (`Ses_Adi_2026-11-02_0152.wav`); başlıkta sürüm ve kısa commit görünür. Sunucuyu
+Ctrl+C ile kapatın.
 
 **Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün *Ses klonlama* sekmesinde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
 

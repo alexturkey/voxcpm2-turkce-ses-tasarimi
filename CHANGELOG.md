@@ -3,6 +3,10 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Okunan satır: sonuç çalarken o an okunan cümlenin numarası ve satırı defterde parlar, satır görünür alana kayar (boş satırlar
+  atlanır; metin sonradan değiştiyse aynı cümle aranır). Satır menüsünde en üstte *▶ Buradan dinle* (sonuçta o satır varsa,
+  30 dilde). Sunucu ses dosyasında tek aralık (`Range`) isteğini karşılar: oynatıcıda ileri/geri atlama artık çalışır;
+  dil dosyaları `Cache-Control: no-cache` ile gelir (güncellemeden sonra eski yazı kalmaz).
 - Ctrl+Enter (Mac'te ⌘+Enter): *Ses tasarla* sekmesinde *Tasarla*'yı, okuma sekmesinde *Bu sesle oku*'yu başlatır
   (düğme pasifken ya da menü açıkken hiçbir şey yapmaz; defterin Enter ve Alt kısayolları aynı kalır; odak yerinde kalır).
 - Okuma metni ve bekleme bantları sayfa yenilenince kaybolmaz: tarayıcının yerel belleğinde durur (yazarken 400 ms
@@ -139,6 +143,10 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- The line being read: while the result plays, its number and line glow in the notebook and scroll into view (blank lines
+  are skipped; if the text was edited the same sentence is looked up). The line menu starts with *▶ Listen from here* when
+  the result has that line (30 languages). The server answers single byte `Range` requests for files, so seeking in the
+  player works now; language files are sent with `Cache-Control: no-cache` (no stale strings after an update).
 - Ctrl+Enter (⌘+Enter on Mac) starts *Design* on the design tab and *Read with this voice* on the reading tab (nothing
   happens while the button is disabled or a menu is open; the notebook's Enter and Alt shortcuts are unchanged; focus stays put).
 - The reading text and its pause bands survive a page reload: kept in the browser's local storage (debounced 400 ms
