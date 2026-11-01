@@ -2,4 +2,4 @@
 
 Turkish voice design and reference-based reading with VoxCPM2 on a 4 GB GPU (audio.cpp engine).
 """
-__version__ = "0.1.0"
+__version__ = "0.2.0"

@@ -17,6 +17,7 @@ import binascii
 import json
 import mimetypes
 import queue
+import subprocess
 import sys
 import threading
 import time
@@ -26,8 +27,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, sure_tahmini
+from . import __version__, ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, sure_tahmini
 
+REPO_KOKU = Path(__file__).resolve().parent.parent
 BAYRAK_KOKU = Path(__file__).resolve().parent / "bayraklar"  # flag-icons 7.2.3 (MIT), 4x3 SVG / flag images
 DIL_KOKU = Path(__file__).resolve().parent / "arayuz_dilleri"  # arayüz metinleri, dil başına bir JSON / UI strings
 
@@ -39,7 +41,7 @@ HTML = r"""<!doctype html>
 :root[data-tema=acik]{--bg:#f5f5f3;--panel:#fff;--fg:#1d1d1f;--muted:#5f6368;--soluk:#80868b;--alan:#fff;--cizgi:#d4d4d4;--cizgi2:#e8e8e8;--acc:#e3a93f;--baslik:#9a6a10;--ok:#2e7d32;--err:#c62828;color-scheme:light}
 body{font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--fg);max-width:980px;margin:auto;padding:16px}
 section{background:var(--panel);border-radius:10px;padding:14px 18px;margin:12px 0}
-h1{font-size:1.4rem;margin:0}h2{font-size:1.1rem;color:var(--baslik);margin:4px 0 10px}
+h1{font-size:1.4rem;margin:0}h1 .surum{color:var(--soluk);font-size:.68rem;font-weight:400;white-space:nowrap;unicode-bidi:isolate;font-variant-numeric:tabular-nums}h2{font-size:1.1rem;color:var(--baslik);margin:4px 0 10px}
 .bas{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 10px}
 button.tema{background:transparent;color:var(--fg);border:1px solid var(--cizgi);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:grid;place-items:center;flex:none}
 button.tema:hover{border-color:var(--acc)}
@@ -109,7 +111,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 </style>
 <script>try{document.documentElement.dataset.tema=localStorage.getItem('tema')||(matchMedia('(prefers-color-scheme: light)').matches?'acik':'koyu');}catch(e){}</script>
 </head><body>
-<header class="bas"><h1><span data-t="baslik">VoxCPM2 Türkçe Ses Tasarımı</span> <small>· 4 GB GPU</small></h1>
+<header class="bas"><h1><span data-t="baslik">VoxCPM2 Türkçe Ses Tasarımı</span> <small>· 4 GB GPU</small> <small class="surum" dir="ltr" translate="no" title="__SURUM__">__SURUM__</small></h1>
 <div class="araclar"><div class="dilkutu"><button id="dil_dugme" class="dil" type="button" aria-haspopup="true" aria-expanded="false"></button>
 <div class="bayraklar" id="bayraklar" role="group" hidden></div></div>
 <button id="tema" class="tema" data-t-title="tema" title="Gece / gündüz" aria-label="Gece / gündüz"></button></div></header>
@@ -898,6 +900,28 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
 """
 
 
+def surum_yazisi(kok: Path = REPO_KOKU) -> str:
+    """Başlıktaki soluk sürüm: "v0.2.0 · 1a2b3c4" (izlenen dosyada kaydedilmemiş değişiklik varsa "+" eki).
+    Git ya da .git yoksa yalnız sürüm; git penceresiz ve zaman aşımlı çalışır, sunucu açılışında bir kez.
+    The faint version in the header: version · short commit ("+" when tracked files changed); version only without git."""
+    yazi = "v" + __version__
+    if not (Path(kok) / ".git").exists():
+        return yazi
+    gizli = {"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "win32" else {}
+
+    def git(*args) -> str:
+        # --git-dir: üst klasördeki başka bir depoya kaymaz / never falls back to a parent repository
+        r = subprocess.run(["git", "--git-dir", str(Path(kok) / ".git"), "--work-tree", str(kok), *args], capture_output=True, text=True, timeout=5,
+                           stdin=subprocess.DEVNULL, **gizli)
+        return r.stdout.strip() if r.returncode == 0 else ""
+    try:
+        kisa = git("rev-parse", "--short", "HEAD")
+        kirli = bool(kisa) and bool(git("status", "--porcelain", "--untracked-files=no"))
+    except (OSError, subprocess.SubprocessError):
+        return yazi
+    return f"{yazi} · {kisa}{'+' if kirli else ''}" if kisa else yazi
+
+
 def _dil_ipucu(payload: dict):
     """Kararsız metin için seçilen örnek tarifin dili (yoksa None); payload["dil"] yok sayılır.
     Language of the chosen example prompt for ambiguous text (else None); payload["dil"] is ignored."""
@@ -1026,6 +1050,7 @@ def _sesler(settings) -> tuple:
 
 def make_handler(settings, jobs: Isler):
     roots = {"hazir": settings["hazir_sesler"], "tasarlanan": settings["sesler"]}
+    sayfa = HTML.replace("__SURUM__", surum_yazisi()).encode("utf-8")  # sürüm açılışta bir kez / version once at start-up
 
     class Handler(BaseHTTPRequestHandler):
         MAX_BODY = 1_000_000  # 1 MB: metin kutuları için fazlasıyla yeter / plenty for the text boxes
@@ -1072,7 +1097,7 @@ def make_handler(settings, jobs: Isler):
                 return
             path = unquote(self.path.split("?")[0])
             if path == "/":
-                body = HTML.encode("utf-8")
+                body = sayfa
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("Content-Length", str(len(body)))

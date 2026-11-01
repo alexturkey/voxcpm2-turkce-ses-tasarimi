@@ -3,6 +3,9 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Başlıkta küçük, soluk sürüm yazısı: `v0.2.0 · <kısa commit>` (izlenen dosyada kaydedilmemiş değişiklik varsa
+  `+` eki; git yoksa yalnız sürüm). Videoda ve ekran görüntüsünde hangi sürümün kullanıldığı görünür. Tek kaynak
+  `ses_tasarim/__init__.py` (`__version__` 0.2.0); git sunucu açılışında bir kez, penceresiz sorulur.
 - İlerleme çubuğu *Bu sesle oku*'da da var (Tasarla ile aynı parça, düğmenin yanında). Çubuk baştan bir süre tahminiyle
   akar (*geçen / ~toplam*), gerçek ilerlemenin altına inmez, geri gitmez, bitmeden %97'yi geçmez. Tahmin bu makinenin
   ölçümlerinden öğrenilir: süre = açılış + karakter × sn/karakter (tasarla ve okuma ayrı, okumada sesin kendi katsayısı),
@@ -130,6 +133,9 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- A small, faint version in the header: `v0.2.0 · <short commit>` (`+` when tracked files have uncommitted changes;
+  version only without git), so videos and screenshots show which version was used. Single source
+  `ses_tasarim/__init__.py` (`__version__` 0.2.0); git is asked once at server start, without a window.
 - A progress bar in *Read with this voice* too (same part as Design, next to the button). It starts from a duration
   estimate (*elapsed / ~total*), never drops below real progress, never goes back, stays under 97 % until done. The estimate
   is learned on this machine: duration = start-up + characters × s/char (design and reading apart, a per-voice factor for
