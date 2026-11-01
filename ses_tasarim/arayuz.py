@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import ayarlar, motor, oku, okunus, ornekler, tasarla
+from . import ayarlar, motor, oku, okuma_listesi, okunus, ornekler, tasarla
 
 BAYRAK_KOKU = Path(__file__).resolve().parent / "bayraklar"  # flag-icons 7.2.3 (MIT), 4x3 SVG / flag images
 DIL_KOKU = Path(__file__).resolve().parent / "arayuz_dilleri"  # arayüz metinleri, dil başına bir JSON / UI strings
@@ -49,9 +49,9 @@ button.dil{background:transparent;color:var(--fg);border:1px solid var(--cizgi);
 button.dil:hover,button.dil[aria-expanded=true]{border-color:var(--acc)}
 .bayraklar{position:absolute;inset-inline-end:0;top:44px;z-index:10;background:var(--panel);border:1px solid var(--cizgi);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:2px;width:max-content;max-height:70vh;overflow:auto}
 .bayraklar[hidden]{display:none}@media(max-width:560px){.bayraklar{grid-template-columns:repeat(2,minmax(130px,1fr))}}
-.bayraklar button{background:none;color:var(--fg);border:0;padding:6px 8px;margin:0;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:400;font-size:.85rem;text-align:start}
-.bayraklar button:hover{background:var(--cizgi2)}.bayraklar button[aria-pressed=true]{background:var(--cizgi2);box-shadow:inset 0 0 0 1px var(--acc)}
-.bayraklar img,button.dil img{width:22px;height:16.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2);flex:none}
+.bayraklar button,.dilsira button{background:none;color:var(--fg);border:0;padding:6px 8px;margin:0;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:400;font-size:.85rem;text-align:start}
+.bayraklar button:hover,.dilsira button:hover{background:var(--cizgi2)}.bayraklar button[aria-pressed=true],.dilsira button[aria-pressed=true]{background:var(--cizgi2);box-shadow:inset 0 0 0 1px var(--acc)}
+.bayraklar img,button.dil img,.dilsira img,.sesdugme img,#acilir .ses img,.hazirad img{width:22px;height:16.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2);flex:none}
 .dosya{display:flex;align-items:center;gap:10px}.dosya span{color:var(--muted);font-size:.9rem}
 button.ikincil{background:transparent;color:var(--fg);border:1px solid var(--cizgi);margin:0}button.ikincil:hover{border-color:var(--acc)}
 label.onay{color:var(--fg);display:flex;gap:8px;align-items:flex-start}label.onay input{width:auto;margin-top:3px}
@@ -80,6 +80,14 @@ button:disabled{opacity:.5;cursor:default}
 .durum{margin-top:8px;color:var(--muted);white-space:pre-wrap}.hata{color:var(--err)}.ok{color:var(--ok)}
 .cesit{display:flex;flex-direction:column;gap:6px;padding:8px;border:1px solid var(--cizgi2);border-radius:6px}
 .cesit label{margin:0;color:var(--fg);font-size:.85rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.cesit input[type=radio]{width:auto;margin:0;flex:none}.cesit audio{width:100%;height:32px}.csat{display:flex;align-items:center;gap:6px}.csat label{flex:1}.okubtn{flex:none;margin:0;padding:3px 10px;font-size:.78rem;font-weight:600;background:transparent;color:var(--acc);border:1px solid var(--acc);border-radius:999px}.okubtn:hover{background:var(--acc);color:#111}small{color:var(--muted)}
+/* Ses düğmesi (okuma sekmesi): giriş kutusu görünümünde tek satır; menüsü #acilir. Hazır sesler: dil sırası ve kart düğmeleri. */
+button.sesdugme{display:flex;align-items:center;gap:8px;width:100%;margin:0;padding:7px 10px;background:var(--alan);color:var(--fg);border:1px solid var(--cizgi);border-radius:6px;font:inherit;font-weight:400;text-align:start}
+button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc)}.sesdugme em{flex:1;min-width:0;font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sesdugme i{font-style:normal;color:var(--muted);font-size:.8rem}
+#acilir .ses button[data-sec]{flex:1;min-width:0;justify-content:flex-start}#acilir .ses em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26em}
+#acilir .grup{padding:5px 9px 1px;font-size:.7rem;color:var(--muted)}
+.dilsira{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}.dilsira button b{font-weight:600;font-variant-numeric:tabular-nums}
+.csat{flex-wrap:wrap}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.listebtn{display:inline-flex;align-items:center;gap:5px}.listebtn svg{fill:none;flex:none}.listebtn[aria-pressed=true] svg{color:var(--err);fill:var(--err)}.listebtn[aria-pressed=true]:hover svg{color:#111;fill:#111}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
 /* Tasarım metni kısa örnektir: 3 satırlık kutu, altında süre çubuğu, sınır aşımında uyarı, kalıcı gri ipucu. */
 #tasarim_metni{flex:none;line-height:1.35;height:calc(4.05em + 18px);min-height:0;resize:none}
@@ -125,7 +133,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 </div></div></section>
 
 <section id="p2" class="panel" role="tabpanel" hidden>
-<label for="ses" data-t="ses">Ses</label><select id="ses"></select>
+<label for="ses" data-t="ses">Ses</label><button type="button" id="ses" class="sesdugme" aria-haspopup="menu" aria-expanded="false"></button>
 <label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label>
 <div id="defterkap"><div class="defter"><div id="satirno"></div><div id="yazikap"><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea><div id="bantlar"><div></div></div></div></div><div id="ayna" aria-hidden="true"></div><div id="satir_duyuru" class="gizli" aria-live="polite"></div></div><div id="acilir" role="menu" hidden></div>
 <button id="btn_oku" data-t="oku">Bu sesle oku</button><div id="d_oku" class="durum" aria-live="polite"></div>
@@ -147,7 +155,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <button id="btn_klon" data-t="klonla" disabled>Klonla ve oku</button><div id="d_klon" class="durum" aria-live="polite"></div>
 <div id="klon_sonuc"></div></section>
 
-<section id="p4" class="panel" role="tabpanel" hidden><div id="hazir"></div></section>
+<section id="p4" class="panel" role="tabpanel" hidden><div id="hazir_diller" class="dilsira" role="group" data-t-title="hazir"></div><div id="d_hazir" class="durum" aria-live="polite"></div><div id="hazir"></div></section>
 </main>
 <script>
 const $=id=>document.getElementById(id);
@@ -180,7 +188,7 @@ async function dilYukle(k){const [s,y]=await Promise.all([api('/arayuz_dili/'+k+
  $('dil_dugme').innerHTML=`${KURE}<img src="/bayrak/${d[1]}.svg" alt=""><span>${k.toUpperCase()}</span>`;$('dil_dugme').title=d[2];$('dil_dugme').setAttribute('aria-label',d[2]);
  $('tmetin_ipucu').textContent=t('tmetin_ipucu',{dugme:t('oku')});
  dosyaAdi();ornekDoldur();sesListesi();cesitCiz();okumaCiz();klonCiz();klonBilgi();sureCiz();
- for(const id of ['d_tasarla','d_oku','d_klon'])durumYaz($(id),$(id)._son);}
+ for(const id of ['d_tasarla','d_oku','d_klon','d_hazir'])durumYaz($(id),$(id)._son);}
 // Sekmeler: tıklanan bölüm görünür, diğerleri gizli; son sekme hatırlanır.
 function sekmeAc(id){document.querySelectorAll('.sekmeler button').forEach(b=>b.setAttribute('aria-selected',b.dataset.sekme===id));
  document.querySelectorAll('.kart>.panel').forEach(p=>p.hidden=p.id!==id);hafiza('sekme',id);}
@@ -245,15 +253,46 @@ $('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!
  $('tasarim_metni').value=kalan;durumYaz($('d_tasarla'),null);sureSimdi().catch(()=>{});
 };
 
-let sesler={hazir:[],tasarlanan:[]};
+let sesler={hazir:[],tasarlanan:[],okuma_listesi:[]},okumaListesi=[];
 const tanitim=k=>dil==='tr'?k.tanitim_tr:(k.tanitim_en||k.tanitim_tr);
-function sesListesi(){const s=$('ses'),secili=s.value;s.innerHTML='';
- for(const k of sesler.tasarlanan){const o=document.createElement('option');o.value=k.kimlik;o.textContent=t('etiket',{ad:t('tasarlanan'),deger:k.kimlik+' · '+t('tohum_n',{n:k.okuma_tohumu})});s.appendChild(o);}
- for(const k of sesler.hazir){const o=document.createElement('option');o.value=k.kimlik;o.textContent=t('etiket',{ad:t('hazir_ses'),deger:k.gorunen_ad+' · '+(tanitim(k)||'').slice(0,60)});s.appendChild(o);}
- if(secili)s.value=secili;
- $('hazir').innerHTML=sesler.hazir.map(k=>`<div class="cesit"><div style="flex:1"><b>${esc(k.gorunen_ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small><br><small>${esc(tanitim(k))}</small></div>`+
-  `<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
-async function yenile(secili){sesler=await api('/api/sesler');sesListesi();cesitCiz();if(secili)$('ses').value=secili;}
+// Sesin dili kartta; eski Türkçe hazır seslerde alan yok → tr. Bayrak, sağ üstteki dil seçimindeki resmin aynısı.
+// The voice language is on its card (old Turkish cards have none → tr). Flags are the language picker's images.
+const sesDili=k=>k.dil||'tr',dilBayrak=d=>(DILLER.find(x=>x[0]===d)||[])[1];
+const bayrakImg=d=>dilBayrak(d)?`<img src="/bayrak/${dilBayrak(d)}.svg" alt="">`:'';
+const dilSira=(d,ui)=>d===ui?-1:(i=>i<0?999:i)(DILLER.findIndex(x=>x[0]===d));  // arayüz dili önce, sonra dil listesi sırası
+const sesAdi=k=>k.kimlik.startsWith('hazir/')?k.gorunen_ad||k.ad:`${k.gorunen_ad||k.ad} · ${t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()})}`;
+const sesSirala=(l,ui)=>l.slice().sort((a,b)=>dilSira(sesDili(a),ui)-dilSira(sesDili(b),ui)||(a.gorunen_ad||a.ad||'').localeCompare(b.gorunen_ad||b.ad||''));
+// Okuma listesi düğmesi (tasarla çeşit kartı, hazır ses kartı): "Bu sesle oku"nun yanında, aynı hap; listedeyse dolu kalp + "Listede".
+// Reading-list button next to "Read with this voice"; filled heart + "In list" when listed. State updates in place (audio keeps playing).
+const listeDugmesi=k=>{const v=okumaListesi.includes(k);return `<button type="button" class="okubtn listebtn" data-liste="${esc(k)}" aria-pressed="${v}">${KALP}<span>${esc(t(v?'listede':'liste_ekle'))}</span></button>`;};
+function listeDugmeleri(){document.querySelectorAll('[data-liste]').forEach(b=>{const v=okumaListesi.includes(b.dataset.liste);b.setAttribute('aria-pressed',v);b.lastElementChild.textContent=t(v?'listede':'liste_ekle');});}
+// Kısa bilgi satırı: 3 sn sonra önceki durum yazısı geri gelir / short notice, the previous status returns after 3 s
+function bilgi(el,j){const once=el._son===undefined?null:el._son;durumYaz(el,j);setTimeout(()=>{if(el._son===j)durumYaz(el,once);},3000);}
+// Tek liste: tasarla kartından, hazır sesler kartından ve ses menüsündeki kalpten aynı uç (sunucuda, kullanıcının ses klasöründe).
+// One list for every source: the same endpoint (stored server-side in the user's voice folder).
+async function listeDegistir(k,el){const ekle=!okumaListesi.includes(k);let j;
+ try{j=await api('/api/okuma_listesi',{kimlik:k,ekle});}catch(e){j={hata:String(e)};}
+ if(j.hata){if(el)durumYaz(el,j);return false;}
+ okumaListesi=j.okuma_listesi;listeDugmeleri();if(el)bilgi(el,{durum:'bitti',kod:ekle?'liste_eklendi':'liste_cikti'});return true;}
+// "Bu sesle oku" her yerde aynı iş: okuma sekmesi o ses seçili açılır / the same job everywhere
+function okumayaGonder(k){SesMenu.sec(k);sekmeAc('p2');$('okuma_metni').focus();}
+function sesListesi(){SesMenu.ciz();hazirCiz();}
+// Hazır sesler: üstte "Tümü" ve yalnız sesi olan dillerin bayrağı + sayısı; seçilen dil hatırlanır.
+// Bundled voices: "All" plus a flag and count for each language that has voices; the chosen language is remembered.
+function hazirCiz(){const h=sesler.hazir,say={};for(const k of h)say[sesDili(k)]=(say[sesDili(k)]||0)+1;
+ const d=Object.keys(say).sort((a,b)=>dilSira(a,dil)-dilSira(b,dil));let s=hafiza('hazir_dil');if(!say[s])s='tumu';
+ $('hazir_diller').innerHTML=`<button type="button" data-hdil="tumu" aria-pressed="${s==='tumu'}"><span>${esc(t('tumu'))}</span><b>${h.length}</b></button>`
+  +d.map(x=>{const a=DIL_ADI(x);return `<button type="button" data-hdil="${esc(x)}" aria-pressed="${s===x}" title="${esc(a)}" aria-label="${esc(t('hazir_sayi',{dil:a,n:say[x]}))}">${bayrakImg(x)||`<span>${esc(x)}</span>`}<b>${say[x]}</b></button>`;}).join('');
+ $('hazir').innerHTML=sesSirala(h.filter(k=>s==='tumu'||sesDili(k)===s),dil).map(k=>`<div class="cesit"><div class="csat"><div class="hazirad">${bayrakImg(sesDili(k))}<b>${esc(k.gorunen_ad||k.ad)}</b> <small>${esc(t('tohum_n',{n:k.okuma_tohumu}))}</small></div>`
+  +`<button type="button" class="okubtn" data-oku="${esc(k.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(k.kimlik)}</div><small>${esc(tanitim(k))}</small>`
+  +`<audio controls preload="none" src="/dosya/${esc(k.kimlik)}/${esc(k.ornek_okuma||k.referans)}"></audio></div>`).join('');}
+$('hazir_diller').onclick=e=>{const b=e.target.closest('[data-hdil]');if(!b)return;hafiza('hazir_dil',b.dataset.hdil);hazirCiz();
+ const y=$('hazir_diller').querySelector(`[data-hdil="${b.dataset.hdil}"]`);if(y)y.focus();};
+$('p4').addEventListener('click',e=>{const o=e.target.closest('[data-oku]'),l=e.target.closest('[data-liste]');
+ if(o)okumayaGonder(o.dataset.oku);else if(l)listeDegistir(l.dataset.liste,$('d_hazir'));});
+$('cesitler').addEventListener('click',e=>{const l=e.target.closest('[data-liste]');if(l)listeDegistir(l.dataset.liste,$('d_tasarla'));});
+async function yenile(secili){sesler=await api('/api/sesler');okumaListesi=sesler.okuma_listesi||[];
+ if(secili)SesMenu.sec(secili);else if(!SesMenu.bul(SesMenu.deger))SesMenu.sec(SesMenu.varsayilan(),false);sesListesi();cesitCiz();}
 // İlerleme: düğmenin yanında kronometre + çubuk. Model yüklenirken çubuk kayar, sonra hazır/toplam ile dolar.
 // Progress: stopwatch + bar beside the button; sliding while the model loads, then filled by done/total.
 function ilerle(p){if(!p)return null;const t0=Date.now(),k=p.querySelector('.krono'),i=p.querySelector('i');
@@ -267,23 +306,23 @@ async function bekle(is,el,p){const g=ilerle(p);for(;;){const j=await api('/api/
 let sonCesit=null,sonOkuma=null,sonKlon=null;
 // Üretim = bir Tasarla basışı: aynı ad, tarih, tarif ve metinle çıkan çeşitler. Diskten gelir (sesler.tasarlanan), en yeni üstte.
 let seciliUretim=null;
-function uretimler(){const g=new Map();
- for(const c of sesler.tasarlanan){const k=c.uretim?c.ad+'|'+c.uretim:[c.ad,c.tarih,c.ses_yaratici_ingilizce_prompt,c.ses_yaratilirken_okutulan_metin].join('|');if(!g.has(k))g.set(k,[]);g.get(k).push(c);}
+function uretimler(liste=sesler.tasarlanan){const g=new Map();
+ for(const c of liste){const k=c.uretim?c.ad+'|'+c.uretim:[c.ad,c.tarih,c.ses_yaratici_ingilizce_prompt,c.ses_yaratilirken_okutulan_metin].join('|');if(!g.has(k))g.set(k,[]);g.get(k).push(c);}
  return [...g].map(([k,cs])=>({k,cs:cs.sort((a,b)=>a.cesit-b.cesit)})).sort((a,b)=>(b.cs[0].tarih||'').localeCompare(a.cs[0].tarih||'')||b.cs[0].cesit-a.cs[0].cesit);}
 function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checked')||{}).value,u=uretimler();
  if(!u.some(x=>x.k===seciliUretim))seciliUretim=u.length?u[0].k:null;
  $('uretim').innerHTML=u.map(x=>`<option value="${esc(x.k)}">${esc(x.cs[0].gorunen_ad||x.cs[0].ad)} · ${esc((x.cs[0].tarih||'').slice(5))} · ${esc(t('cesit_kisa'))} ${x.cs.length}</option>`).join('');
  $('uretim').value=seciliUretim||'';$('uretim').hidden=!u.length;
  const hatalar=(sonCesit?sonCesit.cesitler:[]).filter(c=>c.hata).map(c=>`<div class="cesit hata">${esc(t('tohum_n',{n:c.tohum}))}: ${esc(c.hata)}</div>`);
- const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small>${esc(t('tohum_n',{n:c.tasarim_tohumu}))}, ${esc(t('sn',{n:c.referans_sn}))}</small></label><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button></div><audio controls preload="none" src="/dosya/${esc(c.kimlik)}/referans.wav"></audio></div>`);
+ const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small>${esc(t('tohum_n',{n:c.tasarim_tohumu}))}, ${esc(t('sn',{n:c.referans_sn}))}</small></label><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}</div><audio controls preload="none" src="/dosya/${esc(c.kimlik)}/referans.wav"></audio></div>`);
  $('cesitler').innerHTML=hatalar.concat(kartlar).join('')||`<p class="bos">${esc(t('uretim_yok',{dugme:t('tasarla')}))}</p>`;
- document.querySelectorAll('input[name=sec]').forEach(r=>{r.checked=r.value===secili;r.onchange=()=>{$('ses').value=r.value;};});
- document.querySelectorAll('[data-oku]').forEach(b=>b.onclick=()=>{const r=document.querySelector(`input[name=sec][value="${b.dataset.oku}"]`);if(r)r.checked=true;
-  $('ses').value=b.dataset.oku;sekmeAc('p2');$('okuma_metni').focus();});}
+ document.querySelectorAll('input[name=sec]').forEach(r=>{r.checked=r.value===secili;r.onchange=()=>SesMenu.sec(r.value);});
+ document.querySelectorAll('#cesitler [data-oku]').forEach(b=>b.onclick=()=>{const r=[...document.querySelectorAll('input[name=sec]')].find(x=>x.value===b.dataset.oku);if(r)r.checked=true;
+  okumayaGonder(b.dataset.oku);});}
 // Üretim seçilince form o üretimin ad, tarif ve metniyle dolar; çeşitleri listelenir, ilki okumada seçili ses olur.
 function uretimAc(k){const x=uretimler().find(x=>x.k===k);if(!x)return;seciliUretim=k;const c=x.cs[0];
  $('ad').value=c.gorunen_ad||c.ad;$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';$('ornek').value='';$('cesit').value=x.cs.length;
- sureGuncelle();cesitCiz();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}}
+ sureGuncelle();cesitCiz();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}}
 $('uretim').onchange=()=>uretimAc($('uretim').value);
 $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  const u=await sureSimdi().catch(()=>null);if(u&&u.sn>u.sert){b.disabled=false;$('okumaya_tasi').focus();return;}  // sınır aşıldı: üretim başlamaz
@@ -291,7 +330,7 @@ $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
  if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
  const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
- sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;$('ses').value=ilk.value;}};
+ sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}};
 
 const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('indir'))}</button></a>`;
 const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,tohum:r.tohum});
@@ -603,6 +642,40 @@ const Satir={acik:null,ust:[],boy:[],parla:{k:new Set(),son:0},zaman:0,bas:null,
   no.addEventListener('wheel',e=>{ta.scrollTop+=e.deltaMode===1?e.deltaY*satirBoyu():e.deltaY;e.preventDefault();},{passive:false});
   ta.addEventListener('keydown',e=>this.tus(e));ta.addEventListener('paste',e=>this.yapistirOlay(e));}};
 Acilir.kur();Durak.kur();Satir.kur();
+// ── Ses menüsü: okuma sekmesindeki ses düğmesi, aynı açılır menü (#acilir), üçüncü sahip ──────────────────────────
+// Başlık "Ses · seçili ad"; Okuma listem (kalpli, eklenme sırası) · Hazır sesler (bayraklı, arayüz dili önce) · Tasarlanan
+// (en yeni üretim üstte). Listedeki ses aşağıda tekrar etmez (bekleme menüsündeki favori gibi). Seçilen ses hatırlanır.
+// Voice menu: the same popup, a third owner. Reading list on top (hearts), then bundled voices by language, then designed ones.
+const SesMenu={deger:'',
+ tum(){return [...sesler.hazir,...sesler.tasarlanan];},
+ bul(k){return this.tum().find(x=>x.kimlik===k);},
+ // Saf: üç bölüm / pure: three sections
+ bolumler(s,liste,ui){const v=new Map([...s.hazir,...s.tasarlanan].map(k=>[k.kimlik,k])),ust=liste.filter(k=>v.has(k)).map(k=>v.get(k)),l=new Set(liste);
+  return {liste:ust,hazir:sesSirala(s.hazir.filter(k=>!l.has(k.kimlik)),ui),tasarlanan:uretimler(s.tasarlanan).flatMap(x=>x.cs).filter(k=>!l.has(k.kimlik))};},
+ // Hatırlanan ses yoksa: okuma listesinin ilki, yoksa arayüz dilindeki ilk hazır ses, yoksa ilk hazır ses.
+ varsayilan(){const v=new Set(this.tum().map(k=>k.kimlik)),h=hafiza('ses');if(h&&v.has(h))return h;const l=okumaListesi.find(k=>v.has(k));if(l)return l;
+  return (sesSirala(sesler.hazir,dil)[0]||sesler.tasarlanan[0]||{}).kimlik||'';},
+ sec(k,kalici=true){this.deger=k||'';if(kalici&&k)hafiza('ses',k);this.ciz();},
+ ciz(){const k=this.bul(this.deger),b=$('ses'),ad=k?sesAdi(k):'—';
+  b.innerHTML=(k?bayrakImg(sesDili(k)):'')+`<em>${esc(ad)}</em><i aria-hidden="true">▾</i>`;b.title=t('ses_sec',{ad});b.setAttribute('aria-label',b.title);},
+ menu(){const b=$('ses'),g=this.bolumler(sesler,okumaListesi,dil),r=b.getBoundingClientRect(),secili=this.bul(this.deger);
+  const satir=k=>{const f=okumaListesi.includes(k.kimlik),ad=sesAdi(k);
+   return `<div class="satir ses" role="group"><button type="button" role="menuitemradio" data-sec="${esc(k.kimlik)}" aria-checked="${k.kimlik===this.deger}" title="${esc(t('tohum_n',{n:k.okuma_tohumu}))}">${bayrakImg(sesDili(k))}<em>${esc(ad)}</em></button>`
+    +`<button type="button" role="menuitemcheckbox" class="kalp${f?' dolu':''}" data-fav="${esc(k.kimlik)}" aria-checked="${f}" aria-label="${esc(t(f?'kalp_cikar':'kalp_ekle',{ses:ad}))}">${KALP}</button></div>`;};
+  const grup=(ad,l)=>l.length?`<div class="grup" aria-hidden="true">${esc(ad)}</div>`+l.map(satir).join(''):'';
+  const govde=[grup(t('okuma_listem'),g.liste),grup(t('hazir'),g.hazir),grup(t('tasarlanan_sesler'),g.tasarlanan)].filter(Boolean).join('<hr>');
+  Acilir.ac(b,rtl()?r.right:r.left,Acilir.baslik(esc(t('ses')),secili?sesAdi(secili):'—')+govde,this,t('ses'));},
+ kapandi(){},
+ odak(){return $('ses');},
+ // Kalp: liste değişir, menü yerinde yeniden çizilir, odak aynı kalpte kalır / the heart keeps focus after the redraw
+ async tikla(e,b){const d=b.dataset;
+  if(d.sec!==undefined){this.sec(d.sec);return Acilir.kapat(true);}
+  if(d.fav===undefined)return;const k=d.fav;if(!await listeDegistir(k)||Acilir.sahip!==this)return;this.menu();
+  const h=[...$('acilir').querySelectorAll('[data-fav]')].find(x=>x.dataset.fav===k);if(h)h.focus();},
+ kur(){const b=$('ses');
+  b.addEventListener('click',e=>{e.stopPropagation();if(Acilir.sahip===this)return Acilir.kapat(true);this.menu();});
+  b.addEventListener('keydown',e=>{if((e.key==='ArrowDown'||e.key==='ArrowUp')&&Acilir.sahip!==this){e.preventDefault();this.menu();}});}};
+SesMenu.kur();
 // Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara (düğme) o satırın başına yazılır.
 const satirBoyu=()=>parseFloat(getComputedStyle($('okuma_metni')).lineHeight)||28;
 function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scrollTop;$('bantlar').firstElementChild.style.transform=`translateY(${-ta.scrollTop}px)`;}
@@ -625,7 +698,7 @@ $('okuma_metni').addEventListener('input',e=>{if(Satir.yaziyor)return;const ta=$
 $('okuma_metni').addEventListener('scroll',bantKaydir);
 $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=null;$('sonuc').innerHTML='';
  const hd=Durak.hatalar();if(hd.length){durumYaz($('d_oku'),{hata:hd.map(h=>h.metin).join('\n'),sorunlar:hd});Satir.goster(hd[0].i);b.disabled=false;return;}
- const j=await api('/api/oku',{ses:$('ses').value,metin:Durak.metin()});
+ const j=await api('/api/oku',{ses:SesMenu.deger,metin:Durak.metin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
  const s=await bekle(j.is,$('d_oku'));b.disabled=false;if(s.durum!=='bitti')return;sonOkuma=s.sonuc;okumaCiz();};
 
@@ -648,7 +721,8 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
  if(j.hata){durumYaz($('d_klon'),j);klonHazir();return;}
  const s=await bekle(j.is,$('d_klon'));klonHazir();if(s.durum!=='bitti')return;sonKlon=s.sonuc;klonCiz();};
 
-(async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>sesler=s)]);await dilYukle(ilkDil());Durak.acilis();sureGuncelle();})();
+(async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>{sesler=s;okumaListesi=s.okuma_listesi||[];})]);await dilYukle(ilkDil());
+ SesMenu.sec(SesMenu.varsayilan(),false);Durak.acilis();sureGuncelle();})();
 </script></body></html>
 """
 
@@ -740,6 +814,15 @@ class Isler:
                           sorunlar=[_sorun(item) for item in found], iz=traceback.format_exc()[-1200:])
 
 
+def _sesler(settings) -> tuple:
+    """Ses listesi + okuma listesi (yalnız bugün var olan sesler) ve geçerli kimlikler.
+    Voice list + reading list (only voices that exist today) and the valid identities."""
+    voices = oku.list_voices(settings)
+    gecerli = {card["kimlik"] for group in ("hazir", "tasarlanan") for card in voices[group]}
+    voices["okuma_listesi"] = [k for k in okuma_listesi.oku(settings) if k in gecerli]
+    return voices, gecerli
+
+
 def make_handler(settings, jobs: Isler):
     roots = {"hazir": settings["hazir_sesler"], "tasarlanan": settings["sesler"]}
 
@@ -797,7 +880,7 @@ def make_handler(settings, jobs: Isler):
             elif path == "/api/ornekler":
                 self._json(ornekler.listele())
             elif path == "/api/sesler":
-                self._json(oku.list_voices(settings))
+                self._json(_sesler(settings)[0])
             elif path.startswith("/api/is/"):
                 self._json(jobs.status(path[8:]))
             elif path.startswith("/bayrak/"):
@@ -858,6 +941,14 @@ def make_handler(settings, jobs: Isler):
                 if found:
                     return self._json(_hata(found), 400)
                 return self._json({"is": jobs.submit("oku", payload)})
+            if self.path == "/api/okuma_listesi":
+                # Okuma listesine ekle / çıkar: yalnız listelenen ses kimliği; dosya kullanıcının ses klasöründe.
+                # Add to / remove from the reading list: listed voice identities only; stored in the user's voice folder.
+                try:
+                    return self._json({"okuma_listesi": okuma_listesi.degistir(
+                        settings, payload.get("kimlik"), payload.get("ekle"), _sesler(settings)[1])})
+                except ValueError as error:
+                    return self._json(_hata([error.args[0] if error.args else str(error)]), 400)
             if self.path == "/api/klon":
                 from . import klonla
                 found = klonla.check(payload.get("kayit_metni", ""), payload.get("metin", ""), payload.get("onay"))
