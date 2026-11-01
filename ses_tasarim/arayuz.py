@@ -964,7 +964,7 @@ def surum_yazisi(kok: Path = REPO_KOKU) -> str:
 
     def git(*args) -> str:
         # --git-dir: üst klasördeki başka bir depoya kaymaz / never falls back to a parent repository
-        r = subprocess.run(["git", "--git-dir", str(Path(kok) / ".git"), "--work-tree", str(kok), *args], capture_output=True, text=True, timeout=5,
+        r = subprocess.run(["git", "--git-dir", str(Path(kok) / ".git"), "--work-tree", str(kok), *args], capture_output=True, encoding="utf-8", errors="replace", timeout=5,
                            stdin=subprocess.DEVNULL, **gizli)
         return r.stdout.strip() if r.returncode == 0 else ""
     try:
