@@ -262,7 +262,12 @@ const bayrakImg=d=>dilBayrak(d)?`<img src="/bayrak/${dilBayrak(d)}.svg" alt="">`
 const dilSira=(d,ui)=>d===ui?-1:(i=>i<0?999:i)(DILLER.findIndex(x=>x[0]===d));  // arayüz dili önce, sonra dil listesi sırası
 // Görünen ad kendi yönünde, çeşit eki arayüz yönünde: sağdan sola dilde Latin ad + yerel ek doğru sırada okunur
 // (HTML'de <bdi>, düz yazıda FSI/PDI yalıtımı). / The name keeps its own direction, the variant suffix follows the UI.
-const sesAdi=k=>[k.gorunen_ad||k.ad,sesEki(k)].filter(Boolean).join(' · '),sesEki=k=>k.kimlik.startsWith('hazir/')?'':t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()});
+// Aynı adla birden çok Tasarla basışı (üretim) varsa ekte üretimin zamanı da yazar (Üretimler listesindeki biçim: AA-GG SS:DD).
+// When one name has several productions, the suffix also carries the production time (same format as the Productions list).
+const uretimAnahtari=c=>c.uretim?c.ad+'|'+c.uretim:[c.ad,c.tarih,c.ses_yaratici_ingilizce_prompt,c.ses_yaratilirken_okutulan_metin].join('|');
+const cokUretimli=k=>new Set(sesler.tasarlanan.filter(c=>c.ad===k.ad).map(uretimAnahtari)).size>1;
+const sesAdi=k=>[k.gorunen_ad||k.ad,sesEki(k)].filter(Boolean).join(' · '),sesEki=k=>k.kimlik.startsWith('hazir/')?''
+ :(cokUretimli(k)&&k.tarih?(k.tarih||'').slice(5)+' · ':'')+t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()});
 const sesAdiYalitik=k=>sesEki(k)?`\u2068${k.gorunen_ad||k.ad}\u2069 · ${sesEki(k)}`:sesAdi(k);
 const sesAdiHtml=k=>`<bdi>${esc(k.gorunen_ad||k.ad)}</bdi>`+(sesEki(k)?' · '+esc(sesEki(k)):'');
 const sesSirala=(l,ui)=>l.slice().sort((a,b)=>dilSira(sesDili(a),ui)-dilSira(sesDili(b),ui)||(a.gorunen_ad||a.ad||'').localeCompare(b.gorunen_ad||b.ad||''));
@@ -312,7 +317,7 @@ let sonCesit=null,sonOkuma=null,sonKlon=null;
 // Üretim = bir Tasarla basışı: aynı ad, tarih, tarif ve metinle çıkan çeşitler. Diskten gelir (sesler.tasarlanan), en yeni üstte.
 let seciliUretim=null;
 function uretimler(liste=sesler.tasarlanan){const g=new Map();
- for(const c of liste){const k=c.uretim?c.ad+'|'+c.uretim:[c.ad,c.tarih,c.ses_yaratici_ingilizce_prompt,c.ses_yaratilirken_okutulan_metin].join('|');if(!g.has(k))g.set(k,[]);g.get(k).push(c);}
+ for(const c of liste){const k=uretimAnahtari(c);if(!g.has(k))g.set(k,[]);g.get(k).push(c);}
  return [...g].map(([k,cs])=>({k,cs:cs.sort((a,b)=>a.cesit-b.cesit)})).sort((a,b)=>(b.cs[0].tarih||'').localeCompare(a.cs[0].tarih||'')||b.cs[0].cesit-a.cs[0].cesit);}
 function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checked')||{}).value,u=uretimler();
  if(!u.some(x=>x.k===seciliUretim))seciliUretim=u.length?u[0].k:null;
