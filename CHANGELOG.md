@@ -18,6 +18,10 @@
   bayrağa basınca o dilin sesleri görünür, seçim hatırlanır. Her kartta *Bu sesle oku* (okuma sekmesini o ses seçili açar)
   ve *Okuma listeme ekle*. Yeni yazılar 30 dilde; sağdan sola dillerde Latin ad ve tanıtım doğru yönde.
   Testler: `tests/test_okuma_listesi.py`, `tests/test_arayuz_ses_menusu.py`.
+- Hazır seslerin görünen adları anlamlı ve Türkçe harfli: *Zeynep Belgesel Anlatıcı*, *Enerjik Spiker*, *Usta Haber
+  Spikeri*, *Masal Cadısı*, *Tok Sesli Anlatıcı*, *Yaşlı Bilge*, *Gizemli Bilge*; yabancı dildekiler *Fransızca Belgesel
+  Anlatıcı* kalıbında. Yalnız `gorunen_ad` değişti; klasör adı ve kimlik (`hazir/belgesel_hanim` vb.) aynı, komut satırı ve
+  okuma listesi etkilenmez.
 - Ses tasarla: okutulan metin kutusu artık *Örnek cümle (sesi tanımak için, 1-2 cümle)*; kutu 3 satır, altında dile göre
   canlı süre çubuğu (~N sn / en fazla 20 sn, aşınca kırmızı). Tahmini 22 sn'yi (%10 pay) aşan metinle Tasarla başlamaz,
   sunucu da `tasarim_uzun` hatasıyla reddeder; *Okuma sekmesine taşı* düğmesi tam metni cümle cümle okuma kutusuna koyar,
@@ -121,6 +125,10 @@
   reading tab with that voice selected) and *Add to my reading list*. New strings in all 30 languages; Latin names and
   descriptions keep their direction in right-to-left languages. Tests: `tests/test_okuma_listesi.py`,
   `tests/test_arayuz_ses_menusu.py`.
+- Bundled voices have meaningful Turkish display names: *Zeynep Belgesel Anlatıcı*, *Enerjik Spiker*, *Usta Haber
+  Spikeri*, *Masal Cadısı*, *Tok Sesli Anlatıcı*, *Yaşlı Bilge*, *Gizemli Bilge*; the other languages follow *Fransızca
+  Belgesel Anlatıcı* (French documentary narrator). Only `gorunen_ad` changed; folder names and ids (`hazir/belgesel_hanim`
+  etc.) are the same, so the command line and the reading list are unaffected.
 - Design a voice: the design text box is now *Sample sentence (to get to know the voice, 1-2 sentences)*; 3 lines high,
   with a live per-language length bar below it (~N s / max 20 s, red when over). With an estimate above 22 s (10 %
   margin) Design does not start and the server rejects it with `tasarim_uzun`; *Move to reading tab* puts the full text
