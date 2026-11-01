@@ -741,7 +741,7 @@ const SesYonet={k:null,tetik:null,geri:false,rakamYok:true,
    $('acilir').querySelector('[data-is=liste]')?.focus();}return;}
   if(d.is==='asil')return this.sonra(this.yonet(k,'ad',''));
   if(d.is==='sil'){const s=SesMenu.bul(k),ad=s?sesAdi(s):k;
-   return Acilir.onayAc(b,Acilir.onay(t(hazir?'gizle_soru':'sil_soru',{ses:ad}),t(hazir?'gizle_ayrinti':'sil_ayrinti'),'evet'));}},
+   return Acilir.onayAc(b,Acilir.onay(t(hazir?'gizle_soru':'sil_soru',{ses:ad}),t(hazir?'gizle_ayrinti':'sil_ayrinti'),'evet',hazir));}},
  // Kart düğmesi: aynı düğmeye ikinci basış menüyü kapatır / a second press on the same card button closes the menu
  karttan(e,b){e.stopPropagation();if(Acilir.sahip===this&&this.tetik===b)return Acilir.kapat(true);this.menu(b.dataset.yonet,b,false);}};
 // Defter: her mantıksal satırın (cümlenin) yüksekliği gizli aynada ölçülür, numara (düğme) o satırın başına yazılır.
