@@ -921,7 +921,7 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=nul
 // Ctrl+Enter (Mac'te ⌘+Enter): açık sekmenin ana işini başlatır (Tasarla / Bu sesle oku); düğme pasifse hiçbir şey olmaz.
 // Alt'lı ve Shift'li Enter (defter kısayolları), menü/ad kutusunun kendi Enter'ı (preventDefault) ve açık menü etkilenmez; odak taşınmaz.
 // Ctrl/Cmd+Enter starts the open tab's main action; a disabled button does nothing; other Enter shortcuts are untouched.
-const anaIs=(e,panel)=>e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.altKey&&!e.shiftKey&&!e.isComposing&&!e.repeat&&!e.defaultPrevented
+const anaIs=(e,panel)=>e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.altKey&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229&&!e.repeat&&!e.defaultPrevented
  ?({p1:'btn_tasarla',p2:'btn_oku'}[panel]||null):null;
 const KISAYOL=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'')?'⌘ Enter':'Ctrl+Enter';
 ['btn_tasarla','btn_oku'].forEach(id=>{$(id).setAttribute('aria-keyshortcuts','Control+Enter Meta+Enter');$(id).title=KISAYOL;});

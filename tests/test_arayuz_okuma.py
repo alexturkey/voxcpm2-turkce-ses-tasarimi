@@ -197,8 +197,8 @@ const E=o=>({key:'Enter',ctrlKey:false,metaKey:false,altKey:false,shiftKey:false
 console.log(JSON.stringify([anaIs(E({ctrlKey:true}),'p1'),anaIs(E({metaKey:true}),'p2'),anaIs(E({ctrlKey:true}),'p3'),
  anaIs(E({}),'p2'),anaIs(E({altKey:true}),'p2'),anaIs(E({ctrlKey:true,altKey:true}),'p2'),anaIs(E({ctrlKey:true,shiftKey:true}),'p2'),
  anaIs(E({ctrlKey:true,isComposing:true}),'p2'),anaIs(E({ctrlKey:true,repeat:true}),'p2'),anaIs(E({ctrlKey:true,defaultPrevented:true}),'p1'),
- anaIs(E({ctrlKey:true,key:'a'}),'p1')]));""")
-        self.assertEqual(R, ["btn_tasarla", "btn_oku", None, None, None, None, None, None, None, None, None])
+ anaIs(E({ctrlKey:true,key:'a'}),'p1'),anaIs(E({ctrlKey:true,keyCode:229}),'p2')]));""")
+        self.assertEqual(R, ["btn_tasarla", "btn_oku", None, None, None, None, None, None, None, None, None, None])
 
     def test_pasif_dugme_ve_menu(self):
         k = kes("const anaIs=", "function dosyaAdi")
