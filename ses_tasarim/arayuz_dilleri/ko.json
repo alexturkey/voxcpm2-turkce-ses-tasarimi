@@ -102,5 +102,16 @@
  "durak_son": "마지막 문장 뒤: 적용되지 않습니다. 문장을 위로 옮기면 다시 적용됩니다.",
  "durak_eklendi": "{n}번째 줄 뒤에 {sure} 쉼을 추가했습니다",
  "evet": "예",
- "hayir": "아니요"
+ "hayir": "아니요",
+ "liste_ekle": "내 읽기 목록에 추가",
+ "listede": "목록에 있음",
+ "okuma_listem": "내 읽기 목록",
+ "tasarlanan_sesler": "디자인한 목소리",
+ "tumu": "전체",
+ "ses_sec": "목소리 선택: {ad}",
+ "kalp_ekle": "내 읽기 목록에 추가: {ses}",
+ "kalp_cikar": "내 읽기 목록에서 제거: {ses}",
+ "hazir_sayi": "{dil} · 기본 제공 목소리: {n}",
+ "d_liste_eklendi": "읽기 목록에 추가됨",
+ "d_liste_cikti": "읽기 목록에서 제거됨"
 }

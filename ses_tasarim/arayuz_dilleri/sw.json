@@ -102,5 +102,16 @@
  "durak_son": "Baada ya sentensi ya mwisho: halitumiki; litarudi sentensi ikihamishwa juu.",
  "durak_eklendi": "Pumziko la {sure} baada ya mstari {n}",
  "evet": "Ndiyo",
- "hayir": "Hapana"
+ "hayir": "Hapana",
+ "liste_ekle": "Ongeza kwenye orodha yangu ya kusoma",
+ "listede": "Kwenye orodha",
+ "okuma_listem": "Orodha yangu ya kusoma",
+ "tasarlanan_sesler": "Sauti zilizobuniwa",
+ "tumu": "Zote",
+ "ses_sec": "Chagua sauti: {ad}",
+ "kalp_ekle": "Ongeza kwenye orodha yangu ya kusoma: {ses}",
+ "kalp_cikar": "Ondoa kwenye orodha yangu ya kusoma: {ses}",
+ "hazir_sayi": "{dil} · sauti zilizojumuishwa: {n}",
+ "d_liste_eklendi": "Imeongezwa kwenye orodha ya kusoma",
+ "d_liste_cikti": "Imeondolewa kwenye orodha ya kusoma"
 }

@@ -102,5 +102,16 @@
  "durak_son": "Efter sista meningen: hoppas över; gäller igen när meningen flyttas upp.",
  "durak_eklendi": "Paus på {sure} efter rad {n}",
  "evet": "Ja",
- "hayir": "Nej"
+ "hayir": "Nej",
+ "liste_ekle": "Lägg till i min läslista",
+ "listede": "I listan",
+ "okuma_listem": "Min läslista",
+ "tasarlanan_sesler": "Designade röster",
+ "tumu": "Alla",
+ "ses_sec": "Välj röst: {ad}",
+ "kalp_ekle": "Lägg till i min läslista: {ses}",
+ "kalp_cikar": "Ta bort från min läslista: {ses}",
+ "hazir_sayi": "{dil} · medföljande röster: {n}",
+ "d_liste_eklendi": "Tillagd i läslistan",
+ "d_liste_cikti": "Borttagen från läslistan"
 }

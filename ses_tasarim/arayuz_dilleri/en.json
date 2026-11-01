@@ -102,5 +102,16 @@
  "durak_son": "After the last sentence: skipped; applies again when the sentence moves up.",
  "durak_eklendi": "{sure} pause after line {n}",
  "evet": "Yes",
- "hayir": "No"
+ "hayir": "No",
+ "liste_ekle": "Add to my reading list",
+ "listede": "In my list",
+ "okuma_listem": "My reading list",
+ "tasarlanan_sesler": "Designed voices",
+ "tumu": "All",
+ "ses_sec": "Choose voice: {ad}",
+ "kalp_ekle": "Add to my reading list: {ses}",
+ "kalp_cikar": "Remove from my reading list: {ses}",
+ "hazir_sayi": "{dil} · bundled voices: {n}",
+ "d_liste_eklendi": "Added to the reading list",
+ "d_liste_cikti": "Removed from the reading list"
 }

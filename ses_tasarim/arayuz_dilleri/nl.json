@@ -102,5 +102,16 @@
  "durak_son": "Na de laatste zin: wordt overgeslagen; komt terug als de zin omhooggaat.",
  "durak_eklendi": "Pauze van {sure} na regel {n}",
  "evet": "Ja",
- "hayir": "Nee"
+ "hayir": "Nee",
+ "liste_ekle": "Aan mijn leeslijst toevoegen",
+ "listede": "In mijn lijst",
+ "okuma_listem": "Mijn leeslijst",
+ "tasarlanan_sesler": "Ontworpen stemmen",
+ "tumu": "Alle",
+ "ses_sec": "Stem kiezen: {ad}",
+ "kalp_ekle": "Aan mijn leeslijst toevoegen: {ses}",
+ "kalp_cikar": "Uit mijn leeslijst verwijderen: {ses}",
+ "hazir_sayi": "{dil} · meegeleverde stemmen: {n}",
+ "d_liste_eklendi": "Toegevoegd aan de leeslijst",
+ "d_liste_cikti": "Verwijderd uit de leeslijst"
 }

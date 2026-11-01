@@ -102,5 +102,16 @@
  "durak_son": "Etter siste setning: hoppes over; gjelder igjen når setningen flyttes opp.",
  "durak_eklendi": "Pause på {sure} etter linje {n}",
  "evet": "Ja",
- "hayir": "Nei"
+ "hayir": "Nei",
+ "liste_ekle": "Legg til i leselisten min",
+ "listede": "På listen",
+ "okuma_listem": "Leselisten min",
+ "tasarlanan_sesler": "Stemmer du har laget",
+ "tumu": "Alle",
+ "ses_sec": "Velg stemme: {ad}",
+ "kalp_ekle": "Legg til i leselisten min: {ses}",
+ "kalp_cikar": "Fjern fra leselisten min: {ses}",
+ "hazir_sayi": "{dil} · medfølgende stemmer: {n}",
+ "d_liste_eklendi": "Lagt til i leselisten",
+ "d_liste_cikti": "Fjernet fra leselisten"
 }

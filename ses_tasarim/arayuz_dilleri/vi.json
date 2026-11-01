@@ -102,5 +102,16 @@
  "durak_son": "Sau câu cuối: không áp dụng; sẽ có lại khi câu được chuyển lên.",
  "durak_eklendi": "Đã thêm khoảng nghỉ {sure} sau dòng {n}",
  "evet": "Có",
- "hayir": "Không"
+ "hayir": "Không",
+ "liste_ekle": "Thêm vào danh sách đọc của tôi",
+ "listede": "Đã có trong danh sách",
+ "okuma_listem": "Danh sách đọc của tôi",
+ "tasarlanan_sesler": "Giọng đã thiết kế",
+ "tumu": "Tất cả",
+ "ses_sec": "Chọn giọng: {ad}",
+ "kalp_ekle": "Thêm vào danh sách đọc của tôi: {ses}",
+ "kalp_cikar": "Xóa khỏi danh sách đọc của tôi: {ses}",
+ "hazir_sayi": "{dil} · giọng có sẵn: {n}",
+ "d_liste_eklendi": "Đã thêm vào danh sách đọc",
+ "d_liste_cikti": "Đã xóa khỏi danh sách đọc"
 }

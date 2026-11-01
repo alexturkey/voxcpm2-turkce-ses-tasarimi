@@ -102,5 +102,16 @@
  "durak_son": "Pagkatapos ng huling pangungusap: hindi gagamitin; babalik kapag inilipat pataas ang pangungusap.",
  "durak_eklendi": "Nagdagdag ng {sure} na hinto pagkatapos ng linya {n}",
  "evet": "Oo",
- "hayir": "Hindi"
+ "hayir": "Hindi",
+ "liste_ekle": "Idagdag sa aking babasahin",
+ "listede": "Nasa listahan",
+ "okuma_listem": "Aking listahan ng babasahin",
+ "tasarlanan_sesler": "Mga dinisenyong boses",
+ "tumu": "Lahat",
+ "ses_sec": "Pumili ng boses: {ad}",
+ "kalp_ekle": "Idagdag sa aking listahan ng babasahin: {ses}",
+ "kalp_cikar": "Alisin sa aking listahan ng babasahin: {ses}",
+ "hazir_sayi": "{dil} · mga built-in na boses: {n}",
+ "d_liste_eklendi": "Naidagdag sa listahan ng babasahin",
+ "d_liste_cikti": "Inalis sa listahan ng babasahin"
 }

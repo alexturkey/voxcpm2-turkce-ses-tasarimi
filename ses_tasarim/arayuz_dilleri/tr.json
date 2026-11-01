@@ -102,5 +102,16 @@
  "durak_son": "Son cümleden sonra: uygulanmaz; cümle yukarı taşınınca geri gelir.",
  "durak_eklendi": "{n}. satırdan sonra {sure} durak",
  "evet": "Evet",
- "hayir": "Hayır"
+ "hayir": "Hayır",
+ "liste_ekle": "Okuma listeme ekle",
+ "listede": "Listede",
+ "okuma_listem": "Okuma listem",
+ "tasarlanan_sesler": "Tasarlanan sesler",
+ "tumu": "Tümü",
+ "ses_sec": "Ses seç: {ad}",
+ "kalp_ekle": "Okuma listeme ekle: {ses}",
+ "kalp_cikar": "Okuma listemden çıkar: {ses}",
+ "hazir_sayi": "{dil} · hazır ses: {n}",
+ "d_liste_eklendi": "Okuma listesine eklendi",
+ "d_liste_cikti": "Okuma listesinden çıkarıldı"
 }

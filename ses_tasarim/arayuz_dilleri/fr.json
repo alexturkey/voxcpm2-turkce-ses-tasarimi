@@ -102,5 +102,16 @@
  "durak_son": "Après la dernière phrase : ignorée ; elle revient quand la phrase remonte.",
  "durak_eklendi": "Pause de {sure} après la ligne {n}",
  "evet": "Oui",
- "hayir": "Non"
+ "hayir": "Non",
+ "liste_ekle": "Ajouter à ma liste de lecture",
+ "listede": "Dans ma liste",
+ "okuma_listem": "Ma liste de lecture",
+ "tasarlanan_sesler": "Voix créées",
+ "tumu": "Toutes",
+ "ses_sec": "Choisir la voix : {ad}",
+ "kalp_ekle": "Ajouter à ma liste de lecture : {ses}",
+ "kalp_cikar": "Retirer de ma liste de lecture : {ses}",
+ "hazir_sayi": "{dil} · voix fournies : {n}",
+ "d_liste_eklendi": "Ajoutée à la liste de lecture",
+ "d_liste_cikti": "Retirée de la liste de lecture"
 }

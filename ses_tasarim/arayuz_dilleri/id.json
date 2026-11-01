@@ -102,5 +102,16 @@
  "durak_son": "Setelah kalimat terakhir: tidak berlaku; aktif lagi saat kalimat dipindah ke atas.",
  "durak_eklendi": "Jeda {sure} ditambahkan setelah baris {n}",
  "evet": "Ya",
- "hayir": "Tidak"
+ "hayir": "Tidak",
+ "liste_ekle": "Tambahkan ke daftar baca saya",
+ "listede": "Ada di daftar",
+ "okuma_listem": "Daftar baca saya",
+ "tasarlanan_sesler": "Suara yang didesain",
+ "tumu": "Semua",
+ "ses_sec": "Pilih suara: {ad}",
+ "kalp_ekle": "Tambahkan ke daftar baca saya: {ses}",
+ "kalp_cikar": "Hapus dari daftar baca saya: {ses}",
+ "hazir_sayi": "{dil} · suara bawaan: {n}",
+ "d_liste_eklendi": "Ditambahkan ke daftar baca",
+ "d_liste_cikti": "Dihapus dari daftar baca"
 }

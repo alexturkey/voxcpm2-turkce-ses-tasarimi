@@ -102,5 +102,16 @@
  "durak_son": "Selepas ayat terakhir: tidak digunakan; kembali apabila ayat dialih ke atas.",
  "durak_eklendi": "Jeda {sure} ditambah selepas baris {n}",
  "evet": "Ya",
- "hayir": "Tidak"
+ "hayir": "Tidak",
+ "liste_ekle": "Tambah ke senarai bacaan saya",
+ "listede": "Dalam senarai",
+ "okuma_listem": "Senarai bacaan saya",
+ "tasarlanan_sesler": "Suara yang direka",
+ "tumu": "Semua",
+ "ses_sec": "Pilih suara: {ad}",
+ "kalp_ekle": "Tambah ke senarai bacaan saya: {ses}",
+ "kalp_cikar": "Buang daripada senarai bacaan saya: {ses}",
+ "hazir_sayi": "{dil} · suara terbina dalam: {n}",
+ "d_liste_eklendi": "Ditambah ke senarai bacaan",
+ "d_liste_cikti": "Dibuang daripada senarai bacaan"
 }

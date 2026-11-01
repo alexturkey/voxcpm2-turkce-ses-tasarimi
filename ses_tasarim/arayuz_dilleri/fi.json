@@ -102,5 +102,16 @@
  "durak_son": "Viimeisen lauseen jälkeen: ei käytetä; palaa, kun lause siirtyy ylemmäs.",
  "durak_eklendi": "{sure} tauko rivin {n} jälkeen",
  "evet": "Kyllä",
- "hayir": "Ei"
+ "hayir": "Ei",
+ "liste_ekle": "Lisää lukulistaani",
+ "listede": "Listalla",
+ "okuma_listem": "Lukulistani",
+ "tasarlanan_sesler": "Suunnitellut äänet",
+ "tumu": "Kaikki",
+ "ses_sec": "Valitse ääni: {ad}",
+ "kalp_ekle": "Lisää lukulistaani: {ses}",
+ "kalp_cikar": "Poista lukulistaltani: {ses}",
+ "hazir_sayi": "{dil} · valmiit äänet: {n}",
+ "d_liste_eklendi": "Lisätty lukulistaan",
+ "d_liste_cikti": "Poistettu lukulistalta"
 }

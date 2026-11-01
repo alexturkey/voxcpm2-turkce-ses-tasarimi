@@ -102,5 +102,16 @@
  "durak_son": "Po ostatnim zdaniu: pomijana; wróci, gdy zdanie przesunie się wyżej.",
  "durak_eklendi": "Pauza {sure} po wierszu {n}",
  "evet": "Tak",
- "hayir": "Nie"
+ "hayir": "Nie",
+ "liste_ekle": "Dodaj do mojej listy czytania",
+ "listede": "Na liście",
+ "okuma_listem": "Moja lista czytania",
+ "tasarlanan_sesler": "Zaprojektowane głosy",
+ "tumu": "Wszystkie",
+ "ses_sec": "Wybierz głos: {ad}",
+ "kalp_ekle": "Dodaj do mojej listy czytania: {ses}",
+ "kalp_cikar": "Usuń z mojej listy czytania: {ses}",
+ "hazir_sayi": "{dil} · wbudowane głosy: {n}",
+ "d_liste_eklendi": "Dodano do listy czytania",
+ "d_liste_cikti": "Usunięto z listy czytania"
 }

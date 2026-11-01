@@ -102,5 +102,16 @@
  "durak_son": "Efter sidste sætning: springes over; gælder igen, når sætningen flyttes op.",
  "durak_eklendi": "Pause på {sure} efter linje {n}",
  "evet": "Ja",
- "hayir": "Nej"
+ "hayir": "Nej",
+ "liste_ekle": "Føj til min læseliste",
+ "listede": "På listen",
+ "okuma_listem": "Min læseliste",
+ "tasarlanan_sesler": "Designede stemmer",
+ "tumu": "Alle",
+ "ses_sec": "Vælg stemme: {ad}",
+ "kalp_ekle": "Føj til min læseliste: {ses}",
+ "kalp_cikar": "Fjern fra min læseliste: {ses}",
+ "hazir_sayi": "{dil} · medfølgende stemmer: {n}",
+ "d_liste_eklendi": "Føjet til læselisten",
+ "d_liste_cikti": "Fjernet fra læselisten"
 }

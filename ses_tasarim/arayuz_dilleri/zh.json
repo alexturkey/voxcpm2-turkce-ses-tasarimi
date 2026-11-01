@@ -102,5 +102,16 @@
  "durak_son": "最后一句之后：此停顿不生效；句子上移后恢复。",
  "durak_eklendi": "已在第 {n} 行后添加 {sure} 停顿",
  "evet": "是",
- "hayir": "否"
+ "hayir": "否",
+ "liste_ekle": "加入我的朗读列表",
+ "listede": "已在列表中",
+ "okuma_listem": "我的朗读列表",
+ "tasarlanan_sesler": "已设计的声音",
+ "tumu": "全部",
+ "ses_sec": "选择声音：{ad}",
+ "kalp_ekle": "加入我的朗读列表：{ses}",
+ "kalp_cikar": "从我的朗读列表移除：{ses}",
+ "hazir_sayi": "{dil} · 内置声音：{n}",
+ "d_liste_eklendi": "已加入朗读列表",
+ "d_liste_cikti": "已从朗读列表移除"
 }

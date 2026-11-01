@@ -102,5 +102,16 @@
  "durak_son": "最後の文の後：この間は使われません。文を上へ移動すると戻ります。",
  "durak_eklendi": "{n}行目の後に {sure} の間を追加しました",
  "evet": "はい",
- "hayir": "いいえ"
+ "hayir": "いいえ",
+ "liste_ekle": "読み上げリストに追加",
+ "listede": "リストに追加済み",
+ "okuma_listem": "読み上げリスト",
+ "tasarlanan_sesler": "デザインしたボイス",
+ "tumu": "すべて",
+ "ses_sec": "ボイスを選択：{ad}",
+ "kalp_ekle": "読み上げリストに追加：{ses}",
+ "kalp_cikar": "読み上げリストから削除：{ses}",
+ "hazir_sayi": "{dil} · 収録済みボイス：{n}",
+ "d_liste_eklendi": "読み上げリストに追加しました",
+ "d_liste_cikti": "読み上げリストから削除しました"
 }
