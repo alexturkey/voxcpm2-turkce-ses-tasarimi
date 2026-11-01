@@ -270,10 +270,11 @@ function listeDugmeleri(){document.querySelectorAll('[data-liste]').forEach(b=>{
 function bilgi(el,j){const once=el._son===undefined?null:el._son;durumYaz(el,j);setTimeout(()=>{if(el._son===j)durumYaz(el,once);},3000);}
 // Tek liste: tasarla kartından, hazır sesler kartından ve ses menüsündeki kalpten aynı uç (sunucuda, kullanıcının ses klasöründe).
 // One list for every source: the same endpoint (stored server-side in the user's voice folder).
-async function listeDegistir(k,el){const ekle=!okumaListesi.includes(k);let j;
+// yalnizHata: menüdeki kalp başarıda yazı göstermez (menü kendisi değişir), hatayı okuma sekmesinin durum satırına yazar.
+async function listeDegistir(k,el,yalnizHata){const ekle=!okumaListesi.includes(k);let j;
  try{j=await api('/api/okuma_listesi',{kimlik:k,ekle});}catch(e){j={hata:String(e)};}
  if(j.hata){if(el)durumYaz(el,j);return false;}
- okumaListesi=j.okuma_listesi;listeDugmeleri();if(el)bilgi(el,{durum:'bitti',kod:ekle?'liste_eklendi':'liste_cikti'});return true;}
+ okumaListesi=j.okuma_listesi;listeDugmeleri();if(el&&!yalnizHata)bilgi(el,{durum:'bitti',kod:ekle?'liste_eklendi':'liste_cikti'});return true;}
 // "Bu sesle oku" her yerde aynı iş: okuma sekmesi o ses seçili açılır / the same job everywhere
 function okumayaGonder(k){SesMenu.sec(k);sekmeAc('p2');$('okuma_metni').focus();}
 function sesListesi(){SesMenu.ciz();hazirCiz();}
@@ -670,7 +671,7 @@ const SesMenu={deger:'',
  // Kalp: liste değişir, menü yerinde yeniden çizilir, odak aynı kalpte kalır / the heart keeps focus after the redraw
  async tikla(e,b){const d=b.dataset;
   if(d.sec!==undefined){this.sec(d.sec);return Acilir.kapat(true);}
-  if(d.fav===undefined)return;const k=d.fav;if(!await listeDegistir(k)||Acilir.sahip!==this)return;this.menu();
+  if(d.fav===undefined)return;const k=d.fav;if(!await listeDegistir(k,$('d_oku'),true)||Acilir.sahip!==this)return;this.menu();
   const h=[...$('acilir').querySelectorAll('[data-fav]')].find(x=>x.dataset.fav===k);if(h)h.focus();},
  kur(){const b=$('ses');
   b.addEventListener('click',e=>{e.stopPropagation();if(Acilir.sahip===this)return Acilir.kapat(true);this.menu();});
@@ -897,13 +898,23 @@ def make_handler(settings, jobs: Isler):
             else:
                 self.send_error(404)
 
+        def _bosalt(self, length: int):
+            # Reddedilen isteğin küçük gövdesi okunup atılır: okunmamış veriyle kapanan soket Windows'ta istemciye RST
+            # gönderir, cevap yerine "bağlantı kesildi" görülür. / Drain a small refused body so Windows does not reset.
+            if 0 < length <= self.MAX_BODY:
+                self.rfile.read(length)
+
         def do_POST(self):
+            try:
+                length = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                length = -1  # sayı olmayan başlık 413 olur / a non-numeric header ends as 413
             if not self._host_ok():
-                return
-            if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
-                return self._json({"hata": "Content-Type: application/json gerekli"}, 415)
-            length = int(self.headers.get("Content-Length") or 0)
+                return self._bosalt(length)
             limit = self.MAX_KLON_BODY if self.path == "/api/klon" else self.MAX_BODY
+            if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
+                self._json({"hata": "Content-Type: application/json gerekli"}, 415)
+                return self._bosalt(length)
             if length <= 0 or length > limit:
                 return self._json({"hata": f"istek gövdesi 1 ile {limit} bayt arasında olmalı"}, 413)
             try:
