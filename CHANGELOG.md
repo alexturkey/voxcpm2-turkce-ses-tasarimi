@@ -3,6 +3,11 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- İlerleme çubuğu *Bu sesle oku*'da da var (Tasarla ile aynı parça, düğmenin yanında). Çubuk baştan bir süre tahminiyle
+  akar (*geçen / ~toplam*), gerçek ilerlemenin altına inmez, geri gitmez, bitmeden %97'yi geçmez. Tahmin bu makinenin
+  ölçümlerinden öğrenilir: süre = açılış + karakter × sn/karakter (tasarla ve okuma ayrı, okumada sesin kendi katsayısı),
+  her bitişte üstel ortalamayla güncellenir, aykırı ölçüm atlanır. Kayıt `onbellek/sure_olcumu.json` (repoya girmez).
+  Test: `tests/test_sure_tahmini.py`.
 - Sade ses akışı: *Sesin adı* etiketi *Üretim adı* oldu (30 dilde, her dilin kendi doğal karşılığıyla); çeşit kartında
   *Okuma listeme ekle* iki düğmenin yerinde ad kutusu açar (✓ önce adı sonra listeyi yazar, *Vazgeç* hiçbir şey yazmaz,
   kart yerinden ve boyundan oynamaz). *Hazır sesler* sekmesi kalktı: hazır sesler okuma sekmesindeki ses menüsünde
@@ -125,6 +130,11 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- A progress bar in *Read with this voice* too (same part as Design, next to the button). It starts from a duration
+  estimate (*elapsed / ~total*), never drops below real progress, never goes back, stays under 97 % until done. The estimate
+  is learned on this machine: duration = start-up + characters × s/char (design and reading apart, a per-voice factor for
+  reading), updated with an exponential average after every job, outliers skipped. Stored in `onbellek/sure_olcumu.json`
+  (not in the repo). Test: `tests/test_sure_tahmini.py`.
 - Simpler voice flow: the *Voice name* label is now *Generation name* (30 languages, each in its own natural wording); on a
   variant card *Add to my reading list* opens a name box in place of the two buttons (✓ saves the name, then the list;
   *Cancel* writes nothing; the card keeps its place and size). The *Bundled voices* tab is gone: bundled voices live in the

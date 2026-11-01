@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla
+from . import ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, sure_tahmini
 
 BAYRAK_KOKU = Path(__file__).resolve().parent / "bayraklar"  # flag-icons 7.2.3 (MIT), 4x3 SVG / flag images
 DIL_KOKU = Path(__file__).resolve().parent / "arayuz_dilleri"  # arayüz metinleri, dil başına bir JSON / UI strings
@@ -70,8 +70,8 @@ label.mini:focus-within{border-color:var(--acc)}label.mini input,label.mini sele
 .yanyana{display:flex;gap:8px}.yanyana>.mini{flex:1}#ornek{font-size:.85rem}#ornek optgroup{background:var(--cizgi2);color:var(--baslik);font-style:normal}#ornek option{background:var(--alan);color:var(--fg)}
 .form label:not(.mini){margin:8px 0 3px;font-size:.82rem}.form textarea{min-height:84px}#defterkap{position:relative;overflow:hidden;--sat:28px;--bant:calc(var(--sat) / 3);--satir:var(--sat)}.defter{display:flex;height:238px;border:1px solid var(--cizgi);border-radius:6px;overflow:hidden;background:var(--alan)}.defter:focus-within{border-color:var(--acc)}#satirno{flex:none;position:relative;min-width:2.6em;padding:6px 8px;box-sizing:border-box;overflow:hidden;text-align:end;color:var(--muted);font-size:.78rem;line-height:var(--satir);border-inline-end:1px solid var(--cizgi2);user-select:none;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#satirno .sb{opacity:.4}#satirno .gbant{position:absolute;inset-inline:0;height:var(--bant);background:var(--cizgi2)}#yazikap{flex:1;min-width:0;position:relative}#okuma_metni{display:block;width:100%;height:100%;min-height:0;border:0;border-radius:0;outline:0;resize:none;line-height:var(--satir);padding:6px 12px;background-color:transparent;background-attachment:local;background-image:linear-gradient(transparent calc(var(--satir) - 1px),var(--cizgi2) calc(var(--satir) - 1px));background-size:100% var(--satir);background-position:0 6px}#bantlar{position:absolute;inset:0;overflow:hidden;pointer-events:none}#bantlar .durak{position:absolute;inset-inline:0;height:var(--bant);margin:0;padding:0 12px;border:0;border-radius:0;background:var(--cizgi2);display:flex;align-items:center;cursor:pointer;pointer-events:auto}#bantlar .durak:hover,#bantlar .durak:focus-visible{background:var(--cizgi)}#bantlar .durak i{display:block;height:max(3px,calc(var(--bant) - 5px));border-radius:3px;background:var(--soluk);opacity:.7}#bantlar .durak.secik{background:color-mix(in srgb,var(--acc) 45%,transparent)}#bantlar .durak.o i{background:var(--acc);opacity:.6}#bantlar .durak.a i{background:var(--acc);opacity:1}#acilir,#acilir .alt{position:fixed;z-index:20;display:flex;flex-direction:column;gap:2px;padding:4px;overflow-y:auto;max-width:calc(100vw - 16px);box-sizing:border-box;background:var(--panel);border:1px solid var(--cizgi);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)}#acilir .alt{z-index:21}#acilir[hidden]{display:none}#acilir button{display:flex;align-items:center;gap:10px;margin:0;padding:4px 9px;background:transparent;color:var(--fg);font-weight:400;font-size:.8rem;border:1px solid transparent;border-radius:5px}#acilir button:hover{background:var(--cizgi2)}#acilir button[aria-checked=true],#acilir button[aria-pressed=true]{color:var(--fg);font-weight:600;border-color:var(--acc);background:color-mix(in srgb,var(--acc) 16%,transparent)}#acilir .baslik{display:flex;align-items:baseline;gap:6px;width:0;min-width:100%;box-sizing:border-box;padding:3px 8px 6px;margin-bottom:2px;border-bottom:3px solid var(--cizgi);font-size:.75rem;color:var(--muted);white-space:nowrap}#acilir .baslik b{color:var(--fg);flex:none}#acilir .baslik span{margin:0;overflow:hidden;text-overflow:ellipsis}#acilir .alt .baslik{white-space:normal;align-items:flex-start}#acilir .alt .baslik span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}#acilir .ses em.cift{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}#acilir .ses em.cift>*{max-width:100%;overflow:hidden;text-overflow:ellipsis}#acilir .ses em.cift small{color:var(--muted);font-size:.72rem}#acilir .satir{display:flex;align-items:center;gap:2px}#acilir .satir.secik{background:var(--cizgi2);border-radius:5px}#acilir .satir .kalp,#acilir .satir .sil,#acilir .satir .dinle{min-width:0;width:24px;height:24px;padding:0;justify-content:center;color:var(--muted);fill:none}#acilir .satir .dinle{font-size:.7rem}#acilir .satir .dinle:hover,#acilir .satir .dinle[aria-pressed=true]{color:var(--acc)}#acilir .satir .kalp[aria-checked=true],#acilir .satir .kalp[aria-pressed=true]{border-color:transparent;background:transparent}#acilir .kalp.dolu{color:var(--err);fill:var(--err)}#acilir .satir .kalp:hover{color:var(--err)}#acilir .satir .sil:hover{color:var(--fg)}#acilir span.sil{display:block;width:24px;flex:none}#acilir hr{border:0;border-top:3px solid var(--cizgi);border-radius:2px;margin:3px 2px;width:auto}#acilir .satir+.satir,#acilir .satir+.onay,#acilir .onay+.satir{border-top:1px solid var(--cizgi2);padding-top:2px}#acilir .ozel [hidden]{display:none}#acilir .onay{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 8px;border:1px solid var(--err);border-radius:6px;font-size:.8rem;max-width:230px}#acilir .onay span{margin:0;font-weight:600}#acilir .onay small{color:var(--muted)}#acilir .onay div{display:flex;gap:6px;justify-content:flex-end}#acilir .onay button{min-width:0;padding:3px 12px;font-weight:600}#acilir .onay .evet{background:var(--err);color:#fff;border-color:var(--err)}#acilir .onay .hayir{border-color:var(--cizgi)}#acilir .ozel{display:flex;align-items:center;gap:6px;margin-top:2px;padding-top:4px;border-top:1px solid var(--cizgi2)}#acilir .ozel button{min-width:0;padding:4px 7px;color:var(--muted)}#acilir .ozel button:hover{color:var(--fg)}#acilir .ozel input{width:5.5em;padding:3px 6px;font-size:.8rem;margin:0}#acilir .ozel small{color:var(--muted)}#acilir i{display:block;height:5px;border-radius:3px;background:var(--acc)}#acilir span{margin-inline-start:auto;font-variant-numeric:tabular-nums}#acilir button{min-width:120px}#satirno .no{display:flex;align-items:flex-start;justify-content:flex-end;box-sizing:border-box;width:100%;min-width:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;line-height:var(--satir);cursor:pointer;touch-action:none}#satirno .no:hover,#satirno .no.secik{color:var(--fg);background:var(--cizgi2)}#satirno .no.bos{opacity:.45}#satirno .no.yanlis{color:var(--err);font-weight:700}#bantlar .durak.yanlis{outline:1px solid var(--err)}#bantlar .durak.yanlis i{background:var(--err);opacity:1}#acilir .tehlike:hover{color:var(--err)}#acilir button[aria-disabled=true]{opacity:.4;cursor:default;background:transparent}#acilir button[data-is] span{color:var(--muted);font-size:.72rem;padding-inline-start:14px}#acilir .ozel .oge{flex:1;justify-content:flex-start;color:var(--fg);padding:4px 9px}#acilir .ozel input.yanlis{border-color:var(--err);box-shadow:0 0 0 1px var(--err)}#acilir .sira_not{display:block;color:var(--err);padding:2px 9px;max-width:230px;white-space:normal}#acilir .sira_not[hidden]{display:none}#acilir .onay.notr{border-color:var(--acc)}#acilir .onay.notr .evet{background:var(--acc);color:#111;border-color:var(--acc)}#bantlar .durak.p:not(:hover,:focus-visible,.secik),#satirno .gbant.p{background:var(--cizgi)}#bantlar .durak.p i{opacity:1}#bantlar .durak.askida{border:1px dashed var(--cizgi);box-sizing:border-box;opacity:.6}#bantlar .durak.askida:not(:hover,:focus-visible,.secik){background:transparent}#bantlar .isik{position:absolute;inset-inline:0;pointer-events:none}#bantlar .parla,#satirno .parla{animation:parla .9s ease-out}@keyframes parla{from{background:color-mix(in srgb,var(--acc) 35%,transparent)}to{background:transparent}}@media (prefers-reduced-motion:reduce){#bantlar .parla,#satirno .parla{animation:none;background:color-mix(in srgb,var(--acc) 20%,transparent)}}#bantlar .hedef,#satirno .hedef{position:absolute;inset-inline:0;height:2px;background:var(--acc);pointer-events:none;z-index:2}#bantlar .kaynak{position:absolute;inset-inline:0;background:var(--acc);opacity:.15;pointer-events:none}#defterkap.suruk,#defterkap.suruk *{cursor:grabbing!important;user-select:none}.gizli{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}#ayna{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;white-space:pre-wrap;overflow-wrap:break-word;line-height:var(--satir);padding:0 12px;box-sizing:border-box}.tarifbas{display:flex;align-items:center;gap:6px}.tarifbas img{width:18px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px var(--cizgi2)}.form .sag{text-align:right}.ilerlesatir{display:flex;align-items:center;justify-content:flex-end;gap:10px}
 .ilerle{flex:1;display:flex;align-items:center;gap:8px}.ilerle[hidden]{display:none}.pcubuk{flex:1;height:6px;border-radius:3px;background:var(--cizgi);overflow:hidden}
-.pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
-@keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:3.2em;text-align:right}
+.pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.hata .pcubuk i{background:var(--err)}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
+@keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:10.5ch;text-align:end;direction:ltr;unicode-bidi:isolate}
 .ubas{border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px}.ubas select{flex:1 1 100%;min-width:0;padding:5px 8px;font-size:.85rem}.ubas .durum:empty{display:none}.ubas b{font-size:.9rem;flex-basis:100%}.ubas .durum{flex-basis:100%;margin:4px 0 0;font-size:.85rem}
 #cesitler{display:grid;gap:6px;margin-top:8px;overflow-y:auto;border:1px solid var(--cizgi);border-radius:8px;padding:6px;align-content:start;max-height:494px}#cesitler .cesit{padding:6px var(--kenar);gap:4px}#cesitler .cesit:has(input:checked){border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.bos{color:var(--soluk);font-size:.85rem;margin:2px 0}
 button{background:var(--acc);color:#111;border:0;border-radius:6px;padding:9px 16px;font-weight:600;cursor:pointer;margin-top:10px}
@@ -128,7 +128,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
 <small id="tmetin_ipucu" class="ipucu"></small>
-<div class="sag ilerlesatir"><div id="p_tasarla" class="ilerle" hidden><div class="pcubuk"><i></i></div><span class="krono">0:00</span></div><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
+<div class="sag ilerlesatir"><div id="p_tasarla" class="ilerle" hidden><div class="pcubuk" aria-hidden="true"><i></i></div><span class="krono">0:00</span></div><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
 </div><div class="uretimler">
 <div class="ubas"><b data-t="uretimler">Üretimler</b><select id="uretim" data-t-title="uretimler"></select><div id="d_tasarla" class="durum" aria-live="polite"></div></div>
 <div id="cesitler"></div>
@@ -138,7 +138,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <label for="ses" data-t="ses">Ses</label><button type="button" id="ses" class="sesdugme" aria-haspopup="menu" aria-expanded="false"></button>
 <label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label>
 <div id="defterkap"><div class="defter"><div id="satirno"></div><div id="yazikap"><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea><div id="bantlar"><div></div></div></div></div><div id="ayna" aria-hidden="true"></div><div id="satir_duyuru" class="gizli" aria-live="polite"></div></div>
-<button id="btn_oku" data-t="oku">Bu sesle oku</button><div id="d_oku" class="durum" aria-live="polite"></div>
+<div class="sag ilerlesatir"><div id="p_oku" class="ilerle" hidden><div class="pcubuk" aria-hidden="true"><i></i></div><span class="krono">0:00</span></div><button id="btn_oku" data-t="oku">Bu sesle oku</button></div><div id="d_oku" class="durum" aria-live="polite"></div>
 <div id="sonuc"></div></section>
 
 <section id="p3" class="panel" role="tabpanel" hidden>
@@ -340,12 +340,26 @@ async function yenile(secili){sesler=await api('/api/sesler');okumaListesi=sesle
  if(secili)SesMenu.sec(secili);else if(!SesMenu.bul(SesMenu.deger))SesMenu.sec(SesMenu.varsayilan(),false);sesListesi();cesitCiz();}
 // İlerleme: düğmenin yanında kronometre + çubuk. Model yüklenirken çubuk kayar, sonra hazır/toplam ile dolar.
 // Progress: stopwatch + bar beside the button; sliding while the model loads, then filled by done/total.
-function ilerle(p){if(!p)return null;const t0=Date.now(),k=p.querySelector('.krono'),i=p.querySelector('i');
- const yaz=()=>{const s=Math.floor((Date.now()-t0)/1000);k.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
- p.hidden=false;p.classList.add('bekler');i.style.width='';yaz();const z=setInterval(yaz,1000);
- return{j(j){const v=j.veri||{};if(j.kod==='ilerleme'&&v.total){p.classList.remove('bekler');i.style.width=Math.max(4,100*v.done/v.total)+'%';}},
-  son(ok){clearInterval(z);p.classList.remove('bekler');i.style.width=ok?'100%':'0';}};}
-async function bekle(is,el,p){const g=ilerle(p);for(;;){const j=await api('/api/is/'+is);durumYaz(el,j);if(g)g.j(j);
+// İlerleme çubuğu (Tasarla ve Oku aynı parça). T = sunucunun bu makinedeki ölçümlerden tahmini ({sn, n}).
+// Çubuk zamanla tahmine göre akar ama gerçek ilerlemenin (bitti/toplam) altına inmez, bir sonraki parçanın %95'ini geçmez,
+// hiç geri gitmez; tavana yaklaştıkça yumuşakça yavaşlar (birden durmaz), tahmin aşılırsa da yavaşlar. Saat: geçen / ~tahmini toplam (aşılınca yalnız geçen).
+// Süre sıradaki bekleme bitip iş başlayınca sayılır; sunucunun geçen süresiyle eşitlenir. Tahmin yoksa eski davranış.
+// One progress bar for Design and Read: flows with the estimate, never below real progress, never backwards.
+function ilerle(p,T){if(!p)return null;const k=p.querySelector('.krono'),i=p.querySelector('i'),ta=T&&T.sn>0?T.sn:0;
+ const st=x=>Math.floor(x/60)+':'+String(Math.floor(x)%60).padStart(2,'0');let t0=null,d=0,n=0,top=ta,g=0,sonSn=-1;
+ const ciz=()=>{const s=t0===null?0:(Date.now()-t0)/1000,r=n?Math.min(0.97,d/n):0;
+  if(ta&&t0!==null){const z=s<=top?0.9*s/top:0.9+0.09*(1-top/s),tavan=n?Math.min(0.97,r+0.95/n):0.97,x=Math.max(0,z-r)/Math.max(tavan-r,1e-3);g=Math.max(g,r+(tavan-r)*(1-Math.exp(-1.5*x)));}else g=Math.max(g,r);
+  if(ta||n){p.classList.remove('bekler');i.style.width=(100*g)+'%';}k.textContent=st(s)+(ta&&s<top?' / ~'+st(top):'');};
+ p.hidden=false;p.classList.remove('hata');p.classList.add('bekler');i.style.width='0';ciz();const z=setInterval(ciz,250);
+ return{j(j){const v=j.veri||{};if(j.durum==='calisiyor'&&t0===null)t0=Date.now();
+   if(j.kod==='ilerleme'&&v.total){d=v.done;n=v.total;
+    // Sunucunun geçen süresi 3 sn'de bir tazelenir: yalnız yeni değerde ve yalnız ileri eşitlenir (saat donmaz, geri gitmez)
+    if(v.sn!==sonSn){sonSn=v.sn;const a=Date.now()-(v.sn||0)*1000;t0=t0===null?a:Math.min(t0,a);}
+    // Gerçek ilerleme geldikçe tahmini toplam gerçeğe yaklaşır (biten pay arttıkça ölçülen hız ağır basar)
+    if(ta){const w=1-d/n;top=Math.max(v.sn||0,w*ta+(1-w)*(v.sn||0)*n/Math.max(d,1));}}ciz();},
+  son(ok){clearInterval(z);p.classList.remove('bekler');if(ok){g=1;i.style.width='100%';}else p.classList.add('hata');
+   k.textContent=st(t0===null?0:(Date.now()-t0)/1000);}};}
+async function bekle(is,el,p,T){const g=ilerle(p,T);for(;;){const j=await api('/api/is/'+is);durumYaz(el,j);if(g)g.j(j);
  if(j.durum==='bitti'||j.durum==='hata'){if(g)g.son(j.durum==='bitti');return j;}await new Promise(r=>setTimeout(r,1000));}}
 
 let sonCesit=null,sonOkuma=null,sonKlon=null;
@@ -377,7 +391,7 @@ $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  sonCesit=null;cesitCiz();
  const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
  if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
- const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'));b.disabled=false;if(s.durum!=='bitti')return;
+ const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}};
 
 const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('indir'))}</button></a>`;
@@ -857,7 +871,7 @@ $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=nul
  const hd=Durak.hatalar();if(hd.length){durumYaz($('d_oku'),{hata:hd.map(h=>h.metin).join('\n'),sorunlar:hd});Satir.goster(hd[0].i);b.disabled=false;return;}
  const j=await api('/api/oku',{ses:SesMenu.deger,metin:Durak.metin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
- const s=await bekle(j.is,$('d_oku'));b.disabled=false;if(s.durum!=='bitti')return;sonOkuma=s.sonuc;okumaCiz();};
+ const s=await bekle(j.is,$('d_oku'),$('p_oku'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;sonOkuma=s.sonuc;okumaCiz();};
 
 function dosyaAdi(){const f=$('klon_dosya').files[0];$('dosya_ad').textContent=f?f.name:t('dosya_yok');}
 $('dosya_btn').onclick=()=>$('klon_dosya').click();
@@ -929,20 +943,33 @@ class Isler:
         with self.lock:
             self.jobs[job_id].update(fields)
 
+    def _ogren(self, kind, payload, adimlar, sure):
+        """Süre tahminine ölçüm ekler; hata verirse iş yine başarılı sayılır. / a failing estimate never fails the job"""
+        try:
+            sure_tahmini.kaydet(self.settings, kind + ":" + str(self.settings.get("backend", "cuda")),
+                                _karakter(kind, payload), adimlar, sure, payload.get("ses") if kind == "oku" else None)
+        except Exception:  # noqa: BLE001 — tahmin yardımcıdır / the estimate is only a helper
+            pass
+
     def _run(self):
         while True:
             job_id, kind, payload = self.queue.get()
             self._set(job_id, durum="calisiyor", mesaj="motor başlatılıyor, model yükleniyor (~10-20 sn)",
                       kod="yukleniyor", veri={})
 
+            adimlar, basladi = [], time.time()  # süre tahmini için ilerleme bildirimleri ve gerçek süre / for the estimate
+
             def progress(done, total, elapsed, job_id=job_id):
+                elapsed = time.time() - basladi  # motorun değil işin saati: öğrenme ve istemci aynı tabanda / job clock
+                adimlar.append((done, total, elapsed))
                 self._set(job_id, mesaj=f"{done}/{total} hazır, {elapsed:.0f} sn", kod="ilerleme",
                           veri={"done": done, "total": total, "sn": round(elapsed)})
             try:
                 if kind == "tasarla":
                     result = tasarla.tasarla(self.settings, payload["ad"], payload["tarif"], payload["metin"],
-                                             max(1, min(50, int(payload.get("cesit") or 3))), None, progress,
+                                             _cesit(payload), None, progress,
                                              okunus.detect(payload["metin"], _dil_ipucu(payload)))
+                    self._ogren(kind, payload, adimlar, time.time() - basladi)
                     self._set(job_id, durum="bitti", sonuc=result, kod="bitti_tasarla",
                               veri={"n": len(result["cesitler"]), "sn": result["sure_sn"], "vram": result["vram_tepe_mb"]},
                               mesaj=f"bitti: {len(result['cesitler'])} çeşit, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB")
@@ -964,11 +991,24 @@ class Isler:
                     out_dir = self.settings["sesler"] / "_okumalar" / job_id
                     result = oku.oku(self.settings, voice_dir, payload["metin"], out_dir, progress)  # "dil" gelirse yok sayılır (eski istemci) / a "dil" field is ignored (old clients)
                     result["is"] = job_id
+                    self._ogren(kind, payload, adimlar, time.time() - basladi)
                     self._set(job_id, durum="bitti", sonuc=result, mesaj="bitti", kod="bitti", veri={})
             except Exception as error:  # kullanıcıya düz metin hata, ayrıntı için iz / plain-text error + traceback
                 found = [arg for arg in error.args if isinstance(arg, okunus.Sorun)] or [str(error)]
                 self._set(job_id, durum="hata", mesaj=str(error), kod="hata", veri={},
                           sorunlar=[_sorun(item) for item in found], iz=traceback.format_exc()[-1200:])
+
+
+def _cesit(payload: dict) -> int:
+    """Çeşit sayısı 1-50 (boş: 3); sayı değilse ValueError. / variant count 1-50, ValueError when not a number"""
+    return max(1, min(50, int(payload.get("cesit") or 3)))
+
+
+def _karakter(kind: str, payload: dict) -> int:
+    """Süre tahmininin girdisi: okunacak karakter (tasarlada × çeşit). / input of the duration estimate"""
+    if kind == "tasarla":
+        return sure_tahmini.karakter(payload.get("metin", ""), _cesit(payload))
+    return sure_tahmini.karakter(payload.get("metin", ""))
 
 
 def _sesler(settings) -> tuple:
@@ -1098,10 +1138,16 @@ def make_handler(settings, jobs: Isler):
                 except ValueError as error:  # ör. bilinmeyen durak / e.g. unknown pause marker
                     found = [error.args[0] if error.args and isinstance(error.args[0], okunus.Sorun) else str(error)]
                 if not str(payload.get("ad", "")).strip():
-                    found.append(okunus.Sorun("sesin adı boş", "ad_bos"))
+                    found.append(okunus.Sorun("üretim adı boş", "ad_bos"))
+                try:
+                    _cesit(payload)
+                except (TypeError, ValueError):
+                    found.append("çeşit sayısı geçersiz (1-50)")
                 if found:
                     return self._json(_hata(found), 400)
-                return self._json({"is": jobs.submit("tasarla", payload)})
+                return self._json({"is": jobs.submit("tasarla", payload),
+                                   "tahmin": sure_tahmini.tahmin(settings, "tasarla:" + str(settings.get("backend", "cuda")),
+                                                                 _karakter("tasarla", payload))})
             if self.path == "/api/oku":
                 found = []
                 try:
@@ -1111,7 +1157,9 @@ def make_handler(settings, jobs: Isler):
                     found.append(error.args[0] if error.args and isinstance(error.args[0], okunus.Sorun) else str(error))
                 if found:
                     return self._json(_hata(found), 400)
-                return self._json({"is": jobs.submit("oku", payload)})
+                return self._json({"is": jobs.submit("oku", payload),
+                                   "tahmin": sure_tahmini.tahmin(settings, "oku:" + str(settings.get("backend", "cuda")), _karakter("oku", payload),
+                                                                          str(payload.get("ses", "")))})
             if self.path == "/api/okuma_listesi":
                 # Okuma listesine ekle / çıkar: yalnız listelenen ses kimliği; dosya kullanıcının ses klasöründe.
                 # Add to / remove from the reading list: listed voice identities only; stored in the user's voice folder.
