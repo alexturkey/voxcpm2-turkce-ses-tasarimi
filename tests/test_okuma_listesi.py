@@ -200,8 +200,9 @@ class Sunucu(Ortam):
         govde = {"kimlik": "deniz/1", "ekle": True}
         self.assertEqual(self.istek("POST", "/api/okuma_listesi", govde, {"Host": "evil.example:80"})[0], 403)
         self.assertEqual(self.istek("POST", "/api/okuma_listesi", govde, {"Content-Type": "text/plain"})[0], 415)
-        # Sunucu gövdeyi okumadan reddeder; büyük gövde yollamak bağlantıyı koparır, yalnız başlık söylenir.
-        # The server refuses before reading; only the header claims the large size.
-        self.assertEqual(self.istek("POST", "/api/okuma_listesi", b"{}", {"Content-Length": "1000001"})[0], 413)
+        # Sunucu büyük gövdeyi okumadan reddeder; gövde yollanmaz, yalnız başlık söylenir (okunmamış veriyle kapanan
+        # soket Windows'ta bağlantıyı koparır). / Only the header claims the size: unread data would reset the socket.
+        boyut = {"Content-Type": "application/json", "Content-Length": "1000001"}
+        self.assertEqual(self.istek("POST", "/api/okuma_listesi", None, boyut)[0], 413)
         self.assertEqual(self.istek("POST", "/api/okuma_listesi", b"[1, 2]")[0], 400)
         self.assertFalse(self.dosya.exists())
