@@ -44,6 +44,9 @@ R.tr=ad(SesMenu.bolumler(sesler,['deniz/2','hazir/anlatici_fr','yok/1'],'tr'));
 R.fr=ad(SesMenu.bolumler(sesler,[],'fr'));
 R.bayrak=[sesDili(sesler.hazir[2]),bayrakImg('en'),bayrakImg('zz')];
 R.adlar=[sesAdi(sesler.hazir[0]),sesAdi(sesler.tasarlanan[0])];
+// Aynı adla iki ayrı üretim: ekte üretim zamanı; tek üretimli ad kısa kalır
+sesler.tasarlanan.push(c('ay',1,'p1','2026-10-29 08:00'),c('ay',2,'p2','2026-10-29 09:30'));
+R.iki=[sesAdi(sesler.tasarlanan[3]),sesAdi(sesler.tasarlanan[4]),sesAdi(sesler.tasarlanan[0])];
 console.log(JSON.stringify(R));
 """
 
@@ -84,6 +87,10 @@ class SesMenusu(unittest.TestCase):
         self.assertEqual(R["bayrak"], ["tr", '<img src="/bayrak/gb.svg" alt="">', ""])
         self.assertEqual(R["adlar"][0], "Anlatici FR")
         self.assertTrue(R["adlar"][1].startswith("deniz · cesit_n"), R["adlar"][1])
+        # Aynı adla iki kez Tasarla: iki üretim satırda zamanla ayrılır (kullanıcı 19:00) / same name, two productions
+        self.assertTrue(R["iki"][0].startswith("ay · 10-29 08:00 · cesit_n"), R["iki"][0])
+        self.assertTrue(R["iki"][1].startswith("ay · 10-29 09:30 · cesit_n"), R["iki"][1])
+        self.assertTrue(R["iki"][2].startswith("deniz · cesit_n"), R["iki"][2])
 
 
 if __name__ == "__main__":
