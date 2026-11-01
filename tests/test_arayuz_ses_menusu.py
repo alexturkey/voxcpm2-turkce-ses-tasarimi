@@ -30,7 +30,7 @@ PARCA = "\n".join([
 ])
 
 SAHTE = r"""
-const t=(k,v)=>k+(v?JSON.stringify(v):''),esc=s=>String(s),hafiza=()=>null;
+const t=(k,v)=>k+(v?JSON.stringify(v):''),esc=s=>String(s),hafiza=()=>null,KALP='<svg></svg>';
 let okumaListesi=[],dil='tr';
 const h=(ad,d,gor)=>({kimlik:'hazir/'+ad,ad,gorunen_ad:gor,...(d?{dil:d}:{})});
 const c=(ad,n,u,tarih)=>({kimlik:ad+'/'+n,ad,gorunen_ad:ad,cesit:n,dil:'tr',uretim:u,tarih});
@@ -48,10 +48,16 @@ R.adlar=[sesAdi(sesler.hazir[0]),sesAdi(sesler.tasarlanan[0])];
 // Aynı adla iki ayrı üretim: ekte üretim zamanı; tek üretimli ad kısa kalır
 sesler.tasarlanan.push(c('ay',1,'p1','2026-10-29 08:00'),c('ay',2,'p2','2026-10-29 09:30'));
 R.iki=[sesAdi(sesler.tasarlanan[3]),sesAdi(sesler.tasarlanan[4]),sesAdi(sesler.tasarlanan[0])];
+// Klasör adı olarak kalmış ad yalnız görünümde güzelleşir; bilerek yazılmış ad ve takma ad aynen kalır
+R.guzel=[adGoster({kimlik:'cocuk_anlatici/1',ad:'cocuk_anlatici',gorunen_ad:'cocuk_anlatici',dil:'tr'}),
+ adGoster({kimlik:'ilginc/1',ad:'ilginç_ses',gorunen_ad:'ilginç_ses',dil:'tr'}),
+ adGoster({kimlik:'b/1',ad:'benim_sesim',gorunen_ad:'Benim Sesim',dil:'tr'}),
+ adGoster({kimlik:'c/1',ad:'x_y',gorunen_ad:'x_y',asil_ad:'X y',dil:'tr'})];
 // Yönetim menüsü (aynı Acilir): hazırda Gizle, tasarlananda Sil; takma ad varsa "asıl ada dön"; ses menüsünden gelince Geri
 const Acilir={ac(tetik,x,html,sahip){Acilir.html=html;Acilir.sahip=sahip;},baslik:(b,a)=>'<b>'+a+'</b>',kapat(){Acilir.html='';}};
 const $=()=>({getBoundingClientRect:()=>({left:0,right:0})}),rtl=()=>false,tetik=$();
-const ogeler=()=>[...Acilir.html.matchAll(/data-is="([a-z]+)"[^>]*>([^<]*)</g)].map(m=>m[1]+':'+m[2]);
+const ogeler=()=>[...Acilir.html.matchAll(/data-is="([a-z]+)"([^>]*)>(.*?)<\/button>/g)]
+ .map(m=>m[1]+':'+m[3].replace(/<[^>]*>/g,'')+(/aria-checked="true"/.test(m[2])?' ✓':''));
 sesler.hazir[3].asil_ad='Belgesel Hanim';sesler.hazir[3].gorunen_ad='Zeynep';okumaListesi=['deniz/1'];
 SesYonet.menu('hazir/belgesel_hanim',tetik,true);R.yh=[ogeler(),Acilir.sahip===SesYonet,/class="disli oge"/.test(Acilir.html)];
 SesYonet.menu('deniz/1',tetik,false);R.yt=ogeler();
@@ -95,19 +101,21 @@ class SesMenusu(unittest.TestCase):
         self.assertEqual(R["fr"]["tasarlanan"], ["yeni/1", "deniz/1", "deniz/2"])
         self.assertEqual(R["bayrak"], ["tr", '<img src="/bayrak/gb.svg" alt="">', ""])
         self.assertEqual(R["adlar"][0], "Anlatici FR")
-        self.assertTrue(R["adlar"][1].startswith("deniz · cesit_n"), R["adlar"][1])
+        self.assertTrue(R["adlar"][1].startswith("Deniz · cesit_n"), R["adlar"][1])
         # Aynı adla iki kez Tasarla: iki üretim satırda zamanla ayrılır (kullanıcı 19:00) / same name, two productions
-        self.assertTrue(R["iki"][0].startswith("ay · 10-29 08:00 · cesit_n"), R["iki"][0])
-        self.assertTrue(R["iki"][1].startswith("ay · 10-29 09:30 · cesit_n"), R["iki"][1])
-        self.assertTrue(R["iki"][2].startswith("deniz · cesit_n"), R["iki"][2])
+        self.assertTrue(R["iki"][0].startswith("Ay · 10-29 08:00 · cesit_n"), R["iki"][0])
+        self.assertTrue(R["iki"][1].startswith("Ay · 10-29 09:30 · cesit_n"), R["iki"][1])
+        self.assertTrue(R["iki"][2].startswith("Deniz · cesit_n"), R["iki"][2])
+        self.assertEqual(R["guzel"], ["Cocuk anlatici", "İlginç ses", "Benim Sesim", "x_y"])  # beyin 19:27
         # Yönetim menüsü (kullanıcı 19:14): hazır ses gizlenir (silinmez), tasarlanan çöpe silinir; yeniden adlandır
         # yerinde kutu; takma ad varsa asıl ada dön; listede olan ses "çıkar" der; olmayan ses menü açmaz.
+        # Liste öğesi kart düğmesiyle aynı dil: ad tekrarlanmaz (beyin 19:27) / no repeated name in the list item
         hazir, sahip, kutu = R["yh"]
-        self.assertEqual(hazir, ["geri:‹ geri", "oku:oku", 'liste:kalp_ekle{"ses":"Zeynep"}',
+        self.assertEqual(hazir, ["geri:‹ geri", "oku:oku", "liste:liste_ekle",
                                  'asil:asil_ada_don{"ad":"Belgesel Hanim"}', "sil:gizle"])
         self.assertTrue(sahip and kutu)
         self.assertEqual([x.split(":")[0] for x in R["yt"]], ["oku", "liste", "sil"])
-        self.assertTrue(R["yt"][1].startswith("liste:kalp_cikar") and R["yt"][2] == "sil:sil_ses", R["yt"])
+        self.assertEqual(R["yt"][1:], ["liste:listede ✓", "sil:sil_ses"])
         self.assertEqual(R["yyok"], "")
 
 
