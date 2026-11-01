@@ -107,3 +107,65 @@ class SesYonetimi(unittest.TestCase):
         self.assertTrue(ses_yonetimi.yol(self.settings).with_name("yerel_katman.json.bozuk").is_file())
         self.assertEqual(sorted((str(p), p.stat().st_mtime_ns) for p in self.settings["hazir_sesler"].rglob("*")),
                          self.hazir_once)
+
+
+class Sunucu(SesYonetimi):
+    """POST /api/ses_yonet ve GET /api/sesler üzerinden aynı işler. / The same operations over HTTP."""
+
+    def setUp(self):
+        super().setUp()
+        import threading
+        from http.server import ThreadingHTTPServer
+        from ses_tasarim import arayuz
+
+        class Isler:
+            def submit(self, kind, payload):
+                raise AssertionError("iş kuyruğu kullanılmamalı")
+
+            def status(self, job_id):
+                return {}
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), arayuz.make_handler(self.settings, Isler()))
+        threading.Thread(target=self.server.serve_forever, daemon=True).start()
+
+    def tearDown(self):
+        self.server.shutdown()
+        self.server.server_close()
+        super().tearDown()
+
+    def post(self, govde, host=None):
+        import http.client
+        port = self.server.server_address[1]
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=10)
+        try:
+            conn.request("POST", "/api/ses_yonet", json.dumps(govde).encode("utf-8"),
+                         {"Host": host or f"127.0.0.1:{port}", "Content-Type": "application/json"})
+            r = conn.getresponse()
+            return r.status, json.loads(r.read())
+        finally:
+            conn.close()
+
+    def test_http_flow(self):
+        s, v = self.post({"kimlik": "hazir/belgesel_hanim", "islem": "ad", "ad": "Zeynep"})
+        self.assertEqual((s, v["hazir"][0]["gorunen_ad"]), (200, "Zeynep"))
+        s, v = self.post({"kimlik": "hazir/belgesel_hanim", "islem": "gizle"})
+        self.assertEqual((s, v["hazir"], [c["kimlik"] for c in v["gizli"]]), (200, [], ["hazir/belgesel_hanim"]))
+        s, v = self.post({"kimlik": "deniz/1", "islem": "sil"})
+        self.assertEqual((s, [c["kimlik"] for c in v["tasarlanan"]], [c["kimlik"] for c in v["cop"]]),
+                         (200, ["deniz/2"], ["deniz/1"]))
+        s, v = self.post({"islem": "geri", "cop": v["cop"][0]["cop"]})
+        self.assertEqual((s, [c["kimlik"] for c in v["tasarlanan"]], v["cop"]), (200, ["deniz/1", "deniz/2"], []))
+        s, v = self.post({"kimlik": "hazir/belgesel_hanim", "islem": "goster"})
+        self.assertEqual([c["kimlik"] for c in v["hazir"]], ["hazir/belgesel_hanim"])
+        self.assertEqual(sorted((str(p), p.stat().st_mtime_ns) for p in self.settings["hazir_sesler"].rglob("*")),
+                         self.hazir_once)
+
+    def test_http_refusals(self):
+        for govde, kod in (({"kimlik": "../deniz/1", "islem": "sil"}, "ses_yok"),
+                           ({"kimlik": "deniz/1", "islem": "yok_et"}, "islem_yok"),
+                           ({"islem": "geri", "cop": "../sesler"}, "ses_yok"),
+                           ({"kimlik": "deniz/1", "islem": "ad", "ad": "x" * 200}, "ad_uzun")):
+            with self.subTest(govde=govde):
+                s, v = self.post(govde)
+                self.assertEqual((s, v["sorunlar"][0]["kod"]), (400, kod))
+        self.assertEqual(self.post({"kimlik": "deniz/1", "islem": "sil"}, host="evil.example")[0], 403)
+        self.assertTrue((self.settings["sesler"] / "deniz" / "cesit_01").is_dir())
