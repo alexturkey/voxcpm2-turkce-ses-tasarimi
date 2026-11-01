@@ -118,3 +118,90 @@ class Modul(Ortam):
         self.degistir("hazir/anlatici_fr")
         self.degistir("hazir/anlatici_fr", False)
         self.assertEqual(sorted(p.name for p in self.settings["hazir_sesler"].rglob("*")), self.hazir_once)
+
+
+class SahteIsler:
+    """Uçlar iş kuyruğuna dokunmaz; motor ve iş parçacığı gerekmez. / The endpoints never touch the job queue."""
+
+    def submit(self, kind, payload):
+        raise AssertionError("iş kuyruğu kullanılmamalı / job queue must not be used")
+
+    def status(self, job_id):
+        return {}
+
+
+class Sunucu(Ortam):
+    def setUp(self):
+        super().setUp()
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), arayuz.make_handler(self.settings, SahteIsler()))
+        self.port = self.server.server_address[1]
+        threading.Thread(target=self.server.serve_forever, daemon=True).start()
+
+    def tearDown(self):
+        self.server.shutdown()
+        self.server.server_close()
+        super().tearDown()
+
+    def istek(self, method, path, body=None, headers=None):
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=10)
+        h = {"Host": f"127.0.0.1:{self.port}"}
+        if body is not None:
+            h["Content-Type"] = "application/json"
+            body = body if isinstance(body, bytes) else json.dumps(body).encode("utf-8")
+        h.update(headers or {})
+        try:
+            conn.request(method, path, body=body, headers=h)
+            r = conn.getresponse()
+            data = r.read()
+        finally:
+            conn.close()
+        return r.status, (json.loads(data) if data[:1] in (b"{", b"[") else data)
+
+    def test_sesler_carries_the_list(self):
+        status, data = self.istek("GET", "/api/sesler")
+        self.assertEqual(status, 200)
+        self.assertEqual(data["okuma_listesi"], [])
+        self.assertEqual(len(data["hazir"]) + len(data["tasarlanan"]), 4)
+
+    def test_add_remove_and_persist(self):
+        status, data = self.istek("POST", "/api/okuma_listesi", {"kimlik": "hazir/anlatici_fr", "ekle": True})
+        self.assertEqual((status, data), (200, {"okuma_listesi": ["hazir/anlatici_fr"]}))
+        status, data = self.istek("POST", "/api/okuma_listesi", {"kimlik": "deniz/2", "ekle": True})
+        self.assertEqual(data["okuma_listesi"], ["hazir/anlatici_fr", "deniz/2"])
+        self.assertEqual(self.istek("GET", "/api/sesler")[1]["okuma_listesi"], ["hazir/anlatici_fr", "deniz/2"])
+        self.assertEqual(okuma_listesi.oku(self.settings), ["hazir/anlatici_fr", "deniz/2"])  # dosyada / on disk
+        status, data = self.istek("POST", "/api/okuma_listesi", {"kimlik": "hazir/anlatici_fr", "ekle": False})
+        self.assertEqual((status, data["okuma_listesi"]), (200, ["deniz/2"]))
+        self.assertEqual(sorted(p.name for p in self.settings["hazir_sesler"].rglob("*")), self.hazir_once)
+
+    def test_deleted_voice_not_sent(self):
+        self.istek("POST", "/api/okuma_listesi", {"kimlik": "deniz/2", "ekle": True})
+        for f in (self.settings["sesler"] / "deniz" / "cesit_02").iterdir():
+            f.unlink()
+        (self.settings["sesler"] / "deniz" / "cesit_02").rmdir()
+        self.assertEqual(self.istek("GET", "/api/sesler")[1]["okuma_listesi"], [])
+        self.assertEqual(okuma_listesi.oku(self.settings), ["deniz/2"])
+
+    def test_bad_requests(self):
+        kotu = [{"kimlik": "yok/1", "ekle": True}, {"kimlik": "../deniz/1", "ekle": True},
+                {"kimlik": "C:/Windows/1", "ekle": True}, {"kimlik": "deniz\\1", "ekle": True},
+                {"kimlik": str(self.settings["sesler"] / "deniz" / "cesit_01"), "ekle": True},
+                {"kimlik": "deniz/1", "ekle": "evet"}, {"kimlik": "deniz/1"}, {"ekle": True}, {}]
+        for govde in kotu:
+            with self.subTest(govde=govde):
+                status, data = self.istek("POST", "/api/okuma_listesi", govde)
+                self.assertEqual(status, 400)
+                self.assertIn("hata", data)
+        status, data = self.istek("POST", "/api/okuma_listesi", {"kimlik": "yok/1", "ekle": True})
+        self.assertEqual(data["sorunlar"][0]["kod"], "ses_yok")
+        self.assertFalse(self.dosya.exists())
+
+    def test_server_guards(self):
+        govde = {"kimlik": "deniz/1", "ekle": True}
+        self.assertEqual(self.istek("POST", "/api/okuma_listesi", govde, {"Host": "evil.example:80"})[0], 403)
+        self.assertEqual(self.istek("POST", "/api/okuma_listesi", govde, {"Content-Type": "text/plain"})[0], 415)
+        # Sunucu gövdeyi okumadan reddeder; büyük gövde yollamak bağlantıyı koparır, yalnız başlık söylenir.
+        # The server refuses before reading; only the header claims the large size.
+        self.assertEqual(self.istek("POST", "/api/okuma_listesi", b"{}", {"Content-Length": "1000001"})[0], 413)
+        self.assertEqual(self.istek("POST", "/api/okuma_listesi", b"[1, 2]")[0], 400)
+        self.assertFalse(self.dosya.exists())
