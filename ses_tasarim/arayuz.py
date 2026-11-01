@@ -86,7 +86,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 #acilir .ses button[data-sec]{flex:1;min-width:0;justify-content:flex-start}#acilir .ses em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26em}
 #acilir .grup{padding:5px 9px 1px;font-size:.7rem;color:var(--muted)}
 .dilsira{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}.dilsira button b{font-weight:600;font-variant-numeric:tabular-nums}
-.csat{flex-wrap:wrap}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.csat{flex-wrap:wrap}.csat small{white-space:nowrap}.hazirad{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .listebtn{display:inline-flex;align-items:center;gap:5px}.listebtn svg{fill:none;flex:none}.listebtn[aria-pressed=true] svg{color:var(--err);fill:var(--err)}.listebtn[aria-pressed=true]:hover svg{color:#111;fill:#111}
 .uyari{border-left:3px solid var(--acc);padding:6px 10px;color:var(--muted);font-size:.9rem}
 /* Tasarım metni kısa örnektir: 3 satırlık kutu, altında süre çubuğu, sınır aşımında uyarı, kalıcı gri ipucu. */
@@ -260,7 +260,11 @@ const tanitim=k=>dil==='tr'?k.tanitim_tr:(k.tanitim_en||k.tanitim_tr);
 const sesDili=k=>k.dil||'tr',dilBayrak=d=>(DILLER.find(x=>x[0]===d)||[])[1];
 const bayrakImg=d=>dilBayrak(d)?`<img src="/bayrak/${dilBayrak(d)}.svg" alt="">`:'';
 const dilSira=(d,ui)=>d===ui?-1:(i=>i<0?999:i)(DILLER.findIndex(x=>x[0]===d));  // arayüz dili önce, sonra dil listesi sırası
-const sesAdi=k=>k.kimlik.startsWith('hazir/')?k.gorunen_ad||k.ad:`${k.gorunen_ad||k.ad} · ${t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()})}`;
+// Görünen ad kendi yönünde, çeşit eki arayüz yönünde: sağdan sola dilde Latin ad + yerel ek doğru sırada okunur
+// (HTML'de <bdi>, düz yazıda FSI/PDI yalıtımı). / The name keeps its own direction, the variant suffix follows the UI.
+const sesAdi=k=>[k.gorunen_ad||k.ad,sesEki(k)].filter(Boolean).join(' · '),sesEki=k=>k.kimlik.startsWith('hazir/')?'':t('cesit_n',{n:k.cesit??k.kimlik.split('/').pop()});
+const sesAdiYalitik=k=>sesEki(k)?`\u2068${k.gorunen_ad||k.ad}\u2069 · ${sesEki(k)}`:sesAdi(k);
+const sesAdiHtml=k=>`<bdi>${esc(k.gorunen_ad||k.ad)}</bdi>`+(sesEki(k)?' · '+esc(sesEki(k)):'');
 const sesSirala=(l,ui)=>l.slice().sort((a,b)=>dilSira(sesDili(a),ui)-dilSira(sesDili(b),ui)||(a.gorunen_ad||a.ad||'').localeCompare(b.gorunen_ad||b.ad||''));
 // Okuma listesi düğmesi (tasarla çeşit kartı, hazır ses kartı): "Bu sesle oku"nun yanında, aynı hap; listedeyse dolu kalp + "Listede".
 // Reading-list button next to "Read with this voice"; filled heart + "In list" when listed. State updates in place (audio keeps playing).
@@ -658,14 +662,14 @@ const SesMenu={deger:'',
   return (sesSirala(sesler.hazir,dil)[0]||sesler.tasarlanan[0]||{}).kimlik||'';},
  sec(k,kalici=true){this.deger=k||'';if(kalici&&k)hafiza('ses',k);this.ciz();},
  ciz(){const k=this.bul(this.deger),b=$('ses'),ad=k?sesAdi(k):'—';
-  b.innerHTML=(k?bayrakImg(sesDili(k)):'')+`<em dir="auto">${esc(ad)}</em><i aria-hidden="true">▾</i>`;b.title=t('ses_sec',{ad});b.setAttribute('aria-label',b.title);},
+  b.innerHTML=(k?bayrakImg(sesDili(k)):'')+`<em>${k?sesAdiHtml(k):'—'}</em><i aria-hidden="true">▾</i>`;b.title=t('ses_sec',{ad});b.setAttribute('aria-label',b.title);},
  menu(){const b=$('ses'),g=this.bolumler(sesler,okumaListesi,dil),r=b.getBoundingClientRect(),secili=this.bul(this.deger);
   const satir=k=>{const f=okumaListesi.includes(k.kimlik),ad=sesAdi(k);
-   return `<div class="satir ses" role="group"><button type="button" role="menuitemradio" data-sec="${esc(k.kimlik)}" aria-checked="${k.kimlik===this.deger}" title="${esc(t('tohum_n',{n:k.okuma_tohumu}))}">${bayrakImg(sesDili(k))}<em dir="auto">${esc(ad)}</em></button>`
+   return `<div class="satir ses" role="group"><button type="button" role="menuitemradio" data-sec="${esc(k.kimlik)}" aria-checked="${k.kimlik===this.deger}" title="${esc(t('tohum_n',{n:k.okuma_tohumu}))}">${bayrakImg(sesDili(k))}<em>${sesAdiHtml(k)}</em></button>`
     +`<button type="button" role="menuitemcheckbox" class="kalp${f?' dolu':''}" data-fav="${esc(k.kimlik)}" aria-checked="${f}" aria-label="${esc(t(f?'kalp_cikar':'kalp_ekle',{ses:ad}))}">${KALP}</button></div>`;};
   const grup=(ad,l)=>l.length?`<div class="grup" aria-hidden="true">${esc(ad)}</div>`+l.map(satir).join(''):'';
   const govde=[grup(t('okuma_listem'),g.liste),grup(t('hazir'),g.hazir),grup(t('tasarlanan_sesler'),g.tasarlanan)].filter(Boolean).join('<hr>');
-  Acilir.ac(b,rtl()?r.right:r.left,Acilir.baslik(esc(t('ses')),secili?sesAdi(secili):'—')+govde,this,t('ses'));},
+  Acilir.ac(b,rtl()?r.right:r.left,Acilir.baslik(esc(t('ses')),secili?sesAdiYalitik(secili):'—')+govde,this,t('ses'));},
  kapandi(){},
  odak(){return $('ses');},
  // Kalp: liste değişir, menü yerinde yeniden çizilir, odak aynı kalpte kalır / the heart keeps focus after the redraw
