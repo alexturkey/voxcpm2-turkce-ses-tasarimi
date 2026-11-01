@@ -23,8 +23,7 @@ def kes(bas, son):
 
 PARCA = "\n".join([
     kes("const DILLER=", "const ESDEGER"),
-    kes("const sesDili=", "\n") +"\n" + kes("const bayrakImg=", "\n") + "\n" + kes("const dilSira=", "\n") + "\n"
-    + kes("const sesAdi=", "\n") + "\n" + kes("const sesSirala=", "\n"),
+    kes("const sesDili=", "const listeDugmesi="),  # ses yardımcıları (dil, bayrak, ad, sıralama) / voice helpers
     kes("function uretimler(", "function cesitCiz("),
     kes("const SesMenu={", "SesMenu.kur();"),
 ])
