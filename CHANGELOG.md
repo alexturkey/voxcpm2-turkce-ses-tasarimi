@@ -3,6 +3,8 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- İnen okumanın adı artık hep `okuma.wav` değil: ses adı + okuma zamanı (ör. `Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav`).
+  Harfler (Türkçe, Arapça…) kalır; dosya adında yasak işaretler ve boşluk `_` olur. Test: `tests/test_arayuz_okuma.py`.
 - Başlıkta küçük, soluk sürüm yazısı: `v0.2.0 · <kısa commit>` (izlenen dosyada kaydedilmemiş değişiklik varsa
   `+` eki; git yoksa yalnız sürüm). Videoda ve ekran görüntüsünde hangi sürümün kullanıldığı görünür. Tek kaynak
   `ses_tasarim/__init__.py` (`__version__` 0.2.0); git sunucu açılışında bir kez, penceresiz sorulur.
@@ -133,6 +135,8 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- The downloaded reading is no longer always `okuma.wav`: voice name + reading time (e.g.
+  `Zeynep_Belgesel_Anlatıcı_2026-11-02_0152.wav`). Letters stay; characters forbidden in file names and spaces become `_`.
 - A small, faint version in the header: `v0.2.0 · <short commit>` (`+` when tracked files have uncommitted changes;
   version only without git), so videos and screenshots show which version was used. Single source
   `ses_tasarim/__init__.py` (`__version__` 0.2.0); git is asked once at server start, without a window.

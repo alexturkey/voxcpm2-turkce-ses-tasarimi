@@ -398,8 +398,14 @@ $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
 
 const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('indir'))}</button></a>`;
 const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,tohum:r.tohum});
-function okumaCiz(){const r=sonOkuma;if(!r)return;
- $('sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/okuma.wav"></audio> ${indir('/okuma/'+r.is+'/okuma.wav','okuma.wav')}<div><small>${esc(ozet(r))}</small></div>`;}
+// İnen okumanın adı: ses adı + okuma zamanı (Zeynep_Belgesel_Anlatici_2026-11-02_0152.wav). Harfler (Türkçe, Arapça…) kalır;
+// Windows/macOS'ta yasak işaretler, yön işaretleri ve boşluk '_' olur, baştaki/sondaki nokta atılır. Zaman sunucunun özetinden.
+// Downloaded reading name: voice name + reading time; letters stay, characters forbidden in file names become '_'.
+const indirmeAdi=(ad,tarih)=>{const a=String(ad||'').normalize('NFC').replace(/[\\/:*?"<>|\u0000-\u001f\u007f\u200E\u200F\u202A-\u202E\u2066-\u2069]+/g,' ')
+  .trim().replace(/\s+/g,'_').replace(/^[._]+|[._]+$/g,'').slice(0,60).replace(/[._]+$/,'')||'okuma';
+ const z=String(tarih||'').match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})/);return `${a}${z?`_${z[1]}_${z[2]}${z[3]}`:''}.wav`;};
+function okumaCiz(){const r=sonOkuma;if(!r)return;const k=SesMenu.bul(r.kimlik),ad=indirmeAdi(k?adGoster(k):r.ses,r.tarih);
+ $('sonuc').innerHTML=`<audio controls src="/okuma/${r.is}/okuma.wav"></audio> ${indir('/okuma/'+r.is+'/okuma.wav',ad)}<div><small>${esc(ozet(r))}</small></div>`;}
 // ── Açılır menü: tek kap (#acilir), iki sahip (Durak, Satir) ──────────────────────────────────────────────────
 // Konum, kapanma (dışarı tık, Esc, kaydırma, pencere boyu), odak dönüşü, klavye, rol ve ortak parçalar yalnız burada.
 // One popup container shared by the pause menu and the line menu: position, closing, focus, keys, roles, shared parts.
@@ -871,9 +877,9 @@ $('okuma_metni').addEventListener('input',e=>{if(Satir.yaziyor)return;const ta=$
 $('okuma_metni').addEventListener('scroll',bantKaydir);
 $('btn_oku').onclick=async()=>{const b=$('btn_oku');b.disabled=true;sonOkuma=null;$('sonuc').innerHTML='';
  const hd=Durak.hatalar();if(hd.length){durumYaz($('d_oku'),{hata:hd.map(h=>h.metin).join('\n'),sorunlar:hd});Satir.goster(hd[0].i);b.disabled=false;return;}
- const j=await api('/api/oku',{ses:SesMenu.deger,metin:Durak.metin()});
+ const ses=SesMenu.deger,j=await api('/api/oku',{ses,metin:Durak.metin()});
  if(j.hata){durumYaz($('d_oku'),j);b.disabled=false;return;}
- const s=await bekle(j.is,$('d_oku'),$('p_oku'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;sonOkuma=s.sonuc;okumaCiz();};
+ const s=await bekle(j.is,$('d_oku'),$('p_oku'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;sonOkuma={...s.sonuc,kimlik:ses};okumaCiz();};
 
 function dosyaAdi(){const f=$('klon_dosya').files[0];$('dosya_ad').textContent=f?f.name:t('dosya_yok');}
 $('dosya_btn').onclick=()=>$('klon_dosya').click();
