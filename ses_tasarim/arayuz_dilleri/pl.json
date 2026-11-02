@@ -133,5 +133,16 @@
  "dinle": "Odsłuchaj",
  "durdur": "Zatrzymaj",
  "uretime_git": "Przejdź do generacji",
- "buradan_dinle": "Odsłuchaj od tego miejsca"
+ "buradan_dinle": "Odsłuchaj od tego miejsca",
+ "tmetin_ham": "· to czyta surowy projekt",
+ "dinleme_bas": "Tekst, który chcesz usłyszeć",
+ "dinleme_alt": "Stały głos każdego wariantu czyta ten tekst · tak jak karta Czytaj tym głosem",
+ "dinleme_ph": "Jedno zdanie w wierszu. Zostaw puste, by usłyszeć przykładowe zdanie.",
+ "dinleme_ipucu": "Wiersz = zdanie · pusty wiersz = pauza akapitu · ~{sn} s",
+ "dinleme_bos": "Puste: czytane jest przykładowe zdanie",
+ "dinleme_ek": "Dodatkowy czas: jedno czytanie na wariant · {n} wariantów ≈ +{dk} min (szacunkowo)",
+ "dinleme_hata": "Czytanie stałym głosem przerwało się; spróbuj ponownie przez Czytaj tym głosem.",
+ "ham_bas": "Surowy głos projektu · wygenerowany raz, drugi raz nie wyjdzie taki sam",
+ "kalici_bas": "Ten głos będziesz słyszeć zawsze",
+ "kalici_alt": "Czytany z referencją · ziarno {n} · za każdym razem taki sam"
 }

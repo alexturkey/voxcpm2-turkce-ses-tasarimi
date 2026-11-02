@@ -133,5 +133,16 @@
  "dinle": "Dengarkan",
  "durdur": "Hentikan",
  "uretime_git": "Buka pembuatan",
- "buradan_dinle": "Dengarkan dari sini"
+ "buradan_dinle": "Dengarkan dari sini",
+ "tmetin_ham": "· desain mentah membacakan ini",
+ "dinleme_bas": "Teks yang ingin kamu dengar",
+ "dinleme_alt": "Suara tetap tiap varian membacakannya · sama seperti tab Bacakan dengan suara ini",
+ "dinleme_ph": "Satu kalimat per baris. Kosongkan untuk mendengar kalimat contoh.",
+ "dinleme_ipucu": "Baris = kalimat · baris kosong = jeda paragraf · ~{sn} dtk",
+ "dinleme_bos": "Kosong: kalimat contoh yang dibacakan",
+ "dinleme_ek": "Waktu tambahan: satu pembacaan per varian · {n} varian ≈ +{dk} mnt (perkiraan)",
+ "dinleme_hata": "Pembacaan dengan suara tetap terhenti; coba lagi lewat Bacakan dengan suara ini.",
+ "ham_bas": "Suara desain mentah · dibuat sekali, tidak akan keluar persis sama lagi",
+ "kalici_bas": "Inilah suara yang akan selalu kamu dengar",
+ "kalici_alt": "Dibacakan dengan referensi · seed {n} · sama di setiap pembacaan"
 }

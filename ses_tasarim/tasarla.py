@@ -92,10 +92,15 @@ def check(description: str, text: str, dil: str = None) -> list:
 
 
 def tasarla(settings: dict, name: str, description: str, text: str, count: int = None, seeds: list = None,
-            progress=None, dil: str = None) -> dict:
-    """dil verilmezse metinden tanınır (okunus.detect). / dil omitted: detected from the text."""
+            progress=None, dil: str = None, dinleme: str = None) -> dict:
+    """dil verilmezse metinden tanınır (okunus.detect). dinleme: her çeşidin kalıcı sesiyle (referans + kendi tohumu)
+    okunacak metin; verilirse tasarımdan sonra okunur, çeşidin klasörüne dinleme.wav yazılır (kart: "Sürekli duyacağın
+    ses bu"). / dinleme: text read with each variant's lasting voice (reference + its own seed) after the design."""
     dil = okunus.language(dil) if dil else okunus.detect(text)
     found = check(description, text, dil)
+    dinleme = (dinleme or "").strip()
+    if dinleme:
+        found += okunus.problems(dinleme, "duymak istediğin metin", okunus.detect(dinleme, dil))
     if found:
         raise ValueError("form eksik:\n  - " + "\n  - ".join(found))
     spoken_text = " ".join(line for line, _ in okunus.lines(okunus.spoken(text, dil)))
@@ -105,7 +110,11 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
     seeds = resolve_seeds(count, seeds)
     requests = [motor.design_request(f"t_{seed}", description, spoken_text, seed) for seed in seeds]
     work_dir = settings["onbellek"].parent / "_calisma" / f"tasarim_{time.strftime('%Y%m%d_%H%M%S')}"
-    result = motor.run_sequence(settings, requests, work_dir, progress)
+    # İlerleme iki aşamayı tek sayaçta gösterir: önce tasarım, sonra okuma satırları / one counter for both phases
+    lines = okunus.lines(okunus.spoken(dinleme, okunus.detect(dinleme, dil))) if dinleme else []
+    total = len(requests) * (1 + len(lines))
+    design_progress = (lambda done, _total, elapsed: progress(done, total, elapsed)) if progress else None
+    result = motor.run_sequence(settings, requests, work_dir, design_progress)
     _remove_empty(work_dir)  # motor ara dosyalarını sildi; boş çalışma klasörü de kalmasın
     variants, number = [], len(existing)
     run_id, run_date = time.strftime("%Y%m%d_%H%M%S"), time.strftime("%Y-%m-%d %H:%M")  # bir Tasarla = bir üretim
@@ -130,8 +139,63 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
         if seconds < motor.MIN_REFERENCE_SECONDS:
             card["uyari"] = f"referans {seconds} sn < {motor.MIN_REFERENCE_SECONDS} sn; tasarım metnini uzat"
         variants.append({**card, "klasor": str(trial)})
+    seconds, vram = result["seconds"], result["vram_peak_mb"]
+    good = [v for v in variants if "hata" not in v]
+    if lines and good:
+        # Yarım tasarım okunmaz: toplam küçülür, sayaç yine geri gitmez; saat tasarım süresinden devam eder.
+        # Broken designs are not read: the total shrinks, the counter never goes back; the clock continues.
+        total, base = len(requests) + len(good) * len(lines), result["seconds"] or 0
+        read_progress = (lambda done, _total, elapsed: progress(len(requests) + done, total, base + elapsed)) if progress else None
+        # Okuma dinleme metni kullanıcının yazdığıysa saklanır (üretim yeniden açılınca kutuya döner; örnek cümleyse boş kalır)
+        typed = dinleme if dinleme != text.strip() else None
+        try:
+            read = _read_variants(settings, good, lines, work_dir.parent / f"{work_dir.name}_okuma", read_progress, typed)
+            seconds, vram = round(seconds + read["seconds"], 1), max(vram or 0, read["vram_peak_mb"] or 0)
+        except motor.MotorHatasi as error:  # tasarım diske yazıldı, okumanın çökmesi onu düşürmez / keep the design
+            for variant in good:
+                _update_card(Path(variant["klasor"]), {"dinleme_hata": f"okuma motoru durdu: {error}"}, variant)
     return {"ses": voice_dir.name, "klasor": str(voice_dir), "cesitler": variants,
-            "sure_sn": result["seconds"], "vram_tepe_mb": result["vram_peak_mb"]}
+            "sure_sn": seconds, "vram_tepe_mb": vram}
+
+
+def _update_card(trial: Path, fields: dict, variant: dict) -> None:
+    card_path = trial / "ses.json"
+    card = json.loads(card_path.read_text(encoding="utf-8"))
+    card.update(fields)
+    card_path.write_text(json.dumps(card, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    variant.update(fields)
+
+
+def _read_variants(settings: dict, variants: list, lines: list, work_dir: Path, progress=None, typed: str = None) -> dict:
+    """Her çeşidin kalıcı sesi: tasarım kaydı referans, çeşidin kendi tohumu, aynı metin; hepsi tek motor oturumunda
+    (model bir kez yüklenir). Çeşidin klasörüne dinleme.wav, kartına dinleme alanları yazılır. Yarım kalan çeşit
+    tasarımı bozmaz, kartına dinleme_hata düşer.
+    Each variant's lasting voice, all in one engine session; a failed reading does not fail the design."""
+    requests = []
+    for variant in variants:
+        trial = Path(variant["klasor"])
+        reference = motor.reference_wav(trial / variant["referans"], work_dir)
+        requests += [motor.read_request(f"v{variant['cesit']}_s{index}", line, variant["okuma_tohumu"], reference,
+                                        variant["ses_yaratilirken_okutulan_metin"])
+                     for index, (line, _) in enumerate(lines, 1)]
+    if not requests:
+        return {"seconds": 0, "vram_peak_mb": 0}
+    result = motor.run_sequence(settings, requests, work_dir, progress)
+    _remove_empty(work_dir)
+    text = "\n".join(line for line, _ in lines)
+    for variant in variants:
+        ids = [f"v{variant['cesit']}_s{index}" for index in range(1, len(lines) + 1)]
+        trial = Path(variant["klasor"])
+        if any(i not in result["audios"] for i in ids):
+            fields = {"dinleme_hata": "okuma yarım kaldı (EOS gelmedi); Bu sesle oku ile yeniden dene"}
+        else:
+            joined = motor.join_lines([result["audios"][i] for i in ids], [pause for _, pause in lines])
+            motor.write_wav(trial / "dinleme.wav", joined)
+            fields = {"dinleme": "dinleme.wav", "dinleme_metni": text, "dinleme_sn": round(len(joined) / motor.SAMPLE_RATE, 2)}
+        if typed:
+            fields["dinleme_girdi"] = typed  # kullanıcının yazdığı hali (durak işaretleri, boş satırlar) / as typed
+        _update_card(trial, fields, variant)
+    return result
 
 
 def _remove_empty(folder: Path) -> None:
@@ -159,6 +223,8 @@ def main(argv=None) -> int:
                         help="isteğe bağlı / optional: " + ", ".join(okunus.LANGUAGES) + " (verilmezse metinden tanınır / auto-detected)")
     parser.add_argument("--cesit", type=int, default=DEFAULT_VARIANTS, help="çeşit sayısı / number of variants")
     parser.add_argument("--tohum", type=int, nargs="*", help="tohumları kendin ver / explicit seeds")
+    parser.add_argument("--dinleme", help="her çeşidin kalıcı sesiyle okunacak metin ya da @dosya (satır = cümle); "
+                        "çeşit klasörüne dinleme.wav / text read with each variant's lasting voice")
     args = parser.parse_args(argv)
     if args.ornek:
         item = ornekler.bul(args.ornek)
@@ -173,11 +239,12 @@ def main(argv=None) -> int:
     description, text = read_arg_text(args.tarif), read_arg_text(args.metin)
 
     def progress(done, total, elapsed):
-        print(f"  {done}/{total} çeşit, {elapsed:.0f} sn", flush=True)
+        print(f"  {done}/{total} hazır, {elapsed:.0f} sn", flush=True)
 
     print(f"tasarım: {args.ad} ({args.dil}), {len(args.tohum) if args.tohum else args.cesit} çeşit, {motor.FIXED['adim']} adım, cfg {motor.FIXED['cfg']}",
           flush=True)
-    result = tasarla(settings, args.ad, description, text, args.cesit, args.tohum, progress, args.dil)
+    result = tasarla(settings, args.ad, description, text, args.cesit, args.tohum, progress, args.dil,
+                     read_arg_text(args.dinleme) if args.dinleme else None)
     for variant in result["cesitler"]:
         if "hata" in variant:
             print(f"  tohum {variant['tohum']}: {variant['hata']}")

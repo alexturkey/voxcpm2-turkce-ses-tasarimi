@@ -133,5 +133,16 @@
  "dinle": "Dengar",
  "durdur": "Henti",
  "uretime_git": "Pergi ke penjanaan",
- "buradan_dinle": "Dengar dari sini"
+ "buradan_dinle": "Dengar dari sini",
+ "tmetin_ham": "· reka bentuk mentah membaca ini",
+ "dinleme_bas": "Teks yang anda mahu dengar",
+ "dinleme_alt": "Suara tetap setiap varian membacanya · sama seperti tab Baca dengan suara ini",
+ "dinleme_ph": "Satu ayat setiap baris. Biarkan kosong untuk mendengar ayat contoh.",
+ "dinleme_ipucu": "Baris = ayat · baris kosong = jeda perenggan · ~{sn} saat",
+ "dinleme_bos": "Kosong: ayat contoh dibaca",
+ "dinleme_ek": "Masa tambahan: satu bacaan setiap varian · {n} varian ≈ +{dk} min (anggaran)",
+ "dinleme_hata": "Bacaan dengan suara tetap terhenti; cuba lagi melalui Baca dengan suara ini.",
+ "ham_bas": "Suara reka bentuk mentah · dijana sekali, tidak akan keluar sama lagi",
+ "kalici_bas": "Inilah suara yang akan anda dengar sentiasa",
+ "kalici_alt": "Dibaca dengan rujukan · seed {n} · sama dalam setiap bacaan"
 }

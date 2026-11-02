@@ -98,7 +98,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 .sure{display:flex;align-items:center;gap:8px;margin:5px 0 0;font-size:.78rem;color:var(--muted)}.sure[hidden]{display:none}
 .cubuk{flex:1;height:4px;background:var(--cizgi2);border-radius:2px;overflow:hidden}.cubuk i{display:block;height:100%;width:0;background:var(--acc);transition:width .2s}
 .sure.asti .cubuk i{background:var(--err)}.sure.asti span{color:var(--err)}.sure span{flex:none}
-.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
+.dinlekutu{margin-top:10px;padding:6px 10px 8px;border:1.5px solid var(--acc);border-radius:8px;background:color-mix(in srgb,var(--acc) 6%,transparent)}.form .dinlekutu label{display:flex;flex-direction:column;gap:1px;margin:0 0 5px}.dinlekutu b,.kalici b{color:var(--baslik);font-size:.85rem}.dinlekutu small,.cesit .ham small,.kalici small{color:var(--muted);font-size:.75rem}.dinlekutu textarea{min-height:76px}.soluk{color:var(--muted)}.cesit .ham{display:flex;flex-direction:column;gap:3px}.kalici{display:flex;flex-direction:column;gap:5px;padding:6px 8px 8px;border:1.5px solid var(--acc);border-radius:7px;background:color-mix(in srgb,var(--acc) 7%,transparent)}.kalici audio{width:100%;height:32px}.kalici .dugmeler{flex:none}.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
 .uzun button{padding:4px 10px;font-size:.8rem;font-weight:600;white-space:normal;text-align:start;max-width:100%}
 .ipucu{display:block;margin:5px 0 0;color:var(--soluk);font-size:.78rem;line-height:1.35}
 /* Uygulama düzeni: sayfa kaymaz, kart pencereyi doldurur; dar ya da kısa ekranda normal kayan sayfa. */
@@ -125,11 +125,14 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <label class="mini" data-t-title="ornek_ipucu1"><span data-t="ornek">Örnek tarif</span><select id="ornek"></select></label>
 <label for="tarif" class="tarifbas" data-t-title="e_tarif_parantez"><span data-t-bas="tarif">Ses tarifi</span><img src="/bayrak/gb.svg" alt="English"><img src="/bayrak/cn.svg" alt="中文"></label>
 <textarea spellcheck="false" id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
-<label for="tasarim_metni" data-t="tmetin">Örnek cümle (sesi tanımak için, 1-2 cümle)</label>
+<label for="tasarim_metni"><span data-t="tmetin">Örnek cümle (sesi tanımak için, 1-2 cümle)</span> <small class="soluk" data-t="tmetin_ham">· ham tasarım bunu okur</small></label>
 <textarea spellcheck="false" id="tasarim_metni" rows="3" data-t-ph="tmetin_ph" aria-describedby="sure_yazi tmetin_ipucu"></textarea>
 <div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
 <small id="tmetin_ipucu" class="ipucu"></small>
+<div class="dinlekutu"><label for="dinleme_metni"><b><span aria-hidden="true">↻</span> <span data-t="dinleme_bas">Duymak istediğin metin</span></b><small data-t="dinleme_alt">Her çeşidin kalıcı sesi bunu okur · Bu sesle oku sekmesiyle aynı</small></label>
+<textarea spellcheck="false" id="dinleme_metni" rows="4" data-t-ph="dinleme_ph" aria-describedby="dinleme_ipucu"></textarea>
+<small id="dinleme_ipucu" class="ipucu" aria-live="polite"></small></div>
 <div class="sag ilerlesatir"><div id="p_tasarla" class="ilerle" hidden><div class="pcubuk" aria-hidden="true"><i></i></div><span class="krono">0:00</span></div><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
 </div><div class="uretimler">
 <div class="ubas"><b data-t="uretimler">Üretimler</b><select id="uretim" data-t-title="uretimler"></select><div id="d_tasarla" class="durum" aria-live="polite"></div></div>
@@ -192,7 +195,7 @@ async function dilYukle(k){const [s,y]=await Promise.all([api('/arayuz_dili/'+k+
  document.querySelectorAll('#bayraklar button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dil===k));
  $('dil_dugme').innerHTML=`${KURE}<img src="/bayrak/${d[1]}.svg" alt=""><span>${k.toUpperCase()}</span>`;$('dil_dugme').title=d[2];$('dil_dugme').setAttribute('aria-label',d[2]);
  $('tmetin_ipucu').textContent=t('tmetin_ipucu',{dugme:t('oku')});
- dosyaAdi();ornekDoldur();sesListesi();cesitCiz();okumaCiz();klonCiz();klonBilgi();sureCiz();
+ dosyaAdi();ornekDoldur();sesListesi();cesitCiz();okumaCiz();klonCiz();klonBilgi();sureCiz();dinlemeGuncelle();
  for(const id of ['d_tasarla','d_oku','d_klon'])durumYaz($(id),$(id)._son);}
 // Sekmeler: tıklanan bölüm görünür, diğerleri gizli; son sekme hatırlanır.
 function sekmeAc(id){document.querySelectorAll('.sekmeler button').forEach(b=>b.setAttribute('aria-selected',b.dataset.sekme===id));
@@ -216,7 +219,8 @@ temaCiz();
 
 // Sunucu kodlu sorun ve durum gönderir; arayüz kendi dilinde yazar, kodu bilmezse sunucunun metnini gösterir.
 // The server sends coded problems and states; the UI phrases them, falling back to the server text.
-const sorunMetni=s=>s.kod&&(S['e_'+s.kod]||YEDEK['e_'+s.kod])?t('e_'+s.kod,s.veri):s.metin;
+// Duymak istediğin metnin sorunu hangi kutuda olduğunu söyler / says the problem is in the listening text box
+const sorunMetni=s=>(s.veri&&s.veri.alan==='dinleme'?t('dinleme_bas')+': ':'')+(s.kod&&(S['e_'+s.kod]||YEDEK['e_'+s.kod])?t('e_'+s.kod,s.veri):s.metin);
 function durumYaz(el,j){el._son=j;if(!j){el.textContent='';el.className='durum';return;}
  const hata=j.durum==='hata'||(!j.durum&&j.hata);let m;
  if(j.sorunlar&&j.sorunlar.length)m=(j.durum==='hata'?t('hata')+': ':'')+j.sorunlar.map(sorunMetni).join('\n');
@@ -240,14 +244,22 @@ let sure=null,sureSayac=0,sureZaman=null;
 const sureOlc=metin=>api('/api/sure',{metin,ornek:$('ornek').value});
 async function sureSimdi(){clearTimeout(sureZaman);const n=++sureSayac;const s=await sureOlc($('tasarim_metni').value);
  if(n===sureSayac){sure=s;sureCiz();}return s;}
-function sureGuncelle(){clearTimeout(sureZaman);sureZaman=setTimeout(()=>sureSimdi().catch(()=>{}),250);}
+function sureGuncelle(){clearTimeout(sureZaman);sureZaman=setTimeout(()=>sureSimdi().catch(()=>{}),250);dinlemeGuncelle();}
 function sureCiz(){const s=sure,bos=!$('tasarim_metni').value.trim();$('sure').hidden=!s||bos;$('uzun_uyari').hidden=!s||bos||s.sn<=s.sert;
  if(!s||bos)return;$('sure').classList.toggle('asti',s.sn>s.sinir);$('sure_cubuk').style.width=Math.min(100,s.sn/s.sinir*100)+'%';
  $('sure_yazi').textContent=t('sure_gosterge',{sn:Math.max(1,Math.round(s.sn)),sinir:Math.round(s.sinir)});}
 $('tasarim_metni').addEventListener('input',sureGuncelle);
+// Duymak istediğin metin: uzunluk ve tasarıma eklenen okuma süresi (sunucunun tahmini; boşsa örnek cümle okunur).
+// Listening text: its length and the reading time added to the design (server estimate; empty reads the sample sentence).
+let dinlemeZaman=0,dinlemeSayac=0;function dinlemeGuncelle(){clearTimeout(dinlemeZaman);dinlemeZaman=setTimeout(dinlemeCiz,300);}
+async function dinlemeCiz(){const m=$('dinleme_metni').value.trim(),metin=m||$('tasarim_metni').value.trim(),n=Math.max(1,Math.min(50,+$('cesit').value||3)),k=++dinlemeSayac;
+ if(!metin){$('dinleme_ipucu').textContent=t('dinleme_bos');return;}
+ const s=await api('/api/sure',{metin,cesit:n,ornek:$('ornek').value}).catch(()=>null);if(k!==dinlemeSayac||!s||s.ek_sn==null)return;
+ $('dinleme_ipucu').textContent=(m?t('dinleme_ipucu',{sn:Math.max(1,Math.round(s.sn))}):t('dinleme_bos'))+' · '+t('dinleme_ek',{n,dk:Math.max(1,Math.round(s.ek_sn/60))});}
+['dinleme_metni','cesit'].forEach(i=>$(i).addEventListener('input',dinlemeGuncelle));
 // Form değişince eski hata yazısı kalmasın (ör. ad girildikten sonra "Sesin adı boş").
 // A stale error must not stay once the form changes (e.g. "name is empty" after typing a name).
-['ad','tarif','tasarim_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);}));
+['ad','tarif','tasarim_metni','dinleme_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);}));
 // Uzun metni okumaya taşı: tam metin cümle cümle okuma kutusuna (boşsa yerine, doluysa sonuna); tasarımda ilk 1-2 cümle kalır.
 const cumleler=m=>m.replace(/([.!?…؟।。！？])[ \t]+/g,'$1\n').replace(/([。！？])(?=\S)/g,'$1\n').split('\n').map(x=>x.trim()).filter(Boolean);
 $('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!m)return;const c=cumleler(m),o=$('okuma_metni');
@@ -261,7 +273,10 @@ $('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!
 let sesler={hazir:[],tasarlanan:[],okuma_listesi:[]},okumaListesi=[];
 const tanitim=k=>dil==='tr'?k.tanitim_tr:(k.tanitim_en||k.tanitim_tr);
 // Sesin örnek dosyası (kart oynatıcısı ve menüdeki ▶ aynı yerden) / the voice's sample, shared by card players and the menu ▶
-const ornekUrl=k=>encodeURI(`/dosya/${k.kimlik}/${k.ornek_okuma||k.referans||'referans.wav'}`).replace(/[?#]/g,encodeURIComponent);
+// ▶ ve okuma listesi sesin kalıcı halini çalar: hazır seste örnek okuma, tasarlananda dinleme (yoksa ham tasarım kaydı).
+// Menus play the lasting voice: the bundled sample reading, a designed variant's dinleme, else the raw design recording.
+const dosyaUrl=(k,f)=>encodeURI(`/dosya/${k.kimlik}/${f}`).replace(/[?#]/g,encodeURIComponent);
+const ornekUrl=k=>dosyaUrl(k,k.ornek_okuma||k.dinleme||k.referans||'referans.wav');
 // Sesin dili kartta; eski Türkçe hazır seslerde alan yok → tr. Bayrak, sağ üstteki dil seçimindeki resmin aynısı.
 // The voice language is on its card (old Turkish cards have none → tr). Flags are the language picker's images.
 const sesDili=k=>k.dil||'tr',dilBayrak=d=>(DILLER.find(x=>x[0]===d)||[])[1];
@@ -370,12 +385,16 @@ let seciliUretim=null;
 function uretimler(liste=sesler.tasarlanan){const g=new Map();
  for(const c of liste){const k=uretimAnahtari(c);if(!g.has(k))g.set(k,[]);g.get(k).push(c);}
  return [...g].map(([k,cs])=>({k,cs:cs.sort((a,b)=>a.cesit-b.cesit)})).sort((a,b)=>(b.cs[0].tarih||'').localeCompare(a.cs[0].tarih||'')||b.cs[0].cesit-a.cs[0].cesit);}
+const okuDugmeleri=c=>`<button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}`;
+// İki ses: ham tasarım kaydı (bir kez çıktı) ve çerçevede sürekli duyulacak ses (referans + çeşidin tohumu); düğmeler kalıcı sese ait.
+// Two voices: the raw one-off design recording, and the framed lasting voice the buttons belong to.
+const kaliciKart=c=>`<span class="dugmeler">${yonetDugmesi(c.kimlik)}</span></div><div class="ham"><small>${esc(t('ham_bas'))}</small><audio controls preload="none" src="${esc(dosyaUrl(c,c.referans||'referans.wav'))}"></audio></div><div class="kalici"><b><span aria-hidden="true">↻</span> ${esc(t('kalici_bas'))}</b><small>${esc(t('kalici_alt',{n:c.okuma_tohumu}))}</small><audio controls preload="none" src="${esc(dosyaUrl(c,c.dinleme))}"></audio><span class="dugmeler">${okuDugmeleri(c)}</span></div>`;
 function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checked')||{}).value,u=uretimler();
  if(!u.some(x=>x.k===seciliUretim))seciliUretim=u.length?u[0].k:null;
  $('uretim').innerHTML=u.map(x=>`<option value="${esc(x.k)}">${esc(uretimAdi(x.cs[0]))} · ${esc((x.cs[0].tarih||'').slice(5))} · ${esc(t('cesit_kisa'))} ${x.cs.length}</option>`).join('');
  $('uretim').value=seciliUretim||'';$('uretim').hidden=!u.length;
  const hatalar=(sonCesit?sonCesit.cesitler:[]).filter(c=>c.hata).map(c=>`<div class="cesit hata">${esc(t('tohum_n',{n:c.tohum}))}: ${esc(c.hata)}</div>`);
- const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small><span class="nw">${esc(t('tohum_n',{n:c.tasarim_tohumu}))},</span> <span class="nw">${esc(t('sn',{n:c.referans_sn}))}</span></small></label><span class="dugmeler"><button type="button" class="okubtn" data-oku="${esc(c.kimlik)}">${esc(t('oku'))}</button>${listeDugmesi(c.kimlik)}${yonetDugmesi(c.kimlik)}</span></div><audio controls preload="none" src="${esc(ornekUrl(c))}"></audio></div>`);
+ const kartlar=((u.find(x=>x.k===seciliUretim)||{cs:[]}).cs).map(c=>`<div class="cesit"><div class="csat"><label><input type="radio" name="sec" value="${esc(c.kimlik)}"><b>${esc(t('cesit_n',{n:c.cesit}))}</b> <small><span class="nw">${esc(t('tohum_n',{n:c.tasarim_tohumu}))},</span> <span class="nw">${esc(t('sn',{n:c.referans_sn}))}</span></small></label>${c.dinleme?kaliciKart(c):`<span class="dugmeler">${okuDugmeleri(c)}${yonetDugmesi(c.kimlik)}</span></div><audio controls preload="none" src="${esc(ornekUrl(c))}"></audio>`}${c.dinleme_hata?`<small class="ipucu">${esc(t('dinleme_hata'))}</small>`:''}</div>`);
  $('cesitler').innerHTML=hatalar.concat(kartlar).join('')||`<p class="bos">${esc(t('uretim_yok',{dugme:t('tasarla')}))}</p>`;
  document.querySelectorAll('input[name=sec]').forEach(r=>{r.checked=r.value===secili;r.onchange=()=>SesMenu.sec(r.value);});
  document.querySelectorAll('#cesitler [data-oku]').forEach(b=>b.onclick=()=>{const r=[...document.querySelectorAll('input[name=sec]')].find(x=>x.value===b.dataset.oku);if(r)r.checked=true;
@@ -383,7 +402,7 @@ function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checke
 // Üretim seçilince form o üretimin ad, tarif ve metniyle dolar; çeşitleri listelenir, ilki okumada seçili ses olur.
 // hedef: "Üretimine git" ile gelinen çeşit; vurgulanır, okumada seçili ses değişmez / the variant to highlight
 function uretimAc(k,hedef){const x=uretimler().find(x=>x.k===k);if(!x)return;seciliUretim=k;const c=x.cs[0];
- $('ad').value=uretimAdi(c);$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';$('ornek').value='';$('cesit').value=x.cs.length;
+ $('ad').value=uretimAdi(c);$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';$('dinleme_metni').value=c.dinleme_girdi||'';dinlemeGuncelle();$('ornek').value='';$('cesit').value=x.cs.length;
  sureGuncelle();cesitCiz();if(hedef){const c=veriBul($('cesitler'),'liste',hedef)?.closest('.cesit');if(!c)return;c.classList.add('vurgu');
   c.scrollIntoView({block:'center'});setTimeout(()=>c.classList.remove('vurgu'),2500);return;}
  const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}}
@@ -391,7 +410,7 @@ $('uretim').onchange=()=>uretimAc($('uretim').value);
 $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  const u=await sureSimdi().catch(()=>null);if(u&&u.sn>u.sert){b.disabled=false;$('okumaya_tasi').focus();return;}  // sınır aşıldı: üretim başlamaz
  sonCesit=null;cesitCiz();
- const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
+ const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,dinleme:$('dinleme_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
  if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
  const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}};
@@ -1068,7 +1087,7 @@ class Isler:
                 if kind == "tasarla":
                     result = tasarla.tasarla(self.settings, payload["ad"], payload["tarif"], payload["metin"],
                                              _cesit(payload), None, progress,
-                                             okunus.detect(payload["metin"], _dil_ipucu(payload)))
+                                             okunus.detect(payload["metin"], _dil_ipucu(payload)), _dinleme(payload))
                     self._ogren(kind, payload, adimlar, time.time() - basladi)
                     self._set(job_id, durum="bitti", sonuc=result, kod="bitti_tasarla",
                               veri={"n": len(result["cesitler"]), "sn": result["sure_sn"], "vram": result["vram_tepe_mb"]},
@@ -1104,10 +1123,16 @@ def _cesit(payload: dict) -> int:
     return max(1, min(50, int(payload.get("cesit") or 3)))
 
 
+def _dinleme(payload: dict) -> str:
+    """Her çeşidin kalıcı sesiyle okunacak metin; boşsa örnek cümle. / listening text, the sample sentence when empty"""
+    return str(payload.get("dinleme") or "").strip() or str(payload.get("metin", ""))
+
+
 def _karakter(kind: str, payload: dict) -> int:
-    """Süre tahmininin girdisi: okunacak karakter (tasarlada × çeşit). / input of the duration estimate"""
+    """Süre tahmininin girdisi: okunacak karakter (tasarlada tasarım + kalıcı ses okuması, × çeşit).
+    input of the duration estimate (design: design text + lasting-voice reading, times variants)"""
     if kind == "tasarla":
-        return sure_tahmini.karakter(payload.get("metin", ""), _cesit(payload))
+        return sure_tahmini.karakter(payload.get("metin", "") + " " + _dinleme(payload), _cesit(payload))
     return sure_tahmini.karakter(payload.get("metin", ""))
 
 
@@ -1246,13 +1271,24 @@ def make_handler(settings, jobs: Isler):
                 # Live length meter for the design text; the estimate and limits live only in tasarla.py.
                 text = str(payload.get("metin") or "")
                 dil = okunus.detect(text, _dil_ipucu(payload))
-                return self._json({"sn": tasarla.estimate_seconds(text, dil), "dil": dil,
-                                   "sinir": tasarla.DESIGN_LIMIT_SECONDS,
-                                   "sert": round(tasarla.DESIGN_HARD_LIMIT_SECONDS, 1)})
+                out = {"sn": tasarla.estimate_seconds(text, dil), "dil": dil,
+                       "sinir": tasarla.DESIGN_LIMIT_SECONDS, "sert": round(tasarla.DESIGN_HARD_LIMIT_SECONDS, 1)}
+                if "cesit" in payload:  # duymak istediğin metin: her çeşide bir okuma / one reading per variant
+                    try:
+                        out["ek_sn"] = sure_tahmini.tahmin(settings, "oku:" + str(settings.get("backend", "cuda")),
+                                                           sure_tahmini.karakter(text, _cesit(payload)))["sn"]
+                    except (TypeError, ValueError):
+                        pass
+                return self._json(out)
             if self.path == "/api/tasarla":
                 try:
-                    found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""),
-                                          okunus.detect(payload.get("metin", ""), _dil_ipucu(payload)))
+                    dil = okunus.detect(payload.get("metin", ""), _dil_ipucu(payload))
+                    found = tasarla.check(payload.get("tarif", ""), payload.get("metin", ""), dil)
+                    if str(payload.get("dinleme") or "").strip():
+                        for item in okunus.problems(str(payload["dinleme"]), "duymak istediğin metin",
+                                                    okunus.detect(str(payload["dinleme"]), dil)):
+                            item.veri["alan"] = "dinleme"  # arayüz kutunun adını başa yazar / the UI names the box
+                            found.append(item)
                 except ValueError as error:  # ör. bilinmeyen durak / e.g. unknown pause marker
                     found = [error.args[0] if error.args and isinstance(error.args[0], okunus.Sorun) else str(error)]
                 if not str(payload.get("ad", "")).strip():

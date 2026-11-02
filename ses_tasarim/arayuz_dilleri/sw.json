@@ -133,5 +133,16 @@
  "dinle": "Sikiliza",
  "durdur": "Simamisha",
  "uretime_git": "Nenda kwenye uundaji",
- "buradan_dinle": "Sikiliza kuanzia hapa"
+ "buradan_dinle": "Sikiliza kuanzia hapa",
+ "tmetin_ham": "· hiki ndicho muundo ghafi unachosoma",
+ "dinleme_bas": "Maandishi unayotaka kusikia",
+ "dinleme_alt": "Sauti ya kudumu ya kila toleo inayasoma · kama kichupo cha Soma kwa sauti hii",
+ "dinleme_ph": "Sentensi moja kwa kila mstari. Acha tupu ili kusikia sentensi ya mfano.",
+ "dinleme_ipucu": "Mstari = sentensi · mstari tupu = pumziko la aya · ~sek {sn}",
+ "dinleme_bos": "Tupu: sentensi ya mfano itasomwa",
+ "dinleme_ek": "Muda wa ziada: usomaji mmoja kwa kila toleo · matoleo {n} ≈ +dak {dk} (makadirio)",
+ "dinleme_hata": "Usomaji kwa sauti ya kudumu ulikatika; jaribu tena kwa Soma kwa sauti hii.",
+ "ham_bas": "Sauti ghafi ya muundo · imetengenezwa mara moja, haitatoka sawa tena",
+ "kalici_bas": "Hii ndiyo sauti utakayoisikia kila wakati",
+ "kalici_alt": "Imesomwa kwa marejeo · mbegu {n} · ileile kila usomaji"
 }

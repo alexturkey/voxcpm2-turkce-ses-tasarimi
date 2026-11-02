@@ -133,5 +133,16 @@
  "dinle": "Listen",
  "durdur": "Stop",
  "uretime_git": "Go to generation",
- "buradan_dinle": "Listen from here"
+ "buradan_dinle": "Listen from here",
+ "tmetin_ham": "· the raw design reads this",
+ "dinleme_bas": "Text you want to hear",
+ "dinleme_alt": "Each variant's lasting voice reads this · same as the Read with this voice tab",
+ "dinleme_ph": "One sentence per line. Leave empty to hear the sample sentence.",
+ "dinleme_ipucu": "Line = sentence · blank line = paragraph pause · ~{sn} s",
+ "dinleme_bos": "Empty: the sample sentence is read",
+ "dinleme_ek": "Extra time: one reading per variant · {n} variants ≈ +{dk} min (estimate)",
+ "dinleme_hata": "The lasting-voice reading stopped early; try again with Read with this voice.",
+ "ham_bas": "Raw design voice · generated once, never comes out the same again",
+ "kalici_bas": "This is the voice you'll keep hearing",
+ "kalici_alt": "Read with the reference · seed {n} · the same in every reading"
 }

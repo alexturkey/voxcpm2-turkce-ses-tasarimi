@@ -133,5 +133,16 @@
  "dinle": "Escuchar",
  "durdur": "Detener",
  "uretime_git": "Ir a la generación",
- "buradan_dinle": "Escuchar desde aquí"
+ "buradan_dinle": "Escuchar desde aquí",
+ "tmetin_ham": "· esto lee el diseño en bruto",
+ "dinleme_bas": "Texto que quieres escuchar",
+ "dinleme_alt": "La voz definitiva de cada variante lo lee · igual que la pestaña Leer con esta voz",
+ "dinleme_ph": "Una frase por línea. Déjalo vacío para oír la frase de ejemplo.",
+ "dinleme_ipucu": "Línea = frase · línea vacía = pausa de párrafo · ~{sn} s",
+ "dinleme_bos": "Vacío: se lee la frase de ejemplo",
+ "dinleme_ek": "Tiempo extra: una lectura por variante · {n} variantes ≈ +{dk} min (estimado)",
+ "dinleme_hata": "La lectura con la voz definitiva se cortó; vuelve a intentarlo con Leer con esta voz.",
+ "ham_bas": "Voz de diseño en bruto · se generó una vez, nunca sale igual",
+ "kalici_bas": "Esta es la voz que oirás siempre",
+ "kalici_alt": "Leída con la referencia · semilla {n} · igual en cada lectura"
 }

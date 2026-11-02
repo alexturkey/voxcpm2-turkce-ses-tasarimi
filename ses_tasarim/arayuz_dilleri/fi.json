@@ -133,5 +133,16 @@
  "dinle": "Kuuntele",
  "durdur": "Pysäytä",
  "uretime_git": "Siirry luontiin",
- "buradan_dinle": "Kuuntele tästä eteenpäin"
+ "buradan_dinle": "Kuuntele tästä eteenpäin",
+ "tmetin_ham": "· tämän raakaluonnos lukee",
+ "dinleme_bas": "Teksti, jonka haluat kuulla",
+ "dinleme_alt": "Jokaisen version pysyvä ääni lukee sen · kuten välilehdellä Lue tällä äänellä",
+ "dinleme_ph": "Yksi lause riville. Jätä tyhjäksi, niin kuulet esimerkkilauseen.",
+ "dinleme_ipucu": "Rivi = lause · tyhjä rivi = kappaletauko · ~{sn} s",
+ "dinleme_bos": "Tyhjä: esimerkkilause luetaan",
+ "dinleme_ek": "Lisäaika: yksi luenta versiota kohden · {n} versiota ≈ +{dk} min (arvio)",
+ "dinleme_hata": "Luenta pysyvällä äänellä keskeytyi; yritä uudelleen kohdasta Lue tällä äänellä.",
+ "ham_bas": "Raaka suunnitteluääni · tehty kerran, ei tule koskaan samanlaisena uudelleen",
+ "kalici_bas": "Tätä ääntä kuulet jatkossa",
+ "kalici_alt": "Luettu referenssillä · siemen {n} · sama joka luennassa"
 }

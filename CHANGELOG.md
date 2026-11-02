@@ -3,6 +3,16 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- İki ses tek kartta: tasarımın ham kaydı bir kez çıkar, aynısı bir daha gelmez; sürekli duyacağın ses, o kaydın referans
+  olarak verildiği, çeşidin kendi tohumuyla yapılan okumadır. *Ses tasarla* formunda yeni çerçeve *↻ Duymak istediğin metin*
+  (satır = cümle, boş satır = paragraf beklemesi; boşsa örnek cümle okunur): *Tasarla*'ya bir kez basınca her çeşit önce
+  tasarlanır, sonra bu metni kalıcı sesiyle okur (bütün okumalar tek motor oturumunda, tasarımdan sonra model bir kez daha
+  yüklenir; ilerleme iki aşamayı tek çubukta sayar). Çeşit kartı büyüdü: üstte gri *Ham tasarım sesi*, altında turuncu çerçevede *↻ Sürekli duyacağın ses bu*
+  (tohum yazılı) oynatıcısı ve *Bu sesle oku* / *Okuma listeme ekle* düğmeleri. Ses menüsündeki ▶ de artık kalıcı sesi
+  çalar. Çeşit klasörüne `dinleme.wav`, kartına `dinleme`, `dinleme_metni`, `dinleme_sn` yazılır; okuma yarım kalırsa
+  ya da okuma motoru durursa tasarım bozulmaz, kartta not çıkar; yazdığın metin kartta saklanır, üretim
+  yeniden açılınca kutuya döner. Komut satırında `--dinleme`. Eski kartlar eskisi gibi görünür. 30 dilde.
+  Test: `tests/test_tasarim_dinleme.py`.
 - Okunan satır: sonuç çalarken o an okunan cümlenin numarası ve satırı defterde parlar, satır görünür alana kayar (boş satırlar
   atlanır; metin sonradan değiştiyse aynı cümle aranır). Satır menüsünde en üstte *▶ Buradan dinle* (sonuçta o satır varsa,
   30 dilde). Sunucu ses dosyasında tek aralık (`Range`) isteğini karşılar: oynatıcıda ileri/geri atlama artık çalışır;
@@ -143,6 +153,15 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Two voices on one card: the raw design recording comes out once and never the same again; the voice you keep hearing
+  is a reading with that recording as reference and the variant's own seed. The *Design a voice* form has a new frame
+  *↻ Text you want to hear* (line = sentence, blank line = paragraph pause; empty reads the sample sentence): one press of
+  *Design* designs every variant and then reads this text with its lasting voice (all readings in one engine session,
+  the model loads once more after the design; the progress bar counts both phases). The variant card grows: a grey *Raw design voice* on top, below it an
+  orange frame *↻ This is the voice you'll keep hearing* (with the seed), its player and the *Read with this voice* /
+  *Add to my reading list* buttons. The ▶ in the voice menu now plays the lasting voice too. The variant folder gets
+  `dinleme.wav`, the card `dinleme`, `dinleme_metni`, `dinleme_sn`; a failed or crashed reading never fails the design,
+  the card shows a note; the text as typed is kept and comes back when the production is reopened. CLI: `--dinleme`. Older cards look as before. 30 languages. Test: `tests/test_tasarim_dinleme.py`.
 - The line being read: while the result plays, its number and line glow in the notebook and scroll into view (blank lines
   are skipped; if the text was edited the same sentence is looked up). The line menu starts with *▶ Listen from here* when
   the result has that line (30 languages). The server answers single byte `Range` requests for files, so seeking in the

@@ -133,5 +133,16 @@
  "dinle": "Pakinggan",
  "durdur": "Ihinto",
  "uretime_git": "Pumunta sa generation",
- "buradan_dinle": "Pakinggan mula rito"
+ "buradan_dinle": "Pakinggan mula rito",
+ "tmetin_ham": "· ito ang binabasa ng hilaw na disenyo",
+ "dinleme_bas": "Tekstong gusto mong marinig",
+ "dinleme_alt": "Babasahin ito ng permanenteng boses ng bawat variant · tulad ng tab na Basahin gamit ang boses na ito",
+ "dinleme_ph": "Isang pangungusap bawat linya. Iwanang blangko para marinig ang halimbawang pangungusap.",
+ "dinleme_ipucu": "Linya = pangungusap · blangkong linya = hinto ng talata · ~{sn} seg",
+ "dinleme_bos": "Blangko: babasahin ang halimbawang pangungusap",
+ "dinleme_ek": "Dagdag na oras: isang pagbasa bawat variant · {n} variant ≈ +{dk} min (tantiya)",
+ "dinleme_hata": "Naputol ang pagbasa ng permanenteng boses; subukang muli sa Basahin gamit ang boses na ito.",
+ "ham_bas": "Hilaw na boses ng disenyo · isang beses ginawa, hindi na lalabas nang pareho",
+ "kalici_bas": "Ito ang boses na palagi mong maririnig",
+ "kalici_alt": "Binasa gamit ang reference · seed {n} · pareho sa bawat pagbasa"
 }

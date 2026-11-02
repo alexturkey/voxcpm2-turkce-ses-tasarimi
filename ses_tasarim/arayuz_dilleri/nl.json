@@ -133,5 +133,16 @@
  "dinle": "Beluisteren",
  "durdur": "Stoppen",
  "uretime_git": "Naar de generatie",
- "buradan_dinle": "Vanaf hier beluisteren"
+ "buradan_dinle": "Vanaf hier beluisteren",
+ "tmetin_ham": "· dit leest het ruwe ontwerp",
+ "dinleme_bas": "Tekst die je wilt horen",
+ "dinleme_alt": "De vaste stem van elke variant leest dit · net als het tabblad Voorlezen met deze stem",
+ "dinleme_ph": "Eén zin per regel. Laat leeg om de voorbeeldzin te horen.",
+ "dinleme_ipucu": "Regel = zin · lege regel = alineapauze · ~{sn} s",
+ "dinleme_bos": "Leeg: de voorbeeldzin wordt voorgelezen",
+ "dinleme_ek": "Extra tijd: één voorlezing per variant · {n} varianten ≈ +{dk} min (geschat)",
+ "dinleme_hata": "Het voorlezen met de vaste stem stopte halverwege; probeer opnieuw met Voorlezen met deze stem.",
+ "ham_bas": "Ruwe ontwerpstem · één keer gemaakt, komt nooit precies zo terug",
+ "kalici_bas": "Dit is de stem die je steeds hoort",
+ "kalici_alt": "Voorgelezen met de referentie · seed {n} · elke keer hetzelfde"
 }
