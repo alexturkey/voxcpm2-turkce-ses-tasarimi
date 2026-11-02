@@ -3,6 +3,12 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Menü açıldığı zeminde kalır: *Duymak istediğin metin* penceresindeki *Taslaklar* menüsü pencerenin sağından
+  15-18 px, çeşit kartındaki ⋯ menüsü karttan 31-48 px dışarı çıkıyordu; menü artık açıldığı pencerenin ya da kartın
+  kutusuna sığar (genişliği o kutuya bağlı, kutu açılıp uzarsa yukarı alınır; sağdan sola dillerde aynı). Pencerenin
+  düğmeleri aynı dilde: *Tamam* vurgulu, *Vazgeç* çerçeveli; odak halkası yalnız klavyeyle çıkar. `tasarla`/`oku`
+  `--help` artık `--dil` için 30 dili söyler (kod zaten kabul ediyordu). Ölçüm: 30 dil × 12 durum × 767×794/768/390,
+  taşma 0. Test: `tests/test_arayuz_tasma.py`, `tests/test_cli_kodlama.py`.
 - Taşma düzeltmeleri (kart zemindir, her şey onun içinde kalır; 30 dil × 3 boyut (767×794 gerçek kullanım boyutu, 768×824, 390) × 12 durum taraması:
   normal, ad kutusu, ⋯ menüsü ve içinde yeniden adlandırma, ses listesi, alt menü, taslaklar, satır menüsü, hata yazısı,
   *Duymak istediğin metin* penceresi ve içindeki taslak menüsü; 1080 ölçüm, 0 taşma): çeşit kartında *Okuma listeme ekle*
@@ -174,6 +180,12 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Menus stay on the surface they open from: the *Drafts* menu in the *Text you want to hear* dialog stuck 15-18 px
+  out of the dialog and the variant card's ⋯ menu 31-48 px out of the card; a menu now fits the dialog or card it opens
+  from (its width follows that box, it moves up if an opened box makes it taller; same in right-to-left languages). The
+  dialog buttons share one style: *OK* highlighted, *Cancel* outlined; the focus ring shows for keyboard focus only.
+  `tasarla`/`oku` `--help` now names all 30 languages for `--dil` (the code already accepted them). Checked: 30 languages
+  × 12 states × 767×794/768/390, 0 overflows. Test: `tests/test_arayuz_tasma.py`, `tests/test_cli_kodlama.py`.
 - Overflow fixes (the card is the ground, everything stays inside it; scanned 30 languages × 3 sizes (767×794 real-use size, 768×824, 390) × 12 states:
   normal, name box, ⋯ menu and its rename box, voice list, submenu, drafts, line menu, error text, the *Text you want to
   hear* dialog and its drafts menu; 1080 checks, 0 overflows): with the *Add to my reading list* name box open, *Cancel*
