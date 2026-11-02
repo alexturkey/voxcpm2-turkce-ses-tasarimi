@@ -19,7 +19,7 @@ import time
 import unicodedata
 from pathlib import Path
 
-from . import ayarlar, motor, okunus, ornekler
+from . import utf8_cikti, ayarlar, motor, okunus, ornekler
 
 DEFAULT_VARIANTS = 3
 
@@ -212,6 +212,7 @@ def read_arg_text(value: str) -> str:
 
 
 def main(argv=None) -> int:
+    utf8_cikti()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ayarlar", help="ayar dosyası (varsayılan ./ayarlar.json)")
     parser.add_argument("--ornek", help="örnek tarif kimliği / example id (python -m ses_tasarim.ornekler): tarif, "

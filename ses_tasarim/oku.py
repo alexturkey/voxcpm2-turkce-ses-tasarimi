@@ -21,7 +21,7 @@ import sys
 import time
 from pathlib import Path
 
-from . import ayarlar, motor, okunus
+from . import utf8_cikti, ayarlar, motor, okunus
 
 
 def list_voices(settings: dict) -> dict:
@@ -122,6 +122,7 @@ def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None
 
 
 def main(argv=None) -> int:
+    utf8_cikti()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ayarlar")
     parser.add_argument("--liste", action="store_true", help="sesleri listele / list voices")

@@ -12,6 +12,8 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
+from . import utf8_cikti
+
 KLASOR = Path(__file__).with_name("ornek_tarifler")
 
 
@@ -54,6 +56,7 @@ def bul(ornek_id: str) -> dict:
 
 
 def main(argv=None) -> int:
+    utf8_cikti()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dil", help="yalnız bu dil / only this language: " + ", ".join(diller()))
     parser.add_argument("--tam", action="store_true", help="tarif ve metni de yaz / print prompt and text too")

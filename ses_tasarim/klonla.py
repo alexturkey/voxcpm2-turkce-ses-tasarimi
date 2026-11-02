@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
-from . import ayarlar, motor, oku, okunus
+from . import utf8_cikti, ayarlar, motor, oku, okunus
 
 # motor referans kodlayıcı kapasitesi 576000 örnek @16 kHz = 36 sn (motor.REFERENCE_OPTION)
 MAX_SECONDS = 36.0
@@ -149,6 +149,7 @@ def klonla(settings: dict, data: bytes, reference_text: str, text: str, out_dir:
 
 
 def main(argv=None) -> int:
+    utf8_cikti()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ayarlar", help="ayarlar.json yolu / settings file")
     parser.add_argument("--kayit", type=Path, required=True,

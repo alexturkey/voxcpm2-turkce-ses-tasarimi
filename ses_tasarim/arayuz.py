@@ -27,7 +27,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import __version__, ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, taslaklar, sure_tahmini
+from . import utf8_cikti, __version__, ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, taslaklar, sure_tahmini
 
 REPO_KOKU = Path(__file__).resolve().parent.parent
 BAYRAK_KOKU = Path(__file__).resolve().parent / "bayraklar"  # flag-icons 7.2.3 (MIT), 4x3 SVG / flag images
@@ -1439,6 +1439,7 @@ def make_handler(settings, jobs: Isler):
 
 
 def main(argv=None) -> int:
+    utf8_cikti()
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ayarlar")
     parser.add_argument("--port", type=int)
