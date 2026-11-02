@@ -1,6 +1,6 @@
 # Sürüm notları / Release notes
 
-## Yayımlanmamış / Unreleased
+## v0.2.0 — 2026-11-02
 
 **TR**
 - Çeşit kartında *Okuma listeme ekle* → ad → ✓/Enter artık tek mesaj yazar (*Okuma listesine eklendi*) ve 3 sn sonra
@@ -159,7 +159,7 @@
   derlemesi, `.venv`, `ayarlar.json` `"backend": "metal"`, GPU kontrolü) ve çift tıkla başlatan `baslat.command`. Yamada
   değişiklik gerekmedi. `motor.py` macOS'ta GPU belleğini `ioreg` ile ölçer (arayüzdeki "VRAM tepe"). MacBook Air M4
   16 GB ölçümleri (1 sn ses ≈ 2 sn, aynı tohum bayt bayt aynı, ~5,3 GB RAM, 12 dk'da ısınmadan kaynaklı yavaşlama yok):
-  `docs/mac.md`.
+  `docs/mac.md`. Katkı: @cayir21, #10.
 - `oku`: komut satırında göreli `--cikti` yolu (ör. `cikti/deneme`) referans yolunu ikiliyor, motor "could not open WAV
   input" ile düşüyordu; yol artık mutlak yapılıyor (her platformda; arayüz etkilenmiyordu).
 - `macos/`: native SwiftUI Mac uygulaması (Apple Silicon, macOS 14+). Web arayüzündeki üç bölüm; yamalı motor uygulamanın
@@ -350,7 +350,7 @@
 - macOS (Apple Silicon, Metal) support: `scripts/kur.sh` (same pinned model and source, sha256 checks, patch, ~1 min Metal
   build, `.venv`, `ayarlar.json` with `"backend": "metal"`, GPU check) and a double-click `baslat.command`. The patch needed
   no change. `motor.py` measures GPU memory with `ioreg` on macOS (the UI's "VRAM tepe"). MacBook Air M4 16 GB
-  measurements (~2 s per 1 s of audio, same seed byte-identical, ~5.3 GB RAM, no thermal slowdown over 12 min): `docs/mac.md`.
+  measurements (~2 s per 1 s of audio, same seed byte-identical, ~5.3 GB RAM, no thermal slowdown over 12 min): `docs/mac.md`. Contributed by @cayir21, #10.
 - `oku`: a relative `--cikti` path on the command line (e.g. `cikti/deneme`) doubled the reference path and the engine
   failed with "could not open WAV input"; the path is now made absolute (all platforms; the web UI was not affected).
 - `macos/`: native SwiftUI Mac app (Apple Silicon, macOS 14+) with the web UI's three sections; the patched engine is
