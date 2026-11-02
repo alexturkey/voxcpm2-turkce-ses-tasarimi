@@ -137,7 +137,7 @@
  "tmetin_ham": "· tämän raakaluonnos lukee",
  "dinleme_bas": "Teksti, jonka haluat kuulla",
  "dinleme_alt": "Jokaisen version pysyvä ääni lukee sen · kuten välilehdellä Lue tällä äänellä",
- "dinleme_ph": "Yksi lause riville. Jätä tyhjäksi, niin kuulet esimerkkilauseen.",
+ "dinleme_ph": "Napsauta: kirjoita rivi kerrallaan ja säädä tauot. Jos jätät tyhjäksi, luetaan esimerkkilause.",
  "dinleme_bos": "Tyhjä: esimerkkilause luetaan",
  "dinleme_ek": "Lisäaika: yksi luenta versiota kohden · {n} versiota ≈ +{dk} min (arvio)",
  "dinleme_hata": "Luenta pysyvällä äänellä keskeytyi; yritä uudelleen kohdasta Lue tällä äänellä.",

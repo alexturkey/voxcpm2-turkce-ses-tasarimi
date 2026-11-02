@@ -137,7 +137,7 @@
  "tmetin_ham": "· reka bentuk mentah membaca ini",
  "dinleme_bas": "Teks yang anda mahu dengar",
  "dinleme_alt": "Suara tetap setiap varian membacanya · sama seperti tab Baca dengan suara ini",
- "dinleme_ph": "Satu ayat setiap baris. Biarkan kosong untuk mendengar ayat contoh.",
+ "dinleme_ph": "Klik untuk menulis baris demi baris dan menetapkan jeda. Jika dibiarkan kosong, ayat contoh dibaca.",
  "dinleme_bos": "Kosong: ayat contoh dibaca",
  "dinleme_ek": "Masa tambahan: satu bacaan setiap varian · {n} varian ≈ +{dk} min (anggaran)",
  "dinleme_hata": "Bacaan dengan suara tetap terhenti; cuba lagi melalui Baca dengan suara ini.",

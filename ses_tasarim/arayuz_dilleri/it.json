@@ -137,7 +137,7 @@
  "tmetin_ham": "· questo legge il design grezzo",
  "dinleme_bas": "Testo che vuoi ascoltare",
  "dinleme_alt": "La voce definitiva di ogni variante lo legge · come la scheda Leggi con questa voce",
- "dinleme_ph": "Una frase per riga. Lascia vuoto per ascoltare la frase di esempio.",
+ "dinleme_ph": "Clicca per scrivere riga per riga e regolare le pause. Se lo lasci vuoto, viene letta la frase di esempio.",
  "dinleme_bos": "Vuoto: viene letta la frase di esempio",
  "dinleme_ek": "Tempo extra: una lettura per variante · {n} varianti ≈ +{dk} min (stima)",
  "dinleme_hata": "La lettura con la voce definitiva si è interrotta; riprova con Leggi con questa voce.",

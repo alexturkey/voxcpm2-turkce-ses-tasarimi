@@ -137,7 +137,7 @@
  "tmetin_ham": "· det här läser råutkastet",
  "dinleme_bas": "Text du vill höra",
  "dinleme_alt": "Varje variants fasta röst läser den · som fliken Läs upp med den här rösten",
- "dinleme_ph": "En mening per rad. Lämna tomt för att höra exempelmeningen.",
+ "dinleme_ph": "Klicka för att skriva rad för rad och ställa in pauserna. Lämnas tomt läses exempelmeningen.",
  "dinleme_bos": "Tomt: exempelmeningen läses upp",
  "dinleme_ek": "Extra tid: en uppläsning per variant · {n} varianter ≈ +{dk} min (uppskattat)",
  "dinleme_hata": "Uppläsningen med den fasta rösten avbröts; försök igen med Läs upp med den här rösten.",

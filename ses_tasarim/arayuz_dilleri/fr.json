@@ -137,7 +137,7 @@
  "tmetin_ham": "· c'est ce que lit l'ébauche brute",
  "dinleme_bas": "Texte que vous voulez entendre",
  "dinleme_alt": "La voix durable de chaque variante le lit · comme l'onglet Lire avec cette voix",
- "dinleme_ph": "Une phrase par ligne. Laissez vide pour entendre la phrase d'exemple.",
+ "dinleme_ph": "Cliquez pour écrire ligne par ligne et régler les pauses. Laissé vide, la phrase d'exemple est lue.",
  "dinleme_bos": "Vide : la phrase d'exemple est lue",
  "dinleme_ek": "Temps en plus : une lecture par variante · {n} variantes ≈ +{dk} min (estimation)",
  "dinleme_hata": "La lecture avec la voix durable s'est arrêtée ; réessayez avec Lire avec cette voix.",

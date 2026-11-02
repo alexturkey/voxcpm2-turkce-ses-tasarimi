@@ -137,7 +137,7 @@
  "tmetin_ham": "· esto lee el diseño en bruto",
  "dinleme_bas": "Texto que quieres escuchar",
  "dinleme_alt": "La voz definitiva de cada variante lo lee · igual que la pestaña Leer con esta voz",
- "dinleme_ph": "Una frase por línea. Déjalo vacío para oír la frase de ejemplo.",
+ "dinleme_ph": "Haz clic para escribir línea a línea y ajustar las pausas. Si lo dejas vacío, se lee la frase de ejemplo.",
  "dinleme_bos": "Vacío: se lee la frase de ejemplo",
  "dinleme_ek": "Tiempo extra: una lectura por variante · {n} variantes ≈ +{dk} min (estimado)",
  "dinleme_hata": "La lectura con la voz definitiva se cortó; vuelve a intentarlo con Leer con esta voz.",

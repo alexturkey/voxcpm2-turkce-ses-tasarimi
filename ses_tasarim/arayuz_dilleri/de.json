@@ -137,7 +137,7 @@
  "tmetin_ham": "· das liest der Rohentwurf",
  "dinleme_bas": "Text, den du hören möchtest",
  "dinleme_alt": "Die bleibende Stimme jeder Variante liest ihn · wie im Tab Mit dieser Stimme vorlesen",
- "dinleme_ph": "Ein Satz pro Zeile. Leer lassen, dann wird der Beispielsatz gelesen.",
+ "dinleme_ph": "Klicke, um Zeile für Zeile zu schreiben und die Pausen festzulegen. Bleibt es leer, wird der Beispielsatz gelesen.",
  "dinleme_bos": "Leer: Der Beispielsatz wird gelesen",
  "dinleme_ek": "Zusatzzeit: eine Lesung pro Variante · {n} Varianten ≈ +{dk} Min. (geschätzt)",
  "dinleme_hata": "Die Lesung mit der bleibenden Stimme brach ab; versuche es mit Mit dieser Stimme vorlesen erneut.",
