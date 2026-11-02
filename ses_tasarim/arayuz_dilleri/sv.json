@@ -145,5 +145,14 @@
  "kalici_bas": "Det här är rösten du kommer att höra",
  "kalici_alt": "Uppläst med referensen · seed {n} · likadan vid varje uppläsning",
  "tamam": "OK",
- "dinleme_ozet": "{n} rader · {b} pauser"
+ "dinleme_ozet": "{n} rader · {b} pauser",
+ "taslaklar": "Utkast",
+ "taslak_kaydet": "＋ Spara texten som utkast",
+ "taslak_ustune": "Skriv över med den här texten",
+ "taslak_bos": "Inga utkast än. Skriv texten och spara den nedan.",
+ "taslak_sil_soru": "Ta bort utkastet ”{ad}”?",
+ "taslak_satir": "{n} rader",
+ "taslak_yuklendi": "Utkast inläst: {ad}. Ctrl+Z ångrar.",
+ "taslak_kaydedildi": "Utkast sparat: {ad}",
+ "taslak_metin_bos": "Häftet är tomt; skriv texten först."
 }

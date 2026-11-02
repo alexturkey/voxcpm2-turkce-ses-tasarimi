@@ -145,5 +145,14 @@
  "kalici_bas": "Ito ang boses na palagi mong maririnig",
  "kalici_alt": "Binasa gamit ang reference · seed {n} · pareho sa bawat pagbasa",
  "tamam": "OK",
- "dinleme_ozet": "{n} linya · {b} hinto"
+ "dinleme_ozet": "{n} linya · {b} hinto",
+ "taslaklar": "Mga draft",
+ "taslak_kaydet": "＋ I-save ang tekstong ito bilang draft",
+ "taslak_ustune": "Palitan ng tekstong ito",
+ "taslak_bos": "Wala pang draft. Isulat ang teksto, saka i-save sa ibaba.",
+ "taslak_sil_soru": "Burahin ang draft na “{ad}”?",
+ "taslak_satir": "{n} linya",
+ "taslak_yuklendi": "Na-load ang draft: {ad}. Ctrl+Z para i-undo.",
+ "taslak_kaydedildi": "Na-save ang draft: {ad}",
+ "taslak_metin_bos": "Walang laman ang kuwaderno; isulat muna ang teksto."
 }

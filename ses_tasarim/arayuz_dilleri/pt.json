@@ -145,5 +145,14 @@
  "kalici_bas": "Esta é a voz que você vai ouvir sempre",
  "kalici_alt": "Lida com a referência · semente {n} · igual em toda leitura",
  "tamam": "OK",
- "dinleme_ozet": "{n} linhas · {b} pausas"
+ "dinleme_ozet": "{n} linhas · {b} pausas",
+ "taslaklar": "Rascunhos",
+ "taslak_kaydet": "＋ Salvar este texto como rascunho",
+ "taslak_ustune": "Substituir por este texto",
+ "taslak_bos": "Ainda não há rascunhos. Escreva o texto e salve abaixo.",
+ "taslak_sil_soru": "Excluir o rascunho “{ad}”?",
+ "taslak_satir": "{n} linhas",
+ "taslak_yuklendi": "Rascunho carregado: {ad}. Ctrl+Z para desfazer.",
+ "taslak_kaydedildi": "Rascunho salvo: {ad}",
+ "taslak_metin_bos": "O caderno está vazio; escreva o texto primeiro."
 }

@@ -145,5 +145,14 @@
  "kalici_bas": "Questa è la voce che sentirai sempre",
  "kalici_alt": "Letta con il riferimento · seed {n} · uguale a ogni lettura",
  "tamam": "OK",
- "dinleme_ozet": "{n} righe · {b} pause"
+ "dinleme_ozet": "{n} righe · {b} pause",
+ "taslaklar": "Bozze",
+ "taslak_kaydet": "＋ Salva questo testo come bozza",
+ "taslak_ustune": "Sovrascrivi con questo testo",
+ "taslak_bos": "Nessuna bozza. Scrivi il testo, poi salvalo qui sotto.",
+ "taslak_sil_soru": "Eliminare la bozza «{ad}»?",
+ "taslak_satir": "{n} righe",
+ "taslak_yuklendi": "Bozza caricata: {ad}. Ctrl+Z per annullare.",
+ "taslak_kaydedildi": "Bozza salvata: {ad}",
+ "taslak_metin_bos": "Il quaderno è vuoto; scrivi prima il testo."
 }

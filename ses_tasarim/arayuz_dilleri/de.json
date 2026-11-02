@@ -145,5 +145,14 @@
  "kalici_bas": "Diese Stimme hörst du ab jetzt",
  "kalici_alt": "Mit Referenz gelesen · Seed {n} · bei jeder Lesung gleich",
  "tamam": "OK",
- "dinleme_ozet": "{n} Zeilen · {b} Pausen"
+ "dinleme_ozet": "{n} Zeilen · {b} Pausen",
+ "taslaklar": "Entwürfe",
+ "taslak_kaydet": "＋ Text als Entwurf speichern",
+ "taslak_ustune": "Mit diesem Text überschreiben",
+ "taslak_bos": "Noch keine Entwürfe. Schreib den Text und speichere ihn unten.",
+ "taslak_sil_soru": "Entwurf „{ad}“ löschen?",
+ "taslak_satir": "{n} Zeilen",
+ "taslak_yuklendi": "Entwurf geladen: {ad}. Strg+Z macht es rückgängig.",
+ "taslak_kaydedildi": "Entwurf gespeichert: {ad}",
+ "taslak_metin_bos": "Das Heft ist leer; schreib zuerst den Text."
 }

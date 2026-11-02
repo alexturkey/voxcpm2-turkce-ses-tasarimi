@@ -145,5 +145,14 @@
  "kalici_bas": "C'est la voix que vous entendrez toujours",
  "kalici_alt": "Lue avec la référence · graine {n} · identique à chaque lecture",
  "tamam": "OK",
- "dinleme_ozet": "{n} lignes · {b} pauses"
+ "dinleme_ozet": "{n} lignes · {b} pauses",
+ "taslaklar": "Brouillons",
+ "taslak_kaydet": "＋ Enregistrer ce texte comme brouillon",
+ "taslak_ustune": "Remplacer par ce texte",
+ "taslak_bos": "Aucun brouillon. Écrivez le texte, puis enregistrez-le ci-dessous.",
+ "taslak_sil_soru": "Supprimer le brouillon « {ad} » ?",
+ "taslak_satir": "{n} lignes",
+ "taslak_yuklendi": "Brouillon chargé : {ad}. Ctrl+Z pour annuler.",
+ "taslak_kaydedildi": "Brouillon enregistré : {ad}",
+ "taslak_metin_bos": "Le carnet est vide ; écrivez d'abord le texte."
 }

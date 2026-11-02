@@ -145,5 +145,14 @@
  "kalici_bas": "앞으로 계속 듣게 될 목소리",
  "kalici_alt": "레퍼런스로 읽음 · 시드 {n} · 읽을 때마다 같음",
  "tamam": "확인",
- "dinleme_ozet": "{n}줄 · 쉼 {b}개"
+ "dinleme_ozet": "{n}줄 · 쉼 {b}개",
+ "taslaklar": "임시 저장",
+ "taslak_kaydet": "＋ 이 텍스트를 임시 저장",
+ "taslak_ustune": "이 텍스트로 덮어쓰기",
+ "taslak_bos": "아직 임시 저장한 글이 없습니다. 글을 쓰고 아래에서 저장하세요.",
+ "taslak_sil_soru": "‘{ad}’ 임시 저장 글을 삭제할까요?",
+ "taslak_satir": "{n}줄",
+ "taslak_yuklendi": "불러왔습니다: {ad}. Ctrl+Z로 되돌리기.",
+ "taslak_kaydedildi": "저장했습니다: {ad}",
+ "taslak_metin_bos": "노트가 비어 있습니다. 먼저 글을 쓰세요."
 }

@@ -145,5 +145,14 @@
  "kalici_bas": "Inilah suara yang akan anda dengar sentiasa",
  "kalici_alt": "Dibaca dengan rujukan · seed {n} · sama dalam setiap bacaan",
  "tamam": "OK",
- "dinleme_ozet": "{n} baris · {b} jeda"
+ "dinleme_ozet": "{n} baris · {b} jeda",
+ "taslaklar": "Draf",
+ "taslak_kaydet": "＋ Simpan teks ini sebagai draf",
+ "taslak_ustune": "Tulis ganti dengan teks ini",
+ "taslak_bos": "Belum ada draf. Tulis teks, kemudian simpan di bawah.",
+ "taslak_sil_soru": "Padam draf “{ad}”?",
+ "taslak_satir": "{n} baris",
+ "taslak_yuklendi": "Draf dimuatkan: {ad}. Ctrl+Z untuk buat asal.",
+ "taslak_kaydedildi": "Draf disimpan: {ad}",
+ "taslak_metin_bos": "Buku nota kosong; tulis teks dahulu."
 }

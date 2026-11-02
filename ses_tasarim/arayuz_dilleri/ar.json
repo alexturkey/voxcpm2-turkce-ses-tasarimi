@@ -145,5 +145,14 @@
  "kalici_bas": "هذا هو الصوت الذي ستسمعه دائمًا",
  "kalici_alt": "قُرئ بالمرجع · البذرة {n} · نفسه في كل قراءة",
  "tamam": "موافق",
- "dinleme_ozet": "{n} أسطر · {b} وقفات"
+ "dinleme_ozet": "{n} أسطر · {b} وقفات",
+ "taslaklar": "المسودات",
+ "taslak_kaydet": "＋ احفظ هذا النص كمسودة",
+ "taslak_ustune": "استبدل بهذا النص",
+ "taslak_bos": "لا توجد مسودات بعد. اكتب النص ثم احفظه من الأسفل.",
+ "taslak_sil_soru": "حذف المسودة «{ad}»؟",
+ "taslak_satir": "{n} أسطر",
+ "taslak_yuklendi": "تم تحميل المسودة: {ad}. Ctrl+Z للتراجع.",
+ "taslak_kaydedildi": "تم حفظ المسودة: {ad}",
+ "taslak_metin_bos": "الدفتر فارغ؛ اكتب النص أولًا."
 }

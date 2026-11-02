@@ -145,5 +145,14 @@
  "kalici_bas": "これからずっと聞く声です",
  "kalici_alt": "リファレンス付きで読み上げ · シード{n} · 毎回同じ声",
  "tamam": "OK",
- "dinleme_ozet": "{n}行 · 間{b}か所"
+ "dinleme_ozet": "{n}行 · 間{b}か所",
+ "taslaklar": "下書き",
+ "taslak_kaydet": "＋ このテキストを下書きに保存",
+ "taslak_ustune": "このテキストで上書き",
+ "taslak_bos": "下書きはまだありません。テキストを書いて下から保存してください。",
+ "taslak_sil_soru": "下書き「{ad}」を削除しますか？",
+ "taslak_satir": "{n}行",
+ "taslak_yuklendi": "下書きを読み込みました：{ad}（Ctrl+Zで元に戻す）",
+ "taslak_kaydedildi": "下書きを保存しました：{ad}",
+ "taslak_metin_bos": "ノートが空です。先にテキストを書いてください。"
 }

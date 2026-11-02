@@ -145,5 +145,14 @@
  "kalici_bas": "Dit is de stem die je steeds hoort",
  "kalici_alt": "Voorgelezen met de referentie · seed {n} · elke keer hetzelfde",
  "tamam": "OK",
- "dinleme_ozet": "{n} regels · {b} pauzes"
+ "dinleme_ozet": "{n} regels · {b} pauzes",
+ "taslaklar": "Concepten",
+ "taslak_kaydet": "＋ Deze tekst als concept opslaan",
+ "taslak_ustune": "Overschrijven met deze tekst",
+ "taslak_bos": "Nog geen concepten. Schrijf de tekst en sla hem hieronder op.",
+ "taslak_sil_soru": "Concept ‘{ad}’ verwijderen?",
+ "taslak_satir": "{n} regels",
+ "taslak_yuklendi": "Concept geladen: {ad}. Ctrl+Z maakt het ongedaan.",
+ "taslak_kaydedildi": "Concept opgeslagen: {ad}",
+ "taslak_metin_bos": "Het schrift is leeg; schrijf eerst de tekst."
 }

@@ -3,6 +3,12 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- *Duymak istediğin metin* kutusuna tıklayınca *Bu sesle oku*'nun defteri (satır numarası, satır menüsü, bekleme bantları)
+  bir pencerede açılır; *Tamam* metni ve beklemeleri kutuya yazar, *Vazgeç*/Esc dokunmaz, okuma sekmesindeki metin ve
+  bantlar aynen kalır. **Taslaklar:** defterin iki yerinde (okuma sekmesi ve bu pencere) *📄 Taslaklar* düğmesi;
+  hazırladığın metni beklemeleriyle kaydedersin, tek tıkla yüklersin (Ctrl+Z geri alır), ⋯ ile üzerine kaydet,
+  yeniden adlandır, sil. Kayıt `sesler/taslaklar.json` (git dışı). Ses tasarla formu 767×794 pencerede kaydırmasız sığar.
+  Test: `tests/test_taslaklar.py`.
 - İki ses tek kartta: tasarımın ham kaydı bir kez çıkar, aynısı bir daha gelmez; sürekli duyacağın ses, o kaydın referans
   olarak verildiği, çeşidin kendi tohumuyla yapılan okumadır. *Ses tasarla* formunda yeni çerçeve *↻ Duymak istediğin metin*
   (satır = cümle, boş satır = paragraf beklemesi; boşsa örnek cümle okunur): *Tasarla*'ya bir kez basınca her çeşit önce
@@ -153,6 +159,11 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Clicking the *Text you want to hear* box opens the *Read with this voice* notebook (line numbers, line menu, pause
+  bands) in a dialog; *OK* writes the text and pauses back, *Cancel*/Esc changes nothing, and the reading tab keeps its
+  own text and bands. **Drafts:** a *📄 Drafts* button in both notebook places; save a prepared text with its pauses,
+  load it with one click (Ctrl+Z undoes), and use ⋯ to overwrite, rename or delete. Stored in `sesler/taslaklar.json`
+  (outside git). The design form fits a 767×794 window without scrolling. Test: `tests/test_taslaklar.py`.
 - Two voices on one card: the raw design recording comes out once and never the same again; the voice you keep hearing
   is a reading with that recording as reference and the variant's own seed. The *Design a voice* form has a new frame
   *↻ Text you want to hear* (line = sentence, blank line = paragraph pause; empty reads the sample sentence): one press of

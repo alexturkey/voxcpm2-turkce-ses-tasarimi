@@ -145,5 +145,14 @@
  "kalici_bas": "Det er den stemme, du hører fremover",
  "kalici_alt": "Læst med referencen · seed {n} · ens ved hver oplæsning",
  "tamam": "OK",
- "dinleme_ozet": "{n} linjer · {b} pauser"
+ "dinleme_ozet": "{n} linjer · {b} pauser",
+ "taslaklar": "Kladder",
+ "taslak_kaydet": "＋ Gem teksten som kladde",
+ "taslak_ustune": "Overskriv med denne tekst",
+ "taslak_bos": "Ingen kladder endnu. Skriv teksten, og gem den herunder.",
+ "taslak_sil_soru": "Slet kladden “{ad}”?",
+ "taslak_satir": "{n} linjer",
+ "taslak_yuklendi": "Kladde indlæst: {ad}. Ctrl+Z fortryder.",
+ "taslak_kaydedildi": "Kladde gemt: {ad}",
+ "taslak_metin_bos": "Hæftet er tomt; skriv teksten først."
 }

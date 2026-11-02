@@ -145,5 +145,14 @@
  "kalici_bas": "Đây là giọng bạn sẽ luôn nghe",
  "kalici_alt": "Đọc với giọng tham chiếu · seed {n} · lần nào cũng giống nhau",
  "tamam": "OK",
- "dinleme_ozet": "{n} dòng · {b} chỗ nghỉ"
+ "dinleme_ozet": "{n} dòng · {b} chỗ nghỉ",
+ "taslaklar": "Bản nháp",
+ "taslak_kaydet": "＋ Lưu văn bản này thành bản nháp",
+ "taslak_ustune": "Ghi đè bằng văn bản này",
+ "taslak_bos": "Chưa có bản nháp. Viết văn bản rồi lưu ở bên dưới.",
+ "taslak_sil_soru": "Xóa bản nháp “{ad}”?",
+ "taslak_satir": "{n} dòng",
+ "taslak_yuklendi": "Đã mở bản nháp: {ad}. Nhấn Ctrl+Z để hoàn tác.",
+ "taslak_kaydedildi": "Đã lưu bản nháp: {ad}",
+ "taslak_metin_bos": "Sổ đang trống; hãy viết văn bản trước."
 }

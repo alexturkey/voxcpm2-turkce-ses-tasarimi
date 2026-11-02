@@ -27,7 +27,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote
 
-from . import __version__, ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, sure_tahmini
+from . import __version__, ayarlar, motor, oku, okuma_listesi, okunus, ornekler, ses_yonetimi, tasarla, taslaklar, sure_tahmini
 
 REPO_KOKU = Path(__file__).resolve().parent.parent
 BAYRAK_KOKU = Path(__file__).resolve().parent / "bayraklar"  # flag-icons 7.2.3 (MIT), 4x3 SVG / flag images
@@ -98,7 +98,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 .sure{display:flex;align-items:center;gap:8px;margin:5px 0 0;font-size:.78rem;color:var(--muted)}.sure[hidden]{display:none}
 .cubuk{flex:1;height:4px;background:var(--cizgi2);border-radius:2px;overflow:hidden}.cubuk i{display:block;height:100%;width:0;background:var(--acc);transition:width .2s}
 .sure.asti .cubuk i{background:var(--err)}.sure.asti span{color:var(--err)}.sure span{flex:none}
-.dinlekutu{margin-top:6px;padding:4px 10px 6px;border:1.5px solid var(--acc);border-radius:8px;background:color-mix(in srgb,var(--acc) 6%,transparent)}.form .dinlekutu label{display:flex;flex-direction:column;gap:1px;margin:0 0 3px}.dinlekutu b,.kalici b{color:var(--baslik);font-size:.85rem}.dinlekutu small,.cesit .ham small,.kalici small{color:var(--muted);font-size:.75rem}#p1 .form{padding-block:8px}#dinleme_metni{cursor:pointer}#dpencere{position:fixed;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.45)}#dpencere[hidden]{display:none}.dpkutu{display:flex;flex-direction:column;gap:6px;width:min(720px,100%);max-height:100%;box-sizing:border-box;padding:12px 14px;background:var(--panel);border:1.5px solid var(--acc);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4)}.dpbas{display:flex;flex-direction:column;gap:1px}.dpbas b{color:var(--baslik);font-size:.95rem}.dpbas small{color:var(--muted);font-size:.78rem}#dp_govde #defterkap{flex:none}#dp_govde .defter{height:min(46vh,340px)}.dpdug{display:flex;justify-content:flex-end;gap:8px}#p1 .ipucu{margin-top:3px}.soluk{color:var(--muted)}.cesit .ham{display:flex;flex-direction:column;gap:3px}.kalici{display:flex;flex-direction:column;gap:5px;padding:6px 8px 8px;border:1.5px solid var(--acc);border-radius:7px;background:color-mix(in srgb,var(--acc) 7%,transparent)}.kalici audio{width:100%;height:32px}.kalici .dugmeler{flex:none}.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
+.dinlekutu{margin-top:6px;padding:4px 10px 6px;border:1.5px solid var(--acc);border-radius:8px;background:color-mix(in srgb,var(--acc) 6%,transparent)}.form .dinlekutu label{display:flex;flex-direction:column;gap:1px;margin:0 0 3px}.dinlekutu b,.kalici b{color:var(--baslik);font-size:.85rem}.dinlekutu small,.cesit .ham small,.kalici small{color:var(--muted);font-size:.75rem}#p1 .form{padding-block:8px}.ometinbas{display:flex;align-items:flex-end;gap:8px}.ometinbas>:first-child{flex:1;min-width:0}.taslakbtn{flex:none;padding:3px 10px;font-size:.78rem;white-space:nowrap}.form .ometinbas{margin:8px 0 3px}.form .ometinbas label{margin:0}#acilir .taslak em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:16em}#acilir .taslakbos{display:block;padding:6px 9px;max-width:230px}#dinleme_metni{cursor:pointer}#dpencere{position:fixed;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.45)}#dpencere[hidden]{display:none}.dpkutu{display:flex;flex-direction:column;gap:6px;width:min(720px,100%);max-height:100%;box-sizing:border-box;padding:12px 14px;background:var(--panel);border:1.5px solid var(--acc);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4)}.dpbas{display:flex;flex-direction:column;gap:1px}.dpbas b{color:var(--baslik);font-size:.95rem}.dpbas small{color:var(--muted);font-size:.78rem}#dp_govde #defterkap{flex:none}#dp_govde .defter{height:min(46vh,340px)}.dpdug{display:flex;justify-content:flex-end;gap:8px}#p1 .ipucu{margin-top:3px}.soluk{color:var(--muted)}.cesit .ham{display:flex;flex-direction:column;gap:3px}.kalici{display:flex;flex-direction:column;gap:5px;padding:6px 8px 8px;border:1.5px solid var(--acc);border-radius:7px;background:color-mix(in srgb,var(--acc) 7%,transparent)}.kalici audio{width:100%;height:32px}.kalici .dugmeler{flex:none}.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
 .uzun button{padding:4px 10px;font-size:.8rem;font-weight:600;white-space:normal;text-align:start;max-width:100%}
 .ipucu{display:block;margin:5px 0 0;color:var(--soluk);font-size:.78rem;line-height:1.35}
 /* Uygulama düzeni: sayfa kaymaz, kart pencereyi doldurur; dar ya da kısa ekranda normal kayan sayfa. */
@@ -141,7 +141,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 
 <section id="p2" class="panel" role="tabpanel" hidden>
 <label for="ses" data-t="ses">Ses</label><button type="button" id="ses" class="sesdugme" aria-haspopup="menu" aria-expanded="false"></button>
-<label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label>
+<div class="ometinbas"><label for="okuma_metni" data-t="ometin">Okunacak metin: her satır bir cümle</label><button type="button" class="ikincil taslakbtn" aria-haspopup="menu" aria-expanded="false"><span aria-hidden="true">📄</span> <span data-t="taslaklar">Taslaklar</span> ▾</button></div>
 <div id="defterkap"><div class="defter"><div id="satirno"></div><div id="yazikap"><textarea spellcheck="false" id="okuma_metni" data-t-ph="ometin_ph"></textarea><div id="bantlar"><div></div></div></div></div><div id="ayna" aria-hidden="true"></div><div id="satir_duyuru" class="gizli" aria-live="polite"></div></div>
 <div class="sag ilerlesatir"><div id="p_oku" class="ilerle" hidden><div class="pcubuk" aria-hidden="true"><i></i></div><span class="krono">0:00</span></div><button id="btn_oku" data-t="oku">Bu sesle oku</button></div><div id="d_oku" class="durum" aria-live="polite"></div>
 <div id="sonuc"></div></section>
@@ -164,7 +164,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 
 
 </main>
-<div id="dpencere" hidden><div class="dpkutu" role="dialog" aria-modal="true" aria-labelledby="dp_bas"><div class="dpbas"><b id="dp_bas"><span aria-hidden="true">↻</span> <span data-t="dinleme_bas">Duymak istediğin metin</span></b><small data-t="dinleme_alt"></small></div><small class="ipucu" data-t="ometin"></small><div id="dp_govde"></div><div class="dpdug"><button type="button" class="ikincil" id="dp_vazgec" data-t="vazgec">Vazgeç</button><button type="button" id="dp_tamam" data-t="tamam">Tamam</button></div></div></div>
+<div id="dpencere" hidden><div class="dpkutu" role="dialog" aria-modal="true" aria-labelledby="dp_bas"><div class="dpbas"><b id="dp_bas"><span aria-hidden="true">↻</span> <span data-t="dinleme_bas">Duymak istediğin metin</span></b><small data-t="dinleme_alt"></small></div><div class="ometinbas"><small class="ipucu" data-t="ometin"></small><button type="button" class="ikincil taslakbtn" aria-haspopup="menu" aria-expanded="false"><span aria-hidden="true">📄</span> <span data-t="taslaklar">Taslaklar</span> ▾</button></div><div id="dp_govde"></div><div class="dpdug"><button type="button" class="ikincil" id="dp_vazgec" data-t="vazgec">Vazgeç</button><button type="button" id="dp_tamam" data-t="tamam">Tamam</button></div></div></div>
 <div id="acilir" role="menu" hidden></div>
 <script>
 const $=id=>document.getElementById(id);
@@ -823,6 +823,52 @@ const Satir={acik:null,ust:[],boy:[],parla:{k:new Set(),son:0},zaman:0,bas:null,
   no.addEventListener('wheel',e=>{ta.scrollTop+=e.deltaMode===1?e.deltaY*satirBoyu():e.deltaY;e.preventDefault();},{passive:false});
   ta.addEventListener('keydown',e=>this.tus(e));ta.addEventListener('paste',e=>this.yapistirOlay(e));}};
 Acilir.kur();Durak.kur();Satir.kur();
+// Taslaklar: önceden hazırlanan okuma metinleri (bekleme bantları '|| sn' işaretiyle), sunucuda sesler/taslaklar.json.
+// Defterin iki yerinde (Bu sesle oku, Duymak istediğin metin penceresi) aynı düğme ve aynı liste. Yükleme defterin tek
+// kapısından (Satir.uygula) geçer: Ctrl+Z eski metni ve bantları geri getirir. Yönetim ses menüsüyle aynı kalıp: ⋯ alt menü.
+// Drafts: prepared reading texts, stored by the server; loading goes through the notebook's one gate (undoable).
+let taslakListesi=[];
+const Taslak={tetik:null,k:null,rakamYok:true,
+ async yukle(){try{const j=await api('/api/taslaklar');taslakListesi=j.taslaklar||[];}catch(e){}},
+ bul(id){return taslakListesi.find(x=>x.id===id);},
+ temiz:m=>m.split('\n').map(l=>l.replace(Durak.IZ,'')).filter(l=>l.trim()),
+ oneriAd(){const l=this.temiz($('okuma_metni').value)[0]||'';return l.length>40?l.slice(0,40).trim()+'…':l;},
+ async menu(tetik){if(tetik)this.tetik=tetik;this.k=null;await this.yukle();const b=this.tetik;if(!b||!b.isConnected)return;
+  const r=b.getBoundingClientRect(),bos=!$('okuma_metni').value.trim();
+  const satir=x=>`<div class="satir taslak" role="group"><button type="button" role="menuitem" data-sec="${esc(x.id)}" title="${esc(this.temiz(x.metin).slice(0,6).join('\n'))}">`
+   +`<em>${esc(x.ad)}</em><span>${esc(t('taslak_satir',{n:this.temiz(x.metin).length}))}</span></button>`
+   +`<button type="button" role="menuitem" class="sil" data-tyonet="${esc(x.id)}" aria-label="${esc(t('yonet')+': '+x.ad)}" title="${esc(t('yonet'))}">${UC_NOKTA}</button></div>`;
+  const html=Acilir.baslik('',t('taslaklar'))+(taslakListesi.length?taslakListesi.map(satir).join(''):`<small class="soluk taslakbos">${esc(t('taslak_bos'))}</small>`)+'<hr>'
+   +`<div class="ozel ad"><button type="button" role="menuitem" class="disli oge"${bos?` aria-disabled="true" title="${esc(t('taslak_metin_bos'))}"`:''}>${esc(t('taslak_kaydet'))}</button>`
+   +`<input type="text" maxlength="60" spellcheck="false" value="${esc(this.oneriAd())}" aria-label="${esc(t('taslak_kaydet'))}" hidden>`
+   +`<button type="button" class="tamam" aria-label="✓" hidden>✓</button></div>`;
+  Acilir.ac(b,rtl()?r.right:r.left,html,this,t('taslaklar'));},
+ altMenu(id,tetik){const x=this.bul(id);if(!x)return;this.k=id;const bos=!$('okuma_metni').value.trim();
+  const html=Acilir.baslik('',x.ad)+`<button type="button" role="menuitem" data-is="ustune"${bos?' aria-disabled="true"':''}>${esc(t('taslak_ustune'))}</button>`
+   +`<div class="ozel ad"><button type="button" role="menuitem" class="disli oge">${esc(t('yeniden_adlandir'))}</button>`
+   +`<input type="text" maxlength="60" spellcheck="false" value="${esc(x.ad)}" aria-label="${esc(t('yeniden_adlandir'))}" hidden>`
+   +`<button type="button" class="tamam" aria-label="✓" hidden>✓</button></div><hr>`
+   +`<button type="button" role="menuitem" data-is="sil" class="tehlike">${esc(t('sil_ses'))}</button>`;
+  Acilir.altAc(tetik.closest('.satir'),html,t('yonet'),this,tetik);},
+ async islem(islem,veri){let j;try{j=await api('/api/taslaklar',{islem,...veri});}catch(e){j={hata:String(e)};}
+  if(j.hata){Satir.duyur(j.hata);Acilir.kapat(true);return false;}taslakListesi=j.taslaklar||[];return true;},
+ // Yükleme: metin ve bantlar defterin kapısından; boş satır ve işaretler banda çevrilir / load through the notebook gate
+ yukleDeftere(x){Acilir.kapat();const r=Durak.bosEmekli(x.metin.split('\n'),[]),n=r.s.length-1;
+  Satir.uygula(r.s,r.d,[n,r.s[n].length],Satir.aralik(0,r.s.length),t('taslak_yuklendi',{ad:x.ad}));},
+ async gir(){const m=$('acilir'),g=m.querySelector('.ozel input:not([hidden])');if(!g)return;const ad=g.value.trim();if(!ad)return g.focus();
+  if(g.closest('.alt')){if(await this.islem('ad',{id:this.k,ad}))this.menu();return;}
+  if(await this.islem('ekle',{ad,metin:Durak.metin()})){Satir.duyur(t('taslak_kaydedildi',{ad}));this.menu();}},
+ async tikla(e,b){const d=b.dataset;
+  if(d.tyonet!==undefined)return this.altMenu(d.tyonet,b);
+  if(d.sec!==undefined){const x=this.bul(d.sec);if(x)this.yukleDeftere(x);return;}
+  if(b.classList.contains('hayir'))return this.altMenu(this.k,$('acilir').querySelector(`[data-tyonet="${CSS.escape(this.k)}"]`));
+  if(d.evet!==undefined){if(await this.islem('sil',{id:this.k}))this.menu();return;}
+  if(d.is==='ustune'){if(await this.islem('guncelle',{id:this.k,metin:Durak.metin()})){Satir.duyur(t('taslak_kaydedildi',{ad:this.bul(this.k)?.ad||''}));this.menu();}return;}
+  if(d.is==='sil'){const x=this.bul(this.k);return Acilir.onayAc(b,Acilir.onay(t('taslak_sil_soru',{ad:x?x.ad:''}),'','evet'));}},
+ odak(){return this.tetik&&this.tetik.isConnected?this.tetik:$('okuma_metni');},
+ kapandi(){}};
+document.querySelectorAll('.taslakbtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();
+ if(Acilir.sahip===Taslak&&Taslak.tetik===b)return Acilir.kapat(true);Durak.bekleyenTasi(true);Taslak.menu(b);}));
 // ── Ses menüsü: okuma sekmesindeki ses düğmesi, aynı açılır menü (#acilir), üçüncü sahip ──────────────────────────
 // Başlık "Ses · seçili ad"; Okuma listem (kalpli, eklenme sırası) · Hazır sesler (bayraklı, arayüz dili önce). Tasarlanan çeşit
 // yalnız listeye eklenince görünür (karttaki "Bu sesle oku" yine seçer, başlıkta görünür). Listedeki ses aşağıda tekrar etmez.
@@ -1256,6 +1302,8 @@ def make_handler(settings, jobs: Isler):
                 self._json(ornekler.listele())
             elif path == "/api/sesler":
                 self._json(_sesler(settings)[0])
+            elif path == "/api/taslaklar":
+                self._json({"taslaklar": taslaklar.oku(settings)})
             elif path.startswith("/api/is/"):
                 self._json(jobs.status(path[8:]))
             elif path.startswith("/bayrak/"):
@@ -1351,6 +1399,13 @@ def make_handler(settings, jobs: Isler):
                 try:
                     return self._json({"okuma_listesi": okuma_listesi.degistir(
                         settings, payload.get("kimlik"), payload.get("ekle"), _sesler(settings)[1])})
+                except ValueError as error:
+                    return self._json(_hata([error.args[0] if error.args else str(error)]), 400)
+            if self.path == "/api/taslaklar":
+                # Taslak ekle / üzerine yaz / yeniden adlandır / sil; cevap güncel liste. / add, update, rename, delete
+                try:
+                    return self._json({"taslaklar": taslaklar.degistir(settings, str(payload.get("islem", "")), payload.get("id"),
+                                                                       payload.get("ad"), payload.get("metin"))})
                 except ValueError as error:
                     return self._json(_hata([error.args[0] if error.args else str(error)]), 400)
             if self.path == "/api/ses_yonet":

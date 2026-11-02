@@ -145,5 +145,14 @@
  "kalici_bas": "Hii ndiyo sauti utakayoisikia kila wakati",
  "kalici_alt": "Imesomwa kwa marejeo · mbegu {n} · ileile kila usomaji",
  "tamam": "Sawa",
- "dinleme_ozet": "Mistari {n} · mapumziko {b}"
+ "dinleme_ozet": "Mistari {n} · mapumziko {b}",
+ "taslaklar": "Rasimu",
+ "taslak_kaydet": "＋ Hifadhi maandishi haya kama rasimu",
+ "taslak_ustune": "Andika juu kwa maandishi haya",
+ "taslak_bos": "Bado hakuna rasimu. Andika maandishi, kisha uhifadhi hapa chini.",
+ "taslak_sil_soru": "Futa rasimu “{ad}”?",
+ "taslak_satir": "Mistari {n}",
+ "taslak_yuklendi": "Rasimu imefunguliwa: {ad}. Ctrl+Z kutendua.",
+ "taslak_kaydedildi": "Rasimu imehifadhiwa: {ad}",
+ "taslak_metin_bos": "Daftari ni tupu; andika maandishi kwanza."
 }

@@ -145,5 +145,14 @@
  "kalici_bas": "זה הקול שתשמעו מעכשיו",
  "kalici_alt": "הוקרא עם הפניה · זרע {n} · זהה בכל הקראה",
  "tamam": "אישור",
- "dinleme_ozet": "{n} שורות · {b} הפסקות"
+ "dinleme_ozet": "{n} שורות · {b} הפסקות",
+ "taslaklar": "טיוטות",
+ "taslak_kaydet": "＋ שמירת הטקסט כטיוטה",
+ "taslak_ustune": "החלפה בטקסט הזה",
+ "taslak_bos": "אין עדיין טיוטות. כתבו את הטקסט ושמרו אותו למטה.",
+ "taslak_sil_soru": "למחוק את הטיוטה „{ad}”?",
+ "taslak_satir": "{n} שורות",
+ "taslak_yuklendi": "הטיוטה נטענה: {ad}. Ctrl+Z לביטול.",
+ "taslak_kaydedildi": "הטיוטה נשמרה: {ad}",
+ "taslak_metin_bos": "המחברת ריקה; כתבו קודם את הטקסט."
 }

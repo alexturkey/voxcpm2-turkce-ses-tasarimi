@@ -145,5 +145,14 @@
  "kalici_bas": "Tätä ääntä kuulet jatkossa",
  "kalici_alt": "Luettu referenssillä · siemen {n} · sama joka luennassa",
  "tamam": "OK",
- "dinleme_ozet": "{n} riviä · {b} taukoa"
+ "dinleme_ozet": "{n} riviä · {b} taukoa",
+ "taslaklar": "Luonnokset",
+ "taslak_kaydet": "＋ Tallenna teksti luonnokseksi",
+ "taslak_ustune": "Korvaa tällä tekstillä",
+ "taslak_bos": "Ei vielä luonnoksia. Kirjoita teksti ja tallenna se alta.",
+ "taslak_sil_soru": "Poistetaanko luonnos ”{ad}”?",
+ "taslak_satir": "{n} riviä",
+ "taslak_yuklendi": "Luonnos ladattu: {ad}. Ctrl+Z kumoaa.",
+ "taslak_kaydedildi": "Luonnos tallennettu: {ad}",
+ "taslak_metin_bos": "Vihko on tyhjä; kirjoita ensin teksti."
 }

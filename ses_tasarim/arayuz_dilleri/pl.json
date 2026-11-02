@@ -145,5 +145,14 @@
  "kalici_bas": "Ten głos będziesz słyszeć zawsze",
  "kalici_alt": "Czytany z referencją · ziarno {n} · za każdym razem taki sam",
  "tamam": "OK",
- "dinleme_ozet": "Wiersze: {n} · pauzy: {b}"
+ "dinleme_ozet": "Wiersze: {n} · pauzy: {b}",
+ "taslaklar": "Szkice",
+ "taslak_kaydet": "＋ Zapisz ten tekst jako szkic",
+ "taslak_ustune": "Nadpisz tym tekstem",
+ "taslak_bos": "Brak szkiców. Napisz tekst, a potem zapisz go poniżej.",
+ "taslak_sil_soru": "Usunąć szkic „{ad}”?",
+ "taslak_satir": "Wiersze: {n}",
+ "taslak_yuklendi": "Wczytano szkic: {ad}. Ctrl+Z cofa.",
+ "taslak_kaydedildi": "Zapisano szkic: {ad}",
+ "taslak_metin_bos": "Zeszyt jest pusty; najpierw napisz tekst."
 }

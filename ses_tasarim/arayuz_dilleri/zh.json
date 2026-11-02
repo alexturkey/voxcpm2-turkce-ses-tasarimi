@@ -145,5 +145,14 @@
  "kalici_bas": "这就是你以后一直听到的声音",
  "kalici_alt": "用参考音频朗读 · 种子 {n} · 每次朗读都一样",
  "tamam": "确定",
- "dinleme_ozet": "{n} 行 · {b} 处停顿"
+ "dinleme_ozet": "{n} 行 · {b} 处停顿",
+ "taslaklar": "草稿",
+ "taslak_kaydet": "＋ 将此文本存为草稿",
+ "taslak_ustune": "用此文本覆盖",
+ "taslak_bos": "还没有草稿。写好文本后在下方保存。",
+ "taslak_sil_soru": "删除草稿“{ad}”？",
+ "taslak_satir": "{n} 行",
+ "taslak_yuklendi": "已载入草稿：{ad}。按 Ctrl+Z 撤销。",
+ "taslak_kaydedildi": "已保存草稿：{ad}",
+ "taslak_metin_bos": "文本框是空的，请先输入文本。"
 }

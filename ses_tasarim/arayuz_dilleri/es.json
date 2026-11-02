@@ -145,5 +145,14 @@
  "kalici_bas": "Esta es la voz que oirás siempre",
  "kalici_alt": "Leída con la referencia · semilla {n} · igual en cada lectura",
  "tamam": "Aceptar",
- "dinleme_ozet": "{n} líneas · {b} pausas"
+ "dinleme_ozet": "{n} líneas · {b} pausas",
+ "taslaklar": "Borradores",
+ "taslak_kaydet": "＋ Guardar este texto como borrador",
+ "taslak_ustune": "Sobrescribir con este texto",
+ "taslak_bos": "Aún no hay borradores. Escribe el texto y guárdalo abajo.",
+ "taslak_sil_soru": "¿Eliminar el borrador «{ad}»?",
+ "taslak_satir": "{n} líneas",
+ "taslak_yuklendi": "Borrador cargado: {ad}. Ctrl+Z para deshacer.",
+ "taslak_kaydedildi": "Borrador guardado: {ad}",
+ "taslak_metin_bos": "El cuaderno está vacío; escribe primero el texto."
 }

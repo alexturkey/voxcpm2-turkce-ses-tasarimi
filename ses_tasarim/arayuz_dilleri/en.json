@@ -145,5 +145,14 @@
  "kalici_bas": "This is the voice you'll keep hearing",
  "kalici_alt": "Read with the reference · seed {n} · the same in every reading",
  "tamam": "OK",
- "dinleme_ozet": "{n} lines · {b} pauses"
+ "dinleme_ozet": "{n} lines · {b} pauses",
+ "taslaklar": "Drafts",
+ "taslak_kaydet": "＋ Save this text as a draft",
+ "taslak_ustune": "Overwrite with this text",
+ "taslak_bos": "No drafts yet. Write the text, then save it below.",
+ "taslak_sil_soru": "Delete the draft “{ad}”?",
+ "taslak_satir": "{n} lines",
+ "taslak_yuklendi": "Draft loaded: {ad}. Press Ctrl+Z to undo.",
+ "taslak_kaydedildi": "Draft saved: {ad}",
+ "taslak_metin_bos": "The notebook is empty; write the text first."
 }

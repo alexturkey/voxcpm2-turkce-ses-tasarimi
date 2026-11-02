@@ -145,5 +145,14 @@
  "kalici_bas": "Sürekli duyacağın ses bu",
  "kalici_alt": "Referansla okundu · tohum {n} · her okumada aynı",
  "tamam": "Tamam",
- "dinleme_ozet": "{n} satır · {b} bekleme"
+ "dinleme_ozet": "{n} satır · {b} bekleme",
+ "taslaklar": "Taslaklar",
+ "taslak_kaydet": "＋ Bu metni taslak olarak kaydet",
+ "taslak_ustune": "Bu metni üzerine kaydet",
+ "taslak_bos": "Henüz taslak yok. Metni yaz, sonra aşağıdan kaydet.",
+ "taslak_sil_soru": "“{ad}” taslağı silinsin mi?",
+ "taslak_satir": "{n} satır",
+ "taslak_yuklendi": "Taslak yüklendi: {ad}. Geri almak için Ctrl+Z.",
+ "taslak_kaydedildi": "Taslak kaydedildi: {ad}",
+ "taslak_metin_bos": "Defter boş; önce metni yaz."
 }
