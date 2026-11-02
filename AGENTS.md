@@ -208,6 +208,10 @@ Ubuntu versions based on one machine's result.
 
 ```
 ses_tasarim/      Python package: ayarlar (settings), okunus (text prep), motor (engine), tasarla (step 1), oku (step 2), arayuz (web UI), ornekler (example prompts)
+                  klonla (consented-voice cloning), okuma_listesi (reading list), taslaklar (reading drafts), ses_yonetimi (rename/hide/trash),
+                  sure_tahmini (progress-bar time estimate); __init__.py holds __version__ (shown in the UI header) and utf8_cikti (CLI UTF-8)
+ses_tasarim/arayuz_dilleri/  UI text in 30 languages (<lang>.json, same keys in every file)
+user data (never in git): sesler/ (designed voices, okuma_listesi.json, taslaklar.json, yerel_katman.json), ayarlar.json, onbellek/sure_olcumu.json
 ses_tasarim/ornek_tarifler/  roller.json (18 English role templates) + <lang>.json (nationality, accent, design texts): 144 examples, docs/ornek_tarifler.md
 hazir_sesler/     14 bundled synthetic voices (7 Turkish + anlatici_<en|fr|de|es|ru|zh|ja>): referans.flac + ses.json (+ ornek_okuma.mp3)
 .claude/skills/ses-tasarimi/  Claude Code skill: design, reference-based audition, sentence-by-sentence reading (EN + TR)
