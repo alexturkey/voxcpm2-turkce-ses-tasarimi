@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 from ses_tasarim import arayuz, motor
@@ -19,7 +20,7 @@ class VramOlcumu(unittest.TestCase):
         izci = motor.VramWatcher()
         kalan = list(degerler)
 
-        def olcum():
+        def olcum(*_args):
             if not kalan:
                 izci._stop.set()
                 raise RuntimeError("son")
@@ -39,12 +40,32 @@ class VramOlcumu(unittest.TestCase):
     def test_olcum_varsa_tepe(self):
         self.assertEqual(self._izle([300, 900, RuntimeError("anlik"), 500]), 900)
 
+    def test_windows_vulkan_motor_pid_sayacini_kullanir(self):
+        completed = SimpleNamespace(stdout="2815\n")
+        with mock.patch.object(motor, "WINDOWS", True), \
+                mock.patch.object(motor.subprocess, "run", return_value=completed) as run:
+            self.assertEqual(motor._gpu_used_mb("vulkan", 1234), 2815)
+
+        command = run.call_args.args[0]
+        self.assertEqual(command[:4], ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command"])
+        self.assertIn("pid_1234_%", command[4])
+        self.assertIn("GPUProcessMemory", command[4])
+        self.assertIn("DedicatedUsage", command[4])
+
+    def test_cuda_nvidia_smi_yolunu_korur(self):
+        completed = SimpleNamespace(stdout="3072\n")
+        with mock.patch.object(motor, "WINDOWS", True), \
+                mock.patch.object(motor.subprocess, "run", return_value=completed) as run:
+            self.assertEqual(motor._gpu_used_mb("cuda", 1234), 3072)
+
+        self.assertEqual(run.call_args.args[0][0], "nvidia-smi")
+
     def test_birlestirme_ve_metin(self):
         self.assertIsNone(motor.vram_max(None, None))
         self.assertEqual(motor.vram_max(None, 700), 700)
         self.assertEqual(motor.vram_max(900, 700), 900)
         self.assertEqual(motor.vram_metni(900), "VRAM tepe 900 MB")
-        self.assertIn("ölçülemedi", motor.vram_metni(None))
+        self.assertEqual(motor.vram_metni(None), "VRAM ölçülemedi")
 
     def test_arayuz_vramsiz_ozet(self):
         # sunucu VRAM ölçülemediyse ayrı durum kodu verir, arayüz VRAM'siz özeti seçer
