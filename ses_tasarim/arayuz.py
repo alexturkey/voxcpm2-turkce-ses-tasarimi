@@ -552,7 +552,8 @@ const Acilir={sahip:null,x:0,sessiz:false,tetik:null,ustSahip:null,altTetik:null
   if(rakam===undefined)return g.select();g.value=rakam;try{g.setSelectionRange(g.value.length,g.value.length);}catch(e){}},
  // Kutu açılınca menü genişleyebilir: katman görünür alana yeniden sığdırılır (RTL'de sağ kenar tetiğe bağlı kalır).
  // The box can widen the menu: the layer is fitted back into the visible area (RTL keeps its right edge on the trigger).
- sigdir(o){if(o.closest?.('.alt'))return this.altYer();const m=$('acilir'),B=this.gorunur(),w=m.offsetWidth,sol=rtl()?this.x-w:parseFloat(m.style.left)||0;
+ sigdir(o){if(o.closest?.('.alt'))return this.altYer();const m=$('acilir'),B=this.gorunur(),once=parseFloat(m.style.left)||0;
+  m.style.left=B.l+'px';const w=m.offsetWidth,sol=rtl()?this.x-w:once;  // genişlik kenarda daralmadan ölçülür / measured unsqueezed
   m.style.left=Math.max(B.l,Math.min(sol,B.r-w))+'px';},
  kur(){const m=$('acilir'),ta=$('okuma_metni');
   m.addEventListener('click',e=>{const b=e.target.closest('button');

@@ -137,7 +137,7 @@
  "tmetin_ham": "· desain mentah membacakan ini",
  "dinleme_bas": "Teks yang ingin kamu dengar",
  "dinleme_alt": "Suara tetap tiap varian membacakannya · sama seperti tab Bacakan dengan suara ini",
- "dinleme_ph": "Klik untuk menulis baris demi baris dan mengatur jeda. Jika dibiarkan kosong, kalimat contoh yang dibacakan.",
+ "dinleme_ph": "Klik untuk menulis per baris dan mengatur jeda. Jika kosong, kalimat contoh yang dibacakan.",
  "dinleme_bos": "Kosong: kalimat contoh yang dibacakan",
  "dinleme_ek": "Waktu tambahan: satu pembacaan per varian · {n} varian ≈ +{dk} mnt (perkiraan)",
  "dinleme_hata": "Pembacaan dengan suara tetap terhenti; coba lagi lewat Bacakan dengan suara ini.",

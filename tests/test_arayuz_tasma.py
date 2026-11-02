@@ -41,7 +41,8 @@ class MenuGorunurAlanda(unittest.TestCase):
         # Yeniden adlandır kutusu menüyü genişletiyordu (de, ru, nl, el: sağdan 2-29 px dışarı)
         sayi_ac = re.search(r"sayiAc\(o,rakam\)\{[^\n]*", JS).group(0)
         self.assertIn("this.sigdir(o)", sayi_ac)
-        sigdir = re.search(r"sigdir\(o\)\{[^\n]*\n[^\n]*", JS).group(0)
+        sigdir = re.search(r"sigdir\(o\)\{[^\n]*\n[^\n]*\n[^\n]*", JS).group(0)
+        self.assertIn("m.style.left=B.l+'px';const w=m.offsetWidth", sigdir)  # genişlik kenarda daralmadan
         self.assertIn("this.altYer()", sigdir)          # alt menü kendi yerleştiricisiyle
         self.assertIn("B.r-w", sigdir)                   # sağ kenar görünür alanda
         self.assertIn("rtl()?this.x-w", sigdir)          # RTL: sağ kenar tetikte
