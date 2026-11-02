@@ -74,7 +74,7 @@ label.mini:focus-within{border-color:var(--acc)}label.mini input,label.mini sele
 .ilerle{flex:1;display:flex;align-items:center;gap:8px}.ilerle[hidden]{display:none}.pcubuk{flex:1;height:6px;border-radius:3px;background:var(--cizgi);overflow:hidden}
 .pcubuk i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}.ilerle.hata .pcubuk i{background:var(--err)}.ilerle.bekler .pcubuk i{width:30%;animation:kay 1.2s ease-in-out infinite alternate}
 @keyframes kay{from{margin-left:0}to{margin-left:70%}}.krono{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;min-width:10.5ch;text-align:end;direction:ltr;unicode-bidi:isolate}
-.ubas{border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px}.ubas select{flex:1 1 100%;min-width:0;padding:5px 8px;font-size:.85rem}.ubas .durum:empty{display:none}.ubas b{font-size:.9rem;flex-basis:100%}.ubas .durum{flex-basis:100%;margin:4px 0 0;font-size:.85rem}
+.ubas{border:1px solid var(--cizgi);border-radius:8px;padding:5px 10px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px}.ubas select{flex:1 1 100%;min-width:0;padding:5px 8px;font-size:.85rem}.ubas b{font-size:.9rem;flex-basis:100%}.ubas .durum{flex-basis:100%;margin:4px 0 0;font-size:.85rem;height:1.35em;line-height:1.35em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ubas .durum.hata{height:auto;white-space:pre-wrap}
 #cesitler{display:grid;gap:6px;margin-top:8px;overflow-y:auto;border:1px solid var(--cizgi);border-radius:8px;padding:6px;align-content:start;max-height:494px}#cesitler .cesit{padding:6px var(--kenar);gap:4px}#cesitler .cesit:has(input:checked){border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.bos{color:var(--soluk);font-size:.85rem;margin:2px 0}
 button{background:var(--acc);color:#111;border:0;border-radius:6px;padding:9px 16px;font-weight:600;cursor:pointer;margin-top:10px}
 button:disabled{opacity:.5;cursor:default}
@@ -222,11 +222,11 @@ temaCiz();
 // The server sends coded problems and states; the UI phrases them, falling back to the server text.
 // Duymak istediğin metnin sorunu hangi kutuda olduğunu söyler / says the problem is in the listening text box
 const sorunMetni=s=>(s.veri&&s.veri.alan==='dinleme'?t('dinleme_bas')+': ':'')+(s.kod&&(S['e_'+s.kod]||YEDEK['e_'+s.kod])?t('e_'+s.kod,s.veri):s.metin);
-function durumYaz(el,j){el._son=j;if(!j){el.textContent='';el.className='durum';return;}
+function durumYaz(el,j){el._son=j;if(j!==el._gecici)el._gecici=null;if(!j){el.textContent='';el.title='';el.className='durum';return;}
  const hata=j.durum==='hata'||(!j.durum&&j.hata);let m;
  if(j.sorunlar&&j.sorunlar.length)m=(j.durum==='hata'?t('hata')+': ':'')+j.sorunlar.map(sorunMetni).join('\n');
  else if(j.kod&&(S['d_'+j.kod]||YEDEK['d_'+j.kod]))m=t('d_'+j.kod,j.veri);else m=j.mesaj||j.hata||j.durum;
- el.textContent=m;el.className='durum '+(hata?'hata':j.durum==='bitti'?'ok':'');}
+ el.textContent=m;el.title=m;el.className='durum '+(hata?'hata':j.durum==='bitti'?'ok':'');}
 
 let ornekler=[];
 const DIL_ADI=k=>(DILLER.find(d=>d[0]===k)||[k,k,k])[2];
@@ -277,7 +277,7 @@ const DinlemeDefter={deger:'',kayit:null,yer:null,
  kapat(tamam){if(!this.kayit)return;const ta=$('okuma_metni'),k=this.kayit;Acilir.kapat();Durak.bekleyenTasi(true);
   if(tamam)this.yaz(Durak.metin().split('\n').filter((l,i,a)=>l.trim()||a.slice(i).some(x=>x.trim())).join('\n').trim());
   this.kayit=null;ta.value=k.v;Durak.dur=k.dur;Durak.eski=k.eski;Durak.gecmis=k.gecmis;
-  this.yer.replaceWith($('defterkap'));$('dpencere').hidden=true;Kayit.hazir=true;defterBoy();
+  this.yer.replaceWith($('defterkap'));$('dpencere').hidden=true;Kayit.hazir=true;Kayit.sonra();defterBoy();
   if(k.odak&&k.odak.isConnected&&k.odak!==document.body)k.odak.focus({preventScroll:true});else $('dinleme_metni').focus({preventScroll:true});}};
 $('dinleme_metni').addEventListener('click',()=>DinlemeDefter.ac());
 $('dinleme_metni').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();DinlemeDefter.ac();}});
@@ -292,7 +292,8 @@ document.addEventListener('keydown',e=>{if(!DinlemeDefter.acik())return;
   if(!o.length)return;const i=o.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();o[o.length-1].focus();}else if(!e.shiftKey&&i===o.length-1){e.preventDefault();o[0].focus();}}},true);
 // Form değişince eski hata yazısı kalmasın (ör. ad girildikten sonra "Sesin adı boş").
 // A stale error must not stay once the form changes (e.g. "name is empty" after typing a name).
-['ad','tarif','tasarim_metni','dinleme_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);}));
+// Aynı olay Tasarla formunu tarayıcı belleğine yazar (Kayit) / the same event saves the design form to browser storage
+['ad','tarif','tasarim_metni','dinleme_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);Kayit.sonra();}));
 // Uzun metni okumaya taşı: tam metin cümle cümle okuma kutusuna (boşsa yerine, doluysa sonuna); tasarımda ilk 1-2 cümle kalır.
 const cumleler=m=>m.replace(/([.!?…؟।。！？])[ \t]+/g,'$1\n').replace(/([。！？])(?=\S)/g,'$1\n').split('\n').map(x=>x.trim()).filter(Boolean);
 $('okumaya_tasi').onclick=async()=>{const m=$('tasarim_metni').value.trim();if(!m)return;const c=cumleler(m),o=$('okuma_metni');
@@ -350,7 +351,10 @@ const listeDugmesi=k=>{const v=okumaListesi.includes(k);return `<button type="bu
 const yonetDugmesi=k=>`<button type="button" class="okubtn yonetbtn" data-yonet="${esc(k)}" aria-haspopup="menu" aria-expanded="false" aria-label="${esc(t('yonet'))}" title="${esc(t('yonet'))}">${UC_NOKTA}</button>`;
 function listeDugmeleri(){document.querySelectorAll('[data-liste]').forEach(b=>{const v=okumaListesi.includes(b.dataset.liste);b.setAttribute('aria-pressed',v);const [e,l]=b.lastElementChild.children;e.textContent=t('liste_ekle');l.textContent=t('listede');});}
 // Kısa bilgi satırı: 3 sn sonra önceki durum yazısı geri gelir / short notice, the previous status returns after 3 s
-function bilgi(el,j){const once=el._son===undefined?null:el._son;durumYaz(el,j);setTimeout(()=>{if(el._son===j)durumYaz(el,once);},3000);}
+// Geçici yazı geçici yazıyı "önceki durum" diye saklamaz: geri dönülecek kalıcı durum ayrı tutulur, zamanlayıcı tektir.
+// A notice never keeps another notice as the state to return to: the lasting state is kept apart, one timer.
+function bilgi(el,j){if(!el._gecici)el._kalici=el._son===undefined?null:el._son;clearTimeout(el._bilgiZaman);durumYaz(el,j);el._gecici=j;
+ el._bilgiZaman=setTimeout(()=>{if(el._son===j)durumYaz(el,el._kalici);},3000);}
 // Tek liste: tasarla kartından, hazır sesler kartından ve ses menüsündeki kalpten aynı uç (sunucuda, kullanıcının ses klasöründe).
 // One list for every source: the same endpoint (stored server-side in the user's voice folder).
 // yalnizHata: menüdeki kalp başarıda yazı göstermez (menü kendisi değişir), hatayı okuma sekmesinin durum satırına yazar.
@@ -384,7 +388,7 @@ const KartAd={
  // Ad kaydı başarısızsa listeye eklenmez; ses zaten listedeyse (başka yerden eklendi) yalnız ad kaydedilir.
  // Ad değişince kartlar yeniden çizilir, kutu kendiliğinden kalkar.
  async kaydet(x,fare){const d=x.closest('.dugmeler'),g=d&&d.querySelector('.adkutu input');if(!g)return;const k=d.querySelector('[data-adkaydet]').dataset.adkaydet,s=SesMenu.bul(k),v=adOku(g);
-  if(v===null||!s)return;if(v&&v!==adGoster(s)&&!await SesYonet.yonet(k,'ad',v,undefined,$('d_tasarla')))return;
+  if(v===null||!s)return;if(v&&v!==adGoster(s)&&!await SesYonet.yonet(k,'ad',v,undefined,$('d_tasarla'),!okumaListesi.includes(k)))return;
   if(!okumaListesi.includes(k)&&!await listeDegistir(k,$('d_tasarla')))return;const l=veriBul($('cesitler'),'liste',k);if(l){this.kapat(l,false);if(!fare)l.focus();}}};
 async function yenile(secili){sesler=await api('/api/sesler');okumaListesi=sesler.okuma_listesi||[];
  if(secili)SesMenu.sec(secili);else if(!SesMenu.bul(SesMenu.deger))SesMenu.sec(SesMenu.varsayilan(),false);sesListesi();cesitCiz();}
@@ -965,10 +969,11 @@ const SesYonet={k:null,tetik:null,geri:false,alt:false,rakamYok:true,
    +`<button type="button" role="menuitem" data-geri="${esc(k.cop||k.kimlik)}" data-islem="${is}">${esc(t('geri_getir'))}</button></div>`;
   Acilir.ac(b,rtl()?r.right:r.left,Acilir.baslik('',t('gizli_cop',{n:l.length}))
    +`<button type="button" role="menuitem" data-is="geri">‹ ${esc(t('geri'))}</button><hr>`+l.map(satir).join(''),this,t('gizli_cop',{n:l.length}));},
- async yonet(kimlik,islem,ad,cop,yer){let j;try{j=await api('/api/ses_yonet',{kimlik,islem,ad,cop});}catch(e){j={hata:String(e)};}
+ // sessiz: başarıda yazı çıkmaz (ardından gelen işin tek mesajı yazılır) / no notice on success (the follow-up writes the one message)
+ async yonet(kimlik,islem,ad,cop,yer,sessiz){let j;try{j=await api('/api/ses_yonet',{kimlik,islem,ad,cop});}catch(e){j={hata:String(e)};}
   const el=yer||this.durumYeri();if(j.hata){durumYaz(el,j);if(Acilir.sahip===this)Acilir.kapat(true);return false;}
   sesler=j;okumaListesi=j.okuma_listesi||[];if(!SesMenu.bul(SesMenu.deger))SesMenu.sec(SesMenu.varsayilan(),false);sesListesi();cesitCiz();
-  bilgi(el,{durum:'bitti',kod:{ad:'ad_degisti',gizle:'ses_gizlendi',sil:'ses_silindi',goster:'ses_geri',geri:'ses_geri'}[islem]});return true;},
+  if(!sessiz)bilgi(el,{durum:'bitti',kod:{ad:'ad_degisti',gizle:'ses_gizlendi',sil:'ses_silindi',goster:'ses_geri',geri:'ses_geri'}[islem]});return true;},
  // Odak: menü yeniden çizildiyse tetik kopmuş olabilir; o zaman ses düğmesi / the trigger may be gone after a redraw
  odak(){if(this.tetik&&this.tetik.isConnected)return this.tetik;return veriBul(document,'yonet',this.k,true)||$('ses');},
  kapandi(){},
@@ -999,10 +1004,17 @@ function bantKaydir(){const ta=$('okuma_metni');$('satirno').scrollTop=ta.scroll
 // Okuma metni ve bantları sayfa yenilenince kaybolmaz: tarayıcı belleğine (hafiza) yazarken seyreltilerek (400 ms),
 // sayfadan çıkarken hemen yazılır. Açılışta Durak.acilis geri getirir; o bitmeden hiçbir şey yazılmaz (boş metin üstüne yazmaz).
 // The reading text and its bands survive a reload: saved to browser storage, debounced while typing, at once on page hide.
-const Kayit={zaman:0,son:null,hazir:false,
+// Tasarla formu da aynı kapıdan geçer: ad, çeşit, örnek, tarif, örnek cümle ve dinleme metni yenilemede kalır.
+// The design form uses the same gate: name, variants, example, prompt, sample sentence and listening text survive a reload.
+const Kayit={zaman:0,son:null,sonForm:null,hazir:false,FORM:['ad','cesit','ornek','tarif','tasarim_metni'],
+ form(){const f={dinleme:DinlemeDefter.deger};for(const id of this.FORM)f[id]=$(id).value;return JSON.stringify(f);},
+ formGeri(){let f;try{f=JSON.parse(hafiza('tasarla_form')||'null');}catch(e){f=null;}if(!f||typeof f!=='object')return;
+  for(const id of this.FORM)if(typeof f[id]==='string'&&(id!=='ornek'||[...$('ornek').options].some(o=>o.value===f[id])))$(id).value=f[id];
+  if(typeof f.dinleme==='string')DinlemeDefter.yaz(f.dinleme);},
  oku(){const m=hafiza('okuma_metni');if(m==null)return null;let d;try{d=JSON.parse(hafiza('okuma_bantlar')||'[]');}catch(e){d=[];}
   const s=m.split('\n');return {s,d:s.map((_,i)=>Array.isArray(d)&&typeof d[i]==='number'&&isFinite(d[i])?Durak.saniye(d[i]):null)};},
  yaz(){clearTimeout(this.zaman);if(!this.hazir)return;const m=$('okuma_metni').value,d=JSON.stringify(m.split('\n').map((_,i)=>Durak.dur[i]??null));
+  const f=this.form();if(f!==this.sonForm){this.sonForm=f;hafiza('tasarla_form',f);}
   if(this.son===m+'\0'+d)return;this.son=m+'\0'+d;hafiza('okuma_metni',m);hafiza('okuma_bantlar',d);},
  sonra(){if(!this.hazir)return;clearTimeout(this.zaman);this.zaman=setTimeout(()=>this.yaz(),400);}};
 addEventListener('pagehide',()=>Kayit.yaz());
@@ -1059,7 +1071,7 @@ $('btn_klon').onclick=async()=>{if(!$('klon_onay').checked)return;const b=$('btn
  const s=await bekle(j.is,$('d_klon'));klonHazir();if(s.durum!=='bitti')return;sonKlon=s.sonuc;klonCiz();};
 
 (async()=>{await Promise.all([api('/api/ornekler').then(o=>ornekler=o),api('/api/sesler').then(s=>{sesler=s;okumaListesi=s.okuma_listesi||[];})]);await dilYukle(ilkDil());
- SesMenu.sec(SesMenu.varsayilan(),false);Durak.acilis();Kayit.hazir=true;Kayit.yaz();sureGuncelle();})();
+ SesMenu.sec(SesMenu.varsayilan(),false);Durak.acilis();Kayit.formGeri();Kayit.hazir=true;Kayit.yaz();sureGuncelle();})();
 </script></body></html>
 """
 
