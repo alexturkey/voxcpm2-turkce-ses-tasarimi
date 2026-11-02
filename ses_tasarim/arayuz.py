@@ -453,7 +453,9 @@ $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}};
 
 const indir=(yol,ad)=>`<a href="${yol}" download="${esc(ad)}"><button>${esc(t('indir'))}</button></a>`;
-const ozet=r=>t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,tohum:r.tohum});
+// VRAM ölçülemediyse (AMD/Intel: vram_tepe_mb null) özet VRAM'siz / no VRAM part when it was not measured
+const ozet=r=>r.vram_tepe_mb==null?t('okuma_ozet_vramsiz',{ses:r.ses_sn,sure:r.sure_sn,tohum:r.tohum})
+ :t('okuma_ozet',{ses:r.ses_sn,sure:r.sure_sn,vram:r.vram_tepe_mb,tohum:r.tohum});
 // İnen okumanın adı: ses adı + okuma zamanı (Zeynep_Belgesel_Anlatici_2026-11-02_0152.wav). Harfler (Türkçe, Arapça…) kalır;
 // Windows/macOS'ta yasak işaretler, yön işaretleri ve boşluk '_' olur, baştaki/sondaki nokta atılır. Zaman sunucunun özetinden.
 // Downloaded reading name: voice name + reading time; letters stay, characters forbidden in file names become '_'.
@@ -1193,9 +1195,11 @@ class Isler:
                                              _cesit(payload), None, progress,
                                              okunus.detect(payload["metin"], _dil_ipucu(payload)), _dinleme(payload))
                     self._ogren(kind, payload, adimlar, time.time() - basladi)
-                    self._set(job_id, durum="bitti", sonuc=result, kod="bitti_tasarla",
-                              veri={"n": len(result["cesitler"]), "sn": result["sure_sn"], "vram": result["vram_tepe_mb"]},
-                              mesaj=f"bitti: {len(result['cesitler'])} çeşit, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB")
+                    vram = result["vram_tepe_mb"]  # None: ölçülemedi (AMD/Intel), özet VRAM'siz / not measured
+                    self._set(job_id, durum="bitti", sonuc=result,
+                              kod="bitti_tasarla" if vram is not None else "bitti_tasarla_vramsiz",
+                              veri={"n": len(result["cesitler"]), "sn": result["sure_sn"], "vram": vram},
+                              mesaj=f"bitti: {len(result['cesitler'])} çeşit, {result['sure_sn']} sn, {motor.vram_metni(vram)}")
                 elif kind == "klon":
                     from . import klonla
                     data = base64.b64decode(payload.pop("kayit"))

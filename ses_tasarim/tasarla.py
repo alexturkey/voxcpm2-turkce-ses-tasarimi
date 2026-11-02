@@ -150,7 +150,7 @@ def tasarla(settings: dict, name: str, description: str, text: str, count: int =
         typed = dinleme if dinleme != text.strip() else None
         try:
             read = _read_variants(settings, good, lines, work_dir.parent / f"{work_dir.name}_okuma", read_progress, typed)
-            seconds, vram = round(seconds + read["seconds"], 1), max(vram or 0, read["vram_peak_mb"] or 0)
+            seconds, vram = round(seconds + read["seconds"], 1), motor.vram_max(vram, read["vram_peak_mb"])
         except motor.MotorHatasi as error:  # tasarım diske yazıldı, okumanın çökmesi onu düşürmez / keep the design
             for variant in good:
                 _update_card(Path(variant["klasor"]), {"dinleme_hata": f"okuma motoru durdu: {error}"}, variant)
@@ -179,7 +179,7 @@ def _read_variants(settings: dict, variants: list, lines: list, work_dir: Path, 
                                         variant["ses_yaratilirken_okutulan_metin"])
                      for index, (line, _) in enumerate(lines, 1)]
     if not requests:
-        return {"seconds": 0, "vram_peak_mb": 0}
+        return {"seconds": 0, "vram_peak_mb": None}
     result = motor.run_sequence(settings, requests, work_dir, progress)
     _remove_empty(work_dir)
     text = "\n".join(line for line, _ in lines)
@@ -251,7 +251,7 @@ def main(argv=None) -> int:
             print(f"  tohum {variant['tohum']}: {variant['hata']}")
         else:
             print(f"  çeşit {variant['cesit']}: tohum {variant['tasarim_tohumu']}, {variant['referans_sn']} sn → {variant['klasor']}")
-    print(f"süre {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB")
+    print(f"süre {result['sure_sn']} sn, {motor.vram_metni(result['vram_tepe_mb'])}")
     return 0 if all("hata" not in v for v in result["cesitler"]) else 1
 
 

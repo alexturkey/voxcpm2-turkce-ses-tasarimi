@@ -221,6 +221,8 @@ GTX 1050 Ti 4 GB ပေါ်တွင် စမ်းသပ်ထားသည�
 ပြင်ပ အသုံးပြုသူတစ်ဦး (mitra_tr) က AMD 6900 XT ပေါ်တွင်လည်း run နိုင်ကြောင်း အစီရင်ခံထားသည်။ AMD/Intel ကတ်များပေါ်တွင်
 ပိုမိုကျယ်ပြန့်သော စမ်းသပ်မှုများ လိုအပ်နေဆဲ ဖြစ်သည်။
 
+**အသိုင်းအဝိုင်း စမ်းသပ်ချက် (AMD):** @mitraTR သည် Windows 11 ပေါ်ရှိ AMD Radeon RX 6900 XT တွင် Vulkan ဖြင့် v0.1.1 ကို လည်ပတ်ခဲ့သည်- ထည့်သွင်းခြင်း၊ အသံဒီဇိုင်း၊ ဖတ်ခြင်း၊ ဝဘ်မျက်နှာပြင်နှင့် စမ်းသပ်ချက်များ အားလုံး အလုပ်လုပ်ခဲ့သည်။ စကား 1 စက္ကန့်အတွက် တွက်ချက်ချိန် 0.8-0.9 စက္ကန့်ခန့် ကြာသည် ([#6 ရှိ အစီရင်ခံစာ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))။ လမ်းကြောင်းတွင် ASCII စာလုံးများသာ ပါသော တိုတောင်းသည့် ဖိုင်တွဲတွင် ထည့်သွင်းပါ (ဥပမာ `C:\vox`)- Windows တွင် မြန်မာစာ သို့မဟုတ် ASCII မဟုတ်သော စာလုံးပါသည့် လမ်းကြောင်းများကို အင်ဂျင်က မဖွင့်နိုင်ပါ။ ယခုအထိ အစီရင်ခံစာများ အားလုံး- [စမ်းသပ်ပြီး ဟာ့ဒ်ဝဲ](docs/donanim_testleri.md)။
+
 ### အခြားနည်းလမ်း- engine ကို source မှ build လုပ်ခြင်း
 
 "Desktop development with C++" (C++ CMake tools အပါအဝင်) ပါသော Visual Studio 2022 Build Tools လိုအပ်သည်၊ ~7 GB။ ထို့နောက်-
@@ -370,6 +372,8 @@ load 10-20 s ပြီးနောက် ဖတ်ခြင်းသည် စ�
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel- စမ်းသပ်ဆဲ Vulkan build ကို စမ်းကြည့်ပါ
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) test set ထဲသို့ စာကြောင်းတစ်ကြောင်း ထည့်ပါ
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) သင် ဒီဇိုင်းဆွဲထားသော အသံကို ၎င်း၏ ဖော်ပြချက်နှင့် seed နှင့်အတူ မျှဝေပါ
+
+**သင့်ဂရပ်ဖစ်ကတ်ကို စမ်းသပ်ပြီး အစီရင်ခံစာ ရေးပါ-** ကုဒ်ရေးတတ်ရန် မလိုပါ၊ [ဟာ့ဒ်ဝဲ စမ်းသပ်မှု အစီရင်ခံစာ ဖောင်](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) ကို ဖြည့်ရုံသာ။ Intel ဂရပ်ဖစ်ကတ်မှ အစီရင်ခံစာ မရှိသေးပါ။
 
 မျှဝေထားသော test set- [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt)၊ brand အသံ လမ်းညွှန်-
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md)၊ code ပို့နည်း- [CONTRIBUTING.md](CONTRIBUTING.md)။

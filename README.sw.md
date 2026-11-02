@@ -219,6 +219,8 @@ vifaa vya AMD wala Intel: ukiijaribu, tafadhali weka matokeo katika Discussions.
 Mtumiaji wa nje (mitra_tr) pia ameripoti kuuendesha kwenye AMD 6900 XT. Majaribio mapana zaidi kwenye kadi za AMD/Intel
 bado yanahitajika.
 
+**Jaribio la jamii (AMD):** @mitraTR aliendesha v0.1.1 kwa Vulkan kwenye AMD Radeon RX 6900 XT katika Windows 11: usakinishaji, kubuni sauti, kusoma, kiolesura cha wavuti na majaribio vyote vilifanya kazi; kusoma kulichukua takriban sek 0.8-0.9 za hesabu kwa kila sek 1 ya usemi ([ripoti katika #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Sakinisha kwenye folda fupi ambayo njia yake ina herufi za ASCII pekee (k.m. `C:\vox`): kwenye Windows injini haiwezi kufungua njia zenye herufi zisizo za ASCII. Ripoti zote hadi sasa: [vifaa vilivyojaribiwa](docs/donanim_testleri.md).
+
 ### Njia mbadala: jenga injini kutoka msimbo chanzo
 
 Inahitaji Visual Studio 2022 Build Tools pamoja na "Desktop development with C++" (ikijumuisha C++ CMake tools), ~7 GB. Kisha:
@@ -365,6 +367,8 @@ Hujui uanzie wapi? Masuala haya manne madogo ni hatua nzuri ya kwanza:
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: jaribu toleo la majaribio la Vulkan
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Ongeza sentensi kwenye seti ya majaribio
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Shiriki sauti uliyoibuni, pamoja na maelezo yake na mbegu
+
+**Jaribu kadi yako ya michoro, andika ripoti:** huhitaji kujua kuandika msimbo, inatosha [fomu ya ripoti ya majaribio ya vifaa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); bado hakuna ripoti kutoka kadi ya Intel.
 
 Seti ya majaribio ya pamoja: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); mwongozo wa sauti ya chapa:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); jinsi ya kutuma msimbo: [CONTRIBUTING.md](CONTRIBUTING.md).

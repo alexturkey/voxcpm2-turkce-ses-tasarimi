@@ -212,6 +212,8 @@ Ubuntu 24.04 Docker, CUDA 12.8.1 (λεπτομέρειες στο [docs/linux.md
 
 *Σημείωση: η υποστήριξη Vulkan είναι πειραματική. Έχει μεταγλωττιστεί και δοκιμαστεί με επιτυχία σε GTX 1050 Ti. Ένας εξωτερικός χρήστης (mitra_tr) ανέφερε επίσης ότι το έτρεξε σε AMD 6900 XT. Χρειάζονται ακόμη ευρύτερες δοκιμές σε κάρτες AMD/Intel.*
 
+**Δοκιμή κοινότητας (AMD):** ο @mitraTR έτρεξε την v0.1.1 με Vulkan σε AMD Radeon RX 6900 XT στα Windows 11: εγκατάσταση, σχεδίαση φωνής, ανάγνωση, διεπαφή web και τα τεστ λειτούργησαν· η ανάγνωση χρειάστηκε περίπου 0,8-0,9 δλ. υπολογισμού ανά 1 δλ. ομιλίας ([αναφορά στο #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Κάντε την εγκατάσταση σε σύντομο φάκελο με διαδρομή μόνο από χαρακτήρες ASCII (π.χ. `C:\vox`): στα Windows η μηχανή δεν ανοίγει διαδρομές με ελληνικούς ή άλλους μη ASCII χαρακτήρες. Όλες οι αναφορές μέχρι τώρα: [δοκιμασμένο υλικό](docs/donanim_testleri.md).
+
 ### Εναλλακτικά: μεταγλώττιση της μηχανής από τον πηγαίο κώδικα
 
 Χρειάζονται τα Visual Studio 2022 Build Tools με το "Desktop development with C++" (μαζί με τα C++ CMake tools), ~7 GB. Μετά:
@@ -347,6 +349,8 @@ AMD 6900 XT, αλλά χρειάζονται ακόμη ευρύτερες δο�
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: δοκιμάστε την πειραματική έκδοση Vulkan
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Προσθέστε μια πρόταση στο σύνολο δοκιμών
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Μοιραστείτε μια φωνή που σχεδιάσατε, με την περιγραφή και τον σπόρο της
+
+**Δοκιμάστε την κάρτα γραφικών σας, γράψτε μια αναφορά:** δεν χρειάζεται προγραμματισμός, αρκεί η [φόρμα αναφοράς δοκιμής υλικού](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)· από κάρτες Intel δεν υπάρχει ακόμη καμία αναφορά.
 
 Κοινό σύνολο δοκιμών: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt)· οδηγός φωνής μάρκας:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md)· πώς στέλνετε κώδικα: [CONTRIBUTING.md](CONTRIBUTING.md).

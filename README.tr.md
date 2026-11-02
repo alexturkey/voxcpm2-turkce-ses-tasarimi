@@ -208,6 +208,8 @@ olarak yazar.
 
 **Not:** Vulkan desteği şu an deneyseldir. GTX 1050 Ti üzerinde başarıyla derlenmiş ve test edilmiştir. Ayrıca harici bir kullanıcı (mitra_tr) tarafından AMD 6900 XT üzerinde de çalıştırıldığı bildirilmiştir. AMD/Intel kartlarda daha geniş testlere ihtiyaç vardır.
 
+**Topluluk testi (AMD):** @mitraTR, v0.1.1'i Windows 11'de AMD Radeon RX 6900 XT üzerinde Vulkan ile çalıştırdı: kurulum, ses tasarımı, okuma, web arayüzü ve testler sorunsuz geçti; okuma, 1 saniyelik konuşma için yaklaşık 0,8-0,9 saniye hesap sürdü ([#6'daki rapor](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Kurulumu yolunda yalnız İngilizce harfler olan kısa bir klasöre yap (ör. `C:\vox`): motor Windows'ta Türkçe harf ya da başka ASCII dışı karakter içeren yolları açamıyor. Şimdiye kadarki bütün raporlar: [test edilmiş donanım](docs/donanim_testleri.md).
+
 ### Seçenek: motoru kaynaktan derlemek
 
 Visual Studio 2022 Build Tools "Desktop development with C++" (C++ CMake tools dahil, ~7 GB) gerekir. Sonra:
@@ -337,6 +339,8 @@ Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi bir ilk adım:
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: deneysel Vulkan sürümünü dene
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Test setine bir cümle ekle
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Tasarladığın bir sesi tarifi ve tohumuyla paylaş
+
+**Kartını test et, rapor yaz:** kod bilmen gerekmez, [donanım test raporu formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) yeter; Intel ekran kartından henüz hiç rapor yok.
 
 Ortak test seti: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); marka sesi rehberi:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); kod gönderme: [CONTRIBUTING.md](CONTRIBUTING.md).

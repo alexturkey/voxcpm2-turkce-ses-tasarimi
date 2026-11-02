@@ -228,6 +228,8 @@ plusieurs périphériques Vulkan (intégré + dédié), l'installateur écrit l'
 une GTX 1050 Ti. Un utilisateur externe (mitra_tr) a par ailleurs signalé l'avoir fait fonctionner sur une AMD 6900 XT.
 Des tests plus larges sur les cartes AMD/Intel restent nécessaires.*
 
+**Test de la communauté (AMD) :** @mitraTR a fait tourner la v0.1.1 avec Vulkan sur une AMD Radeon RX 6900 XT sous Windows 11 : installation, création de voix, lecture, interface web et tests ont tous fonctionné ; la lecture a demandé environ 0,8-0,9 s de calcul par seconde de parole ([rapport dans #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installez dans un dossier court dont le chemin ne contient que des caractères ASCII (par ex. `C:\vox`) : sous Windows, le moteur ne peut pas ouvrir les chemins contenant des accents ou d'autres caractères non ASCII. Tous les rapports à ce jour : [matériel testé](docs/donanim_testleri.md).
+
 ### Alternative : compiler le moteur depuis les sources
 
 Nécessite les Build Tools de Visual Studio 2022 avec « Développement Desktop en C++ » (y compris les outils C++ CMake),
@@ -385,6 +387,8 @@ Vous ne savez pas par où commencer ? Ces quatre petits tickets sont une bonne p
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel : essayez le build Vulkan expérimental
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Ajoutez une phrase au jeu de test
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Partagez une voix que vous avez conçue, avec sa description et sa graine
+
+**Testez votre carte graphique, envoyez un rapport :** pas besoin de coder, le [formulaire de rapport de test matériel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) suffit ; aucun rapport sur carte Intel pour l'instant.
 
 Jeu de test commun : [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt) ; guide de la voix de marque :
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md) ; comment proposer du code : [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -208,6 +208,8 @@ CUDA 12.8.1 (подробности в [docs/linux.md](docs/linux.md)). Отчё
 
 **Примечание:** поддержка Vulkan пока экспериментальная. Она успешно собрана и протестирована на GTX 1050 Ti. Кроме того, сторонний пользователь (mitra_tr) сообщил, что запускал её на AMD 6900 XT. На картах AMD/Intel нужно более широкое тестирование.
 
+**Тест сообщества (AMD):** @mitraTR запустил v0.1.1 с Vulkan на AMD Radeon RX 6900 XT под Windows 11: установка, создание голоса, чтение, веб-интерфейс и тесты прошли успешно; на чтение ушло около 0,8-0,9 с вычислений на 1 с речи ([отчёт в #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Устанавливайте в короткую папку, путь к которой содержит только символы ASCII (например, `C:\vox`): в Windows движок не открывает пути с кириллицей и другими символами вне ASCII. Все отчёты на сегодня: [проверенное оборудование](docs/donanim_testleri.md).
+
 ### Альтернатива: сборка движка из исходников
 
 Нужны Visual Studio 2022 Build Tools с «Desktop development with C++» (вкл. C++ CMake tools), ~7 ГБ. Затем:
@@ -339,6 +341,8 @@ nvcc падает на длинных путях. Пошагово с прове
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: попробуйте экспериментальную сборку Vulkan
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Добавьте предложение в тестовый набор
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Поделитесь созданным голосом вместе с описанием и сидом
+
+**Проверьте свою видеокарту и напишите отчёт:** программировать не нужно, достаточно [формы отчёта о тесте оборудования](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); с видеокарт Intel отчётов пока нет.
 
 Общий тестовый набор: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); руководство по фирменному голосу:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); как прислать код: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -207,6 +207,8 @@ Maxwell (GTX 9xx) ແລະ ເກົ່າກວ່ານັ້ນ CUDA 12.8 �
 **ໝາຍເຫດ:** ການຮອງຮັບ Vulkan ໃນປັດຈຸບັນຍັງເປັນການທົດລອງ. ມັນຖືກ build ແລະ ທົດສອບສຳເລັດເທິງ GTX 1050 Ti. ຜູ້ໃຊ້ພາຍນອກ
 ຄົນໜຶ່ງ (mitra_tr) ຍັງໄດ້ລາຍງານວ່າໄດ້ແລ່ນມັນເທິງ AMD 6900 XT. ຍັງຕ້ອງການການທົດສອບທີ່ກວ້າງຂວາງກວ່ານີ້ເທິງກາດ AMD/Intel.
 
+**ການທົດສອບຈາກຊຸມຊົນ (AMD):** @mitraTR ໄດ້ແລ່ນ v0.1.1 ດ້ວຍ Vulkan ເທິງ AMD Radeon RX 6900 XT ໃນ Windows 11: ການຕິດຕັ້ງ, ການອອກແບບສຽງ, ການອ່ານ, ໜ້າເວັບ ແລະ ການທົດສອບ ເຮັດວຽກໄດ້ທັງໝົດ; ການອ່ານໃຊ້ເວລາຄິດໄລ່ປະມານ 0.8-0.9 ວິ ຕໍ່ສຽງເວົ້າ 1 ວິ ([ລາຍງານໃນ #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). ໃຫ້ຕິດຕັ້ງໃນໂຟນເດີສັ້ນໆ ທີ່ເສັ້ນທາງມີແຕ່ຕົວອັກສອນ ASCII (ເຊັ່ນ `C:\vox`): ໃນ Windows ເຄື່ອງຈັກບໍ່ສາມາດເປີດເສັ້ນທາງທີ່ມີຕົວອັກສອນລາວ ຫຼື ຕົວອັກສອນອື່ນນອກ ASCII ໄດ້. ລາຍງານທັງໝົດຈົນເຖິງຕອນນີ້: [ຮາດແວທີ່ທົດສອບແລ້ວ](docs/donanim_testleri.md).
+
 ### ທາງເລືອກ: build engine ຈາກ source
 
 ຕ້ອງການ Visual Studio 2022 Build Tools ພ້ອມ "Desktop development with C++" (ລວມທັງ C++ CMake tools), ~7 GB. ຈາກນັ້ນ:
@@ -342,6 +344,8 @@ background noise". ໃຫ້ມັນເປັນຄຳອະທິບາຍ, �
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: ລອງ build Vulkan ແບບທົດລອງ
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) ເພີ່ມປະໂຫຍກໃສ່ຊຸດທົດສອບ
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) ແບ່ງປັນສຽງທີ່ທ່ານອອກແບບ ພ້ອມຄຳອະທິບາຍ ແລະ seed ຂອງມັນ
+
+**ທົດສອບກາດຈໍຂອງທ່ານ ແລ້ວຂຽນລາຍງານ:** ບໍ່ຈຳເປັນຕ້ອງຂຽນໂຄດ, ພຽງແຕ່ໃຊ້ [ແບບຟອມລາຍງານການທົດສອບຮາດແວ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); ຍັງບໍ່ມີລາຍງານຈາກກາດຈໍ Intel ເທື່ອ.
 
 ຊຸດທົດສອບລວມ: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); ຄູ່ມືສຽງແບຣນ:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); ວິທີສົ່ງລະຫັດ: [CONTRIBUTING.md](CONTRIBUTING.md).

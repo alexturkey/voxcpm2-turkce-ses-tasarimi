@@ -29,6 +29,17 @@ $derleme = $Derle -or ($Adim -contains "derle") -or ($Adim -contains "kaynak")
 Write-Output ("adımlar: " + ($Adim -join ", ") + $(if ($derleme) { "  (derlemeli)" } elseif ($Vulkan) { "  (hazır Vulkan motoru, DENEYSEL)" } else { "  (hazır motor, derleme yok)" }))
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+# Motor Windows'ta yalnız ASCII yolları açabiliyor (topluluk testi, issue #6: "No mapping for the Unicode character…",
+# "Failed to open log file"). Kök ASCII değilse indirmeye başlamadan dur. / The engine only opens ASCII-only paths on Windows.
+if ($Kok -match '[^\x00-\x7F]') {
+    throw ("Kurulum klasörü Türkçe harf ya da başka ASCII dışı karakter içeriyor: $Kok`n" +
+           "  Motor bu yolu açamaz. Kısa ve yalnız İngilizce harfli bir klasör seçin, ör.: -Kok C:\vox`n" +
+           "  The install folder contains non-ASCII characters; the engine cannot open it. Use a short ASCII folder, e.g. -Kok C:\vox")
+}
+if ($Repo -match '[^\x00-\x7F]') {
+    Write-Warning ("Repo klasörü ASCII değil ($Repo); sesler ve okumalar burada, motor bu yolu açamayabilir. Öneri: repoyu C:\vox\repo gibi bir yere taşıyın.`n" +
+                   "  The repo folder is not ASCII-only; voices and readings live here and the engine may fail. Move it to e.g. C:\vox\repo.")
+}
 if ($derleme -and $Kok.Length -gt 12) { Write-Warning "Kök yolu uzun ($Kok); derlemede nvcc düşebilir. Öneri: C:\vox" }
 
 # --- sabitler / pinned downloads -------------------------------------------------------------------------------------

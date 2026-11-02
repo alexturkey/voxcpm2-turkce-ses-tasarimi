@@ -208,6 +208,8 @@ instalator zapisuje indeks dedykowanej karty jako `cihaz` w `ayarlar.json`.
 
 **Uwaga:** obsługa Vulkan jest obecnie eksperymentalna. Została pomyślnie zbudowana i przetestowana na GTX 1050 Ti. Ponadto zewnętrzny użytkownik (mitra_tr) zgłosił, że uruchomił ją na AMD 6900 XT. Potrzebne są szersze testy na kartach AMD/Intel.
 
+**Test społeczności (AMD):** @mitraTR uruchomił v0.1.1 z Vulkanem na AMD Radeon RX 6900 XT w Windows 11: instalacja, projektowanie głosu, czytanie, interfejs WWW i testy zadziałały; czytanie zajęło ok. 0,8-0,9 s obliczeń na 1 s mowy ([raport w #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Instaluj w krótkim folderze, którego ścieżka ma tylko znaki ASCII (np. `C:\vox`): w Windows silnik nie otwiera ścieżek z polskimi znakami ani innymi znakami spoza ASCII. Wszystkie dotychczasowe raporty: [przetestowany sprzęt](docs/donanim_testleri.md).
+
 ### Alternatywa: zbuduj silnik ze źródeł
 
 Wymaga Visual Studio 2022 Build Tools z «Desktop development with C++» (w tym C++ CMake tools), ~7 GB. Następnie:
@@ -339,6 +341,8 @@ Nie wiesz, od czego zacząć? Te cztery małe zgłoszenia to dobry pierwszy krok
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: wypróbuj eksperymentalną wersję Vulkan
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Dodaj zdanie do zestawu testowego
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Podziel się zaprojektowanym głosem, razem z opisem i ziarnem
+
+**Przetestuj swoją kartę i napisz raport:** nie musisz programować, wystarczy [formularz raportu z testu sprzętu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); z kart Intela nie mamy jeszcze żadnego raportu.
 
 Wspólny zestaw testowy: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); przewodnik po głosie marki:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); jak przesłać kod: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -226,6 +226,8 @@ Vulkan device (integrated + discrete), isinusulat ng installer ang index ng disc
 external na user (mitra_tr) din na nag-ulat na napatakbo niya ito sa AMD 6900 XT. Kailangan pa ng mas malawak na
 pagsubok sa mga AMD/Intel na card.*
 
+**Pagsubok ng komunidad (AMD):** Pinatakbo ni @mitraTR ang v0.1.1 gamit ang Vulkan sa AMD Radeon RX 6900 XT sa Windows 11: gumana ang pag-install, pagdisenyo ng boses, pagbasa, web interface at mga test; ang pagbasa ay umabot nang mga 0.8-0.9 seg na compute bawat 1 seg ng pananalita ([ulat sa #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Mag-install sa maikling folder na ASCII lang ang laman ng path (hal. `C:\vox`): sa Windows, hindi mabuksan ng engine ang mga path na may ñ o iba pang hindi ASCII na karakter. Lahat ng ulat sa ngayon: [nasubukang hardware](docs/donanim_testleri.md).
+
 ### Alternatibo: i-build ang engine mula sa source
 
 Kailangan ng Visual Studio 2022 Build Tools na may "Desktop development with C++" (kasama ang C++ CMake tools), ~7 GB. Pagkatapos:
@@ -379,6 +381,8 @@ Hindi sigurado kung saan magsisimula? Magandang unang hakbang ang apat na malili
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: subukan ang eksperimental na Vulkan build
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Magdagdag ng pangungusap sa test set
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Ibahagi ang isang boses na idinisenyo mo, kasama ang paglalarawan at seed nito
+
+**Subukan ang graphics card mo, magsulat ng ulat:** hindi kailangang marunong mag-code, sapat na ang [form ng ulat sa pagsubok ng hardware](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); wala pang ulat mula sa Intel graphics card.
 
 Pinagsasaluhang test set: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); gabay sa brand voice:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); paano magpadala ng code: [CONTRIBUTING.md](CONTRIBUTING.md).

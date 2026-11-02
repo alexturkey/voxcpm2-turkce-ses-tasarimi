@@ -210,6 +210,8 @@ trình cài đặt ghi chỉ số của GPU rời vào `ayarlar.json` dưới kh
 Một người dùng bên ngoài (mitra_tr) cũng đã báo cáo chạy được trên AMD 6900 XT. Vẫn cần thử nghiệm rộng hơn trên các
 card AMD/Intel.*
 
+**Thử nghiệm cộng đồng (AMD):** @mitraTR đã chạy v0.1.1 với Vulkan trên AMD Radeon RX 6900 XT trong Windows 11: cài đặt, thiết kế giọng, đọc, giao diện web và các bài kiểm thử đều chạy tốt; việc đọc mất khoảng 0,8-0,9 giây tính toán cho mỗi 1 giây lời nói ([báo cáo trong #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Hãy cài vào một thư mục ngắn mà đường dẫn chỉ có ký tự ASCII (ví dụ `C:\vox`): trên Windows, bộ máy không mở được đường dẫn có chữ có dấu hay ký tự ngoài ASCII khác. Tất cả báo cáo đến nay: [phần cứng đã kiểm thử](docs/donanim_testleri.md).
+
 ### Cách khác: build engine từ mã nguồn
 
 Cần Visual Studio 2022 Build Tools với "Desktop development with C++" (gồm cả C++ CMake tools), ~7 GB. Sau đó:
@@ -346,6 +348,8 @@ Chưa biết bắt đầu từ đâu? Bốn issue nhỏ này là bước khởi 
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: thử bản build Vulkan thử nghiệm
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Thêm một câu vào bộ câu thử nghiệm
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Chia sẻ một giọng bạn đã thiết kế, kèm mô tả và seed
+
+**Thử card đồ họa của bạn, gửi báo cáo:** không cần biết lập trình, chỉ cần [biểu mẫu báo cáo kiểm thử phần cứng](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); hiện chưa có báo cáo nào từ card Intel.
 
 Bộ câu thử nghiệm chung: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); hướng dẫn giọng thương hiệu:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); cách gửi mã: [CONTRIBUTING.md](CONTRIBUTING.md).

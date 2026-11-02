@@ -210,6 +210,8 @@ index របស់ GPU discrete ជា `cihaz` ទៅក្នុង `ayarlar.js
 **ចំណាំ៖** ការគាំទ្រ Vulkan បច្ចុប្បន្ននៅជាការពិសោធន៍។ វាត្រូវបាន build និងសាកល្បងដោយជោគជ័យលើ GTX 1050 Ti។ អ្នកប្រើខាងក្រៅ
 ម្នាក់ (mitra_tr) ក៏បានរាយការណ៍ថាបានដំណើរការវាលើ AMD 6900 XT ដែរ។ នៅតែត្រូវការការសាកល្បងទូលំទូលាយជាងនេះលើកាត AMD/Intel។
 
+**ការសាកល្បងពីសហគមន៍ (AMD)៖** @mitraTR បានដំណើរការ v0.1.1 ជាមួយ Vulkan លើ AMD Radeon RX 6900 XT ក្នុង Windows 11៖ ការដំឡើង ការរចនាសំឡេង ការអាន ផ្ទៃវេប និងការធ្វើតេស្ត ដំណើរការបានទាំងអស់ ការអានចំណាយពេលគណនាប្រហែល 0.8-0.9 វិនាទី សម្រាប់ការនិយាយ 1 វិនាទី ([របាយការណ៍ក្នុង #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))។ សូមដំឡើងក្នុងថតខ្លីមួយ ដែលផ្លូវរបស់វាមានតែតួអក្សរ ASCII (ឧ. `C:\vox`)៖ នៅលើ Windows ម៉ាស៊ីនមិនអាចបើកផ្លូវដែលមានអក្សរខ្មែរ ឬតួអក្សរក្រៅ ASCII ផ្សេងទៀតបានទេ។ របាយការណ៍ទាំងអស់រហូតមកដល់ពេលនេះ៖ [ផ្នែករឹងដែលបានសាកល្បង](docs/donanim_testleri.md)។
+
 ### ជម្រើសផ្សេង៖ build engine ពី source
 
 ត្រូវការ Visual Studio 2022 Build Tools ជាមួយ "Desktop development with C++" (រួមទាំង C++ CMake tools) ~7 GB។ បន្ទាប់មក៖
@@ -345,6 +347,8 @@ no background noise"។ ទុកវាជាការពិពណ៌នា ម�
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel៖ សាកល្បង build Vulkan ពិសោធន៍
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) បន្ថែមប្រយោគមួយទៅសំណុំតេស្ត
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) ចែករំលែកសំឡេងដែលអ្នកបានរចនា ជាមួយការពិពណ៌នា និង seed របស់វា
+
+**សាកល្បងកាតក្រាហ្វិករបស់អ្នក ហើយសរសេររបាយការណ៍៖** មិនចាំបាច់ចេះសរសេរកូដទេ គ្រាន់តែប្រើ [ទម្រង់របាយការណ៍សាកល្បងផ្នែករឹង](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) មិនទាន់មានរបាយការណ៍ពីកាតក្រាហ្វិក Intel នៅឡើយទេ។
 
 សំណុំតេស្តរួម៖ [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt) មគ្គុទ្ទេសក៍សំឡេងម៉ាក៖
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md) របៀបផ្ញើកូដ៖ [CONTRIBUTING.md](CONTRIBUTING.md)។

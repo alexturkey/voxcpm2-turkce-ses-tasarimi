@@ -22,6 +22,7 @@ TEXT_CHUNK = 2048
 REFERENCE_OPTION = ("--session-option", "voxcpm2.audiovae_encoder_sample_capacity=576000")
 MIN_REFERENCE_SECONDS = 8.0
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
+WINDOWS = sys.platform == "win32"
 # Motorun ara dosyaları (motor.log satır başına ~3 MB, PCM dökümleri) iş başarıyla bitince silinir; hata olursa kalır.
 # 1 = her zaman sakla (hata ayıklama). / Engine scratch files are deleted after a successful run, kept on failure.
 KEEP_ENV = "SES_TASARIM_ARA_DOSYA_TUT"
@@ -45,17 +46,22 @@ def _gpu_used_mb() -> int:
 
 
 class VramWatcher:
-    """VRAM tepe ölçümü: nvidia-smi, macOS'ta ioreg (yoksa 0). / Peak VRAM via nvidia-smi, or ioreg on macOS."""
+    """VRAM tepe ölçümü: nvidia-smi, macOS'ta ioreg. Ölçülemezse (AMD/Intel, nvidia-smi yok) peak_mb None kalır;
+    0 yazılmaz, çünkü 0 "hiç bellek kullanmadı" diye okunur.
+    Peak VRAM via nvidia-smi, or ioreg on macOS. When it cannot be measured (AMD/Intel, no nvidia-smi) peak_mb
+    stays None instead of a misleading 0."""
 
     def __init__(self):
-        self.peak_mb = 0
+        self.peak_mb = None
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._loop, daemon=True)
 
     def _loop(self):
         while not self._stop.is_set():
             try:
-                self.peak_mb = max(self.peak_mb, _gpu_used_mb())
+                self.peak_mb = max(self.peak_mb or 0, _gpu_used_mb())
+            except FileNotFoundError:  # ölçüm aracı yok: boşuna süreç açılmaz / no tool, stop polling
+                return
             except Exception:
                 pass
             self._stop.wait(0.5)
@@ -67,6 +73,40 @@ class VramWatcher:
     def __exit__(self, *exc):
         self._stop.set()
         self._thread.join()
+
+
+def vram_max(*values):
+    """Ölçülen değerlerin en büyüğü; hiçbiri ölçülmediyse None. / Largest measured value, None if none measured."""
+    measured = [v for v in values if v is not None]
+    return max(measured) if measured else None
+
+
+def vram_metni(mb) -> str:
+    """Komut satırı özeti için VRAM parçası. / VRAM part of the command-line summary."""
+    return f"VRAM tepe {mb} MB" if mb is not None else "VRAM ölçülemedi (yalnız NVIDIA ve macOS)"
+
+
+def ascii_olmayan_yol(paths):
+    """Motorun göreceği yollardan ASCII olmayan ilki (yoksa None). Windows'ta motor Türkçe harfli ya da başka
+    ASCII dışı yolu açamıyor (topluluk testi: 'No mapping for the Unicode character…', 'Failed to open log file').
+    First non-ASCII path the engine would see; on Windows the engine cannot open such paths (community report)."""
+    for path in paths:
+        if path and not str(path).isascii():
+            return str(path)
+    return None
+
+
+def _yol_ipucu(command: list, requests: list) -> str:
+    """Motor düştüyse ve yollardan biri ASCII değilse anlaşılır ipucu (Windows). / Clear hint for non-ASCII paths."""
+    if not WINDOWS:
+        return ""
+    bad = ascii_olmayan_yol(list(command) + [r.get(k) for r in requests for k in ("audio", "voice_ref")])
+    if not bad:
+        return ""
+    return ("\nİpucu: motor Windows'ta yalnız ASCII (Türkçe harf içermeyen) yollarla çalışıyor; şu yol ASCII değil: "
+            f"{bad}. Kurulumu, repo klasörünü ve sesleri kısa, ASCII bir klasöre taşıyın (ör. C:\\vox).\n"
+            "Hint: on Windows the engine only works with ASCII-only paths; the path above is not ASCII. "
+            "Move the install, the repo folder and the voices to a short ASCII folder (e.g. C:\\vox).")
 
 
 def engine_env(settings: dict, work_dir: Path) -> dict:
@@ -173,7 +213,8 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
                 process.wait()
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
-        raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}")
+        raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}"
+                          + _yol_ipucu(command, requests))
     ok = _eos_by_block(log_path, len(requests), cpu)
     audios, bad = {}, []
     for request, finished in zip(requests, ok):

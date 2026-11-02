@@ -196,6 +196,8 @@ CUDA لكنه أعطى الصوت نفسه للبذرة نفسها؛ وقد أُ
 
 *ملاحظة: دعم Vulkan تجريبي حاليًا. وقد بُني واختُبر بنجاح على GTX 1050 Ti. كما أفاد مستخدم خارجي (mitra_tr) بأنه شغّله على AMD 6900 XT. وما زالت هناك حاجة إلى اختبارات أوسع على بطاقات AMD/Intel.*
 
+**اختبار من المجتمع (AMD):** شغّل @mitraTR الإصدار v0.1.1 مع Vulkan على بطاقة AMD Radeon RX 6900 XT في Windows 11: نجح التثبيت وتصميم الصوت والقراءة وواجهة الويب والاختبارات؛ واستغرقت القراءة نحو 0.8-0.9 ث من الحساب لكل ثانية كلام ([التقرير في #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). ثبّت البرنامج في مجلد قصير لا يحتوي مساره إلا على أحرف ASCII (مثل `C:\vox`): على Windows لا يستطيع المحرك فتح مسارات تحتوي على أحرف عربية أو غيرها من الأحرف خارج ASCII. كل التقارير حتى الآن: [العتاد المُختبَر](docs/donanim_testleri.md).
+
 ### بديل: بناء المحرك من المصدر
 
 تحتاج إلى Visual Studio 2022 Build Tools مع "Desktop development with C++" (بما فيها C++ CMake tools)، نحو 7 GB. ثم:
@@ -320,6 +322,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) بطاقات AMD / Intel: جرّب نسخة Vulkan التجريبية
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) أضف جملة إلى مجموعة الاختبار
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) شارك صوتًا صممته، مع وصفه وبذرته
+
+**اختبر بطاقتك الرسومية واكتب تقريرًا:** لا تحتاج إلى البرمجة، يكفي [نموذج تقرير اختبار العتاد](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)؛ لا يوجد بعدُ أي تقرير من بطاقات Intel.
 
 مجموعة الاختبار المشتركة: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt)؛ دليل صوت العلامة التجارية:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md)؛ كيف ترسل شيفرة: [CONTRIBUTING.md](CONTRIBUTING.md).

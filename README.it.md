@@ -219,6 +219,8 @@ Vulkan (integrato + dedicato) l'installer scrive l'indice della GPU dedicata com
 un utente esterno (mitra_tr) ha segnalato di averlo fatto funzionare su una AMD 6900 XT. Servono ancora test più ampi
 sulle schede AMD/Intel.*
 
+**Test della community (AMD):** @mitraTR ha eseguito la v0.1.1 con Vulkan su una AMD Radeon RX 6900 XT con Windows 11: installazione, creazione della voce, lettura, interfaccia web e test hanno funzionato; la lettura ha richiesto circa 0,8-0,9 s di calcolo per ogni secondo di parlato ([resoconto in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installa in una cartella breve il cui percorso contenga solo caratteri ASCII (ad es. `C:\vox`): su Windows il motore non riesce ad aprire percorsi con lettere accentate o altri caratteri non ASCII. Tutti i resoconti finora: [hardware testato](docs/donanim_testleri.md).
+
 ### Alternativa: compilare il motore dal sorgente
 
 Servono i Build Tools di Visual Studio 2022 con «Sviluppo di applicazioni desktop con C++» (inclusi gli strumenti CMake
@@ -370,6 +372,8 @@ Non sai da dove cominciare? Queste quattro piccole issue sono un buon primo pass
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: prova la build Vulkan sperimentale
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Aggiungi una frase al set di test
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Condividi una voce che hai progettato, con la sua descrizione e il seed
+
+**Prova la tua scheda video e scrivi un resoconto:** non serve programmare, basta il [modulo per il resoconto di test hardware](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); non c'è ancora nessun resoconto su schede Intel.
 
 Set di test condiviso: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); guida alla voce del brand:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); come inviare codice: [CONTRIBUTING.md](CONTRIBUTING.md).

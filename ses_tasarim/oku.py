@@ -151,7 +151,7 @@ def main(argv=None) -> int:
     summary = oku(settings, voice_dir, text, args.cikti, progress, args.dil)
     if summary["supheli_satirlar"]:
         print(f"  dinleyip kontrol et (hız kapısı / speed gate): satır {summary['supheli_satirlar']}")
-    print(f"bitti: {summary['ses_sn']} sn ses, {summary['sure_sn']} sn, VRAM tepe {summary['vram_tepe_mb']} MB → {summary['wav']}")
+    print(f"bitti: {summary['ses_sn']} sn ses, {summary['sure_sn']} sn, {motor.vram_metni(summary['vram_tepe_mb'])} → {summary['wav']}")
     return 0
 
 

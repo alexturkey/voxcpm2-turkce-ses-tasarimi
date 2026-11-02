@@ -192,6 +192,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 
 *הערה: התמיכה ב-Vulkan ניסיונית כרגע. היא נבנתה ונבדקה בהצלחה על GTX 1050 Ti. משתמש חיצוני (mitra_tr) דיווח גם שהריץ אותה על AMD 6900 XT. עדיין נדרשות בדיקות רחבות יותר על כרטיסי AMD/Intel.*
 
+**בדיקת קהילה (AMD):** @mitraTR הריץ את v0.1.1 עם Vulkan על AMD Radeon RX 6900 XT ב-Windows 11: ההתקנה, עיצוב הקול, ההקראה, ממשק הרשת והבדיקות עבדו; ההקראה דרשה כ-0.8-0.9 שנ׳ חישוב לכל שנייה של דיבור ([הדוח ב-#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). התקינו בתיקייה קצרה שהנתיב שלה כולל רק תווי ASCII (למשל `C:\vox`): ב-Windows המנוע לא מצליח לפתוח נתיבים עם עברית או תווים אחרים שאינם ASCII. כל הדוחות עד עכשיו: [חומרה שנבדקה](docs/donanim_testleri.md).
+
 ### חלופה: בניית המנוע מקוד המקור
 
 נדרשים Visual Studio 2022 Build Tools עם "Desktop development with C++" (כולל C++ CMake tools), כ-7 GB. לאחר מכן:
@@ -313,6 +315,8 @@ AMD/Intel (ראו «AMD / Intel» למעלה). הרצה על מעבד בלבד (
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) כרטיסי AMD / Intel: נסו את גרסת Vulkan הניסיונית
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) הוסיפו משפט לסט הבדיקה
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) שתפו קול שעיצבתם, עם התיאור והזרע שלו
+
+**בדקו את כרטיס המסך שלכם וכתבו דוח:** לא צריך לתכנת, מספיק [טופס דוח בדיקת חומרה](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); מכרטיסי Intel עדיין אין אף דוח.
 
 סט הבדיקה המשותף: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); מדריך קול מותג:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); איך שולחים קוד: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -224,6 +224,8 @@ dedizierten GPU als `cihaz` in `ayarlar.json`.
 getestet. Außerdem hat ein externer Nutzer (mitra_tr) berichtet, dass sie auf einer AMD 6900 XT läuft. Auf AMD/Intel-Karten
 sind noch breitere Tests nötig.*
 
+**Community-Test (AMD):** @mitraTR hat v0.1.1 mit Vulkan auf einer AMD Radeon RX 6900 XT unter Windows 11 ausgeführt: Installation, Stimmdesign, Vorlesen, Weboberfläche und Tests liefen fehlerfrei; das Vorlesen brauchte etwa 0,8-0,9 s Rechenzeit pro 1 s Sprache ([Bericht in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installiere in einen kurzen Ordner, dessen Pfad nur ASCII-Zeichen enthält (z. B. `C:\vox`): Unter Windows kann die Engine keine Pfade mit Umlauten oder anderen Nicht-ASCII-Zeichen öffnen. Alle bisherigen Berichte: [getestete Hardware](docs/donanim_testleri.md).
+
 ### Alternative: Engine aus dem Quellcode bauen
 
 Benötigt die Visual Studio 2022 Build Tools mit »Desktopentwicklung mit C++« (inkl. C++-CMake-Tools), ~7 GB. Dann:
@@ -377,6 +379,8 @@ Du weißt nicht, wo du anfangen sollst? Diese vier kleinen Issues sind ein guter
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: Teste den experimentellen Vulkan-Build
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Füge dem Testsatz einen Satz hinzu
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Teile eine selbst entworfene Stimme mit Beschreibung und Seed
+
+**Teste deine Grafikkarte, schreib einen Bericht:** Programmierkenntnisse brauchst du nicht, nur das [Formular für Hardware-Testberichte](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); von Intel-Grafikkarten gibt es noch keinen Bericht.
 
 Gemeinsamer Testsatz: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); Leitfaden für Markenstimmen:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); wie du Code einreichst: [CONTRIBUTING.md](CONTRIBUTING.md).

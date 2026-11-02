@@ -217,6 +217,8 @@ installationsprogrammet den dedikerede GPU's indeks som `cihaz` i `ayarlar.json`
 En ekstern bruger (mitra_tr) har desuden rapporteret, at den kører på et AMD 6900 XT. Der er stadig brug for bredere
 test på AMD/Intel-kort.
 
+**Fællesskabstest (AMD):** @mitraTR kørte v0.1.1 med Vulkan på et AMD Radeon RX 6900 XT under Windows 11: installation, stemmedesign, oplæsning, webgrænsefladen og testene virkede alle; oplæsningen tog ca. 0,8-0,9 s beregning pr. sekund tale ([rapport i #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installer i en kort mappe, hvis sti kun indeholder ASCII-tegn (f.eks. `C:\vox`): på Windows kan motoren ikke åbne stier med æ, ø, å eller andre ikke-ASCII-tegn. Alle rapporter indtil nu: [testet hardware](docs/donanim_testleri.md).
+
 ### Alternativ: byg motoren fra kildekoden
 
 Kræver Visual Studio 2022 Build Tools med "Desktop development with C++" (inkl. C++ CMake tools), ~7 GB. Derefter:
@@ -361,6 +363,8 @@ Ved du ikke, hvor du skal starte? Disse fire små issues er et godt første skri
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: prøv det eksperimentelle Vulkan-build
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Tilføj en sætning til testsættet
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Del en stemme, du har designet, med dens beskrivelse og seed
+
+**Test dit grafikkort, skriv en rapport:** du behøver ikke kunne kode, bare brug [formularen til hardwaretestrapporter](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); der er endnu ingen rapport fra et Intel-grafikkort.
 
 Fælles testsæt: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); guide til brandstemme:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); sådan sender du kode: [CONTRIBUTING.md](CONTRIBUTING.md).

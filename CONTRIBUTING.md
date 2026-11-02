@@ -10,6 +10,11 @@ sağlam yapar. Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi b
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Test setine bir cümle ekle (`docs/test_seti/cumleler.txt`)
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Tasarladığın bir sesi tarifi ve tohumuyla paylaş (`docs/marka_sesi_rehberi.md`)
 
+**Kartını test et, rapor yaz.** Kod bilmen gerekmez: kur, bir ses tasarla, bir metin okut, süreleri ve takıldığın yeri
+[donanım test raporu formuna](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) yaz. Çalışmadıysa da yaz; hata da bulgudur. Sonuç adınla
+[test edilmiş donanım listesine](docs/donanim_testleri.md) girer. Özellikle Intel (Arc ya da dahili) ve farklı AMD
+kartlarından rapor arıyoruz.
+
 **Kod göndermek.** Depoyu çatalla (fork), kısa bir dal aç, tek konuya odaklı küçük bir PR gönder. PR şablonundaki
 soruları doldur: ne değişti, nasıl test edildi (komut, kart, Windows sürümü), ikili dosya / ağ çağrısı / CI değişikliği
 var mı. Çalıştığını göstermenin en kısa yolu: `.venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2
@@ -29,6 +34,11 @@ Not sure where to start? These four small issues are a good first step:
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: try the experimental Vulkan build
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Add a sentence to the test set (`docs/test_seti/cumleler.txt`)
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Share a voice you designed, with its description and seed (`docs/marka_sesi_rehberi.md`)
+
+**Test your GPU, write a report.** No coding needed: install, design a voice, read a text, then post the timings and
+anything that got in your way with the [hardware test report form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml). Write even if it failed; an error is a
+finding too. Your result goes into the [tested hardware list](docs/donanim_testleri.md) with your name. Reports from
+Intel (Arc or integrated) and other AMD cards are especially welcome.
 
 **Sending code.** Fork the repo, open a short branch, send a small PR focused on one thing. Fill in the PR template:
 what changed, how it was tested (command, GPU, Windows version), whether there are binary files, network calls or CI

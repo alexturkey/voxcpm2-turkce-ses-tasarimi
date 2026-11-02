@@ -208,6 +208,8 @@ instalador grava o índice da GPU dedicada como `cihaz` em `ayarlar.json`.
 
 **Nota:** o suporte a Vulkan é experimental no momento. Ele foi compilado e testado com sucesso numa GTX 1050 Ti. Além disso, um usuário externo (mitra_tr) relatou tê-lo executado numa AMD 6900 XT. Ainda são necessários testes mais amplos em placas AMD/Intel.
 
+**Teste da comunidade (AMD):** @mitraTR executou a v0.1.1 com Vulkan numa AMD Radeon RX 6900 XT no Windows 11: instalação, criação de voz, leitura, interface web e testes funcionaram; a leitura levou cerca de 0,8-0,9 s de processamento por segundo de fala ([relato em #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Instale numa pasta curta cujo caminho tenha apenas caracteres ASCII (ex.: `C:\vox`): no Windows, o motor não consegue abrir caminhos com acentos ou outros caracteres não ASCII. Todos os relatos até agora: [hardware testado](docs/donanim_testleri.md).
+
 ### Alternativa: compilar o motor a partir do código-fonte
 
 Requer o Visual Studio 2022 Build Tools com "Desktop development with C++" (incl. C++ CMake tools), ~7 GB. Depois:
@@ -339,6 +341,8 @@ Não sabe por onde começar? Estas quatro issues pequenas são um bom primeiro p
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: teste a build Vulkan experimental
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Adicione uma frase ao conjunto de teste
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Compartilhe uma voz que você criou, com a descrição e a semente
+
+**Teste sua placa de vídeo e envie um relato:** não precisa programar, basta o [formulário de relato de teste de hardware](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); ainda não há nenhum relato com placas Intel.
 
 Conjunto de teste compartilhado: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); guia de voz de marca:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); como enviar código: [CONTRIBUTING.md](CONTRIBUTING.md).

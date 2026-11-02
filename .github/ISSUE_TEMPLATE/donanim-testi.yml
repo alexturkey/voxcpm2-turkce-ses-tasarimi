@@ -1,0 +1,87 @@
+name: Donanım test raporu / Hardware test report
+description: Kendi kartında denedin mi? Sonucu yaz, test edilmiş donanım listesine girsin. / Tried it on your GPU? Share the result for the tested hardware list.
+title: "[donanım] <kart> · <işletim sistemi> · <backend>"
+labels: ["donanim-testi"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Teşekkürler! Çalıştıysa da çalışmadıysa da her rapor işe yarar; bilmediğin alanı boş bırakabilirsin.
+        Sonuç [test edilmiş donanım listesine](../blob/main/docs/donanim_testleri.md) adınla eklenir (istemezsen son kutuda söyle).
+        Kurulumu kısa ve yalnız İngilizce harfli bir klasöre yap (ör. `C:\vox`): motor Windows'ta Türkçe harfli yolları açamıyor.
+
+        Thank you! Every report helps, whether it worked or not; leave any field you do not know empty.
+        Results go into the [tested hardware list](../blob/main/docs/donanim_testleri.md) with your name (say so in the last box if you prefer not).
+        Install into a short ASCII-only folder (e.g. `C:\vox`): on Windows the engine cannot open paths with non-ASCII characters.
+  - type: input
+    id: gpu
+    attributes:
+      label: Ekran kartı ve bellek / GPU and memory
+      placeholder: "AMD Radeon RX 6900 XT, 16 GB"
+    validations:
+      required: true
+  - type: input
+    id: surucu
+    attributes:
+      label: Sürücü sürümü / Driver version
+      description: "NVIDIA: `nvidia-smi`; AMD/Intel: Aygıt Yöneticisi > Ekran bağdaştırıcıları / Device Manager > Display adapters"
+      placeholder: "32.0.21045.16010"
+  - type: input
+    id: isletim
+    attributes:
+      label: İşletim sistemi / Operating system
+      placeholder: "Windows 11 Home 10.0.26300 · Ubuntu 24.04 · macOS 27"
+    validations:
+      required: true
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Backend
+      options:
+        - CUDA (NVIDIA)
+        - Vulkan (kur.ps1 -Vulkan, deneysel / experimental)
+        - Metal (macOS)
+        - CPU
+    validations:
+      required: true
+  - type: input
+    id: surum
+    attributes:
+      label: Sürüm / Version
+      description: Arayüz başlığındaki sürüm ya da indirdiğin zip / version in the UI title or the zip you downloaded
+      placeholder: "v0.2.0"
+  - type: textarea
+    id: kurulum
+    attributes:
+      label: Kurulum çıktısı / Installer output
+      description: "`kur.ps1` (ya da `kur.sh`) son satırları; `KURULUM_OK` göründü mü? / last lines of the installer; did `KURULUM_OK` appear?"
+      render: text
+  - type: textarea
+    id: hiz
+    attributes:
+      label: Süreler / Timings
+      description: |
+        `oku` ya da `tasarla` komutunun son satırı yeterli (ör. `bitti: 8.64 sn ses, 30.1 sn`). İstersen arayüzdeki özet.
+        The last line of `oku` or `tasarla` is enough (e.g. `bitti: 8.64 sn ses, 30.1 sn`), or the summary from the UI.
+      placeholder: "okuma: 8.64 sn ses, 7.9 sn hesap · tasarım: 1 çeşit 15 sn"
+  - type: checkboxes
+    id: denenen
+    attributes:
+      label: Ne çalıştı? / What worked?
+      options:
+        - label: Kurulum / Install
+        - label: Ses tasarımı / Voice design
+        - label: Okuma / Reading
+        - label: Web arayüzü / Web UI
+        - label: Testler (`python -m unittest discover -s tests`) / Tests
+  - type: textarea
+    id: sorunlar
+    attributes:
+      label: Sorunlar ve notlar / Problems and notes
+      description: Hata çıktısının ilk birkaç satırı çok yardımcı olur. / The first few lines of any error help a lot.
+      render: text
+  - type: input
+    id: ad
+    attributes:
+      label: Listede adın / Your name in the list
+      description: Boş bırakırsan GitHub adınla yazarız; "anonim" yazarsan adsız. / Empty = your GitHub name; write "anonymous" to stay unnamed.

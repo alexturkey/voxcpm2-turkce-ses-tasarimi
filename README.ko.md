@@ -207,6 +207,8 @@ AMD나 Intel 하드웨어에서는 저희가 직접 테스트하지 **않았습�
 
 **참고:** Vulkan 지원은 현재 실험 단계입니다. GTX 1050 Ti에서 빌드와 테스트에 성공했습니다. 또한 외부 사용자(mitra_tr)가 AMD 6900 XT에서도 실행했다고 알려 왔습니다. AMD/Intel 카드에서는 더 폭넓은 테스트가 필요합니다.
 
+**커뮤니티 테스트(AMD):** @mitraTR 님이 Windows 11의 AMD Radeon RX 6900 XT에서 v0.1.1을 Vulkan으로 실행했습니다. 설치, 음성 디자인, 읽기, 웹 UI, 테스트가 모두 정상 동작했고, 읽기는 음성 1초당 약 0.8~0.9초의 연산 시간이 걸렸습니다([#6의 보고](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). 경로에 ASCII 문자만 있는 짧은 폴더에 설치하세요(예: `C:\vox`). Windows에서는 엔진이 한글 등 ASCII가 아닌 문자가 들어간 경로를 열지 못합니다. 지금까지의 모든 보고: [테스트된 하드웨어](docs/donanim_testleri.md).
+
 ### 대안: 소스에서 엔진 빌드하기
 
 "Desktop development with C++"(C++ CMake tools 포함)가 설치된 Visual Studio 2022 Build Tools가 필요하며, 약 7 GB입니다. 그다음:
@@ -337,6 +339,8 @@ UI에서 그 허락을 확인하도록 요청합니다. 목소리 디자인에�
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: 실험적인 Vulkan 빌드 사용해 보기
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) 테스트 세트에 문장 하나 추가하기
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) 직접 디자인한 목소리를 설명과 시드와 함께 공유하기
+
+**내 그래픽카드로 테스트하고 보고서를 써 주세요:** 코딩은 필요 없고 [하드웨어 테스트 보고 양식](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)만 작성하면 됩니다. Intel 그래픽카드 보고는 아직 없습니다.
 
 공용 테스트 세트: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt), 브랜드 보이스 가이드:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md), 코드 보내는 방법: [CONTRIBUTING.md](CONTRIBUTING.md).

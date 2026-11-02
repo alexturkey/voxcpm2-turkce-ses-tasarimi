@@ -184,7 +184,7 @@ def main(argv=None) -> int:
         data = None
     for note in result["notlar"]:
         print("not:", note)
-    print(f"bitti: {result['ses_sn']} sn yapay ses, {result['sure_sn']} sn, VRAM tepe {result['vram_tepe_mb']} MB "
+    print(f"bitti: {result['ses_sn']} sn yapay ses, {result['sure_sn']} sn, {motor.vram_metni(result['vram_tepe_mb'])} "
           f"→ {result['wav']}")
     return 0
 

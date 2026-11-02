@@ -209,6 +209,8 @@ Ubuntu 24.04 Docker, CUDA 12.8.1 (विवरण [docs/linux.md](docs/linux.md)
 
 *नोट: Vulkan सपोर्ट अभी प्रायोगिक है। इसे GTX 1050 Ti पर सफलतापूर्वक बिल्ड और टेस्ट किया गया है। एक बाहरी यूज़र (mitra_tr) ने इसे AMD 6900 XT पर चलाने की भी जानकारी दी है। AMD/Intel कार्डों पर अभी और व्यापक टेस्टिंग की ज़रूरत है।*
 
+**समुदाय परीक्षण (AMD):** @mitraTR ने Windows 11 पर AMD Radeon RX 6900 XT में Vulkan के साथ v0.1.1 चलाया: इंस्टॉल, आवाज़ डिज़ाइन, पढ़ना, वेब इंटरफ़ेस और टेस्ट सब ठीक चले; पढ़ने में हर 1 सेकंड बोली के लिए लगभग 0.8-0.9 सेकंड गणना लगी ([#6 में रिपोर्ट](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))। ऐसे छोटे फ़ोल्डर में इंस्टॉल करें जिसके पथ में केवल ASCII अक्षर हों (जैसे `C:\vox`): Windows पर इंजन हिंदी या अन्य गैर-ASCII अक्षरों वाले पथ नहीं खोल पाता। अब तक की सभी रिपोर्टें: [जाँचा गया हार्डवेयर](docs/donanim_testleri.md)।
+
 ### विकल्प: इंजन को सोर्स से बिल्ड करें
 
 "Desktop development with C++" (C++ CMake tools सहित) के साथ Visual Studio 2022 Build Tools चाहिए, ~7 GB। फिर:
@@ -341,6 +343,8 @@ AI-जनरेटेड का लेबल लगाएँ।
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: प्रायोगिक Vulkan बिल्ड आज़माएँ
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) टेस्ट सेट में एक वाक्य जोड़ें
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) अपनी डिज़ाइन की हुई आवाज़ उसके विवरण और सीड के साथ शेयर करें
+
+**अपना ग्राफ़िक्स कार्ड जाँचें, रिपोर्ट लिखें:** कोडिंग की ज़रूरत नहीं, बस [हार्डवेयर टेस्ट रिपोर्ट फ़ॉर्म](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) भरें; Intel ग्राफ़िक्स कार्ड से अभी तक कोई रिपोर्ट नहीं है।
 
 साझा टेस्ट सेट: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); ब्रांड वॉइस गाइड:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); कोड कैसे भेजें: [CONTRIBUTING.md](CONTRIBUTING.md)।

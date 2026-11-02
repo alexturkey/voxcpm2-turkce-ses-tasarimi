@@ -1,5 +1,33 @@
 # Sürüm notları / Release notes
 
+## Unreleased
+
+**TR**
+- AMD ilk topluluk testi (@mitraTR, #6): Windows 11 + AMD Radeon RX 6900 XT + Vulkan (v0.1.1) ile kurulum, tasarım,
+  okuma, arayüz ve testler çalıştı; okuma 1 sn konuşma için ~0,8-0,9 sn. README'lere (30 dil) topluluk testi notu.
+- Türkçe harfli yol: motor Windows'ta yalnız ASCII yolları açabiliyor. `kur.ps1` ASCII olmayan `-Kok` yolunda indirmeye
+  başlamadan anlaşılır mesajla durur (repo klasörü ASCII değilse uyarır); motor bu yüzden düşerse hata mesajına
+  hangi yolun sorun olduğu ve `C:\vox` önerisi eklenir. Test: `tests/test_vram_ve_yol.py`.
+- VRAM ölçümü: tepe VRAM yalnız NVIDIA (`nvidia-smi`) ve macOS'ta ölçülür. AMD/Intel'de artık yanıltıcı `0 MB` yazılmaz:
+  `ozet.json`'da `vram_tepe_mb: null`, arayüz özeti (30 dil) ve komut satırı VRAM kısmını göstermez ya da
+  "ölçülemedi" der; `nvidia-smi` yoksa ölçüm döngüsü boşuna süreç açmaz. Test: `tests/test_vram_ve_yol.py`.
+- Gönüllü donanım testi: yeni issue formu *Donanım test raporu* (kart, sürücü, işletim sistemi, backend, kurulum
+  çıktısı, süreler, sorunlar), [test edilmiş donanım listesi](docs/donanim_testleri.md), README'lerde ve
+  CONTRIBUTING'de "Kartını test et, rapor yaz" bağlantısı. Intel kartından rapor hâlâ aranıyor.
+
+**EN**
+- First AMD community test (@mitraTR, #6): Windows 11 + AMD Radeon RX 6900 XT + Vulkan (v0.1.1) ran install, design,
+  reading, the UI and the tests; reading took ~0.8-0.9 s per 1 s of speech. Community test note in all 30 READMEs.
+- Non-ASCII paths: on Windows the engine only opens ASCII-only paths. `kur.ps1` now stops with a clear message on a
+  non-ASCII `-Kok` before downloading anything (and warns about a non-ASCII repo folder); if the engine fails for this
+  reason, the error names the offending path and suggests `C:\vox`. Test: `tests/test_vram_ve_yol.py`.
+- VRAM reading: peak VRAM is measured only on NVIDIA (`nvidia-smi`) and macOS. On AMD/Intel the misleading `0 MB` is
+  gone: `ozet.json` stores `vram_tepe_mb: null`, the UI summary (30 languages) and the CLI leave the VRAM part out or say
+  it was not measured; without `nvidia-smi` the watcher stops polling. Test: `tests/test_vram_ve_yol.py`.
+- Volunteer hardware testing: new *Hardware test report* issue form (GPU, driver, OS, backend, installer output,
+  timings, problems), a [tested hardware list](docs/donanim_testleri.md), and a "Test your GPU, write a report" link in
+  the READMEs and CONTRIBUTING. An Intel GPU report is still wanted.
+
 ## v0.2.0 — 2026-11-02
 
 **TR**

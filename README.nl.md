@@ -208,6 +208,8 @@ Intel-hardware: probeer je het, plaats dan alsjeblieft het resultaat in Discussi
 
 **Let op:** Vulkan-ondersteuning is op dit moment experimenteel. Ze is met succes gebouwd en getest op een GTX 1050 Ti. Daarnaast heeft een externe gebruiker (mitra_tr) gemeld dat hij het op een AMD 6900 XT heeft gedraaid. Er zijn nog bredere tests op AMD/Intel-kaarten nodig.
 
+**Communitytest (AMD):** @mitraTR draaide v0.1.1 met Vulkan op een AMD Radeon RX 6900 XT onder Windows 11: installatie, stemontwerp, voorlezen, de webinterface en de tests werkten allemaal; voorlezen kostte ongeveer 0,8-0,9 s rekentijd per seconde spraak ([verslag in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installeer in een korte map waarvan het pad alleen ASCII-tekens bevat (bijv. `C:\vox`): op Windows kan de engine geen paden met accenten of andere niet-ASCII-tekens openen. Alle verslagen tot nu toe: [geteste hardware](docs/donanim_testleri.md).
+
 ### Alternatief: de engine vanuit de broncode bouwen
 
 Vereist Visual Studio 2022 Build Tools met "Desktop development with C++" (incl. C++ CMake tools), ~7 GB. Daarna:
@@ -339,6 +341,8 @@ Weet je niet waar je moet beginnen? Deze vier kleine issues zijn een goede eerst
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: probeer de experimentele Vulkan-build
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Voeg een zin toe aan de testset
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Deel een stem die je hebt ontworpen, met de beschrijving en de seed
+
+**Test je videokaart, schrijf een verslag:** programmeren is niet nodig, alleen het [formulier voor hardwaretestverslagen](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); er is nog geen verslag van een Intel-kaart.
 
 Gedeelde testset: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); gids voor een merkstem:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); hoe je code instuurt: [CONTRIBUTING.md](CONTRIBUTING.md).

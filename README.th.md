@@ -207,6 +207,8 @@ CUDA 12.8.1 (รายละเอียดใน [docs/linux.md](docs/linux.md)
 
 **หมายเหตุ:** ขณะนี้การรองรับ Vulkan ยังอยู่ในขั้นทดลอง สร้างและทดสอบสำเร็จแล้วบน GTX 1050 Ti นอกจากนี้ยังมีผู้ใช้ภายนอก (mitra_tr) รายงานว่ารันบน AMD 6900 XT ได้ด้วย ยังต้องทดสอบบนการ์ด AMD/Intel ให้กว้างขวางกว่านี้
 
+**การทดสอบจากชุมชน (AMD):** @mitraTR รัน v0.1.1 ด้วย Vulkan บน AMD Radeon RX 6900 XT ใน Windows 11: การติดตั้ง การออกแบบเสียง การอ่าน เว็บอินเทอร์เฟซ และชุดทดสอบทำงานได้ทั้งหมด การอ่านใช้เวลาประมวลผลราว 0.8-0.9 วินาทีต่อเสียงพูด 1 วินาที ([รายงานใน #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)) ให้ติดตั้งในโฟลเดอร์สั้น ๆ ที่พาธมีแต่อักขระ ASCII (เช่น `C:\vox`) เพราะบน Windows เอนจินเปิดพาธที่มีอักษรไทยหรืออักขระนอก ASCII อื่นไม่ได้ รายงานทั้งหมดจนถึงตอนนี้: [ฮาร์ดแวร์ที่ทดสอบแล้ว](docs/donanim_testleri.md)
+
 ### ทางเลือก: สร้างเอนจินจากซอร์ส
 
 ต้องมี Visual Studio 2022 Build Tools พร้อม "Desktop development with C++" (รวม C++ CMake tools) ~7 GB จากนั้น:
@@ -338,6 +340,8 @@ zip Vulkan แบบทดลอง `kur.ps1 -Vulkan` มีผู้ใช้�
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: ลองบิลด์ Vulkan แบบทดลอง
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) เพิ่มประโยคลงในชุดทดสอบ
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) แชร์เสียงที่คุณออกแบบ พร้อมคำอธิบายและซีด
+
+**ทดสอบการ์ดจอของคุณ แล้วเขียนรายงาน:** ไม่ต้องเขียนโค้ด แค่กรอก [แบบฟอร์มรายงานผลทดสอบฮาร์ดแวร์](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) ยังไม่มีรายงานจากการ์ดจอ Intel เลย
 
 ชุดทดสอบที่ใช้ร่วมกัน: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt) คู่มือเสียงแบรนด์:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md) วิธีส่งโค้ด: [CONTRIBUTING.md](CONTRIBUTING.md)

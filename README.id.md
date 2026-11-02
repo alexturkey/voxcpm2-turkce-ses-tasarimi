@@ -220,6 +220,8 @@ ke dalam `ayarlar.json`.
 Seorang pengguna eksternal (mitra_tr) juga melaporkan berhasil menjalankannya di AMD 6900 XT. Pengujian yang lebih luas
 di kartu AMD/Intel masih diperlukan.*
 
+**Uji komunitas (AMD):** @mitraTR menjalankan v0.1.1 dengan Vulkan di AMD Radeon RX 6900 XT pada Windows 11: instalasi, desain suara, pembacaan, antarmuka web, dan pengujian semuanya berhasil; pembacaan butuh sekitar 0,8-0,9 dtk komputasi per 1 dtk ucapan ([laporan di #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Pasang di folder pendek yang jalurnya hanya berisi karakter ASCII (mis. `C:\vox`): di Windows mesin tidak bisa membuka jalur yang berisi karakter non-ASCII. Semua laporan sejauh ini: [perangkat keras yang sudah diuji](docs/donanim_testleri.md).
+
 ### Alternatif: build engine dari kode sumber
 
 Membutuhkan Visual Studio 2022 Build Tools dengan "Desktop development with C++" (termasuk C++ CMake tools), ~7 GB. Lalu:
@@ -361,6 +363,8 @@ Bingung mulai dari mana? Empat issue kecil ini adalah langkah awal yang bagus:
 - [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) AMD / Intel: coba build Vulkan eksperimental
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Tambahkan satu kalimat ke set uji
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Bagikan suara yang kamu desain, beserta deskripsi dan seed-nya
+
+**Uji kartu grafismu, tulis laporan:** tidak perlu bisa koding, cukup isi [formulir laporan uji perangkat keras](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); belum ada laporan dari kartu grafis Intel.
 
 Set uji bersama: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); panduan suara merek:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); cara mengirim kode: [CONTRIBUTING.md](CONTRIBUTING.md).
