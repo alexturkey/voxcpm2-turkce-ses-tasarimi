@@ -19,7 +19,8 @@ MODUL = JS[JS.index("// ── Açılır menü"):JS.index("Acilir.kur();Durak.ku
 
 SAHTE = r"""
 const ta={value:'',selectionStart:0,selectionEnd:0,focus(){},setSelectionRange(a,b){this.selectionStart=a;this.selectionEnd=b;}};
-const kap={setAttribute(){},removeAttribute(){},querySelectorAll(){return [];},querySelector(){return null;}};
+const kap={setAttribute(){},removeAttribute(){},querySelectorAll(){return [];},querySelector(){return null;},style:{},offsetWidth:200};
+const innerWidth=1000,innerHeight=800;  // menü sığdırma (Acilir.sigdir) için görünür alan / visible area for menu fitting
 const $=id=>id==='okuma_metni'?ta:kap;
 const document={documentElement:{dir:'ltr',lang:'tr'}};
 const t=(k,v)=>k+(v?JSON.stringify(v):'');
