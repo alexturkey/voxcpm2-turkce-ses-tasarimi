@@ -3,6 +3,14 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Çeşit kartında *Okuma listeme ekle* → ad → ✓/Enter artık tek mesaj yazar (*Okuma listesine eklendi*) ve 3 sn sonra
+  satır boşalır. Eskiden ad kaydının *Ad değişti* yazısı ikinci yazının "önceki durumu" sayılıyordu: 3 sn sonra geri
+  gelip kalıyor, sonraki eklemede yine dönüyordu. Kısa bilgi artık başka bir kısa bilgiyi geri getirmez. Durum satırı
+  boşken de yerini korur (tek satır, uzun yazı `…` ile kısalır, hata yazısı açılır), kartlar 26 px aşağı kaymaz.
+  Ölçüm: tr, de, ar × 767×794 ve 390, işlemden önce / hemen sonra / 4 sn / 8 sn kartın yeri ve boyu aynı.
+- *Ses tasarla* formu (*Üretim adı*, çeşit sayısı, örnek tarif, tarif, *Örnek cümle*, *Duymak istediğin metin*) sayfa
+  yenilenince kaybolmaz: okuma metniyle aynı kapıdan tarayıcının yerel belleğine yazılır. Test: `tests/test_arayuz_bilgi.py`,
+  `tests/test_arayuz_okuma.py`.
 - Menü açıldığı zeminde kalır: *Duymak istediğin metin* penceresindeki *Taslaklar* menüsü pencerenin sağından
   15-18 px, çeşit kartındaki ⋯ menüsü karttan 31-48 px dışarı çıkıyordu; menü artık açıldığı pencerenin ya da kartın
   kutusuna sığar (genişliği o kutuya bağlı, kutu açılıp uzarsa yukarı alınır; sağdan sola dillerde aynı). Pencerenin
@@ -180,6 +188,15 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Variant card *Add to my reading list* → name → ✓/Enter now shows one message (*Added to the reading list*) and the
+  line clears after 3 s. The name save's *Name changed* notice used to be kept as the "previous state" of the second
+  one, so it came back after 3 s and stayed, and returned on the next add. A notice no longer brings back another
+  notice. The status line keeps its place when empty (one line, long text ends in `…`, an error expands), so the cards
+  no longer drop 26 px. Measured: tr, de, ar × 767×794 and 390, card position and height equal before / right after /
+  4 s / 8 s.
+- The *Design a voice* form (*Production name*, variant count, example prompt, prompt, *Sample sentence*, *Text you
+  want to hear*) survives a page reload: saved to browser storage through the same gate as the reading text. Tests:
+  `tests/test_arayuz_bilgi.py`, `tests/test_arayuz_okuma.py`.
 - Menus stay on the surface they open from: the *Drafts* menu in the *Text you want to hear* dialog stuck 15-18 px
   out of the dialog and the variant card's ⋯ menu 31-48 px out of the card; a menu now fits the dialog or card it opens
   from (its width follows that box, it moves up if an opened box makes it taller; same in right-to-left languages). The
