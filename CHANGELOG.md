@@ -194,7 +194,7 @@
   notice. The status line keeps its place when empty (one line, long text ends in `…`, an error expands), so the cards
   no longer drop 26 px. Measured: tr, de, ar × 767×794 and 390, card position and height equal before / right after /
   4 s / 8 s.
-- The *Design a voice* form (*Production name*, variant count, example prompt, prompt, *Sample sentence*, *Text you
+- The *Design a voice* form (*Generation name*, variant count, example prompt, prompt, *Sample sentence*, *Text you
   want to hear*) survives a page reload: saved to browser storage through the same gate as the reading text. Tests:
   `tests/test_arayuz_bilgi.py`, `tests/test_arayuz_okuma.py`.
 - Menus stay on the surface they open from: the *Drafts* menu in the *Text you want to hear* dialog stuck 15-18 px
