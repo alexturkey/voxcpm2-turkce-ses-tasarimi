@@ -35,25 +35,37 @@ class MotorHatasi(RuntimeError):
     pass
 
 
-def _gpu_used_mb() -> int:
-    """GPU'nun kullandığı bellek (MB). macOS: ioreg 'In use system memory' (birleşik bellek, sudo gerekmez).
-    GPU memory in use. macOS: ioreg 'In use system memory' (unified memory, no sudo)."""
+def _gpu_used_mb(backend: str = "cuda", pid: int | None = None) -> int:
+    """GPU belleği (MB). CUDA/macOS toplam kullanımı, Windows Vulkan motor sürecinin ayrılmış belleğini ölçer.
+    GPU memory in MB. CUDA/macOS report total use; Windows Vulkan reports dedicated memory for the engine PID."""
     if sys.platform == "darwin":
         out = subprocess.run(["ioreg", "-r", "-d", "1", "-c", "IOAccelerator"], capture_output=True, text=True,
                              timeout=5).stdout
         return int(out.split('"In use system memory"=')[1].split(",")[0].split("}")[0]) // (1024 * 1024)
+    if WINDOWS and backend == "vulkan" and pid is not None:
+        # Windows GPU Performance Counters expose one row per PID and adapter. Summing DedicatedUsage gives the
+        # engine's own VRAM allocation even when the machine has both an iGPU and a discrete AMD GPU.
+        script = (
+            f"$f=\"Name LIKE 'pid_{int(pid)}_%'\";"
+            "$n=(Get-CimInstance Win32_PerfFormattedData_GPUPerformanceCounters_GPUProcessMemory -Filter $f "
+            "| Measure-Object DedicatedUsage -Sum).Sum;"
+            "if($null -eq $n){0}else{[long]($n/1MB)}"
+        )
+        out = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+                             capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
+        return int(out.strip().splitlines()[-1])
     out = subprocess.run(["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
                          capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
     return int(out.strip().splitlines()[0])
 
 
 class VramWatcher:
-    """VRAM tepe ölçümü: nvidia-smi, macOS'ta ioreg. Ölçülemezse (AMD/Intel, nvidia-smi yok) peak_mb None kalır;
-    0 yazılmaz, çünkü 0 "hiç bellek kullanmadı" diye okunur.
-    Peak VRAM via nvidia-smi, or ioreg on macOS. When it cannot be measured (AMD/Intel, no nvidia-smi) peak_mb
-    stays None instead of a misleading 0."""
+    """CUDA, Metal ve Windows Vulkan tepe VRAM ölçümü. Ölçülemezse peak_mb None kalır, yanıltıcı 0 yazılmaz.
+    Peak VRAM for CUDA, Metal and Windows Vulkan. When unavailable, peak_mb stays None instead of a misleading 0."""
 
-    def __init__(self):
+    def __init__(self, backend: str = "cuda", pid: int | None = None):
+        self.backend = backend
+        self.pid = pid
         self.peak_mb = None
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._loop, daemon=True)
@@ -61,7 +73,7 @@ class VramWatcher:
     def _loop(self):
         while not self._stop.is_set():
             try:
-                self.peak_mb = max(self.peak_mb or 0, _gpu_used_mb())
+                self.peak_mb = max(self.peak_mb or 0, _gpu_used_mb(self.backend, self.pid))
             except FileNotFoundError:  # ölçüm aracı yok: boşuna süreç açılmaz / no tool, stop polling
                 return
             except Exception:
@@ -85,7 +97,7 @@ def vram_max(*values):
 
 def vram_metni(mb) -> str:
     """Komut satırı özeti için VRAM parçası. / VRAM part of the command-line summary."""
-    return f"VRAM tepe {mb} MB" if mb is not None else "VRAM ölçülemedi (yalnız NVIDIA ve macOS)"
+    return f"VRAM tepe {mb} MB" if mb is not None else "VRAM ölçülemedi"
 
 
 def ascii_olmayan_yol(paths):
@@ -200,23 +212,24 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None, 
                "--log", "--log-file", str(log_path), "--metrics"]
     cpu = settings.get("backend", "cuda") == "cpu"
     started = time.time()
-    with (work_dir / "stdout.txt").open("w", encoding="utf-8") as out, VramWatcher() as watcher:
+    with (work_dir / "stdout.txt").open("w", encoding="utf-8") as out:
         env = engine_env(settings, work_dir)
         if sonda:
             env.update(kelime_zamani.probe_env())  # kelime zamanı: 21. katman dikkati log'a (yama c1)
         process = subprocess.Popen(command, env=env, stdout=out, stderr=subprocess.STDOUT,
                                    creationflags=NO_WINDOW)
-        try:
-            while process.poll() is None:
-                if progress:
-                    progress(sum(_eos_by_block(log_path, len(requests), cpu)), len(requests), time.time() - started)
-                time.sleep(3)
-        finally:
-            # hata ya da Ctrl+C: motor yetim kalmasın, çalışma klasöründeki dosyalar serbest kalsın (silinebilsin)
-            # on error or Ctrl+C: do not orphan the engine; release its files so the work folder can be deleted
-            if process.poll() is None:
-                process.kill()
-                process.wait()
+        with VramWatcher(settings.get("backend", "cuda"), getattr(process, "pid", None)) as watcher:
+            try:
+                while process.poll() is None:
+                    if progress:
+                        progress(sum(_eos_by_block(log_path, len(requests), cpu)), len(requests), time.time() - started)
+                    time.sleep(3)
+            finally:
+                # hata ya da Ctrl+C: motor yetim kalmasın, çalışma klasöründeki dosyalar serbest kalsın (silinebilsin)
+                # on error or Ctrl+C: do not orphan the engine; release its files so the work folder can be deleted
+                if process.poll() is None:
+                    process.kill()
+                    process.wait()
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
         raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}"
