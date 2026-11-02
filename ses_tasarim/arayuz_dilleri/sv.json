@@ -138,11 +138,12 @@
  "dinleme_bas": "Text du vill höra",
  "dinleme_alt": "Varje variants fasta röst läser den · som fliken Läs upp med den här rösten",
  "dinleme_ph": "En mening per rad. Lämna tomt för att höra exempelmeningen.",
- "dinleme_ipucu": "Rad = mening · tom rad = styckepaus · ~{sn} s",
  "dinleme_bos": "Tomt: exempelmeningen läses upp",
  "dinleme_ek": "Extra tid: en uppläsning per variant · {n} varianter ≈ +{dk} min (uppskattat)",
  "dinleme_hata": "Uppläsningen med den fasta rösten avbröts; försök igen med Läs upp med den här rösten.",
  "ham_bas": "Rå designröst · skapad en gång, blir aldrig exakt likadan igen",
  "kalici_bas": "Det här är rösten du kommer att höra",
- "kalici_alt": "Uppläst med referensen · seed {n} · likadan vid varje uppläsning"
+ "kalici_alt": "Uppläst med referensen · seed {n} · likadan vid varje uppläsning",
+ "tamam": "OK",
+ "dinleme_ozet": "{n} rader · {b} pauser"
 }

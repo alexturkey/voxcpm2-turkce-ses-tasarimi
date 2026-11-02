@@ -98,7 +98,7 @@ button.sesdugme:hover,button.sesdugme[aria-expanded=true]{border-color:var(--acc
 .sure{display:flex;align-items:center;gap:8px;margin:5px 0 0;font-size:.78rem;color:var(--muted)}.sure[hidden]{display:none}
 .cubuk{flex:1;height:4px;background:var(--cizgi2);border-radius:2px;overflow:hidden}.cubuk i{display:block;height:100%;width:0;background:var(--acc);transition:width .2s}
 .sure.asti .cubuk i{background:var(--err)}.sure.asti span{color:var(--err)}.sure span{flex:none}
-.dinlekutu{margin-top:6px;padding:4px 10px 6px;border:1.5px solid var(--acc);border-radius:8px;background:color-mix(in srgb,var(--acc) 6%,transparent)}.form .dinlekutu label{display:flex;flex-direction:column;gap:1px;margin:0 0 3px}.dinlekutu b,.kalici b{color:var(--baslik);font-size:.85rem}.dinlekutu small,.cesit .ham small,.kalici small{color:var(--muted);font-size:.75rem}#p1 .form{padding-block:8px}#p1 .ipucu{margin-top:3px}.soluk{color:var(--muted)}.cesit .ham{display:flex;flex-direction:column;gap:3px}.kalici{display:flex;flex-direction:column;gap:5px;padding:6px 8px 8px;border:1.5px solid var(--acc);border-radius:7px;background:color-mix(in srgb,var(--acc) 7%,transparent)}.kalici audio{width:100%;height:32px}.kalici .dugmeler{flex:none}.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
+.dinlekutu{margin-top:6px;padding:4px 10px 6px;border:1.5px solid var(--acc);border-radius:8px;background:color-mix(in srgb,var(--acc) 6%,transparent)}.form .dinlekutu label{display:flex;flex-direction:column;gap:1px;margin:0 0 3px}.dinlekutu b,.kalici b{color:var(--baslik);font-size:.85rem}.dinlekutu small,.cesit .ham small,.kalici small{color:var(--muted);font-size:.75rem}#p1 .form{padding-block:8px}#dinleme_metni{cursor:pointer}#dpencere{position:fixed;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.45)}#dpencere[hidden]{display:none}.dpkutu{display:flex;flex-direction:column;gap:6px;width:min(720px,100%);max-height:100%;box-sizing:border-box;padding:12px 14px;background:var(--panel);border:1.5px solid var(--acc);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4)}.dpbas{display:flex;flex-direction:column;gap:1px}.dpbas b{color:var(--baslik);font-size:.95rem}.dpbas small{color:var(--muted);font-size:.78rem}#dp_govde #defterkap{flex:none}#dp_govde .defter{height:min(46vh,340px)}.dpdug{display:flex;justify-content:flex-end;gap:8px}#p1 .ipucu{margin-top:3px}.soluk{color:var(--muted)}.cesit .ham{display:flex;flex-direction:column;gap:3px}.kalici{display:flex;flex-direction:column;gap:5px;padding:6px 8px 8px;border:1.5px solid var(--acc);border-radius:7px;background:color-mix(in srgb,var(--acc) 7%,transparent)}.kalici audio{width:100%;height:32px}.kalici .dugmeler{flex:none}.uzun{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;color:var(--err);font-size:.82rem}.uzun[hidden]{display:none}
 .uzun button{padding:4px 10px;font-size:.8rem;font-weight:600;white-space:normal;text-align:start;max-width:100%}
 .ipucu{display:block;margin:5px 0 0;color:var(--soluk);font-size:.78rem;line-height:1.35}
 /* Uygulama düzeni: sayfa kaymaz, kart pencereyi doldurur; dar ya da kısa ekranda normal kayan sayfa. */
@@ -131,7 +131,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
 <small id="tmetin_ipucu" class="ipucu"></small>
 <div class="dinlekutu"><label for="dinleme_metni"><b><span aria-hidden="true">↻</span> <span data-t="dinleme_bas">Duymak istediğin metin</span></b><small data-t="dinleme_alt">Her çeşidin kalıcı sesi bunu okur · Bu sesle oku sekmesiyle aynı</small></label>
-<textarea spellcheck="false" id="dinleme_metni" rows="4" data-t-ph="dinleme_ph" aria-describedby="dinleme_ipucu"></textarea>
+<textarea spellcheck="false" id="dinleme_metni" rows="4" readonly data-t-ph="dinleme_ph" aria-haspopup="dialog" aria-describedby="dinleme_ipucu"></textarea>
 <small id="dinleme_ipucu" class="ipucu" aria-live="polite"></small></div>
 <div class="sag ilerlesatir"><div id="p_tasarla" class="ilerle" hidden><div class="pcubuk" aria-hidden="true"><i></i></div><span class="krono">0:00</span></div><button id="btn_tasarla" data-t="tasarla">Tasarla</button></div>
 </div><div class="uretimler">
@@ -164,6 +164,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 
 
 </main>
+<div id="dpencere" hidden><div class="dpkutu" role="dialog" aria-modal="true" aria-labelledby="dp_bas"><div class="dpbas"><b id="dp_bas"><span aria-hidden="true">↻</span> <span data-t="dinleme_bas">Duymak istediğin metin</span></b><small data-t="dinleme_alt"></small></div><small class="ipucu" data-t="ometin"></small><div id="dp_govde"></div><div class="dpdug"><button type="button" class="ikincil" id="dp_vazgec" data-t="vazgec">Vazgeç</button><button type="button" id="dp_tamam" data-t="tamam">Tamam</button></div></div></div>
 <div id="acilir" role="menu" hidden></div>
 <script>
 const $=id=>document.getElementById(id);
@@ -252,11 +253,41 @@ $('tasarim_metni').addEventListener('input',sureGuncelle);
 // Duymak istediğin metin: uzunluk ve tasarıma eklenen okuma süresi (sunucunun tahmini; boşsa örnek cümle okunur).
 // Listening text: its length and the reading time added to the design (server estimate; empty reads the sample sentence).
 let dinlemeZaman=0,dinlemeSayac=0;function dinlemeGuncelle(){clearTimeout(dinlemeZaman);dinlemeZaman=setTimeout(dinlemeCiz,300);}
-async function dinlemeCiz(){const m=$('dinleme_metni').value.trim(),metin=m||$('tasarim_metni').value.trim(),n=Math.max(1,Math.min(50,+$('cesit').value||3)),k=++dinlemeSayac;
+async function dinlemeCiz(){const m=DinlemeDefter.deger.trim(),metin=m||$('tasarim_metni').value.trim(),n=Math.max(1,Math.min(50,+$('cesit').value||3)),k=++dinlemeSayac;
  if(!metin){$('dinleme_ipucu').textContent=t('dinleme_bos');return;}
  const s=await api('/api/sure',{metin,cesit:n,ornek:$('ornek').value}).catch(()=>null);if(k!==dinlemeSayac||!s||s.ek_sn==null)return;
- $('dinleme_ipucu').textContent=(m?t('dinleme_ipucu',{sn:Math.max(1,Math.round(s.sn))}):t('dinleme_bos'))+' · '+t('dinleme_ek',{n,dk:Math.max(1,Math.round(s.ek_sn/60))});}
+ $('dinleme_ipucu').textContent=(m?DinlemeDefter.ozet()+' · ~'+t('sn',{n:Math.max(1,Math.round(s.sn))}):t('dinleme_bos'))+' · '+t('dinleme_ek',{n,dk:Math.max(1,Math.round(s.ek_sn/60))});}
 ['dinleme_metni','cesit'].forEach(i=>$(i).addEventListener('input',dinlemeGuncelle));
+// Duymak istediğin metin penceresi: "Bu sesle oku"nun defteri (satır numarası, satır menüsü, bekleme bantları) olduğu gibi
+// pencereye taşınır, kapanınca yerine döner. Okuma sekmesinin metni, bantları ve geri alma geçmişi bu sürede saklanır,
+// tarayıcı belleğine yazım durur; Tamam'da defterin metni (bantlar '|| sn' işaretiyle) kutuya yazılır.
+// The reading notebook itself moves into the dialog and back; the reading tab's text, bands and undo history are kept.
+const DinlemeDefter={deger:'',kayit:null,yer:null,
+ yaz(v){this.deger=v||'';$('dinleme_metni').value=this.deger.split('\n').map(l=>l.replace(Durak.IZ,'')).join('\n');
+  $('dinleme_metni').dispatchEvent(new Event('input'));},
+ ozet(){const s=this.deger.split('\n').filter(l=>l.trim());return t('dinleme_ozet',{n:s.length,b:s.filter(l=>Durak.deger(l)).length});},
+ acik(){return !!this.kayit;},
+ ac(){if(this.kayit)return;const ta=$('okuma_metni'),kap=$('defterkap');Acilir.kapat();Durak.bekleyenTasi(true);Kayit.yaz();Kayit.hazir=false;
+  this.kayit={v:ta.value,dur:Durak.dur.slice(),eski:Durak.eski.slice(),gecmis:Durak.gecmis,odak:document.activeElement};
+  this.yer=document.createComment('defter');kap.before(this.yer);$('dp_govde').appendChild(kap);$('dpencere').hidden=false;
+  const r=Durak.bosEmekli(this.deger.split('\n'),[]);Durak.gecmis=new Map();ta.value=r.s.join('\n');Durak.dur=r.d;Durak.eski=r.s;Durak.anlik();
+  defterBoy();ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);},
+ kapat(tamam){if(!this.kayit)return;const ta=$('okuma_metni'),k=this.kayit;Acilir.kapat();Durak.bekleyenTasi(true);
+  if(tamam)this.yaz(Durak.metin().split('\n').filter((l,i,a)=>l.trim()||a.slice(i).some(x=>x.trim())).join('\n').trim());
+  this.kayit=null;ta.value=k.v;Durak.dur=k.dur;Durak.eski=k.eski;Durak.gecmis=k.gecmis;
+  this.yer.replaceWith($('defterkap'));$('dpencere').hidden=true;Kayit.hazir=true;defterBoy();
+  if(k.odak&&k.odak.isConnected&&k.odak!==document.body)k.odak.focus({preventScroll:true});else $('dinleme_metni').focus({preventScroll:true});}};
+$('dinleme_metni').addEventListener('click',()=>DinlemeDefter.ac());
+$('dinleme_metni').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();DinlemeDefter.ac();}});
+$('dp_tamam').onclick=()=>DinlemeDefter.kapat(true);
+$('dp_vazgec').onclick=()=>DinlemeDefter.kapat(false);
+$('dpencere').addEventListener('mousedown',e=>{if(e.target===$('dpencere'))DinlemeDefter.kapat(false);});
+// Pencere açıkken: Esc (menü açık değilse) vazgeçer, Ctrl+Enter Tamam'dır (Tasarla'yı başlatmaz); odak pencerede kalır.
+document.addEventListener('keydown',e=>{if(!DinlemeDefter.acik())return;
+ if(e.key==='Escape'&&!e.defaultPrevented&&!Acilir.acikMi()&&!Satir.suruk){e.preventDefault();e.stopPropagation();DinlemeDefter.kapat(false);}
+ else if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!Acilir.acikMi()){e.preventDefault();e.stopPropagation();DinlemeDefter.kapat(true);}
+ else if(e.key==='Tab'){const o=[...document.querySelectorAll('#dpencere button,#dpencere textarea')].filter(x=>x.offsetParent&&x.tabIndex>=0);
+  if(!o.length)return;const i=o.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();o[o.length-1].focus();}else if(!e.shiftKey&&i===o.length-1){e.preventDefault();o[0].focus();}}},true);
 // Form değişince eski hata yazısı kalmasın (ör. ad girildikten sonra "Sesin adı boş").
 // A stale error must not stay once the form changes (e.g. "name is empty" after typing a name).
 ['ad','tarif','tasarim_metni','dinleme_metni','cesit','ornek'].forEach(id=>$(id).addEventListener('input',()=>{const d=$('d_tasarla');if(d.classList.contains('hata'))durumYaz(d,null);}));
@@ -402,7 +433,7 @@ function cesitCiz(){const secili=(document.querySelector('input[name=sec]:checke
 // Üretim seçilince form o üretimin ad, tarif ve metniyle dolar; çeşitleri listelenir, ilki okumada seçili ses olur.
 // hedef: "Üretimine git" ile gelinen çeşit; vurgulanır, okumada seçili ses değişmez / the variant to highlight
 function uretimAc(k,hedef){const x=uretimler().find(x=>x.k===k);if(!x)return;seciliUretim=k;const c=x.cs[0];
- $('ad').value=uretimAdi(c);$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';$('dinleme_metni').value=c.dinleme_girdi||'';dinlemeGuncelle();$('ornek').value='';$('cesit').value=x.cs.length;
+ $('ad').value=uretimAdi(c);$('tarif').value=c.ses_yaratici_ingilizce_prompt||'';$('tasarim_metni').value=c.ses_yaratilirken_okutulan_metin||'';DinlemeDefter.yaz(c.dinleme_girdi||'');$('ornek').value='';$('cesit').value=x.cs.length;
  sureGuncelle();cesitCiz();if(hedef){const c=veriBul($('cesitler'),'liste',hedef)?.closest('.cesit');if(!c)return;c.classList.add('vurgu');
   c.scrollIntoView({block:'center'});setTimeout(()=>c.classList.remove('vurgu'),2500);return;}
  const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}}
@@ -410,7 +441,7 @@ $('uretim').onchange=()=>uretimAc($('uretim').value);
 $('btn_tasarla').onclick=async()=>{const b=$('btn_tasarla');b.disabled=true;
  const u=await sureSimdi().catch(()=>null);if(u&&u.sn>u.sert){b.disabled=false;$('okumaya_tasi').focus();return;}  // sınır aşıldı: üretim başlamaz
  sonCesit=null;cesitCiz();
- const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,dinleme:$('dinleme_metni').value,cesit:+$('cesit').value,ornek:$('ornek').value});
+ const j=await api('/api/tasarla',{ad:$('ad').value,tarif:$('tarif').value,metin:$('tasarim_metni').value,dinleme:DinlemeDefter.deger,cesit:+$('cesit').value,ornek:$('ornek').value});
  if(j.hata){durumYaz($('d_tasarla'),j);if((j.sorunlar||[]).some(x=>x.kod==='tasarim_uzun'))$('uzun_uyari').hidden=false;b.disabled=false;return;}
  const s=await bekle(j.is,$('d_tasarla'),$('p_tasarla'),j.tahmin);b.disabled=false;if(s.durum!=='bitti')return;
  sonCesit=s.sonuc;seciliUretim=null;await yenile();const ilk=document.querySelector('input[name=sec]');if(ilk){ilk.checked=true;SesMenu.sec(ilk.value);}};

@@ -138,11 +138,12 @@
  "dinleme_bas": "Texte que vous voulez entendre",
  "dinleme_alt": "La voix durable de chaque variante le lit · comme l'onglet Lire avec cette voix",
  "dinleme_ph": "Une phrase par ligne. Laissez vide pour entendre la phrase d'exemple.",
- "dinleme_ipucu": "Ligne = phrase · ligne vide = pause de paragraphe · ~{sn} s",
  "dinleme_bos": "Vide : la phrase d'exemple est lue",
  "dinleme_ek": "Temps en plus : une lecture par variante · {n} variantes ≈ +{dk} min (estimation)",
  "dinleme_hata": "La lecture avec la voix durable s'est arrêtée ; réessayez avec Lire avec cette voix.",
  "ham_bas": "Voix brute de conception · générée une fois, jamais identique ensuite",
  "kalici_bas": "C'est la voix que vous entendrez toujours",
- "kalici_alt": "Lue avec la référence · graine {n} · identique à chaque lecture"
+ "kalici_alt": "Lue avec la référence · graine {n} · identique à chaque lecture",
+ "tamam": "OK",
+ "dinleme_ozet": "{n} lignes · {b} pauses"
 }

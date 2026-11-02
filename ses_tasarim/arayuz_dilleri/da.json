@@ -138,11 +138,12 @@
  "dinleme_bas": "Tekst, du vil høre",
  "dinleme_alt": "Hver variants faste stemme læser den · ligesom fanen Læs op med denne stemme",
  "dinleme_ph": "Én sætning pr. linje. Lad feltet stå tomt for at høre eksempelsætningen.",
- "dinleme_ipucu": "Linje = sætning · tom linje = afsnitspause · ~{sn} s",
  "dinleme_bos": "Tomt: eksempelsætningen læses op",
  "dinleme_ek": "Ekstra tid: én oplæsning pr. variant · {n} varianter ≈ +{dk} min (anslået)",
  "dinleme_hata": "Oplæsningen med den faste stemme stoppede; prøv igen med Læs op med denne stemme.",
  "ham_bas": "Rå designstemme · lavet én gang, kommer aldrig helt ens igen",
  "kalici_bas": "Det er den stemme, du hører fremover",
- "kalici_alt": "Læst med referencen · seed {n} · ens ved hver oplæsning"
+ "kalici_alt": "Læst med referencen · seed {n} · ens ved hver oplæsning",
+ "tamam": "OK",
+ "dinleme_ozet": "{n} linjer · {b} pauser"
 }

@@ -138,11 +138,12 @@
  "dinleme_bas": "Văn bản bạn muốn nghe",
  "dinleme_alt": "Giọng cố định của mỗi biến thể sẽ đọc · giống thẻ Đọc bằng giọng này",
  "dinleme_ph": "Mỗi dòng một câu. Để trống sẽ đọc câu mẫu.",
- "dinleme_ipucu": "Dòng = câu · dòng trống = nghỉ đoạn · ~{sn} giây",
  "dinleme_bos": "Trống: đọc câu mẫu",
  "dinleme_ek": "Thêm thời gian: mỗi biến thể đọc một lần · {n} biến thể ≈ +{dk} phút (ước tính)",
  "dinleme_hata": "Lượt đọc bằng giọng cố định bị dừng giữa chừng; hãy thử lại bằng Đọc bằng giọng này.",
  "ham_bas": "Giọng thiết kế thô · chỉ tạo một lần, không bao giờ ra y hệt nữa",
  "kalici_bas": "Đây là giọng bạn sẽ luôn nghe",
- "kalici_alt": "Đọc với giọng tham chiếu · seed {n} · lần nào cũng giống nhau"
+ "kalici_alt": "Đọc với giọng tham chiếu · seed {n} · lần nào cũng giống nhau",
+ "tamam": "OK",
+ "dinleme_ozet": "{n} dòng · {b} chỗ nghỉ"
 }

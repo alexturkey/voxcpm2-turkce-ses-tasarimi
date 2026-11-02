@@ -137,12 +137,13 @@
  "tmetin_ham": "· ham tasarım bunu okur",
  "dinleme_bas": "Duymak istediğin metin",
  "dinleme_alt": "Her çeşidin kalıcı sesi bunu okur · Bu sesle oku sekmesiyle aynı",
- "dinleme_ph": "Her satır bir cümle. Boş bırakırsan örnek cümle okunur.",
- "dinleme_ipucu": "Satır = cümle · boş satır = paragraf beklemesi · ~{sn} sn",
+ "dinleme_ph": "Tıkla: satır satır yaz, beklemeleri ayarla. Boş kalırsa örnek cümle okunur.",
  "dinleme_bos": "Boş: örnek cümle okunur",
  "dinleme_ek": "Ek süre: her çeşide bir okuma · {n} çeşit ≈ +{dk} dk (tahmini)",
  "dinleme_hata": "Kalıcı ses okuması yarım kaldı; Bu sesle oku ile yeniden dene.",
  "ham_bas": "Ham tasarım sesi · bir kez üretildi, aynısı tekrar çıkmaz",
  "kalici_bas": "Sürekli duyacağın ses bu",
- "kalici_alt": "Referansla okundu · tohum {n} · her okumada aynı"
+ "kalici_alt": "Referansla okundu · tohum {n} · her okumada aynı",
+ "tamam": "Tamam",
+ "dinleme_ozet": "{n} satır · {b} bekleme"
 }
