@@ -3,6 +3,21 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
+- Taşma düzeltmeleri (kart zemindir, her şey onun içinde kalır; 30 dil × 768/390 genişlik × 12 durum taraması:
+  normal, ad kutusu, ⋯ menüsü ve içinde yeniden adlandırma, ses listesi, alt menü, taslaklar, satır menüsü, hata yazısı,
+  *Duymak istediğin metin* penceresi ve içindeki taslak menüsü; 720 ölçüm, 0 taşma): çeşit kartında *Okuma listeme ekle*
+  ad kutusu açılınca *Vazgeç* artık kartın 22 px dışına çıkmaz; uzun dillerde (Yunanca, Svahili) *Okuma listeme ekle*
+  düğmesi çerçeveye sığmazsa kendi içinde iki satıra iner; ⋯ menüsünde *Yeniden adlandır* kutusu açılınca menü
+  genişlese de görünür alanda kalır (Almanca, Rusça, Felemenkçe, Yunanca'da sağdan dışarı çıkıyordu). *Ses tasarla*
+  formu 767×794'te 30 dilin hepsinde kaydırmasız: boş metin kutusunda uzun ipucu artık kaydırma çubuğu çizmez,
+  Myanmar dilinde satır yüksekliği sabitlendi (form 42 px uzuyordu). Test: `tests/test_arayuz_tasma.py`.
+- *Örnek tarif* seçicisinde aynı adlar tekrar gibi görünmez: 18 rol 8 dilde aynı adla geliyordu (Türkçe arayüzde
+  *Belgesel anlatıcısı, erkek* 8 kez). Arayüz dili dışındaki seçenek artık dilini taşır (*Belgesel anlatıcısı, erkek ·
+  Deutsch*); kapalı seçicide de seçilen örneğin dili görünür. Test: `tests/test_arayuz_ornek_secici.py`.
+- *Duymak istediğin metin* kutusunun ipucu 30 dilde aynı anlamda: tıklayınca satır satır yazılır, beklemeler ayarlanır,
+  boşsa örnek cümle okunur (28 dil eski *her satır bir cümle* metnindeydi; her dilde okuma ipucuyla aynı kökte yazıldı).
+- Komut satırı: çıktı dosyaya ya da boruya yönlendirilince Windows'ta `UnicodeEncodeError` (cp1254) artık yok
+  (`tasarla` son satırındaki →, `ornekler --dil zh --tam`); beş CLI çıktısı UTF-8. Test: `tests/test_cli_kodlama.py`.
 - *Duymak istediğin metin* kutusuna tıklayınca *Bu sesle oku*'nun defteri (satır numarası, satır menüsü, bekleme bantları)
   bir pencerede açılır; *Tamam* metni ve beklemeleri kutuya yazar, *Vazgeç*/Esc dokunmaz, okuma sekmesindeki metin ve
   bantlar aynen kalır. **Taslaklar:** defterin iki yerinde (okuma sekmesi ve bu pencere) *📄 Taslaklar* düğmesi;
@@ -159,6 +174,21 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
+- Overflow fixes (the card is the ground, everything stays inside it; scanned 30 languages × 768/390 width × 12 states:
+  normal, name box, ⋯ menu and its rename box, voice list, submenu, drafts, line menu, error text, the *Text you want to
+  hear* dialog and its drafts menu; 720 checks, 0 overflows): with the *Add to my reading list* name box open, *Cancel*
+  no longer sticks 22 px out of the variant card; in long languages (Greek, Swahili) the *Add to my reading list* button
+  wraps inside its frame instead of overflowing; opening the *Rename* box in the ⋯ menu keeps the widened menu inside the
+  visible area (it ran off the right edge in German, Russian, Dutch, Greek). The *Design a voice* form fits 767×794
+  without scrolling in all 30 languages: a long placeholder in an empty text box no longer draws a scrollbar, and
+  Burmese gets a fixed line height (the form was 42 px too tall). Test: `tests/test_arayuz_tasma.py`.
+- The *Example prompt* picker no longer looks duplicated: the 18 roles share names across 8 languages (in the Turkish UI
+  *Documentary narrator, male* showed 8 times). Options outside the UI language now carry their language
+  (*Documentary narrator, male · Deutsch*), also visible in the closed picker. Test: `tests/test_arayuz_ornek_secici.py`.
+- The *Text you want to hear* placeholder means the same in all 30 languages: click to write line by line and set the
+  pauses; left empty, the sample sentence is read (28 languages still had the old *one sentence per line* text).
+- Command line: redirecting output to a file or pipe no longer raises `UnicodeEncodeError` (cp1254) on Windows (the →
+  in the last `tasarla` line, `ornekler --dil zh --tam`); all five CLIs write UTF-8. Test: `tests/test_cli_kodlama.py`.
 - Clicking the *Text you want to hear* box opens the *Read with this voice* notebook (line numbers, line menu, pause
   bands) in a dialog; *OK* writes the text and pauses back, *Cancel*/Esc changes nothing, and the reading tab keeps its
   own text and bands. **Drafts:** a *📄 Drafts* button in both notebook places; save a prepared text with its pauses,
