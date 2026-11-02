@@ -391,6 +391,7 @@ trabaho ang feedback.
 - [@alexturkey](https://github.com/alexturkey): maintainer; code, mga kasamang boses, docs
 - [@cayir21](https://github.com/cayir21): suporta sa Metal para sa macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): ayos sa end-of-sentence (EOS) para sa pagbasa ng maraming pangungusap sa CPU backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): eksperimental na pag-install ng CUDA para sa Ubuntu/Linux at suporta sa Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Nararapat din dito ang pangalan mo: resulta ng test mula sa GPU mo, isang pangungusap para sa test set, isang boses na
 idinisenyo mo, malinaw na bug report o pull request, lahat ng iyan ay binibilang na ambag. Salamat sa lahat ng

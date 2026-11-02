@@ -397,6 +397,7 @@ vos retours sur le travail.
 - [@alexturkey](https://github.com/alexturkey) : mainteneur ; code, voix fournies, documentation
 - [@cayir21](https://github.com/cayir21) : prise en charge de Metal sur macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis) : correctif de fin de phrase (EOS) pour la lecture de plusieurs phrases sur le backend CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5) : installation CUDA expérimentale sous Ubuntu/Linux et prise en charge de Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Votre nom a aussi sa place ici : un résultat de test sur votre GPU, une phrase pour le jeu de test, une voix que vous
 avez conçue, un rapport de bug clair ou une pull request comptent tous comme des contributions. Merci à toutes celles et

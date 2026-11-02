@@ -372,6 +372,7 @@ Semua yang ikut serta mengikuti [Kode Etik](CODE_OF_CONDUCT.md): bersikap baik, 
 - [@alexturkey](https://github.com/alexturkey): maintainer; kode, suara bawaan, dokumentasi
 - [@cayir21](https://github.com/cayir21): dukungan Metal untuk macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): perbaikan akhir kalimat (EOS) untuk pembacaan multi-kalimat di backend CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): instalasi CUDA eksperimental untuk Ubuntu/Linux dan dukungan Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Namamu juga layak ada di sini: hasil uji dari GPU-mu, satu kalimat untuk set uji, suara yang kamu desain, laporan bug
 yang jelas, atau pull request, semuanya terhitung sebagai kontribusi. Terima kasih kepada semua yang mencoba dan

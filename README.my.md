@@ -381,6 +381,7 @@ load 10-20 s ပြီးနောက် ဖတ်ခြင်းသည် စ�
 - [@alexturkey](https://github.com/alexturkey)- ထိန်းသိမ်းသူ၊ code၊ အသင့်ပါသော အသံများ၊ စာရွက်စာတမ်းများ
 - [@cayir21](https://github.com/cayir21)- macOS (Apple Silicon) Metal ပံ့ပိုးမှု၊ [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis)- CPU backend ပေါ်တွင် စာကြောင်းများစွာ ဖတ်ရာအတွက် စာကြောင်းအဆုံး (EOS) ပြင်ဆင်ချက်၊ [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5)- Ubuntu/Linux အတွက် စမ်းသပ် CUDA ထည့်သွင်းမှုနှင့် Docker ပံ့ပိုးမှု၊ [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 သင့်အမည်လည်း ဤနေရာတွင် ရှိသင့်သည်- သင့် GPU မှ စမ်းသပ်ရလဒ်၊ test set အတွက် စာကြောင်းတစ်ကြောင်း၊ သင် ဒီဇိုင်းဆွဲထားသော အသံ၊
 ရှင်းလင်းသော bug report သို့မဟုတ် pull request အားလုံးကို ပါဝင်ကူညီမှုအဖြစ် ရေတွက်သည်။ စမ်းသုံးပြီး ပြန်လည် ရေးသားပေးသူ

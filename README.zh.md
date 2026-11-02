@@ -341,6 +341,7 @@ audio.cpp 是*引擎*：在你的 GPU 上运行模型的 C++/CUDA 程序（`audi
 - [@alexturkey](https://github.com/alexturkey)：维护者；代码、内置声音、文档
 - [@cayir21](https://github.com/cayir21)：macOS（Apple Silicon）Metal 支持，[#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis)：修复 CPU 后端多句朗读时的句末（EOS）问题，[#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5)：Ubuntu/Linux 实验性 CUDA 安装与 Docker 支持，[#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 这里也可以有你的名字：你的 GPU 测试结果、为测试集添加的一个句子、你设计的一个声音、一份清晰的错误
 报告或一个 pull request，都算作贡献。感谢每一位试用并给我们反馈的人。

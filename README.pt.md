@@ -350,6 +350,7 @@ Todos os que participam seguem o [Código de Conduta](CODE_OF_CONDUCT.md): seja 
 - [@alexturkey](https://github.com/alexturkey): mantenedor; código, vozes incluídas, documentação
 - [@cayir21](https://github.com/cayir21): suporte a Metal no macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): correção de fim de frase (EOS) para leitura de várias frases no backend de CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): instalação experimental de CUDA no Ubuntu/Linux e suporte a Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 O seu nome também tem lugar aqui: um resultado de teste da sua GPU, uma frase para o conjunto de teste, uma voz que você criou, um
 relato de bug claro ou um pull request, tudo conta como contribuição. Obrigado a todos que testam e dão retorno.

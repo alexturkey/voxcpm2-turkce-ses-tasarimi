@@ -348,6 +348,7 @@ UI에서 그 허락을 확인하도록 요청합니다. 목소리 디자인에�
 - [@alexturkey](https://github.com/alexturkey): 메인테이너. 코드, 기본 제공 목소리, 문서
 - [@cayir21](https://github.com/cayir21): macOS(Apple Silicon) Metal 지원, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): CPU 백엔드에서 여러 문장을 읽을 때의 문장 끝(EOS) 수정, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): Ubuntu/Linux용 실험적 CUDA 설치 및 Docker 지원, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 여러분의 이름도 여기에 들어갈 수 있습니다. 내 GPU에서 얻은 테스트 결과, 테스트 세트에 넣을 문장 하나, 직접 디자인한 목소리, 명확한 버그
 보고, 풀 리퀘스트 모두 기여입니다. 사용해 보고 소식을 전해 주시는 모든 분께 감사드립니다.

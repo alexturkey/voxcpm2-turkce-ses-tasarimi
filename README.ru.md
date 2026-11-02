@@ -350,6 +350,7 @@ nvcc падает на длинных путях. Пошагово с прове
 - [@alexturkey](https://github.com/alexturkey): мейнтейнер; код, голоса в комплекте, документация
 - [@cayir21](https://github.com/cayir21): поддержка Metal для macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): исправление конца предложения (EOS) при чтении нескольких предложений на бэкенде CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): экспериментальная установка CUDA для Ubuntu/Linux и поддержка Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Ваше имя тоже может быть здесь: результат теста на вашей видеокарте, предложение для тестового набора, созданный вами голос,
 понятный отчёт об ошибке или pull request: всё это считается вкладом. Спасибо всем, кто пробует и пишет отзывы.

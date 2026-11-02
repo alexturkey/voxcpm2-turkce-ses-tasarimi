@@ -371,6 +371,7 @@ Alla som deltar följer vår [uppförandekod](CODE_OF_CONDUCT.md): var vänlig o
 - [@alexturkey](https://github.com/alexturkey): förvaltare; kod, medföljande röster, dokumentation
 - [@cayir21](https://github.com/cayir21): Metal-stöd för macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): rättning av meningsslut (EOS) vid uppläsning av flera meningar på CPU-backenden, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): experimentell CUDA-installation för Ubuntu/Linux och Docker-stöd, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Ditt namn hör också hemma här: ett testresultat från ditt grafikkort, en mening till testuppsättningen, en röst du har
 designat, en tydlig felrapport eller en pull request räknas alla som bidrag. Tack till alla som provar och hör av sig.

@@ -324,6 +324,7 @@ AMD/Intel (ראו «AMD / Intel» למעלה). הרצה על מעבד בלבד (
 - מתחזק הפרויקט [@alexturkey](https://github.com/alexturkey): קוד, קולות כלולים, תיעוד
 - תמיכת Metal ל-macOS (Apple Silicon) מאת [@cayir21](https://github.com/cayir21), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - תיקון סוף משפט (EOS) להקראת כמה משפטים ב-backend של CPU מאת [@grogureis](https://github.com/grogureis), [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- התקנת CUDA ניסיונית ל-Ubuntu/Linux ותמיכת Docker מאת [@mslmyilmaz5](https://github.com/mslmyilmaz5), [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 גם השם שלכם שייך לכאן: תוצאת בדיקה מכרטיס המסך שלכם, משפט לסט הבדיקה, קול שעיצבתם, דיווח באג ברור או בקשת משיכה (pull request),
 כל אלה נחשבים תרומה. תודה לכל מי שמנסה וכותב לנו.

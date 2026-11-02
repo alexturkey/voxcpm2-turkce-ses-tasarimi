@@ -350,6 +350,7 @@ Iedereen die meedoet, volgt de [gedragscode](CODE_OF_CONDUCT.md): wees vriendeli
 - [@alexturkey](https://github.com/alexturkey): maintainer; code, meegeleverde stemmen, documentatie
 - [@cayir21](https://github.com/cayir21): Metal-ondersteuning voor macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): fix voor het einde van de zin (EOS) bij het voorlezen van meerdere zinnen op de CPU-backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): experimentele CUDA-installatie voor Ubuntu/Linux en Docker-ondersteuning, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Ook jouw naam hoort hier: een testresultaat van je GPU, een zin voor de testset, een stem die je hebt ontworpen, een duidelijke
 bugmelding of een pull request tellen allemaal als bijdrage. Dank aan iedereen die het uitprobeert en van zich laat horen.

@@ -372,6 +372,7 @@ Alle, der deltager, følger [adfærdskodeksen](CODE_OF_CONDUCT.md): vær venlig,
 - [@alexturkey](https://github.com/alexturkey): vedligeholder; kode, medfølgende stemmer, dokumentation
 - [@cayir21](https://github.com/cayir21): Metal-understøttelse til macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): rettelse af sætningsslut (EOS) ved oplæsning af flere sætninger på CPU-backenden, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): eksperimentel CUDA-installation til Ubuntu/Linux og Docker-understøttelse, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Dit navn hører også til her: et testresultat fra din GPU, en sætning til testsættet, en stemme, du har designet, en
 tydelig fejlrapport eller en pull request tæller alle som bidrag. Tak til alle, der prøver det og skriver tilbage.

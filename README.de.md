@@ -388,6 +388,7 @@ Alle Beteiligten folgen dem [Verhaltenskodex](CODE_OF_CONDUCT.md): Sei freundlic
 - [@alexturkey](https://github.com/alexturkey): Maintainer; Code, mitgelieferte Stimmen, Dokumentation
 - [@cayir21](https://github.com/cayir21): Metal-Unterstützung für macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): Satzende-Fix (EOS) für das Vorlesen mehrerer Sätze im CPU-Backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): experimentelle CUDA-Installation für Ubuntu/Linux und Docker-Unterstützung, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Auch dein Name gehört hierher: ein Testergebnis von deiner GPU, ein Satz für den Testsatz, eine selbst entworfene
 Stimme, ein klarer Fehlerbericht oder ein Pull Request, all das zählt als Beitrag. Danke an alle, die es ausprobieren

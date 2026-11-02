@@ -350,6 +350,7 @@ Wszyscy uczestnicy przestrzegają [Kodeksu postępowania](CODE_OF_CONDUCT.md): b
 - [@alexturkey](https://github.com/alexturkey): opiekun projektu; kod, dołączone głosy, dokumentacja
 - [@cayir21](https://github.com/cayir21): obsługa Metal w macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): poprawka końca zdania (EOS) przy czytaniu wielu zdań na backendzie CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): eksperymentalna instalacja CUDA dla Ubuntu/Linux i obsługa Dockera, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Twoje nazwisko też może się tu znaleźć: wynik testu z twojej karty, zdanie do zestawu testowego, zaprojektowany przez ciebie głos,
 jasny raport o błędzie albo pull request, wszystko to liczy się jako wkład. Dziękujemy wszystkim, którzy próbują i dają znać.

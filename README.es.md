@@ -382,6 +382,7 @@ comentarios en el trabajo.
 - [@alexturkey](https://github.com/alexturkey): mantenedor; código, voces incluidas, documentación
 - [@cayir21](https://github.com/cayir21): compatibilidad con Metal en macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): corrección del fin de frase (EOS) para leer varias frases en el backend de CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): instalación experimental de CUDA en Ubuntu/Linux y compatibilidad con Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Tu nombre también tiene su sitio aquí: un resultado de prueba de tu GPU, una frase para el conjunto de pruebas, una voz
 que hayas diseñado, un informe de error claro o una pull request cuentan como contribuciones. Gracias a todas las

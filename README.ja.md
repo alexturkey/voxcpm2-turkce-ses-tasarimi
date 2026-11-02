@@ -348,6 +348,7 @@ UI ではその許可の確認を求められます。声のデザインには�
 - [@alexturkey](https://github.com/alexturkey)：メンテナー。コード、収録済みボイス、ドキュメント
 - [@cayir21](https://github.com/cayir21)：macOS（Apple Silicon）の Metal 対応、[#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis)：CPU バックエンドで複数文を読み上げる際の文末（EOS）の修正、[#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5)：Ubuntu/Linux 向けの実験的な CUDA インストールと Docker 対応、[#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 ここにあなたの名前も載せましょう：お使いの GPU でのテスト結果、テストセットへの 1 文、デザインした声、わかりやすいバグ
 報告、プルリクエスト、どれも立派な貢献です。試して感想を寄せてくださるすべての方に感謝します。

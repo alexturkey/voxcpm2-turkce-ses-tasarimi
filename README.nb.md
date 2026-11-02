@@ -370,6 +370,7 @@ Alle som deltar, følger [atferdsreglene](CODE_OF_CONDUCT.md): vær vennlig, og 
 - [@alexturkey](https://github.com/alexturkey): vedlikeholder; kode, medfølgende stemmer, dokumentasjon
 - [@cayir21](https://github.com/cayir21): Metal-støtte for macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): retting av setningsslutt (EOS) ved opplesing av flere setninger på CPU-backenden, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): eksperimentell CUDA-installasjon for Ubuntu/Linux og Docker-støtte, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Navnet ditt hører også hjemme her: et testresultat fra GPU-en din, en setning til testsettet, en stemme du har designet,
 en tydelig feilrapport eller en pull request teller alle som bidrag. Takk til alle som prøver det og gir tilbakemelding.

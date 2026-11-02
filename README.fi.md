@@ -386,6 +386,7 @@ Kaikki osallistujat noudattavat [toimintaohjeita](CODE_OF_CONDUCT.md): ole ystä
 - [@alexturkey](https://github.com/alexturkey): ylläpitäjä; koodi, valmiit äänet, dokumentaatio
 - [@cayir21](https://github.com/cayir21): macOS:n (Apple Silicon) Metal-tuki, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): lauseen lopun (EOS) korjaus monilauseiseen lukemiseen CPU-taustajärjestelmällä, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): kokeellinen CUDA-asennus Ubuntulle/Linuxille ja Docker-tuki, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Sinunkin nimesi kuuluu tänne: testitulos omalta näytönohjaimeltasi, lause testijoukkoon, suunnittelemasi ääni, selkeä
 virheraportti tai pull request ovat kaikki osallistumista. Kiitos kaikille, jotka kokeilevat ja antavat palautetta.

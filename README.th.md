@@ -349,6 +349,7 @@ zip Vulkan แบบทดลอง `kur.ps1 -Vulkan` มีผู้ใช้�
 - [@alexturkey](https://github.com/alexturkey): ผู้ดูแล; โค้ด เสียงสำเร็จรูป เอกสาร
 - [@cayir21](https://github.com/cayir21): รองรับ Metal บน macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): แก้ปัญหาจุดจบประโยค (EOS) เมื่ออ่านหลายประโยคบนแบ็กเอนด์ CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): การติดตั้ง CUDA แบบทดลองบน Ubuntu/Linux และรองรับ Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 ชื่อของคุณก็อยู่ตรงนี้ได้: ผลทดสอบจาก GPU ของคุณ ประโยคสำหรับชุดทดสอบ เสียงที่คุณออกแบบ รายงานบั๊กที่ชัดเจน
 หรือ pull request ล้วนนับเป็นการร่วมพัฒนา ขอบคุณทุกคนที่ลองใช้และเขียนกลับมาหาเรา

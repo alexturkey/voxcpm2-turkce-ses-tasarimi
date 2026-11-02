@@ -376,6 +376,7 @@ Kila anayeshiriki anafuata [Kanuni za Maadili](CODE_OF_CONDUCT.md): kuwa mpole, 
 - [@alexturkey](https://github.com/alexturkey): mtunzaji; msimbo, sauti zilizojumuishwa, nyaraka
 - [@cayir21](https://github.com/cayir21): usaidizi wa Metal kwa macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): marekebisho ya mwisho wa sentensi (EOS) kwa usomaji wa sentensi nyingi kwenye backend ya CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): usakinishaji wa majaribio wa CUDA kwa Ubuntu/Linux na usaidizi wa Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Jina lako linastahili kuwa hapa pia: matokeo ya majaribio kutoka GPU yako, sentensi kwa seti ya majaribio, sauti
 uliyoibuni, ripoti ya hitilafu iliyo wazi au pull request, vyote vinahesabika kama michango. Asante kwa kila anayeijaribu

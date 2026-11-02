@@ -331,6 +331,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 - المشرف على المشروع [@alexturkey](https://github.com/alexturkey): الشيفرة والأصوات الجاهزة والتوثيق
 - دعم Metal لنظام macOS (Apple Silicon) من [@cayir21](https://github.com/cayir21)، [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - إصلاح نهاية الجملة (EOS) لقراءة جمل متعددة على واجهة CPU الخلفية من [@grogureis](https://github.com/grogureis)، [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- تثبيت CUDA تجريبي على Ubuntu/Linux ودعم Docker من [@mslmyilmaz5](https://github.com/mslmyilmaz5)، [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 مكان اسمك هنا أيضًا: نتيجة اختبار من بطاقتك، أو جملة لمجموعة الاختبار، أو صوت صممته، أو بلاغ واضح عن خلل، أو طلب سحب (pull request)،
 كلها تُحسب مساهمات. شكرًا لكل من يجرّبه ويكتب لنا.

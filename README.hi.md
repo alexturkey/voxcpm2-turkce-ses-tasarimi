@@ -352,6 +352,7 @@ AI-जनरेटेड का लेबल लगाएँ।
 - [@alexturkey](https://github.com/alexturkey): मेंटेनर; कोड, तैयार आवाज़ें, दस्तावेज़
 - [@cayir21](https://github.com/cayir21): macOS (Apple Silicon) Metal सपोर्ट, [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): CPU बैकएंड पर कई वाक्यों की रीडिंग के लिए वाक्य-अंत (EOS) फ़िक्स, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): Ubuntu/Linux के लिए प्रायोगिक CUDA इंस्टॉलेशन और Docker सपोर्ट, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 आपका नाम भी यहाँ होना चाहिए: आपके GPU का टेस्ट नतीजा, टेस्ट सेट के लिए एक वाक्य, आपकी डिज़ाइन की हुई आवाज़, एक साफ़ बग
 रिपोर्ट या एक pull request, सब योगदान माने जाते हैं। इसे आज़माने और हमें लिखने वाले हर व्यक्ति का शुक्रिया।

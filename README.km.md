@@ -356,6 +356,7 @@ no background noise"។ ទុកវាជាការពិពណ៌នា ម�
 - [@alexturkey](https://github.com/alexturkey)៖ អ្នកថែទាំ កូដ សំឡេងមានស្រាប់ ឯកសារ
 - [@cayir21](https://github.com/cayir21)៖ ការគាំទ្រ Metal សម្រាប់ macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis)៖ ការកែចុងប្រយោគ (EOS) សម្រាប់ការអានច្រើនប្រយោគលើ CPU backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5)៖ ការដំឡើង CUDA ពិសោធន៍សម្រាប់ Ubuntu/Linux និងការគាំទ្រ Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 ឈ្មោះរបស់អ្នកក៏គួរនៅទីនេះដែរ៖ លទ្ធផលតេស្តពី GPU របស់អ្នក ប្រយោគមួយសម្រាប់សំណុំតេស្ត សំឡេងដែលអ្នកបានរចនា របាយការណ៍ bug
 ច្បាស់លាស់ ឬ pull request សុទ្ធតែរាប់ជាការរួមចំណែក។ សូមអរគុណដល់អ្នកគ្រប់គ្នាដែលសាកល្បង ហើយសរសេរមកវិញ។

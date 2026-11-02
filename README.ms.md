@@ -376,6 +376,7 @@ berkisar tentang kerja itu.
 - [@alexturkey](https://github.com/alexturkey): penyelenggara; kod, suara terbina dalam, dokumentasi
 - [@cayir21](https://github.com/cayir21): sokongan Metal untuk macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): pembetulan akhir ayat (EOS) untuk bacaan berbilang ayat pada backend CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): pemasangan CUDA eksperimen untuk Ubuntu/Linux dan sokongan Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Nama anda juga layak berada di sini: keputusan ujian daripada GPU anda, satu ayat untuk set ujian, suara yang anda reka
 bentuk, laporan pepijat yang jelas atau pull request, semuanya dikira sebagai sumbangan. Terima kasih kepada semua yang

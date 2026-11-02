@@ -357,6 +357,7 @@ Mọi người tham gia đều tuân theo [Bộ quy tắc ứng xử](CODE_OF_CO
 - [@alexturkey](https://github.com/alexturkey): người duy trì; mã nguồn, giọng đi kèm, tài liệu
 - [@cayir21](https://github.com/cayir21): hỗ trợ Metal cho macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): sửa lỗi kết thúc câu (EOS) khi đọc nhiều câu trên backend CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): cài đặt CUDA thử nghiệm cho Ubuntu/Linux và hỗ trợ Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Tên bạn cũng thuộc về nơi này: một kết quả thử nghiệm từ GPU của bạn, một câu cho bộ câu thử nghiệm, một giọng bạn đã
 thiết kế, một báo cáo lỗi rõ ràng hay một pull request đều được tính là đóng góp. Cảm ơn tất cả những ai đã dùng thử

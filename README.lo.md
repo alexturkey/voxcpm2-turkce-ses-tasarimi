@@ -353,6 +353,7 @@ background noise". ໃຫ້ມັນເປັນຄຳອະທິບາຍ, �
 - [@alexturkey](https://github.com/alexturkey): ຜູ້ດູແລ; ລະຫັດ, ສຽງສຳເລັດຮູບ, ເອກະສານ
 - [@cayir21](https://github.com/cayir21): ການຮອງຮັບ Metal ສຳລັບ macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): ການແກ້ໄຂທ້າຍປະໂຫຍກ (EOS) ສຳລັບການອ່ານຫຼາຍປະໂຫຍກເທິງ CPU backend, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): ການຕິດຕັ້ງ CUDA ແບບທົດລອງສຳລັບ Ubuntu/Linux ແລະ ການຮອງຮັບ Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 ຊື່ຂອງທ່ານກໍຄວນຢູ່ທີ່ນີ້ເຊັ່ນກັນ: ຜົນທົດສອບຈາກ GPU ຂອງທ່ານ, ປະໂຫຍກສຳລັບຊຸດທົດສອບ, ສຽງທີ່ທ່ານອອກແບບ, ລາຍງານ bug ທີ່ຊັດເຈນ
 ຫຼື pull request ລ້ວນນັບເປັນການມີສ່ວນຮ່ວມ. ຂອບໃຈທຸກຄົນທີ່ລອງໃຊ້ ແລະ ຂຽນກັບມາຫາພວກເຮົາ.

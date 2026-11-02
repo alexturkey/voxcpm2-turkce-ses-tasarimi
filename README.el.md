@@ -358,6 +358,7 @@ AMD 6900 XT, αλλά χρειάζονται ακόμη ευρύτερες δο�
 - [@alexturkey](https://github.com/alexturkey): συντηρητής· κώδικας, ενσωματωμένες φωνές, τεκμηρίωση
 - [@cayir21](https://github.com/cayir21): υποστήριξη Metal για macOS (Apple Silicon), [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10)
 - [@grogureis](https://github.com/grogureis): διόρθωση τέλους πρότασης (EOS) για ανάγνωση πολλών προτάσεων στο backend CPU, [#14](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/14)
+- [@mslmyilmaz5](https://github.com/mslmyilmaz5): πειραματική εγκατάσταση CUDA για Ubuntu/Linux και υποστήριξη Docker, [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15)
 
 Το όνομά σας ανήκει κι αυτό εδώ: ένα αποτέλεσμα δοκιμής από τη GPU σας, μια πρόταση για το σύνολο δοκιμών, μια φωνή που σχεδιάσατε,
 μια σαφής αναφορά σφάλματος ή ένα pull request μετράνε όλα ως συνεισφορές. Ευχαριστούμε όλους όσοι το δοκιμάζουν και μας γράφουν.
