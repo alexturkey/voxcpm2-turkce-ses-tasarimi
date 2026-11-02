@@ -1,3 +1,5 @@
+**Türkçe** · [English](README.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Italiano](README.it.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [Polski](README.pl.md) · [Nederlands](README.nl.md) · [Dansk](README.da.md) · [Norsk](README.nb.md) · [Svenska](README.sv.md) · [Suomi](README.fi.md) · [Ελληνικά](README.el.md) · [العربية](README.ar.md) · [עברית](README.he.md) · [हिन्दी](README.hi.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [ไทย](README.th.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [Bahasa Melayu](README.ms.md) · [Tagalog](README.tl.md) · [မြန်မာ](README.my.md) · [ខ្មែរ](README.km.md) · [ລາວ](README.lo.md) · [Kiswahili](README.sw.md)
+
 # voxcpm2-turkce-ses-tasarimi
 
 **4 GB ekran kartında VoxCPM2 ile Türkçe ses tasarımı.** Sesi İngilizce tarif edin, model yaratsın, beğendiğiniz çeşidi
@@ -7,8 +9,10 @@ seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, 
 
 - Uygulama 30 dilde okur, arayüzü de 30 dildir.
 - Hazır gelen 14 ses: 7 Türkçe, ayrıca İngilizce, Fransızca, Almanca, İspanyolca, Rusça, Çince ve Japonca birer ses.
+- Web arayüzü (v0.2.0): her çeşit kartında iki ses, ham tasarım sesi ve sürekli duyacağın ses; ses menülü okuma listesi;
+  sesi yeniden adlandırma, gizleme, silme; okuttuğun metinler için taslaklar. Ayrıntı: "Kullanım" altında "Web arayüzü".
 
-[English README](README.md) · [4 GB'a nasıl sığdı](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
+[4 GB'a nasıl sığdı](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Yapay zekâ ajanı için kurulum](AGENTS.md) · [Sorumlu kullanım](ETHICS.md)
 
 > Hazır sesler yapaydır, bir metin tarifinden tasarlanmıştır. Klonlama bölümü yalnız kendi sesiniz ya da sahibinin açık
 > izniyle kullanılır; arayüz izin onayı ister. İzinsiz taklit, dolandırıcılık ve yanıltma yasaktır. Ürettiğiniz sesi
@@ -67,7 +71,7 @@ dublaj programımız; bu repoyu VoxCPM2 ses motoru olarak kurar. Burada tasarlad
    (paketi elle indirdiyseniz aşağıdaki komutun sonuna `-HazirZip <zip'in yolu>` ekleyin).
 2. **Aç:** zip'i açın, `voxcpm2-turkce-ses-tasarimi-main` klasörüne girin, Gezgin'in adres çubuğuna `powershell` yazıp
    Enter'a basın.
-3. **Çalıştır:** kurulumu başlatın (64-bit Python 3.10–3.13 gerekir; CUDA için NVIDIA sürücüsü ≥ 570), sonra
+3. **Çalıştır:** kurulumu başlatın (64-bit Python 3.10-3.13 gerekir; CUDA için NVIDIA sürücüsü ≥ 570), sonra
    **`baslat.bat`**'a çift tıklayın:
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
@@ -80,7 +84,7 @@ duyar). Ayrıntı, kart listesi ve sık sorunlar: aşağıdaki "Hızlı kurulum"
 ## Ubuntu / Linux (NVIDIA CUDA, deneysel)
 
 `bash scripts/kur-linux.sh` ile yamalı motoru derleyin veya `Dockerfile.linux` ile Ubuntu 24.04 / CUDA 12.8.1
-ortamında çalıştırın. NVIDIA GPU ve uyumlu sürücü gerekir; doğrudan kurulum ayrıca CUDA toolkit ve Python 3.10–3.13
+ortamında çalıştırın. NVIDIA GPU ve uyumlu sürücü gerekir; doğrudan kurulum ayrıca CUDA toolkit ve Python 3.10-3.13
 ister. Uzak sunucuda da arayüz yalnız yereldedir; SSH tüneli kullanılır. Gereksinimler, komutlar ve test kapsamı:
 [docs/linux.md](docs/linux.md).
 
@@ -119,6 +123,10 @@ teşekkür ederiz!
    kaymaz. Metin cümle cümle okunur.
 3. Kalite sabittir: 16 adım, CFG 2.0. Tohum kalite ayarı değildir.
 
+Ham tasarım kaydı sesin tek seferlik bir örneğidir; sonraki hiçbir okuma onun birebir aynısı gibi duyulmaz. Sonraki her
+okumada duyduğun 2. adımdır: tasarım kaydı referans, yanında çeşidin kendi tohumu. Web arayüzü bu yüzden 2. adımı
+tasarımın hemen ardından yapar ve ikisini de çeşit kartında gösterir.
+
 Motor: audio.cpp v0.7.2 + bizim yama (`patches/`); model: VoxCPM2 Q8_0 GGUF. VRAM tepe ≈ 2,8 GB; GTX 1050 Ti'de 1 sn ses
 için ≈ 2 sn. Ayrıntı ve ölçümler: [docs/4gb.md](docs/4gb.md).
 
@@ -151,7 +159,7 @@ okumadan kesildi.
 
 ## Hızlı kurulum, derleyici gerekmez (Windows 10/11, NVIDIA ekran kartı ≥ 4 GB)
 
-Ön koşullar: NVIDIA sürücüsü ≥ 570 ve 64-bit Python 3.10–3.13 (`winget install Python.Python.3.12`). Başka bir şey
+Ön koşullar: NVIDIA sürücüsü ≥ 570 ve 64-bit Python 3.10-3.13 (`winget install Python.Python.3.12`). Başka bir şey
 yok: Visual Studio da CUDA kurulumu da gerekmez. Hangi kartınız olduğundan emin değil misiniz? PowerShell'de
 `nvidia-smi` yazın: kartın adını, sürücü sürümünü ve belleğini gösterir. NVIDIA kartınız yoksa aşağıdaki "AMD / Intel"
 bölümüne bakın.
@@ -191,7 +199,7 @@ yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Biz GTX 1050 Ti 
 (ayrıntı [docs/linux.md](docs/linux.md)). Başka kart deneyimlerinizi
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
 
-**AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`…-win64-vulkan.zip`, CUDA gerekmez)
+**AMD / Intel (deneysel):** ayrı bir Vulkan motor zip'i (`...-win64-vulkan.zip`, CUDA gerekmez)
 `scripts\kur.ps1 -Kok C:\vox -Vulkan` ile kurulur. Yalnız bizim NVIDIA kartta Vulkan arka ucuyla denendi (orada CUDA'dan
 yavaş çalıştı ama aynı tohum aynı sesi verdi; o ölçüm sırasında disk başka bir işle doluydu, temiz hız karşılaştırması
 bekliyor); AMD ya da Intel donanımında **bizim tarafımızdan denenmedi**: denerseniz sonucu Discussions'a
@@ -238,6 +246,8 @@ Komut satırı:
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt
 # 2. çeşidiyle oku
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
+# tasarla, sonra her çeşidin kalıcı sesiyle bir metin okut (her çeşit klasörüne dinleme.wav)
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt --dinleme @metin.txt
 ```
 Metin kuralları: rakamı yazıyla yazın, tırnak kullanmayın (araç rakam ve tırnağı reddeder), satır başına bir cümle,
 satır ≤ 2000 karakter. Satır sonu durağı: `|| bagli` 0,25 sn, `|| normal` 0,5 sn, `|| paragraf` 1 sn, `|| agir` 1,5 sn
@@ -245,17 +255,47 @@ ya da kendi süreniz `|| 0,8` (0-5 sn; işaretteki rakama izin verilir). Türkç
 Dil metinden otomatik tanınır (Türkçe harfler, yazı sistemi, sık sözcükler; kararsızsa sesin kartındaki `dil`; `--dil <kod>` isteğe bağlı). Türkçe dışında kesme işaretine izin verilir, Türkçe sözlük
 uygulanmaz, rakam yine reddedilir. Okuma `hız kapısı: satır [...]` yazarsa o satırları dinleyin.
 
-Web arayüzü (yalnız 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
-adresini kendiniz açın (başka port: `--port 8800`). Üç sekme: *Ses tasarla*, *Bu sesle oku*, *Ses klonlama*.
-*Tasarla* → çeşitleri dinle → birini seç → *Bu sesle oku* → indir. Ya da hazır sesi seçip oku. *Üretim adı* o seferki bütün
-çeşitlere gider; beğendiğin çeşidi *Okuma listeme ekle* ile listene eklerken ona kendi adını verirsin. Okuma sekmesindeki ses
-menüsünde *Okuma listem* ve bayraklı hazır sesler durur; her satırda ▶ dinle, kalp ve ⋯ var. Okuma kutusunda satır
-numarasına tıklayınca satır menüsü açılır (taşı, çoğalt, sil; Alt+↑/↓), iki satır arasındaki ince banda tıklayınca durak
-süresi seçilir; paragraf için Enter'a iki kez basın (1 sn). Boş satırlar durak bandına çevrilir. Ctrl+Enter (Mac'te
-⌘+Enter) açık sekmede *Tasarla*'yı ya da *Bu sesle oku*'yu başlatır. Metin ve durakları sayfa yenilenince kalır (tarayıcı
-belleği). Sonuç çalarken okunan satır parlar ve görünür alana gelir; satır menüsündeki *Buradan dinle* o satırdan çalar.
-İnen dosya ses adı ve saatle adlanır (`Ses_Adi_2026-11-02_0152.wav`); başlıkta sürüm ve kısa commit görünür. Sunucuyu
-Ctrl+C ile kapatın.
+### Web arayüzü
+
+Yalnız yerel (127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → tarayıcıda http://127.0.0.1:8765/
+adresini kendiniz açın (başka port: `--port 8800`) ya da `baslat.bat`'a çift tıklayın. Sunucuyu Ctrl+C ile kapatın.
+Üç sekme: *Ses tasarla*, *Bu sesle oku*, *Ses klonlama*. Olağan yol: *Tasarla* → çeşitleri dinle → *Okuma listeme ekle* →
+*Bu sesle oku* → indir. Ya da ses menüsünden hazır bir ses seçip okut.
+
+- **Başlıkta sürüm.** Küçük, soluk `v0.2.0 · <kısa commit>` yazısı (izlenen dosyada kaydedilmemiş değişiklik varsa `+`
+  eki; git yoksa yalnız sürüm). Ekran görüntüsünde ve videoda hangi sürümün kullanıldığı görünür.
+- **Her çeşit kartında iki ses.** Üstte gri *Ham tasarım sesi*: bir kez üretilir, aynısı bir daha çıkmaz. Altında turuncu
+  çerçevede *↻ Sürekli duyacağın ses bu*: tasarım kaydı referans verilerek çeşidin kendi tohumuyla (kartta yazılı) yapılan
+  okuma. Ses sonraki her okumada böyle duyulur. Altında *Bu sesle oku* ve *Okuma listeme ekle* düğmeleri. *Tasarla*'ya bir
+  kez basmak ikisini de yapar: önce her çeşidi tasarlar, sonra metnini her kalıcı sesle okur; tek ilerleme çubuğu iki
+  aşamayı birlikte sayar. Çeşit klasörüne `dinleme.wav` yazılır. Bu okuma yarıda kalırsa tasarım bozulmaz, kartta not çıkar.
+- **"Duymak istediğin metin" penceresi.** *Ses tasarla* formundaki *↻ Duymak istediğin metin* kutusu her kalıcı sesin
+  okuyacağı metni tutar (boşsa örnek cümle okunur). Tıklayınca okuma defteri bir pencerede açılır: satır numaraları,
+  satır menüsü, durak bantları. *Tamam* metni ve durakları kutuya yazar; *Vazgeç* ya da Esc hiçbir şeyi değiştirmez.
+  Okuma sekmesindeki metin olduğu gibi kalır.
+- **Okuma defteri.** Satır başına bir cümle. Satır numarasına tıklayınca satır menüsü açılır (yukarı/aşağı taşı, sıraya
+  taşı, çoğalt, sil; Alt+↑/↓, Alt+Shift+↓ ya da numaradan sürükle; Ctrl+Z metni ve durakları birlikte geri alır). İki
+  satır arasındaki ince banda tıklayınca durak seçilir (bağlı 0,25 · normal 0,5 · paragraf 1 · ağır 1,5 sn ya da dişli
+  çarkla kendi süren, 0-5 sn); paragraf için Enter'a iki kez basın (1 sn), boş satırlar durak bandına çevrilir. Sonuç
+  çalarken okunan satır parlar ve görünür alana gelir; satır menüsündeki *▶ Buradan dinle* o satırdan çalar. Metin ve
+  durakları sayfa yenilenince kalır (tarayıcı belleği).
+- **Taslaklar.** *📄 Taslaklar* düğmesi iki defterde de var (okuma sekmesi ve pencere). Hazırladığın metni durakları ile
+  taslak olarak kaydedersin, tek tıkla yüklersin (Ctrl+Z geri alır), ⋯ ile üzerine kaydeder, yeniden adlandırır ya da
+  silersin. Taslaklar `sesler/taslaklar.json` dosyasında durur, repoya girmez.
+- **Okuma listesi ve ses menüsü.** Çeşit kartında *Okuma listeme ekle* bir ad kutusu açar: çeşide kendi adını ver, ✓ ile
+  listeye girer. *Üretim adı* o seferki bütün çeşitlerde kalır. *Bu sesle oku* sekmesinde ses düğmesi (bayrak + ad) ses
+  menüsünü açar: üstte *Okuma listem*, sonra bayraklı hazır sesler (önce arayüz dili). Her satırda ▶ dinle (varsa kalıcı
+  ses çalar), kalp (ekle/çıkar) ve ⋯; ↑/↓ ve Enter seçer, Esc kapatır, son seçilen ses hatırlanır. Liste
+  `sesler/okuma_listesi.json` dosyasında, repo dışında durur; uygulama yeniden açılınca da kalır.
+- **Ses yönetimi.** ⋯ menüsünde (ses menüsü satırı ya da çeşit kartı) *Bu sesle oku*, listeye ekle/çıkar, *Yeniden
+  adlandır* (boş bırakınca asıl ad döner; *Asıl ada dön*), tasarlanan seste *Sil*, hazır seste *Gizle* var; ikisi de
+  önce onay sorar. Silinen ses `sesler/_cop/` altına taşınır; gizleme repodaki dosyalara dokunmaz. Ses menüsünün
+  altındaki *Gizlenen ve silinen sesler (N)* bölümünde *Geri getir* var. Takma adlar ve gizlenenler
+  `sesler/yerel_katman.json` dosyasında durur. Adı değişen ses altta gri kökenini gösterir (*üretim adı · çeşit N*);
+  ⋯ → *Üretimine git* tasarımını açar.
+- **Kısayol ve dosyalar.** Ctrl+Enter (Mac'te ⌘+Enter) açık sekmede *Tasarla*'yı ya da *Bu sesle oku*'yu başlatır.
+  İlerleme çubuğu *geçen / ~toplam* gösterir; tahmin bu makinedeki önceki işlerden öğrenilir. İnen dosya ses adı ve
+  saatle adlanır (`Ses_Adi_2026-11-02_0152.wav`).
 
 **Ses klonlama (kendi sesin ya da izinli ses).** Arayüzün *Ses klonlama* sekmesinde kendi kaydınızı (wav/mp3/flac/ogg, 5-30 sn temiz konuşma önerilir; 3 sn altı reddedilir, 36 sn üstü kırpılır), kaydın birebir metnini ve okunacak metni verin. "Bu ses bana ait ya da sahibinden açık izin aldım" kutusu işaretlenmeden düğme çalışmaz. Kayıt yalnız yerel sunucuya (127.0.0.1) gider, referans kodlamasıyla birlikte geçici klasörde işlenir ve o klasör iş bitince, hata olsa da silinir; ağa hiçbir şey gönderilmez. Yalnız yapay çıktı kalır (arayüz: `sesler/_okumalar/<iş>/`, komut satırı: `--cikti`). Çıktı `klon_synthetic.wav` adıyla ve "synthetic" etiketiyle yazılır; paylaşırken yapay olduğunu belirtin. Komut satırı: `python -m ses_tasarim.klonla --kayit sesim.wav --kayit-metni @metin.txt --metin "Merhaba." --cikti cikti/klon --onay`
 

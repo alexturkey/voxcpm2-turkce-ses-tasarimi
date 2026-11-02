@@ -1,3 +1,5 @@
+[Türkçe](README.tr.md) · **English** · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Italiano](README.it.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [Polski](README.pl.md) · [Nederlands](README.nl.md) · [Dansk](README.da.md) · [Norsk](README.nb.md) · [Svenska](README.sv.md) · [Suomi](README.fi.md) · [Ελληνικά](README.el.md) · [العربية](README.ar.md) · [עברית](README.he.md) · [हिन्दी](README.hi.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [ไทย](README.th.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [Bahasa Melayu](README.ms.md) · [Tagalog](README.tl.md) · [မြန်မာ](README.my.md) · [ខ្មែរ](README.km.md) · [ລາວ](README.lo.md) · [Kiswahili](README.sw.md)
+
 # voxcpm2-turkce-ses-tasarimi
 
 **Turkish voice design with VoxCPM2 on a 4 GB GPU.** Describe a voice in English, let the model create it, pick the
@@ -8,8 +10,10 @@ Russian, Chinese and Japanese.
 
 - The app reads in 30 languages; the interface is in 30 languages too.
 - 14 ready-made voices: 7 Turkish, plus one each in English, French, German, Spanish, Russian, Chinese and Japanese.
+- Web UI (v0.2.0): every variant card has two voices, the raw design voice and the voice you'll keep hearing; a reading
+  list with a voice menu; rename, hide or delete voices; drafts for the texts you read. See "Web UI" under "Use".
 
-[Türkçe README](README.tr.md) · [How it fits in 4 GB](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
+[How it fits in 4 GB](docs/4gb.md) · [Ubuntu / Linux](docs/linux.md) · [macOS](docs/mac.md) · [Install guide for AI agents](AGENTS.md) · [Responsible use](ETHICS.md)
 
 > The bundled voices are synthetic, designed from a text description. The voice cloning section is only for your own
 > voice or a voice used with its owner's explicit permission; the UI asks you to confirm that permission. Impersonation,
@@ -69,7 +73,7 @@ program; it installs this repository as its VoxCPM2 voice engine. A voice you de
    (already downloaded one? add `-HazirZip <path to the zip>` to the command below).
 2. **Extract** the zip, open the `voxcpm2-turkce-ses-tasarimi-main` folder, type `powershell` in the Explorer address
    bar and press Enter.
-3. **Run** the installer (needs 64-bit Python 3.10–3.13; NVIDIA driver ≥ 570 for CUDA), then double-click **`baslat.bat`**:
+3. **Run** the installer (needs 64-bit Python 3.10-3.13; NVIDIA driver ≥ 570 for CUDA), then double-click **`baslat.bat`**:
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
    ```
@@ -82,7 +86,7 @@ list and common problems: "Quick install" below.
 
 Build the patched engine with `bash scripts/kur-linux.sh`, or use `Dockerfile.linux` to build and run in an
 Ubuntu 24.04 / CUDA 12.8.1 environment. Requires an NVIDIA GPU and a compatible driver; the native installer also
-needs the CUDA toolkit and Python 3.10–3.13. The UI stays loopback-only, including on remote servers (SSH forwarding).
+needs the CUDA toolkit and Python 3.10-3.13. The UI stays loopback-only, including on remote servers (SSH forwarding).
 Prerequisites, commands, architecture selection and validation scope: [docs/linux.md](docs/linux.md).
 
 ## Quick start (macOS, Apple Silicon)
@@ -120,6 +124,10 @@ here; installation steps and support questions go there. Thank you, Emre, for br
    the recording, not by the description, so it does not drift from text to text. Text is read sentence by sentence.
 3. Quality is fixed: 16 diffusion steps, CFG 2.0. The seed is not a quality knob.
 
+The raw design recording is a one-off sample of the voice; no later reading sounds exactly like it. What you hear in
+every later reading is step 2: the design recording as reference plus the variant's own seed. That is why the web UI
+does step 2 right after the design and shows both on the variant card.
+
 The engine is audio.cpp v0.7.2 with our patch (`patches/`), the model is VoxCPM2 Q8_0 GGUF. Peak VRAM ≈ 2.8 GB;
 about 2 s of compute per 1 s of speech on a GTX 1050 Ti. Details and measurements: [docs/4gb.md](docs/4gb.md).
 
@@ -152,7 +160,7 @@ Cappadocia script, cut from the full production reading.
 
 ## Quick install, no compiler needed (Windows 10/11, NVIDIA GPU ≥ 4 GB)
 
-Prerequisites: NVIDIA driver ≥ 570 and 64-bit Python 3.10–3.13 (`winget install Python.Python.3.12`). Nothing else:
+Prerequisites: NVIDIA driver ≥ 570 and 64-bit Python 3.10-3.13 (`winget install Python.Python.3.12`). Nothing else:
 no Visual Studio, no CUDA installer. Not sure which card you have? Run `nvidia-smi` in PowerShell: it prints the GPU
 name, driver version and memory. No NVIDIA card? See "AMD / Intel" below.
 
@@ -191,7 +199,7 @@ localhost only).
 start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB by us (also via Docker Desktop/WSL2 on Windows, CLI only); measured by @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (details in [docs/linux.md](docs/linux.md)). Reports from other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**AMD / Intel (experimental):** a separate Vulkan engine zip (`…-win64-vulkan.zip`, no CUDA) installs with
+**AMD / Intel (experimental):** a separate Vulkan engine zip (`...-win64-vulkan.zip`, no CUDA) installs with
 `scripts\kur.ps1 -Kok C:\vox -Vulkan`. It is verified only on our NVIDIA card through the Vulkan backend (there it ran
 slower than CUDA but gave the same audio for the same seed; that measurement was taken while the disk was busy with
 another job, so a clean speed comparison is still pending) and we have **not** tested it on AMD or Intel hardware
@@ -240,6 +248,8 @@ Command line:
 .venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt
 # read with variant 2 of it
 .venv\Scripts\python.exe -m ses_tasarim.oku --ses deniz_feneri/2 --metin @metin.txt --cikti cikti\deniz
+# design, then read a text with each variant's lasting voice (dinleme.wav in each variant folder)
+.venv\Scripts\python.exe -m ses_tasarim.tasarla --ad deniz_feneri --cesit 3 --tarif "A calm Turkish woman ..." --metin @tanitim.txt --dinleme @metin.txt
 ```
 Text rules: write numbers in words, no quotation marks (the tool refuses digits and quotes), one sentence per line,
 ≤ 2000 characters per line. Pause after a line: `|| bagli` 0.25 s, `|| normal` 0.5 s, `|| paragraf` 1 s, `|| agir` 1.5 s
@@ -247,18 +257,49 @@ or your own length `|| 0,8` (0-5 s; the digits of the marker are allowed). `ayar
 Language is detected from the text (Turkish letters, script, common words; the voice card's `dil` if unsure; `--dil <code>` is optional). For non-Turkish text apostrophes are allowed there, the Turkish dictionary is
 skipped, digits are still refused. If a reading prints `speed gate: satır [...]`, listen to those lines.
 
-Web UI (local only, 127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/
-yourself (another port: `--port 8800`). Three tabs: *Design a voice*, *Read with this voice*, *Voice cloning*.
-*Design* → listen to the variants → pick one → *Read with this voice* → download. Or pick a bundled voice and read.
-The *generation name* goes to every variant of that run; when you add the variant you like with *Add to my reading list*,
-you give it its own name. The voice menu in the reading tab shows *My reading list* and the bundled voices (with flags);
-each row has ▶ listen, the heart and ⋯.
-In the reading box click a line number for the line menu (move, duplicate, delete; Alt+↑/↓) and the thin band
-between two lines for the pause; press Enter twice for a paragraph (1 s). Blank lines are turned into pause bands.
-Ctrl+Enter (⌘+Enter on Mac) starts *Design* or *Read with this voice* on the open tab. The text and its pauses survive a
-page reload (browser storage). While the result plays, the line being read glows and scrolls into view; *Listen from here*
-in the line menu plays from that line. The download is named after the voice and time (`Voice_Name_2026-11-02_0152.wav`);
-the header shows the version and short commit. Stop the server with Ctrl+C.
+### Web UI
+
+Local only (127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → open http://127.0.0.1:8765/ yourself
+(another port: `--port 8800`), or double-click `baslat.bat`. Stop the server with Ctrl+C. Three tabs: *Design a voice*,
+*Read with this voice*, *Voice cloning*. The usual path: *Design* → listen to the variants → *Add to my reading list* →
+*Read with this voice* → download. Or pick a bundled voice from the voice menu and read.
+
+- **Version in the header.** A small, faint `v0.2.0 · <short commit>` (with `+` when tracked files have uncommitted
+  changes; the version only without git), so screenshots and videos show which version was used.
+- **Two voices on every variant card.** On top, in grey, the *Raw design voice*: it is generated once and never comes
+  out the same again. Below it, in an orange frame, *↻ This is the voice you'll keep hearing*: the design recording read
+  back as reference with the variant's own seed (shown on the card). This is how the voice sounds in every later reading.
+  Under it are *Read with this voice* and *Add to my reading list*. One press of *Design* does both: it designs every
+  variant, then reads your text with each lasting voice; a single progress bar counts both phases. The variant folder
+  gets `dinleme.wav`. If that reading stops early, the design is kept and the card shows a note.
+- **The "Text you want to hear" window.** In *Design a voice*, the *↻ Text you want to hear* box holds what each lasting
+  voice reads (left empty, the sample sentence is read). Clicking it opens the reading notebook in a window: line numbers,
+  line menu, pause bands. *OK* writes the text and its pauses back to the box; *Cancel* or Esc changes nothing. The
+  reading tab keeps its own text.
+- **The reading notebook.** One sentence per line. Click a line number for the line menu (move up or down, move to a
+  position, duplicate, delete; Alt+↑/↓, Alt+Shift+↓, or drag by the number; Ctrl+Z undoes text and pauses together).
+  Click the thin band between two lines to choose the pause (bagli 0.25 · normal 0.5 · paragraf 1 · agir 1.5 s, or your
+  own 0-5 s with the gear); press Enter twice for a paragraph (1 s), and blank lines become pause bands. While the result
+  plays, the line being read glows and scrolls into view; *▶ Listen from here* in the line menu plays from that line.
+  The text and its pauses survive a page reload (browser storage).
+- **Drafts.** The *📄 Drafts* button sits in both notebooks (reading tab and the window). Save the current text with its
+  pauses as a draft, load one with a click (Ctrl+Z undoes), and use ⋯ to overwrite, rename or delete it. Drafts are
+  stored in `sesler/taslaklar.json`, never in the repository.
+- **Reading list and voice menu.** On a variant card, *Add to my reading list* opens a name box: give the variant its
+  own name and ✓ adds it. The *Generation name* stays on every variant of that run. In *Read with this voice*, the voice
+  button (flag + name) opens the voice menu: *My reading list* on top, then the bundled voices with flags (interface
+  language first). Each row has ▶ listen (the lasting voice when there is one), the heart (add or remove) and ⋯; ↑/↓ and
+  Enter choose, Esc closes, the last voice is remembered. The list lives in `sesler/okuma_listesi.json`, outside the
+  repository, and survives restarts.
+- **Managing voices.** The ⋯ menu (voice menu row or variant card) has *Read with this voice*, add to or remove from the
+  list, *Rename* (an empty name restores the original; *Back to original name*), *Delete* for designed voices and *Hide*
+  for bundled ones; both ask first. A deleted voice moves to `sesler/_cop/`; hiding never touches repository files.
+  *Hidden and deleted voices (N)* at the bottom of the voice menu has *Restore*. Custom names and hidden voices are kept
+  in `sesler/yerel_katman.json`. A renamed voice shows its origin in grey (*generation name · variant N*); ⋯ → *Go to
+  generation* opens its design.
+- **Shortcuts and files.** Ctrl+Enter (⌘+Enter on Mac) starts *Design* or *Read with this voice* on the open tab. The
+  progress bar shows *elapsed / ~total*, with an estimate learned from earlier jobs on your machine. The download is named
+  after the voice and time (`Voice_Name_2026-11-02_0152.wav`).
 
 **Voice cloning (your own or a consented voice).** In the *Voice cloning* tab of the UI, provide your recording (wav/mp3/flac/ogg, 5-30 s of clean speech advised; under 3 s is rejected, over 36 s is trimmed), its exact transcript and the text to read. The button stays disabled until you tick "This voice is mine or I have the owner's explicit permission". The recording goes only to the local server (127.0.0.1), is processed in a temp folder together with its reference encoding, and that folder is deleted when the job ends, also when it fails; nothing is sent over the network. Only the synthetic output is kept (UI: `sesler/_okumalar/<job>/`, CLI: `--cikti`). Output is `klon_synthetic.wav` with a "synthetic" tag; label it as AI-generated when sharing. CLI: `python -m ses_tasarim.klonla --kayit myvoice.wav --kayit-metni @transcript.txt --metin "Hello." --cikti out/clone --onay`
 
