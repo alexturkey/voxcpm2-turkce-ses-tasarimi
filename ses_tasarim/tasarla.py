@@ -221,7 +221,7 @@ def main(argv=None) -> int:
     parser.add_argument("--tarif", help="İngilizce ses tarifi (parantezsiz) ya da @dosya")
     parser.add_argument("--metin", help="ses yaratılırken okutulan metin, sesin dilinde, ya da @dosya (rakamsız)")
     parser.add_argument("--dil", default=None,
-                        help="isteğe bağlı / optional: " + ", ".join(okunus.LANGUAGES) + " (verilmezse metinden tanınır / auto-detected)")
+                        help="isteğe bağlı / optional: " + okunus.DIL_YARDIM + " (verilmezse metinden tanınır / auto-detected)")
     parser.add_argument("--cesit", type=int, default=DEFAULT_VARIANTS, help="çeşit sayısı / number of variants")
     parser.add_argument("--tohum", type=int, nargs="*", help="tohumları kendin ver / explicit seeds")
     parser.add_argument("--dinleme", help="her çeşidin kalıcı sesiyle okunacak metin ya da @dosya (satır = cümle); "

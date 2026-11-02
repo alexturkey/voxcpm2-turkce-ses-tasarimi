@@ -26,6 +26,10 @@ PAUSE_MARK = re.compile(r"\|\|[^\n]*$", re.M)  # satır sonu durak işareti, oku
 LANGUAGES = {"tr": "Türkçe / Turkish", "en": "English", "fr": "Français", "de": "Deutsch", "es": "Español",
              "ru": "Русский", "zh": "中文 (普通话)", "ja": "日本語"}
 DEFAULT_LANGUAGE = "tr"
+# --dil yardımı: kod VoxCPM2'nin 30 dilinin hepsini kabul eder (language() biçimi denetler); 8'i bizde uçtan uca denendi.
+# --dil help: every one of VoxCPM2's 30 languages is accepted (language() checks the format); 8 were tested end to end.
+DIL_YARDIM = ("VoxCPM2'nin 30 dilinden birinin kodu / a code of VoxCPM2's 30 languages (ör. / e.g. tr, en, ar, ko, sw); "
+              "uçtan uca denenen / tested end to end: " + ", ".join(LANGUAGES))
 DOUBLE_QUOTES = re.compile("[\"“”„«»‹›`´]")
 UNSPOKEN_FOREIGN = re.compile("[\"“”„`´\\d]")
 

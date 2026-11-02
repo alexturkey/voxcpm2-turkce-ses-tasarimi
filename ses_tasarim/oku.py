@@ -129,7 +129,7 @@ def main(argv=None) -> int:
     parser.add_argument("--ses", help="hazir/<ad>, <ad>/<çeşit> ya da klasör")
     parser.add_argument("--metin", help="okunacak metin ya da @dosya; satır = cümle, 'cümle || paragraf' durak")
     parser.add_argument("--cikti", type=Path, help="çıktı klasörü (okuma.wav, ozet.json)")
-    parser.add_argument("--dil", help="metnin dili / text language: " + ", ".join(okunus.LANGUAGES)
+    parser.add_argument("--dil", help="metnin dili / text language: " + okunus.DIL_YARDIM
                         + " (isteğe bağlı; boşsa metinden tanınır, kararsızsa sesin kartı)")
     args = parser.parse_args(argv)
     settings = ayarlar.load(args.ayarlar)

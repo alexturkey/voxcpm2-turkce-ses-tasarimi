@@ -56,6 +56,16 @@ class YonlendirilenCikti(unittest.TestCase):
                 govde = kaynak.split("def main(argv=None) -> int:\n", 1)[1]
                 self.assertTrue(govde.startswith("    utf8_cikti()\n"), ad)
 
+    def test_dil_yardimi_30_dil(self):
+        # Yardım yalnız denenen 8 dili sayıyordu; kod VoxCPM2'nin 30 dilini kabul eder (README ile aynı)
+        from ses_tasarim import okunus
+        kodlar = "tr en de fr es it pt ru pl nl da nb sv fi el ar he hi zh ja ko th vi id ms tl my km lo sw".split()
+        self.assertEqual([okunus.language(k) for k in kodlar], kodlar)
+        for ad in ("tasarla", "oku"):
+            with self.subTest(ad):
+                r = calistir("-m", f"ses_tasarim.{ad}", "--help")
+                self.assertIn("30", " ".join(r.stdout.decode("utf-8").split()))
+
     def test_yardim_yonlendirilince(self):
         for ad in CLILER:
             with self.subTest(ad):
