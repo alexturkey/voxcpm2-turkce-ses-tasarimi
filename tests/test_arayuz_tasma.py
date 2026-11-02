@@ -36,6 +36,28 @@ class SolFormKaydirmasiz(unittest.TestCase):
         self.assertIn(":root:lang(my) body{line-height:1.45}", CSS)
 
 
+class MenuZemininde(unittest.TestCase):
+    def test_pencere_ve_kart_zemindir(self):
+        # Taslaklar menüsü Duymak istediğin metin penceresinden 18 px, kart ⋯ menüsü karttan 31-48 px taşıyordu
+        self.assertIn("ZEMIN:'.dpkutu,.cesit'", JS)
+        gorunur = re.search(r"gorunur\(\)\{[^\n]*\n[^\n]*\n[^\n]*", JS).group(0)
+        self.assertIn("this.tetik?.closest?.(this.ZEMIN)", gorunur)
+        self.assertIn("m.style.maxWidth=(B.r-B.l)+'px';m.style.setProperty('--en'", JS)   # menü zeminden geniş olamaz
+        self.assertIn("a.style.maxWidth=(B.r-B.l)+'px'", JS)                              # alt menü de
+        self.assertIn("#acilir:has(.kalpoge){min-width:min(19em,var(--en,100vw))}", CSS)  # en küçük genişlik ezmez
+
+    def test_kutu_menuyu_uzatinca_yukari_alinir(self):
+        self.assertIn("if(ust+h>B.b)m.style.top=Math.max(B.t,B.b-h)+'px'", JS)
+
+
+class PencereDugmeleri(unittest.TestCase):
+    def test_tamam_vurgulu_vazgec_ikincil_halka_klavyede(self):
+        self.assertIn('id="dp_vazgec"', arayuz.HTML)
+        self.assertIn(".dpdug button{margin:0;padding:6px 18px;border:1px solid var(--acc)", CSS)
+        self.assertIn(".dpdug button.ikincil{background:transparent;color:var(--fg);border-color:var(--cizgi)}", CSS)
+        self.assertIn(".dpdug button:focus{outline:none}.dpdug button:focus-visible{outline:2px solid var(--acc)", CSS)
+
+
 class MenuGorunurAlanda(unittest.TestCase):
     def test_kutu_acilinca_menu_yeniden_sigar(self):
         # Yeniden adlandır kutusu menüyü genişletiyordu (de, ru, nl, el: sağdan 2-29 px dışarı)
