@@ -233,7 +233,9 @@ const DIL_ADI=k=>(DILLER.find(d=>d[0]===k)||[k,k,k])[2];
 function ornekDoldur(){const s=$('ornek'),secili=s.value;s.innerHTML='';const bos=document.createElement('option');bos.value='';bos.textContent=t('kendim');s.appendChild(bos);
  const sira=o=>o.dil===dil?0:o.dil==='en'?1:2;  // önce arayüz dili, sonra İngilizce, sonra diğerleri
  const gruplar={};for(const o of [...ornekler].sort((a,b)=>sira(a)-sira(b))){let g=gruplar[o.dil];if(!g){g=gruplar[o.dil]=document.createElement('optgroup');g.label=`━━  ${DIL_ADI(o.dil)} · ${ornekler.filter(x=>x.dil===o.dil).length}  ━━`;s.appendChild(g);}
-  const e=document.createElement('option');e.value=o.id;e.textContent=dil==='tr'?o.ad_tr:o.ad_en;g.appendChild(e);}
+  // 18 rol her dilde aynı adla gelir; arayüz dili dışındaki seçenek dilini taşır, liste tekrar gibi görünmez.
+  // The 18 roles share names across languages; options outside the UI language carry their language name.
+  const e=document.createElement('option');e.value=o.id;e.textContent=(dil==='tr'?o.ad_tr:o.ad_en)+(o.dil===dil?'':' · '+DIL_ADI(o.dil));g.appendChild(e);}
  s.value=secili;}
 $('ornek').addEventListener('change',()=>{const o=ornekler.find(o=>o.id===$('ornek').value);if(!o)return;
  $('tarif').value=o.tarif;$('tasarim_metni').value=o.metin;if(!$('ad').value.trim()||ornekler.some(x=>x.id===$('ad').value))$('ad').value=o.id;sureGuncelle();});
