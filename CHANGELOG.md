@@ -3,9 +3,9 @@
 ## Yayımlanmamış / Unreleased
 
 **TR**
-- Taşma düzeltmeleri (kart zemindir, her şey onun içinde kalır; 30 dil × 768/390 genişlik × 12 durum taraması:
+- Taşma düzeltmeleri (kart zemindir, her şey onun içinde kalır; 30 dil × 3 boyut (767×794 gerçek kullanım boyutu, 768×824, 390) × 12 durum taraması:
   normal, ad kutusu, ⋯ menüsü ve içinde yeniden adlandırma, ses listesi, alt menü, taslaklar, satır menüsü, hata yazısı,
-  *Duymak istediğin metin* penceresi ve içindeki taslak menüsü; 720 ölçüm, 0 taşma): çeşit kartında *Okuma listeme ekle*
+  *Duymak istediğin metin* penceresi ve içindeki taslak menüsü; 1080 ölçüm, 0 taşma): çeşit kartında *Okuma listeme ekle*
   ad kutusu açılınca *Vazgeç* artık kartın 22 px dışına çıkmaz; uzun dillerde (Yunanca, Svahili) *Okuma listeme ekle*
   düğmesi çerçeveye sığmazsa kendi içinde iki satıra iner; ⋯ menüsünde *Yeniden adlandır* kutusu açılınca menü
   genişlese de görünür alanda kalır (Almanca, Rusça, Felemenkçe, Yunanca'da sağdan dışarı çıkıyordu). *Ses tasarla*
@@ -174,9 +174,9 @@
   düzeltildi, uzun metin kesilmeden okunur; blok kaymasına karşı `decoder_seen` koruması. Katkı: @grogureis, #14.
 
 **EN**
-- Overflow fixes (the card is the ground, everything stays inside it; scanned 30 languages × 768/390 width × 12 states:
+- Overflow fixes (the card is the ground, everything stays inside it; scanned 30 languages × 3 sizes (767×794 real-use size, 768×824, 390) × 12 states:
   normal, name box, ⋯ menu and its rename box, voice list, submenu, drafts, line menu, error text, the *Text you want to
-  hear* dialog and its drafts menu; 720 checks, 0 overflows): with the *Add to my reading list* name box open, *Cancel*
+  hear* dialog and its drafts menu; 1080 checks, 0 overflows): with the *Add to my reading list* name box open, *Cancel*
   no longer sticks 22 px out of the variant card; in long languages (Greek, Swahili) the *Add to my reading list* button
   wraps inside its frame instead of overflowing; opening the *Rename* box in the ⋯ menu keeps the widened menu inside the
   visible area (it ran off the right edge in German, Russian, Dutch, Greek). The *Design a voice* form fits 767×794
