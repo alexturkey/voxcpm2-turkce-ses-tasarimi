@@ -65,7 +65,7 @@ class MetinHafizasi(unittest.TestCase):
     def test_tek_kapi(self):
         # Kayıt defterNo'dan seyreltilerek tetiklenir, açılış bitmeden yazmaz, sayfadan çıkarken yazar
         self.assertIn("Kayit.sonra();", kes("function defterNo(", "// Kutu boyu"))
-        self.assertIn("Durak.acilis();Kayit.hazir=true;", JS)
+        self.assertIn("Durak.acilis();Kayit.formGeri();Kayit.hazir=true;", JS)
         self.assertIn("addEventListener('pagehide',()=>Kayit.yaz())", JS)
         self.assertIn("try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e)", JS)
 
@@ -74,7 +74,7 @@ class MetinHafizasi(unittest.TestCase):
         sahte = r"""
 const ta={value:'',clientWidth:0};const $=id=>ta;let D={},yazim=0;
 const hafiza=(k,v)=>{if(v===undefined)return k in D?D[k]:null;D[k]=String(v);yazim++;};
-const defterNo=()=>{},snb=x=>x+' s',t=k=>k,Satir={isik:()=>({k:new Set()})};
+const defterNo=()=>{},snb=x=>x+' s',t=k=>k,Satir={isik:()=>({k:new Set()})},DinlemeDefter={deger:''};
 """
         parca = kes("const Durak={", "const KALP=") + kes("const Kayit={", "addEventListener('pagehide'")
         R = node(sahte + parca + r"""
@@ -92,8 +92,35 @@ console.log(JSON.stringify(R));""")
         self.assertEqual(R["c"], ["K\nL", [None, None]])
         self.assertEqual(R["d"], [5, None])
         self.assertEqual(R["e"], [0, False])  # açılış bitmeden yazmaz / no write before load finishes
-        self.assertEqual(R["f"], [2, "M\nN", "[1,null]"])  # aynı içerik ikinci kez yazılmaz / unchanged content not rewritten
+        self.assertEqual(R["f"], [3, "M\nN", "[1,null]"])  # metin + bant + form; aynı içerik ikinci kez yazılmaz / unchanged content not rewritten
         self.assertEqual(R["g"], "[1,null]")  # satır sayısı kadar bant / one band per line
+
+    def test_tasarla_formu_ayni_kapida(self):
+        # Tasarla formunun her alanı yazınca aynı seyreltilmiş kayda gider; diyalog kapanınca da yazılır
+        self.assertIn("if(d.classList.contains('hata'))durumYaz(d,null);Kayit.sonra();", JS)
+        self.assertIn("Kayit.hazir=true;Kayit.sonra();", kes("const DinlemeDefter={", "$('dinleme_metni').addEventListener('click'"))
+
+    @unittest.skipUnless(shutil.which("node"), "node yok")
+    def test_tasarla_formu_geri_gelir(self):
+        sahte = r"""
+const E={};const $=id=>E[id]||(E[id]={value:'',options:[]});let D={};
+const hafiza=(k,v)=>{if(v===undefined)return k in D?D[k]:null;D[k]=String(v);};
+const DinlemeDefter={deger:'',yaz(v){this.deger=v;}},Durak={dur:[]};
+"""
+        R = node(sahte + kes("const Kayit={", "addEventListener('pagehide'") + r"""
+const R={};$('ornek').options=[{value:''},{value:'anlatici_tr'}];
+Kayit.hazir=true;$('okuma_metni').value='';$('ad').value='Zeynep';$('cesit').value='5';$('ornek').value='anlatici_tr';
+$('tarif').value='A warm voice';$('tasarim_metni').value='Merhaba.';DinlemeDefter.deger='Bir\nIki || 1';Kayit.yaz();R.kayit=JSON.parse(D.tasarla_form);
+for(const k in E)E[k].value='';DinlemeDefter.deger='';Kayit.formGeri();
+R.geri=[$('ad').value,$('cesit').value,$('ornek').value,$('tarif').value,$('tasarim_metni').value,DinlemeDefter.deger];
+D.tasarla_form=JSON.stringify({ad:'X',ornek:'yok_boyle',cesit:7});$('ornek').value='';$('cesit').value='3';Kayit.formGeri();
+R.suzgec=[$('ad').value,$('ornek').value,$('cesit').value];
+D.tasarla_form='{bozuk';Kayit.formGeri();R.bozuk=$('ad').value;
+console.log(JSON.stringify(R));""")
+        self.assertEqual(R["kayit"]["dinleme"], "Bir\nIki || 1")
+        self.assertEqual(R["geri"], ["Zeynep", "5", "anlatici_tr", "A warm voice", "Merhaba.", "Bir\nIki || 1"])
+        self.assertEqual(R["suzgec"], ["X", "", "3"])  # listede olmayan örnek ve metin olmayan değer alınmaz
+        self.assertEqual(R["bozuk"], "X")  # bozuk kayıt formu bozmaz / a broken record leaves the form alone
 
 
 class OkunanSatir(unittest.TestCase):
