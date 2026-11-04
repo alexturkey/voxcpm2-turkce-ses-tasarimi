@@ -126,13 +126,14 @@ gebracht hast!
 1. **Voice Design.** Eine englische *Stimmbeschreibung* + ein *Text, der beim Erzeugen der Stimme gelesen wird* (in der
    Sprache der Stimme) + eine Anzahl von Varianten. Jede Variante bekommt ihren eigenen Seed; die Engine erhält
    `(description)text` und liefert pro Seed eine Entwurfsaufnahme. Der Text ist eine kurze Probe zum Kennenlernen der
-   Stimme: 1-2 Sätze, höchstens ~20 s (die Oberfläche zeigt die Schätzung an und startet nicht über 22 s); langer Text
+   Stimme: 1-3 Sätze, höchstens ~30 s (die Oberfläche zeigt die Schätzung an und startet nicht über 33 s); langer Text
    gehört in Schritt 2.
 2. **Referenzbasiertes Vorlesen.** Die Entwurfsaufnahme wird an **beide** Engine-Eingänge (`audio` und `voice_ref`)
    übergeben, zusammen mit ihrem Transkript (`reference_text`) und dem neuen Text, mit demselben Seed. Die Stimme wird
    von der Aufnahme getragen, nicht von der Beschreibung, und driftet deshalb von Text zu Text nicht ab. Der Text wird
    Satz für Satz vorgelesen.
 3. Die Qualität ist fest: 16 Diffusionsschritte, CFG 2.0. Der Seed ist kein Qualitätsregler.
+4. **Wortzeiten, bei jedem Lauf derselbe Klang.** Beim Vorlesen meldet die Engine selbst, wo jedes Wort beginnt und endet (Patch 0002, kein zusätzliches Modell). Die Zeiten werden in `kelimeler.json` geschrieben, und die Zeilen werden so gekürzt, dass die Lücke zwischen den Zeilen der Pauseneinstellung entspricht. Genauigkeit gegenüber CTC-Forced-Alignment (CTC = 100 %): 88 % (Türkisch, 12 Stimmen; Einstellung `kelime_zamani`, standardmäßig an). Mit Patch 0003 liefert derselbe Seed bei jedem Lauf byteidentisches Audio.
 
 Die rohe Entwurfsaufnahme ist eine einmalige Probe der Stimme; keine spätere Lesung klingt genau so. Was du in jeder
 späteren Lesung hörst, ist Schritt 2: die Entwurfsaufnahme als Referenz plus der eigene Seed der Variante. Deshalb führt
@@ -368,7 +369,7 @@ KI-generiert.
 (tief/hell, warm, nasal, rau), Tonfall und Rolle (ruhiger Dokumentarsprecher, energiegeladener Moderator), Tempo
 (langsam, gemessen) und »clean studio recording, no background noise«. Bleib bei einer Beschreibung, nicht bei einem
 Skript; keine Klammern. Lass 3-5 Varianten erzeugen und hör sie dir an: Der Seed verändert die Stimme stark. Für den
-Erzeugungstext nimm 1-2 natürliche Sätze in der Sprache der Stimme, in der gewünschten Stimmung (höchstens ~20 s
+Erzeugungstext nimm 1-3 natürliche Sätze in der Sprache der Stimme, in der gewünschten Stimmung (höchstens ~30 s
 Sprache). Beim Vorlesen ein Satz pro Zeile; lange Sätze aufteilen, Zahlen in Worten schreiben.
 
 ## Mitmachen

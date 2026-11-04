@@ -117,12 +117,13 @@ hier; installatiestappen en supportvragen horen daar thuis. Bedankt, Emre, dat j
 
 1. **Stemontwerp.** Een Engelse *stembeschrijving* + een *tekst die wordt voorgelezen terwijl de stem wordt gemaakt* (in de taal van de stem) + een aantal
    varianten. Elke variant krijgt een eigen seed; de engine krijgt `(description)text` en geeft per seed één
-   ontwerpopname terug. De tekst is een kort voorbeeld om de stem te leren kennen: 1-2 zinnen, hooguit ~20 s (de interface
-   toont de schatting en start niet boven 22 s); lange tekst hoort bij stap 2.
+   ontwerpopname terug. De tekst is een kort voorbeeld om de stem te leren kennen: 1-3 zinnen, hooguit ~30 s (de interface
+   toont de schatting en start niet boven 33 s); lange tekst hoort bij stap 2.
 2. **Voorlezen op basis van een referentie.** De ontwerpopname gaat naar **beide** engine-ingangen (`audio` en `voice_ref`),
    samen met de transcriptie (`reference_text`) en de nieuwe voor te lezen tekst, met dezelfde seed. De stem wordt gedragen
    door de opname, niet door de beschrijving, en drijft dus niet af van tekst tot tekst. Tekst wordt zin voor zin voorgelezen.
 3. De kwaliteit ligt vast: 16 diffusiestappen, CFG 2.0. De seed is geen kwaliteitsknop.
+4. **Woordtijden, elke keer dezelfde audio.** Tijdens het voorlezen geeft de engine zelf aan waar elk woord begint en eindigt (patch 0002, geen extra model). De tijden komen in `kelimeler.json` en regels worden zo bijgesneden dat de ruimte tussen regels gelijk is aan de pauze-instelling. Nauwkeurigheid ten opzichte van CTC-forced alignment (CTC = 100%): 88% (Turks, 12 stemmen; instelling `kelime_zamani`, standaard aan). Met patch 0003 geeft dezelfde seed bij elke run byte-identieke audio.
 
 De ruwe ontwerpopname is een eenmalig voorbeeld van de stem; geen enkele latere voorlezing klinkt precies zo. Wat je bij
 elke latere voorlezing hoort, is stap 2: de ontwerpopname als referentie plus de eigen seed van de variant. Daarom voert de
@@ -330,8 +331,8 @@ en misleiding zijn verboden. Zie [ETHICS.md](ETHICS.md). Vermeld bij wat je publ
 **Hoe schrijf ik een goede stembeschrijving?** In het Engels, 1-3 zinnen: leeftijd en geslacht, klankkleur (diep/helder, warm,
 nasaal, schor), toon en rol (rustige documentaireverteller, energieke presentator), tempo (langzaam, afgemeten) en
 "clean studio recording, no background noise". Houd het bij een beschrijving, geen script; geen haakjes. Vraag om 3-5
-varianten en luister: de seed verandert de stem flink. Gebruik voor de aanmaaktekst 1-2 natuurlijke zinnen in de taal van de stem, in de
-sfeer die je wilt (hooguit ~20 s spraak). Bij het voorlezen één zin per regel; splits lange zinnen en schrijf getallen voluit.
+varianten en luister: de seed verandert de stem flink. Gebruik voor de aanmaaktekst 1-3 natuurlijke zinnen in de taal van de stem, in de
+sfeer die je wilt (hooguit ~30 s spraak). Bij het voorlezen één zin per regel; splits lange zinnen en schrijf getallen voluit.
 
 ## Bijdragen
 

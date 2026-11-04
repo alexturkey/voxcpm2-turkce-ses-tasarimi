@@ -122,13 +122,14 @@ pasos de instalación y las preguntas de soporte van allí. ¡Gracias, Emre, por
 1. **Diseño de la voz.** Una *descripción de la voz* en inglés + un *texto que se lee mientras se crea la voz* (en el
    idioma de la voz) + un número de variantes. Cada variante recibe su propia semilla; el motor recibe
    `(description)text` y devuelve una grabación de diseño por semilla. El texto es una muestra breve para conocer la
-   voz: 1-2 frases, ~20 s como máximo (la interfaz muestra la estimación y no arranca por encima de 22 s); el texto
+   voz: 1-3 frases, ~30 s como máximo (la interfaz muestra la estimación y no arranca por encima de 33 s); el texto
    largo corresponde al paso 2.
 2. **Lectura basada en la referencia.** La grabación de diseño se pasa a **las dos** entradas del motor (`audio` y
    `voice_ref`), junto con su transcripción (`reference_text`) y el nuevo texto que se va a leer, con la misma semilla.
    La voz la sostiene la grabación, no la descripción, así que no se desvía de un texto a otro. El texto se lee frase a
    frase.
 3. La calidad es fija: 16 pasos de difusión, CFG 2.0. La semilla no es un ajuste de calidad.
+4. **Tiempos por palabra, mismo audio en cada ejecución.** Al leer, el propio motor indica dónde empieza y termina cada palabra (parche 0002, sin modelo adicional). Los tiempos se guardan en `kelimeler.json` y las líneas se recortan para que el hueco entre líneas sea igual al ajuste de pausa. Precisión frente a la alineación forzada con CTC (forced alignment, CTC = 100 %): 88 % (turco, 12 voces; ajuste `kelime_zamani`, activado por defecto). Con el parche 0003 la misma semilla da un audio idéntico byte a byte en cada ejecución.
 
 La grabación de diseño en bruto es una muestra irrepetible de la voz; ninguna lectura posterior suena exactamente
 igual. Lo que oyes en cada lectura posterior es el paso 2: la grabación de diseño como referencia más la semilla propia
@@ -360,8 +361,8 @@ el engaño. Consulta [ETHICS.md](ETHICS.md). Indica que lo que publiques está g
 **¿Cómo escribo una buena descripción de voz?** En inglés, 1-3 frases: edad y género, timbre (grave/brillante, cálido,
 nasal, ronco), tono y papel (narrador de documentales sereno, presentador enérgico), tempo (lento, pausado) y «clean
 studio recording, no background noise». Que sea una descripción, no un guion; sin paréntesis. Pide 3-5 variantes y
-escúchalas: la semilla cambia mucho la voz. Para el texto de creación, usa 1-2 frases naturales en el idioma de la voz,
-con el tono que quieras (como máximo ~20 s de voz). Al leer, una frase por línea; divide las frases largas y escribe los
+escúchalas: la semilla cambia mucho la voz. Para el texto de creación, usa 1-3 frases naturales en el idioma de la voz,
+con el tono que quieras (como máximo ~30 s de voz). Al leer, una frase por línea; divide las frases largas y escribe los
 números con letras.
 
 ## Cómo contribuir

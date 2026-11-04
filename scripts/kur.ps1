@@ -50,7 +50,7 @@ $MODEL_SHA = "c8e01ab4416011e12a28f24ede298a1aa5ce64b43f8e8aaad53b1e2fe7c96432"
 $MODEL_BYTES = 2955000480
 $SRC_URL = "https://github.com/0xShug0/audio.cpp/archive/refs/tags/v0.7.2.tar.gz"
 $SRC_SHA = "cab8db31cec26ef8f1e39eabea1df5f02a87e8de87a5ae334b1e66217339c6bf"
-$PATCH = Join-Path $Repo "patches\0001-voxcpm2-4gb-ve-hiz.patch"
+$PATCHES = @((Join-Path $Repo "patches\0001-voxcpm2-4gb-ve-hiz.patch"), (Join-Path $Repo "patches\0002-voxcpm2-kelime-zamani.patch"), (Join-Path $Repo "patches\0003-ggml-cuda-block-reduce-yarisi.patch"))
 # Hazır motor: GitHub Release. Sürüm, zip ve exe sha256'sı burada sabit; yeni sürümde üçü birlikte güncellenir.
 $REL_SURUM = "v0.1.1"
 $REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip"
@@ -189,12 +189,17 @@ if ($Adim -contains "kaynak") {
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "git bulunamadı; Git for Windows kurun (yama için gerekli)" }
     Push-Location $src
     try {
-        if ((GitApply @("apply", "--reverse", "--check", $PATCH) $true) -eq 0) { Write-Output "  yama zaten uygulanmış" }
-        else {
-            if ((GitApply @("apply", "--check", $PATCH)) -ne 0) { throw "yama uygulanamıyor (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)" }
-            if ((GitApply @("apply", $PATCH)) -ne 0) { throw "git apply başarısız" }
-            if ((GitApply @("apply", "--reverse", "--check", $PATCH)) -ne 0) { throw "yama sessizce atlandı (git deposu içinde misin? --directory gerekir)" }
-            Write-Output "  yama uygulandı ve doğrulandı"
+        # Yamalar sırayla (0001 4 GB + hız, 0002 kelime zamanı, 0003 CUDA block_reduce yarışı); en son uygulanan sondan geriye bulunur, kalanlar uygulanır
+        # patches in order; the last applied one is found from the end, the rest are applied and verified
+        $son = -1
+        for ($i = $PATCHES.Count - 1; $i -ge 0; $i--) { if ((GitApply @("apply", "--reverse", "--check", $PATCHES[$i]) $true) -eq 0) { $son = $i; break } }
+        if ($son -eq $PATCHES.Count - 1) { Write-Output "  yamalar zaten uygulanmış" }
+        for ($i = $son + 1; $i -lt $PATCHES.Count; $i++) {
+            $p = $PATCHES[$i]
+            if ((GitApply @("apply", "--check", $p)) -ne 0) { throw "yama uygulanamıyor: $p (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)" }
+            if ((GitApply @("apply", $p)) -ne 0) { throw "git apply başarısız: $p" }
+            if ((GitApply @("apply", "--reverse", "--check", $p)) -ne 0) { throw "yama sessizce atlandı: $p (git deposu içinde misin? --directory gerekir)" }
+            Write-Output "  yama uygulandı ve doğrulandı: $(Split-Path $p -Leaf)"
         }
     } finally { Pop-Location }
     Write-Output "KAYNAK_OK"

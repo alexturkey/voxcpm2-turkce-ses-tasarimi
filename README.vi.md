@@ -117,12 +117,13 @@ phải ở đây; các bước cài đặt và câu hỏi hỗ trợ xin gửi b
 
 1. **Thiết kế giọng.** Một *mô tả giọng* bằng tiếng Anh + một *văn bản được đọc trong lúc tạo giọng* (bằng ngôn ngữ của
    giọng) + số lượng biến thể. Mỗi biến thể có seed riêng; engine nhận `(description)text` và trả về một bản ghi thiết
-   kế cho mỗi seed. Văn bản là một mẫu ngắn để làm quen với giọng: 1-2 câu, tối đa ~20 giây (giao diện hiển thị thời
-   lượng ước tính và sẽ không chạy nếu vượt 22 giây); văn bản dài thuộc về bước 2.
+   kế cho mỗi seed. Văn bản là một mẫu ngắn để làm quen với giọng: 1-3 câu, tối đa ~30 giây (giao diện hiển thị thời
+   lượng ước tính và sẽ không chạy nếu vượt 33 giây); văn bản dài thuộc về bước 2.
 2. **Đọc dựa trên tham chiếu.** Bản ghi thiết kế được đưa vào **cả hai** đầu vào của engine (`audio` và `voice_ref`),
    cùng với bản chép lời của nó (`reference_text`) và văn bản mới cần đọc, với cùng seed. Giọng được giữ bởi bản ghi,
    không phải bởi đoạn mô tả, nên không bị lệch giữa các văn bản. Văn bản được đọc từng câu một.
 3. Chất lượng cố định: 16 bước diffusion, CFG 2.0. Seed không phải là nút chỉnh chất lượng.
+4. **Thời điểm từng từ, cùng một âm thanh mỗi lần chạy.** Khi đọc, chính engine cho biết mỗi từ bắt đầu và kết thúc ở đâu (bản vá 0002, không cần mô hình thêm). Thời gian được ghi vào `kelimeler.json`, và các dòng được cắt để khoảng lặng giữa hai dòng bằng thiết lập khoảng nghỉ. Độ chính xác so với forced alignment bằng CTC (CTC = 100%): 88% (tiếng Thổ Nhĩ Kỳ, 12 giọng; thiết lập `kelime_zamani`, bật mặc định). Với bản vá 0003, cùng một seed cho âm thanh giống hệt từng byte ở mỗi lần chạy.
 
 Bản ghi thiết kế thô là một mẫu giọng chỉ có một lần; không lần đọc nào sau đó nghe giống hệt nó. Thứ bạn nghe trong
 mọi lần đọc sau là bước 2: bản ghi thiết kế làm tham chiếu cộng với seed riêng của biến thể. Vì vậy giao diện web thực
@@ -337,7 +338,7 @@ là do AI tạo.
 khàn), sắc thái và vai trò (người dẫn chuyện phim tài liệu điềm tĩnh, người dẫn chương trình năng động), tốc độ (chậm,
 khoan thai), và "clean studio recording, no background noise". Hãy giữ nó là một đoạn mô tả, không phải kịch bản;
 không dùng dấu ngoặc đơn. Yêu cầu 3-5 biến thể rồi nghe: seed thay đổi giọng rất nhiều. Với văn bản tạo giọng, dùng
-1-2 câu tự nhiên bằng ngôn ngữ của giọng, đúng tâm trạng bạn muốn (tối đa ~20 giây giọng nói). Khi đọc, mỗi dòng một
+1-3 câu tự nhiên bằng ngôn ngữ của giọng, đúng tâm trạng bạn muốn (tối đa ~30 giây giọng nói). Khi đọc, mỗi dòng một
 câu; tách câu dài, viết số bằng chữ.
 
 ## Đóng góp

@@ -117,12 +117,13 @@ here; installation steps and support questions go there. Thank you, Emre, for br
 
 1. **Voice design.** An English *voice description* + a *text read while the voice is created* (in the voice's language) + a number of
    variants. Each variant gets its own seed; the engine receives `(description)text` and returns a design recording
-   per seed. The text is a short sample to get to know the voice: 1-2 sentences, at most ~20 s (the UI shows the
-   estimate and will not start above 22 s); long text belongs in step 2.
+   per seed. The text is a short sample to get to know the voice: 1-3 sentences, at most ~30 s (the UI shows the
+   estimate and will not start above 33 s); long text belongs in step 2.
 2. **Reference-based reading.** The design recording is passed to **both** engine inputs (`audio` and `voice_ref`),
    together with its transcript (`reference_text`) and the new text to read, with the same seed. The voice is carried by
    the recording, not by the description, so it does not drift from text to text. Text is read sentence by sentence.
 3. Quality is fixed: 16 diffusion steps, CFG 2.0. The seed is not a quality knob.
+4. **Word timing, same audio every run.** While reading, the engine itself reports where each word starts and ends (patch 0002, no extra model). Timings are written to `kelimeler.json`, and lines are trimmed so the gap between lines equals the pause setting. Accuracy against CTC forced alignment (CTC = 100%): 88% (Turkish, 12 voices; setting `kelime_zamani`, on by default). With patch 0003 the same seed gives byte-identical audio on every run.
 
 The raw design recording is a one-off sample of the voice; no later reading sounds exactly like it. What you hear in
 every later reading is step 2: the design recording as reference plus the variant's own seed. That is why the web UI
@@ -332,8 +333,8 @@ and deception are prohibited. See [ETHICS.md](ETHICS.md). Label what you publish
 **How do I write a good voice description?** In English, 1-3 sentences: age and gender, timbre (deep/bright, warm,
 nasal, raspy), tone and role (calm documentary narrator, energetic presenter), tempo (slow, measured), and
 "clean studio recording, no background noise". Keep it a description, not a script; no parentheses. Ask for 3-5
-variants and listen: the seed changes the voice a lot. For the creation text use 1-2 natural sentences in the voice's language, in the
-mood you want (at most ~20 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
+variants and listen: the seed changes the voice a lot. For the creation text use 1-3 natural sentences in the voice's language, in the
+mood you want (at most ~30 s of speech). When reading, one sentence per line; split long sentences, write numbers in words.
 
 ## Contributing
 

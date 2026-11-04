@@ -117,12 +117,13 @@ instalacji i pytania o wsparcie kieruj tam. Dziękujemy, Emre, że przeniosłeś
 
 1. **Projektowanie głosu.** Angielski *opis głosu* + *tekst czytany podczas tworzenia głosu* (w języku głosu) + liczba
    wariantów. Każdy wariant dostaje własne ziarno; silnik otrzymuje `(description)text` i zwraca jedno nagranie projektu
-   na każde ziarno. Tekst to krótka próbka, by poznać głos: 1-2 zdania, najwyżej ~20 s (interfejs pokazuje szacunek
-   i nie wystartuje powyżej 22 s); długi tekst należy do kroku 2.
+   na każde ziarno. Tekst to krótka próbka, by poznać głos: 1-3 zdania, najwyżej ~30 s (interfejs pokazuje szacunek
+   i nie wystartuje powyżej 33 s); długi tekst należy do kroku 2.
 2. **Czytanie na podstawie referencji.** Nagranie projektu trafia na **oba** wejścia silnika (`audio` i `voice_ref`),
    razem z transkrypcją (`reference_text`) i nowym tekstem do przeczytania, z tym samym ziarnem. Głos niesie nagranie,
    a nie opis, więc nie odpływa od tekstu do tekstu. Tekst jest czytany zdanie po zdaniu.
 3. Jakość jest stała: 16 kroków dyfuzji, CFG 2.0. Ziarno nie jest pokrętłem jakości.
+4. **Czas słów, ten sam dźwięk przy każdym uruchomieniu.** Podczas czytania sam silnik podaje, gdzie każde słowo się zaczyna i kończy (łatka 0002, bez dodatkowego modelu). Czasy trafiają do `kelimeler.json`, a wiersze są przycinane tak, by odstęp między nimi był równy ustawieniu pauzy. Dokładność względem wymuszonego dopasowania CTC (forced alignment, CTC = 100%): 88% (turecki, 12 głosów; ustawienie `kelime_zamani`, domyślnie włączone). Dzięki łatce 0003 to samo ziarno daje identyczny co do bajtu dźwięk przy każdym uruchomieniu.
 
 Surowe nagranie projektu to jednorazowa próbka głosu; żadne późniejsze czytanie nie brzmi dokładnie tak samo. W każdym
 kolejnym czytaniu słyszysz krok 2: nagranie projektu jako referencję plus własne ziarno wariantu. Dlatego interfejs webowy
@@ -330,8 +331,8 @@ oszustwa i wprowadzanie w błąd są zabronione. Zobacz [ETHICS.md](ETHICS.md). 
 **Jak napisać dobry opis głosu?** Po angielsku, 1-3 zdania: wiek i płeć, barwa (głęboka/jasna, ciepła,
 nosowa, chrapliwa), ton i rola (spokojny lektor dokumentalny, energiczny prezenter), tempo (wolne, miarowe) oraz
 «clean studio recording, no background noise». To ma być opis, nie scenariusz; bez nawiasów. Poproś o 3-5
-wariantów i odsłuchaj: ziarno mocno zmienia głos. Jako tekst tworzenia użyj 1-2 naturalnych zdań w języku głosu,
-w pożądanym nastroju (najwyżej ~20 s mowy). Przy czytaniu jedno zdanie w wierszu; dziel długie zdania, liczby pisz słownie.
+wariantów i odsłuchaj: ziarno mocno zmienia głos. Jako tekst tworzenia użyj 1-3 naturalnych zdań w języku głosu,
+w pożądanym nastroju (najwyżej ~30 s mowy). Przy czytaniu jedno zdanie w wierszu; dziel długie zdania, liczby pisz słownie.
 
 ## Jak pomóc
 

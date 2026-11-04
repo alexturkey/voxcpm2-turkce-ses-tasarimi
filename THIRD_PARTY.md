@@ -7,7 +7,7 @@ license. Nothing below is bundled in this repository except the patch in `patche
 |---|---|---|---|
 | **VoxCPM2** (OpenBMB / ModelBest) | TTS model, weights `voxcpm2-q8_0.gguf` (downloaded by `kur.ps1`, not in the repo) | Apache-2.0 (code and weights) | https://github.com/OpenBMB/VoxCPM · https://huggingface.co/openbmb/VoxCPM2 |
 | **VoxCPM2 GGUF conversion** (audio.cpp project) | Q8_0 GGUF package | Governed by the original model license (Apache-2.0) | https://huggingface.co/audio-cpp/audio.cpp-gguf (`VoxCPM2-GGUF/`) |
-| **audio.cpp** v0.7.2 (ShugoAI LLC) | C++/CUDA inference engine; our `patches/0001-*.patch` modifies it | Apache-2.0 | https://github.com/0xShug0/audio.cpp |
+| **audio.cpp** v0.7.2 (ShugoAI LLC) | C++/CUDA inference engine; our `patches/0001`-`0003` modify it | Apache-2.0 | https://github.com/0xShug0/audio.cpp |
 | ggml (bundled in audio.cpp) | tensor runtime, CUDA backend (one line changed by our patch) | MIT | https://github.com/ggml-org/ggml |
 | cJSON, cpp-httplib, libyaml (bundled in audio.cpp) | engine dependencies | MIT | see `external/` in audio.cpp |
 | SentencePiece (bundled in audio.cpp) | engine dependency | Apache-2.0 | https://github.com/google/sentencepiece |
@@ -23,6 +23,10 @@ The native Mac app in `macos/` bundles the patched engine binary inside the .app
 `patches/0001-voxcpm2-4gb-ve-hiz.patch` changes these audio.cpp v0.7.2 files (see `docs/4gb.md` for what and why):
 `app/workflow/execution.cpp`, `external/ggml/src/ggml-cuda/ggml-cuda.cu`, `include/engine/framework/runtime/deferred_decode.h` (new),
 `include/engine/models/voxcpm2/{audiovae,generator,minicpm,session}.h`, `src/models/voxcpm2/{audiovae,generator,minicpm,session}.cpp`.
+`patches/0002-voxcpm2-kelime-zamani.patch` (word-timing attention probe): `include/engine/models/voxcpm2/minicpm.h`,
+`src/models/voxcpm2/{generator,minicpm}.cpp`.
+`patches/0003-ggml-cuda-block-reduce-yarisi.patch` (backport of the upstream audio.cpp PR #837 shared-memory race fix):
+`external/ggml/src/ggml-cuda/{norm,softmax}.cu`.
 The modified files carry the original copyright; the modifications are Apache-2.0 as well.
 
 ## Bundled voices

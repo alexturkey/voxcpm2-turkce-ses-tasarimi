@@ -126,13 +126,14 @@ sur Mac !
 1. **Conception de la voix.** Une *description de la voix* en anglais + un *texte lu pendant la création de la voix*
    (dans la langue de la voix) + un nombre de variantes. Chaque variante reçoit sa propre graine ; le moteur reçoit
    `(description)text` et renvoie un enregistrement de conception par graine. Le texte est un court échantillon pour
-   découvrir la voix : 1 à 2 phrases, ~20 s au maximum (l'interface affiche l'estimation et refuse de démarrer
-   au-delà de 22 s) ; un texte long relève de l'étape 2.
+   découvrir la voix : 1 à 3 phrases, ~30 s au maximum (l'interface affiche l'estimation et refuse de démarrer
+   au-delà de 33 s) ; un texte long relève de l'étape 2.
 2. **Lecture fondée sur la référence.** L'enregistrement de conception est transmis aux **deux** entrées du moteur
    (`audio` et `voice_ref`), avec sa transcription (`reference_text`) et le nouveau texte à lire, avec la même graine.
    La voix est portée par l'enregistrement, et non par la description : elle ne dérive donc pas d'un texte à l'autre.
    Le texte est lu phrase par phrase.
 3. La qualité est fixe : 16 étapes de diffusion, CFG 2.0. La graine n'est pas un réglage de qualité.
+4. **Minutage des mots, même audio à chaque fois.** Pendant la lecture, le moteur indique lui-même où chaque mot commence et finit (patch 0002, aucun modèle supplémentaire). Les temps sont écrits dans `kelimeler.json` et les lignes sont rognées pour que l'écart entre deux lignes soit égal au réglage de pause. Précision par rapport à l'alignement forcé CTC (forced alignment, CTC = 100 %) : 88 % (turc, 12 voix ; réglage `kelime_zamani`, activé par défaut). Avec le patch 0003, la même graine donne un audio identique à l'octet près à chaque exécution.
 
 L'enregistrement de conception brut est un échantillon unique de la voix ; aucune lecture ultérieure ne sonne
 exactement pareil. Ce que vous entendez dans chaque lecture ultérieure, c'est l'étape 2 : l'enregistrement de
@@ -376,7 +377,7 @@ Signalez ce que vous publiez comme généré par une IA.
 chaleureux, nasal, éraillé), ton et rôle (narrateur de documentaire posé, présentateur énergique), tempo (lent, mesuré)
 et « clean studio recording, no background noise ». Restez sur une description, pas sur un script ; pas de
 parenthèses. Demandez 3 à 5 variantes et écoutez-les : la graine change beaucoup la voix. Pour le texte de création,
-utilisez 1 à 2 phrases naturelles dans la langue de la voix, dans l'ambiance souhaitée (au plus ~20 s de parole). À la
+utilisez 1 à 3 phrases naturelles dans la langue de la voix, dans l'ambiance souhaitée (au plus ~30 s de parole). À la
 lecture, une phrase par ligne ; coupez les phrases longues, écrivez les nombres en toutes lettres.
 
 ## Contribuer

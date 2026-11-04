@@ -123,12 +123,13 @@ proyek ini ke Mac!
 1. **Desain suara.** Sebuah *deskripsi suara* berbahasa Inggris + sebuah *teks yang dibacakan saat suara dibuat*
    (dalam bahasa suara tersebut) + jumlah varian. Setiap varian mendapat seed sendiri; engine menerima
    `(description)text` dan mengembalikan satu rekaman desain per seed. Teksnya adalah contoh pendek untuk mengenali
-   suara: 1-2 kalimat, maksimal ~20 detik (antarmuka menampilkan perkiraannya dan tidak akan mulai jika di atas 22
+   suara: 1-3 kalimat, maksimal ~30 detik (antarmuka menampilkan perkiraannya dan tidak akan mulai jika di atas 33
    detik); teks panjang adalah urusan langkah 2.
 2. **Pembacaan berbasis referensi.** Rekaman desain diberikan ke **kedua** input engine (`audio` dan `voice_ref`),
    bersama transkripnya (`reference_text`) dan teks baru yang akan dibacakan, dengan seed yang sama. Suara dibawa oleh
    rekaman, bukan oleh deskripsi, sehingga tidak bergeser dari satu teks ke teks lain. Teks dibacakan kalimat demi kalimat.
 3. Kualitas bersifat tetap: 16 langkah difusi, CFG 2.0. Seed bukan pengatur kualitas.
+4. **Waktu kata, audio sama setiap kali.** Saat membaca, engine sendiri memberi tahu di mana setiap kata mulai dan berakhir (patch 0002, tanpa model tambahan). Waktunya ditulis ke `kelimeler.json`, dan baris dipangkas agar jeda antarbaris sama dengan pengaturan jeda. Akurasi terhadap forced alignment CTC (CTC = 100%): 88% (bahasa Turki, 12 suara; pengaturan `kelime_zamani`, aktif secara bawaan). Dengan patch 0003, seed yang sama menghasilkan audio yang identik per byte setiap kali dijalankan.
 
 Rekaman desain mentah adalah contoh suara yang hanya muncul sekali; tidak ada pembacaan berikutnya yang terdengar
 persis sama dengannya. Yang kamu dengar di setiap pembacaan berikutnya adalah langkah 2: rekaman desain sebagai
@@ -352,7 +353,7 @@ desain sintetis buatan model itu sendiri. Peniruan identitas, penipuan, dan peny
 suara (dalam/cerah, hangat, sengau, serak), nada dan peran (narator dokumenter yang tenang, presenter yang energik),
 tempo (lambat, terukur), dan "clean studio recording, no background noise". Pastikan tetap berupa deskripsi, bukan
 naskah; jangan pakai tanda kurung. Minta 3-5 varian lalu dengarkan: seed sangat mengubah suara. Untuk teks pembuatan,
-gunakan 1-2 kalimat alami dalam bahasa suara tersebut, dengan suasana yang kamu inginkan (maksimal ~20 dtk ucapan).
+gunakan 1-3 kalimat alami dalam bahasa suara tersebut, dengan suasana yang kamu inginkan (maksimal ~30 dtk ucapan).
 Saat membacakan, satu kalimat per baris; pecah kalimat panjang, tulis angka dengan huruf.
 
 ## Berkontribusi

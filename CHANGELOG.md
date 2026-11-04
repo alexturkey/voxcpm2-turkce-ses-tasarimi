@@ -3,6 +3,18 @@
 ## Unreleased
 
 **TR**
+- Kelime zamanı (motor içi): okumada her kelimenin başlangıç/bitiş saniyesi motorun kendi dikkat sinyalinden çıkar
+  (yama 0002, ek model indirmesi yok), ses enerjisiyle ince ayarlanır; `kelimeler.json` yazılır. Satırlar işitilebilir
+  kenardan kırpılır, satır arası boşluk durak ayarına eşit olur. Kenar, çekirdek kenarın ±160 ms çevresindeki adaylar
+  arasından 9 ipucunu (enerji eğimi, tını değişimi, harf sayısından süre, dikkatin kelimeden kelimeye geçişi…) tartan küçük
+  bir birleştiriciyle seçilir; ağırlıklar bütün seslere aynıdır. Ayar `kelime_zamani` (varsayılan açık); çözülemezse okuma
+  eskisi gibi sürer. Doğruluk (CTC zorlamalı hizalama = %100, 12 ses, 22 okuma, ses dışarıda bırakılarak): %88.
+  Test: `tests/test_kelime_zamani.py`.
+- Aynı tohum aynı ses: yama 0003, ggml CUDA softmax/group_norm paylaşımlı bellek yarışını kapatır (upstream audio.cpp
+  #837). Önceden okumanın 2. satırdan sonrası koşudan koşuya farklıydı; şimdi bayt bayt aynı (GTX 1050 Ti, 3 satır x 2
+  koşu). Süre ve kalite ayarı değişmedi. Kurulum betikleri yamaları sırayla uygular.
+- Ses tasarla: örnek metin sınırı 20 sn → 30 sn (33 sn üstü reddedilir); tasarım kaydı okumada referans olur, motor
+  36 sn'ye kadar alır. README'ler (30 dil) ve arayüz ipucu (30 dil) "1-3 cümle" diyor.
 - AMD ilk topluluk testi (@mitraTR, #6): Windows 11 + AMD Radeon RX 6900 XT + Vulkan (v0.1.1) ile kurulum, tasarım,
   okuma, arayüz ve testler çalıştı; okuma 1 sn konuşma için ~0,8-0,9 sn. README'lere (30 dil) topluluk testi notu.
 - Türkçe harfli yol: motor Windows'ta yalnız ASCII yolları açabiliyor. `kur.ps1` ASCII olmayan `-Kok` yolunda indirmeye
@@ -16,6 +28,19 @@
   CONTRIBUTING'de "Kartını test et, rapor yaz" bağlantısı. Intel kartından rapor hâlâ aranıyor.
 
 **EN**
+- Word timing from inside the engine: reading now gives each word's start/end time from the engine's own attention
+  signal (patch 0002, no extra model download), refined with audio energy; written to `kelimeler.json`. Lines are trimmed
+  at their audible edges so the gap between lines equals the pause setting. Each edge is picked among candidates within
+  ±160 ms of the core edge by a small combiner of 9 cues (energy slope, timbre change, letter-count duration, attention
+  hand-over between words…); the weights are shared by all voices. Setting `kelime_zamani` (on by default); if timing
+  cannot be resolved, reading continues as before. Accuracy (CTC forced alignment = 100%, 12 voices,
+  22 readings, leave-one-voice-out): 88%. Test: `tests/test_kelime_zamani.py`.
+- Same seed, same audio: patch 0003 closes a shared-memory race in the ggml CUDA softmax/group_norm reduction (upstream
+  audio.cpp #837). Lines 2+ of a reading used to differ between runs; now byte-identical (GTX 1050 Ti, 3 lines x 2 runs).
+  Time and quality settings unchanged. Install scripts apply the patches in order.
+- Design voice: the sample text limit goes from 20 s to 30 s (above 33 s it is rejected); the design recording becomes
+  the reference for reading, and the engine accepts up to 36 s. READMEs (30 languages) and the UI hint (30 languages) now say
+  "1-3 sentences".
 - First AMD community test (@mitraTR, #6): Windows 11 + AMD Radeon RX 6900 XT + Vulkan (v0.1.1) ran install, design,
   reading, the UI and the tests; reading took ~0.8-0.9 s per 1 s of speech. Community test note in all 30 READMEs.
 - Non-ASCII paths: on Windows the engine only opens ASCII-only paths. `kur.ps1` now stops with a clear message on a

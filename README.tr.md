@@ -117,11 +117,12 @@ teşekkür ederiz!
 
 1. **Ses tasarımı.** İngilizce *ses tarifi* + ses yaratılırken okutulan, sesin dilinde *metin* + çeşit sayısı. Her çeşidin kendi
    tohumu vardır; motora `(tarif)metin` gider, her tohum için bir tasarım kaydı döner. Metin sesi tanımak için kısa
-   bir örnektir: 1-2 cümle, en fazla ~20 sn (arayüz süreyi gösterir, 22 sn üstünü başlatmaz); uzun metin 2. adımda okunur.
+   bir örnektir: 1-3 cümle, en fazla ~30 sn (arayüz süreyi gösterir, 33 sn üstünü başlatmaz); uzun metin 2. adımda okunur.
 2. **Referanslı okuma.** Tasarım kaydı motorun **iki** girişine birden verilir (`audio` ve `voice_ref`), yanında o
    kaydın metni (`reference_text`), okunacak yeni metin ve aynı tohum. Sesi tarif değil kayıt taşır; metinden metne
    kaymaz. Metin cümle cümle okunur.
 3. Kalite sabittir: 16 adım, CFG 2.0. Tohum kalite ayarı değildir.
+4. **Kelime zamanı, her seferinde aynı ses.** Okurken motorun kendisi her kelimenin nerede başlayıp bittiğini verir (yama 0002, ek model yok). Zamanlar `kelimeler.json`'a yazılır; satırlar kırpılır, satır arası boşluk durak ayarına eşit olur. CTC zorlamalı hizalamaya (forced alignment; CTC = %100 kabul edilir) göre doğruluk %88 (Türkçe, 12 ses; ayar `kelime_zamani`, varsayılan açık). Yama 0003 ile aynı tohum her koşuda bayt bayt aynı sesi verir.
 
 Ham tasarım kaydı sesin tek seferlik bir örneğidir; sonraki hiçbir okuma onun birebir aynısı gibi duyulmaz. Sonraki her
 okumada duyduğun 2. adımdır: tasarım kaydı referans, yanında çeşidin kendi tohumu. Web arayüzü bu yüzden 2. adımı
@@ -328,7 +329,7 @@ yapay zekâ ürünü olarak etiketleyin.
 **İyi bir ses tarifi nasıl yazılır?** İngilizce, 1-3 cümle: yaş ve cinsiyet, tını (derin/parlak, sıcak, genizden,
 kısık), ton ve rol (sakin belgesel anlatıcısı, enerjik sunucu), tempo (yavaş, ölçülü) ve "clean studio recording, no
 background noise". Tarif olsun, senaryo olmasın; parantez kullanmayın. 3-5 çeşit isteyip dinleyin: tohum sesi çok
-değiştirir. Yaratılırken okunan metin için istediğiniz havada, sesin dilinde 1-2 doğal cümle (en fazla ~20 sn konuşma). Okumada
+değiştirir. Yaratılırken okunan metin için istediğiniz havada, sesin dilinde 1-3 doğal cümle (en fazla ~30 sn konuşma). Okumada
 satır başına bir cümle; uzun cümleyi bölün, rakamı yazıyla yazın.
 
 ## Katkı

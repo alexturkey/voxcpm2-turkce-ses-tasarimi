@@ -121,12 +121,13 @@ installationstrin og supportspørgsmål hører hjemme der. Tak, Emre, fordi du b
 
 1. **Stemmedesign.** En engelsk *stemmebeskrivelse* + en *tekst, der læses, mens stemmen skabes* (på stemmens sprog) + et
    antal varianter. Hver variant får sit eget seed; motoren modtager `(description)text` og returnerer én
-   designoptagelse pr. seed. Teksten er en kort prøve til at lære stemmen at kende: 1-2 sætninger, højst ~20 s
-   (brugerfladen viser estimatet og starter ikke over 22 s); lang tekst hører til i trin 2.
+   designoptagelse pr. seed. Teksten er en kort prøve til at lære stemmen at kende: 1-3 sætninger, højst ~30 s
+   (brugerfladen viser estimatet og starter ikke over 33 s); lang tekst hører til i trin 2.
 2. **Referencebaseret oplæsning.** Designoptagelsen sendes til **begge** motorindgange (`audio` og `voice_ref`) sammen
    med dens transskription (`reference_text`) og den nye tekst, der skal læses, med samme seed. Stemmen bæres af
    optagelsen, ikke af beskrivelsen, så den glider ikke fra tekst til tekst. Teksten læses sætning for sætning.
 3. Kvaliteten er fast: 16 diffusionstrin, CFG 2.0. Seedet er ikke en kvalitetsindstilling.
+4. **Ordtider, samme lyd hver gang.** Under oplæsning angiver motoren selv, hvor hvert ord begynder og slutter (patch 0002, ingen ekstra model). Tiderne skrives til `kelimeler.json`, og linjerne beskæres, så mellemrummet mellem linjer svarer til pauseindstillingen. Nøjagtighed i forhold til tvungen justering med CTC (forced alignment, CTC = 100 %): 88 % (tyrkisk, 12 stemmer; indstilling `kelime_zamani`, slået til som standard). Med patch 0003 giver samme seed byte-identisk lyd ved hver kørsel.
 
 Den rå designoptagelse er en engangsprøve af stemmen; ingen senere oplæsning lyder præcis som den. Det, du hører i hver
 senere oplæsning, er trin 2: designoptagelsen som reference plus variantens eget seed. Derfor udfører webbrugerfladen
@@ -351,8 +352,8 @@ Mærk det, du offentliggør, som AI-genereret.
 **Hvordan skriver jeg en god stemmebeskrivelse?** På engelsk, 1-3 sætninger: alder og køn, klang (dyb/lys, varm,
 nasal, hæs), tone og rolle (rolig dokumentarfortæller, energisk vært), tempo (langsomt, afmålt) og "clean studio
 recording, no background noise". Hold det som en beskrivelse, ikke et manuskript; ingen parenteser. Bed om 3-5
-varianter, og lyt: seedet ændrer stemmen meget. Brug 1-2 naturlige sætninger på stemmens sprog som skabelsestekst, i den
-stemning, du ønsker (højst ~20 s tale). Ved oplæsning: én sætning pr. linje; del lange sætninger op, og skriv tal med
+varianter, og lyt: seedet ændrer stemmen meget. Brug 1-3 naturlige sætninger på stemmens sprog som skabelsestekst, i den
+stemning, du ønsker (højst ~30 s tale). Ved oplæsning: én sætning pr. linje; del lange sætninger op, og skriv tal med
 bogstaver.
 
 ## Bidrag

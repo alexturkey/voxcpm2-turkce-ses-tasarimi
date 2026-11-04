@@ -124,13 +124,14 @@ projek ini ke Mac!
 1. **Reka bentuk suara.** Satu *huraian suara* dalam bahasa Inggeris + satu *teks yang dibaca semasa suara dicipta*
    (dalam bahasa suara itu) + bilangan varian. Setiap varian mendapat seed tersendiri; enjin menerima
    `(description)text` dan memulangkan satu rakaman reka bentuk bagi setiap seed. Teks itu ialah sampel pendek untuk
-   mengenali suara: 1-2 ayat, paling lama ~20 saat (antara muka memaparkan anggarannya dan tidak akan bermula jika
-   melebihi 22 saat); teks panjang ialah urusan langkah 2.
+   mengenali suara: 1-3 ayat, paling lama ~30 saat (antara muka memaparkan anggarannya dan tidak akan bermula jika
+   melebihi 33 saat); teks panjang ialah urusan langkah 2.
 2. **Bacaan berasaskan rujukan.** Rakaman reka bentuk dihantar kepada **kedua-dua** input enjin (`audio` dan
    `voice_ref`), bersama transkripnya (`reference_text`) dan teks baharu yang hendak dibaca, dengan seed yang sama.
    Suara dibawa oleh rakaman, bukan oleh huraian, jadi ia tidak tersasar dari satu teks ke teks yang lain. Teks dibaca
    ayat demi ayat.
 3. Kualiti adalah tetap: 16 langkah resapan (diffusion), CFG 2.0. Seed bukan tombol kualiti.
+4. **Masa perkataan, audio sama setiap kali.** Semasa membaca, enjin sendiri memberitahu di mana setiap perkataan bermula dan berakhir (tampalan 0002, tanpa model tambahan). Masa ditulis ke `kelimeler.json`, dan baris dipangkas supaya jarak antara baris sama dengan tetapan jeda. Ketepatan berbanding penjajaran paksa CTC (forced alignment, CTC = 100%): 88% (bahasa Turki, 12 suara; tetapan `kelime_zamani`, aktif secara lalai). Dengan tampalan 0003, seed yang sama memberi audio yang serupa bait demi bait pada setiap larian.
 
 Rakaman reka bentuk mentah ialah sampel suara sekali sahaja; tiada bacaan selepasnya yang berbunyi betul-betul sama
 dengannya. Apa yang anda dengar dalam setiap bacaan selepas itu ialah langkah 2: rakaman reka bentuk sebagai rujukan
@@ -355,7 +356,7 @@ perbuatan mengelirukan adalah dilarang. Lihat [ETHICS.md](ETHICS.md). Labelkan a
 (dalam/cerah, hangat, sengau, serak), nada dan peranan (pencerita dokumentari yang tenang, penyampai yang bertenaga),
 tempo (perlahan, teratur), dan "clean studio recording, no background noise". Pastikan ia kekal sebagai huraian, bukan
 skrip; jangan gunakan tanda kurung. Minta 3-5 varian dan dengar: seed banyak mengubah suara. Untuk teks penciptaan,
-gunakan 1-2 ayat semula jadi dalam bahasa suara itu, dengan suasana yang anda mahukan (paling lama ~20 saat
+gunakan 1-3 ayat semula jadi dalam bahasa suara itu, dengan suasana yang anda mahukan (paling lama ~30 saat
 pertuturan). Semasa membaca, satu ayat bagi setiap baris; pecahkan ayat yang panjang, tulis nombor dalam perkataan.
 
 ## Menyumbang

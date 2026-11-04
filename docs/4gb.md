@@ -14,7 +14,7 @@ behaves exactly like upstream.
 | 3 | **AudioVAE encoder on the CPU** (reference encoding) | `VOXCPM2_AUDIOVAE_CPU=1`, `VOXCPM2_AUDIOVAE_THREADS=6` | the encoder never touches VRAM |
 | 4 | **Sequential execution**: after the last text chunk the LM (base, residual, shadow, KV) is freed, then the decoder is built on the GPU | `VOXCPM2_AUDIOVAE_GPU_CHUNK=10` | LM and decoder never coexist in VRAM |
 | 5 | **Chunked decoding**: the latent sequence is decoded in 10-second slices with a causal left context | same | decoder peak memory bounded regardless of length |
-| 6 | **Zeroed CUDA buffers** (`cudaMemset` on every new allocation, graph buffers reset) | – | without it, stale data in re-used VRAM leaked into the audio and the same seed gave different audio between runs |
+| 6 | **Zeroed CUDA buffers** (`cudaMemset` on every new allocation, graph buffers reset) | – | without it, stale data in re-used VRAM leaked into the audio; on its own it did not make lines 2+ repeatable (see the note below the table) |
 | 7 | **Reference-embedding cache kept across generator rebuilds** (session-owned) and **on disk** per reference | `VOXCPM2_PROMPT_CACHE_DIR` | encoding a 25 s reference costs ~50 s once, then ~0.1 s |
 | 8 | **Deferred decoding**: all lines of a request sequence are generated first, then decoded once | `VOXCPM2_TOPLU_COZ=1` | saves ~2 s of decoder reload per line |
 | 9 | One engine session for many requests (`--request-sequence`), model loaded once | – | ~10-20 s load paid once per batch |
@@ -37,10 +37,17 @@ Quality settings are fixed at 16 diffusion steps and CFG 2.0 and are not used as
 setting either: for design it provides variety (one seed per variant), for reading it is the chosen voice's own seed
 (consistency).
 
+**Same seed, same audio (patches/0003-ggml-cuda-block-reduce-yarisi.patch).** With 0001 alone, line 1 of a reading was
+byte-identical between runs but lines 2+ were not. Root cause: a shared-memory race in the ggml CUDA `block_reduce` of
+`soft_max_f32` / `group_norm_f32` (missing barrier before the second reduction, rows longer than 32), fixed upstream in
+audio.cpp PR #837 (v0.9.2). 0003 backports that fix to 0.7.2. Measured on a GTX 1050 Ti: 3-line reading, two runs, all
+3 lines byte-identical (before: line 2 differed in each of 6 runs); time unchanged (93 s), quality settings unchanged.
+
 ## Türkçe özet
 
 Yamasız motor 4 GB'a sığmaz. Yama: Q8_0 model, KV önbelleği gerektiği kadar, AudioVAE kodlayıcı CPU'da, üretim bitince LM
-boşaltılıp çözücü GPU'ya alınır, çözüm 10 sn'lik dilimlerle yapılır, CUDA tamponları sıfırlanır (aynı tohum aynı ses),
+boşaltılıp çözücü GPU'ya alınır, çözüm 10 sn'lik dilimlerle yapılır, CUDA tamponları sıfırlanır; aynı tohum aynı ses için 0003 yaması ggml CUDA softmax/group_norm paylaşımlı bellek
+yarışını kapatır (upstream #837; 2. satırdan sonrası da bayt bayt aynı),
 referans kodlaması diske önbelleklenir, bütün satırlar üretilip bir kez çözülür, model bir kez yüklenir. Ölçüm: 48,5 sn
 ses yamasız 293 sn / CPU 535 sn / yamalı 94 sn, VRAM tepe 3,0 GB; okuma 1 sn ses ≈ 2 sn; tasarım 1 çeşit 55 sn, 2,8 GB.
 Kalite ayarları (16 adım, cfg 2.0) sabittir; cümle cümle okunur; aynı anda tek GPU işi.

@@ -17,6 +17,7 @@ DEFAULTS = {
     "motor_threads": 4,     # motor --threads
     "cihaz": None,          # motor --device <no>: birden çok kart varsa (ör. Vulkan'da iGPU + ekran kartı) hangisi; boş = motorun ilk cihazı
     "port": 8765,           # arayüz (127.0.0.1) / web UI port
+    "kelime_zamani": True,  # okumada kelime zamanı (motor içi sonda) ve satır baş/son kırpma / word timing + line trim
 }
 PATH_KEYS = ("motor", "model", "cuda_bin", "sesler", "hazir_sesler", "onbellek")
 

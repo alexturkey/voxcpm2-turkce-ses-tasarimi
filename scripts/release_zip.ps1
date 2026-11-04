@@ -27,7 +27,7 @@ DO NOT DOUBLE-CLICK THIS EXE. Install: clone the repo and run  powershell -NoPro
   (model + $(if ($Vulkan) { "this exe" } else { "CUDA DLLs + this exe" }) + settings). Web UI:  .venv\Scripts\python.exe -m ses_tasarim.arayuz
 Depo / repo: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi  ($Surum)
 
-audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxcpm2-4gb-ve-hiz.patch (Apache-2.0 section 4: modified source).
+audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxcpm2-4gb-ve-hiz.patch, 0002-voxcpm2-kelime-zamani.patch, 0003-ggml-cuda-block-reduce-yarisi.patch (Apache-2.0 section 4: modified source).
 
 "@
 if ($Vulkan) {

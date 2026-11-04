@@ -122,13 +122,14 @@ installazione e le richieste di supporto vanno lì. Grazie, Emre, per aver porta
 1. **Design della voce.** Una *descrizione della voce* in inglese + un *testo letto durante la creazione della voce*
    (nella lingua della voce) + un numero di varianti. Ogni variante riceve il proprio seed; il motore riceve
    `(description)text` e restituisce una registrazione di design per ogni seed. Il testo è un breve campione per
-   conoscere la voce: 1-2 frasi, al massimo ~20 s (l'interfaccia mostra la stima e non parte oltre i 22 s); il testo
+   conoscere la voce: 1-3 frasi, al massimo ~30 s (l'interfaccia mostra la stima e non parte oltre i 33 s); il testo
    lungo va al passo 2.
 2. **Lettura basata sul riferimento.** La registrazione di design viene passata a **entrambi** gli ingressi del motore
    (`audio` e `voice_ref`), insieme alla sua trascrizione (`reference_text`) e al nuovo testo da leggere, con lo stesso
    seed. La voce è sostenuta dalla registrazione, non dalla descrizione, quindi non deriva da un testo all'altro. Il
    testo viene letto frase per frase.
 3. La qualità è fissa: 16 passi di diffusione, CFG 2.0. Il seed non è una manopola della qualità.
+4. **Tempi delle parole, stesso audio a ogni esecuzione.** Durante la lettura è il motore stesso a indicare dove inizia e finisce ogni parola (patch 0002, nessun modello aggiuntivo). I tempi vanno in `kelimeler.json` e le righe vengono rifilate in modo che lo spazio tra le righe sia uguale all'impostazione della pausa. Precisione rispetto all'allineamento forzato CTC (forced alignment, CTC = 100%): 88% (turco, 12 voci; impostazione `kelime_zamani`, attiva per impostazione predefinita). Con la patch 0003 lo stesso seed produce un audio identico byte per byte a ogni esecuzione.
 
 La registrazione di design grezza è un campione unico della voce; nessuna lettura successiva suona esattamente uguale.
 Ciò che senti in ogni lettura successiva è il passo 2: la registrazione di design come riferimento più il seed proprio
@@ -360,8 +361,8 @@ d'identità, frode e inganno. Vedi [ETHICS.md](ETHICS.md). Indica che ciò che p
 **Come scrivo una buona descrizione della voce?** In inglese, 1-3 frasi: età e genere, timbro (profondo/brillante,
 caldo, nasale, roco), tono e ruolo (narratore di documentari pacato, presentatore energico), tempo (lento, misurato) e
 «clean studio recording, no background noise». Che resti una descrizione, non un copione; niente parentesi. Chiedi 3-5
-varianti e ascoltale: il seed cambia molto la voce. Per il testo di creazione usa 1-2 frasi naturali nella lingua della
-voce, con lo stato d'animo che desideri (al massimo ~20 s di parlato). In lettura, una frase per riga; spezza le frasi
+varianti e ascoltale: il seed cambia molto la voce. Per il testo di creazione usa 1-3 frasi naturali nella lingua della
+voce, con lo stato d'animo che desideri (al massimo ~30 s di parlato). In lettura, una frase per riga; spezza le frasi
 lunghe, scrivi i numeri in lettere.
 
 ## Contribuire

@@ -15,6 +15,8 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
+from . import kelime_zamani
+
 FIXED = {"adim": 16, "cfg": 2.0}
 SAMPLE_RATE = 48000
 TEXT_CHUNK = 2048
@@ -175,8 +177,9 @@ def _eos_by_block(log_path: Path, count: int, cpu: bool = False) -> list:
     return ok
 
 
-def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) -> dict:
-    """İstekleri tek motor oturumunda üretir. Dönen: audios {id: float32}, bad [id], seconds, vram_peak_mb.
+def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None, sonda: bool = False) -> dict:
+    """İstekleri tek motor oturumunda üretir. Dönen: audios {id: float32}, bad [id], seconds, vram_peak_mb;
+    sonda=True ise 'sonda' (istek başına dikkat kaydı, kelime_zamani.parse_log) da döner.
 
     Motor dosyaları `work_dir/_motor_is` içine yazılır; iş bitince (sesler belleğe okununca) silinir, motor hata
     verirse inceleme için kalır (`SES_TASARIM_ARA_DOSYA_TUT=1` her zaman saklar).
@@ -198,7 +201,10 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
     cpu = settings.get("backend", "cuda") == "cpu"
     started = time.time()
     with (work_dir / "stdout.txt").open("w", encoding="utf-8") as out, VramWatcher() as watcher:
-        process = subprocess.Popen(command, env=engine_env(settings, work_dir), stdout=out, stderr=subprocess.STDOUT,
+        env = engine_env(settings, work_dir)
+        if sonda:
+            env.update(kelime_zamani.probe_env())  # kelime zamanı: 21. katman dikkati log'a (yama c1)
+        process = subprocess.Popen(command, env=env, stdout=out, stderr=subprocess.STDOUT,
                                    creationflags=NO_WINDOW)
         try:
             while process.poll() is None:
@@ -226,9 +232,17 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None) 
         if rate != SAMPLE_RATE:
             raise MotorHatasi(f"beklenmeyen örnekleme {rate}")
         audios[request["id"]] = audio
+    probes = None
+    if sonda and not bad:
+        try:
+            probes = kelime_zamani.parse_log(log_path, cpu)
+        except (OSError, ValueError) as error:  # kelime zamanı yan üründür; okuma bozulmaz
+            probes = None
+            print(f"  kelime zamanı okunamadı: {error}", flush=True)
     if not bad and os.environ.get(KEEP_ENV) != "1":  # yarım kalan satır varsa log inceleme için kalır
         shutil.rmtree(work_dir, ignore_errors=True)
-    return {"audios": audios, "bad": bad, "seconds": round(time.time() - started, 1), "vram_peak_mb": watcher.peak_mb}
+    return {"audios": audios, "bad": bad, "seconds": round(time.time() - started, 1), "vram_peak_mb": watcher.peak_mb,
+            "sonda": probes}
 
 
 def silence(seconds: float) -> np.ndarray:

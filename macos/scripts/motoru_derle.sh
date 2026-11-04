@@ -14,7 +14,24 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$ROOT/.build/motor"
 SRC_URL="https://github.com/0xShug0/audio.cpp/archive/refs/tags/v0.7.2.tar.gz"
 SRC_SHA="cab8db31cec26ef8f1e39eabea1df5f02a87e8de87a5ae334b1e66217339c6bf"
-PATCH="$ROOT/../patches/0001-voxcpm2-4gb-ve-hiz.patch"
+PATCHES=("$ROOT/../patches/0001-voxcpm2-4gb-ve-hiz.patch" "$ROOT/../patches/0002-voxcpm2-kelime-zamani.patch" "$ROOT/../patches/0003-ggml-cuda-block-reduce-yarisi.patch")
+# Yamalar sırayla: 0001 (4 GB + hız), 0002 (kelime zamanı sondası), 0003 (CUDA block_reduce yarışı, upstream #837). Hangisine kadar uygulandığı sondan geriye bulunur
+# (sonraki yama öncekinin bağlamını değiştirdiği için yalnız en son uygulanan geri-denetimden geçer), kalanlar uygulanır.
+# Patches in order; the last applied one is found from the end, the rest are applied and verified.
+yamalari_uygula() {
+    local src="$1"; shift
+    local yamalar=("$@") son=-1 i
+    for ((i=${#yamalar[@]}-1; i>=0; i--)); do
+        if (cd "$src" && git apply --reverse --check "${yamalar[$i]}" 2>/dev/null); then son=$i; break; fi
+    done
+    for ((i=son+1; i<${#yamalar[@]}; i++)); do
+        (cd "$src" && git apply --check "${yamalar[$i]}") || { echo "yama uygulanamıyor / patch does not apply: ${yamalar[$i]} (kaynak saf v0.7.2 mi?)" >&2; return 1; }
+        (cd "$src" && git apply "${yamalar[$i]}" && git apply --reverse --check "${yamalar[$i]}") || { echo "yama doğrulanamadı / not verified: ${yamalar[$i]}" >&2; return 1; }
+        echo "  yama uygulandı ve doğrulandı: $(basename "${yamalar[$i]}")"
+    done
+    [[ $son -eq $((${#yamalar[@]}-1)) ]] && echo "  yamalar zaten uygulanmış"
+    return 0
+}
 OUT="$ROOT/Vendor/motor/audiocpp_cli"
 JOBS="$(sysctl -n hw.perflevel0.physicalcpu 2>/dev/null || sysctl -n hw.ncpu)"
 
@@ -39,10 +56,7 @@ SRC="$WORK/src"
 if [[ ! -f "$SRC/CMakeLists.txt" ]]; then
     mkdir -p "$SRC" && tar -xzf "$TARBALL" -C "$SRC" --strip-components 1
 fi
-if ! (cd "$SRC" && git apply --reverse --check "$PATCH" 2>/dev/null); then
-    (cd "$SRC" && git apply --check "$PATCH" && git apply "$PATCH")
-fi
-(cd "$SRC" && git apply --reverse --check "$PATCH") || { echo "yama doğrulanamadı / patch not verified" >&2; exit 1; }
+yamalari_uygula "$SRC" "${PATCHES[@]}" || exit 1
 
 (cd "$SRC" && scripts/build_metal.sh --build-dir "$WORK/build" --build-type Release --archs arm64 \
     --deployment-target 14.0 --native-cpu OFF --embed-metal ON \

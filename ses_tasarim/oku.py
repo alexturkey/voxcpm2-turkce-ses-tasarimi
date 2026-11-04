@@ -21,7 +21,7 @@ import sys
 import time
 from pathlib import Path
 
-from . import utf8_cikti, ayarlar, motor, okunus
+from . import utf8_cikti, ayarlar, kelime_zamani, motor, okunus
 
 
 def list_voices(settings: dict) -> dict:
@@ -82,6 +82,21 @@ def voice_language(voice_dir: Path, dil: str = None, text: str = None) -> str:
     return okunus.detect(text, card.get("dil"))
 
 
+def line_word_times(settings: dict, probes, lines: list, audios: list, dil: str) -> tuple:
+    """Satır başına (kelimeler, kırpma kenarları) (satır başına göre sn) ya da (None, neden). Kelime zamanı yan üründür: sonda yoksa
+    (eski motor, kapalı ayar) ya da çözülemezse okuma kırpılmadan eskisi gibi biter.
+    Per-line word times, or (None, reason); word timing is a by-product and never fails the reading."""
+    if not settings.get("kelime_zamani", True):
+        return None, None
+    if not probes or len(probes) != len(lines) or any(p is None or not p["rows"] for p in probes):
+        return None, "sonda kaydı yok (motor kelime zamanı yamasız olabilir) / no probe trace"
+    try:
+        pieces = kelime_zamani.load_pieces(settings["model"])
+        return kelime_zamani.reading_words(probes, pieces, lines, audios, motor.SAMPLE_RATE, dil), None
+    except (ValueError, KeyError, OSError, IndexError) as error:
+        return None, f"kelime zamanı çözülemedi: {error}"
+
+
 def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None, dil: str = None) -> dict:
     dil = voice_language(voice_dir, dil, text)
     found = okunus.problems(text, dil=dil)
@@ -97,26 +112,45 @@ def oku(settings: dict, voice_dir: Path, text: str, out_dir: Path, progress=None
     reference = motor.reference_wav(voice_dir / card.get("referans", "referans.wav"), work_dir)
     requests = [motor.read_request(f"s{index}", line, seed, reference, card["ses_yaratilirken_okutulan_metin"])
                 for index, (line, _) in enumerate(parsed, 1)]
-    result = motor.run_sequence(settings, requests, work_dir, progress)
+    result = motor.run_sequence(settings, requests, work_dir, progress, sonda=settings.get("kelime_zamani", True))
     if result["bad"]:
         numbers = [int(b[1:]) for b in result["bad"]]
         raise motor.MotorHatasi(f"şu satırlar düzgün bitmedi (EOS yok): {numbers}; cümleyi kısalt ya da yeniden dene")
     if os.environ.get(motor.KEEP_ENV) != "1":
         shutil.rmtree(work_dir, ignore_errors=True)  # referans kopyası kalmıştı; motor ara dosyalarını zaten sildi
     audios = [result["audios"][r["id"]] for r in requests]
-    joined = motor.join_lines(audios, [pause for _, pause in parsed])
+    pauses = [pause for _, pause in parsed]
+    timed, timing_error = line_word_times(settings, result.get("sonda"), [line for line, _ in parsed], audios, dil)
+    if timed:
+        # satır başı ve sonundaki motor sessizliği kırpılır: iki satır arasındaki sessizlik tam durak kadar olur
+        # the engine's own head/tail silence is trimmed, so the silence between two lines equals the pause setting
+        # kırpma işitilebilir kenara göre (sessiz kelime kuyruğu kesilmez); gösterilen zaman çekirdek kenar
+        # trim by the audible edge (quiet word tails are kept); the shown times are the core edges
+        kept = [bounds for _, bounds in timed]
+        timed = [words for words, _ in timed]
+        audios = [kelime_zamani.trim(audio, motor.SAMPLE_RATE, a, b) for audio, (a, b) in zip(audios, kept)]
+        pauses = [max(0.0, pause - 2 * kelime_zamani.TRIM_PAD) for pause in pauses]
+    joined = motor.join_lines(audios, pauses)
     wav = out_dir / "okuma.wav"
     motor.write_wav(wav, joined)
-    cursor, records = 0, []
-    for index, (audio, (line, pause)) in enumerate(zip(audios, parsed), 1):
+    cursor, records, words_out = 0, [], []
+    for index, (audio, (line, _), pause) in enumerate(zip(audios, parsed, pauses + [0.0]), 1):
         start = cursor / motor.SAMPLE_RATE
+        if timed:
+            shift = start - kept[index - 1][0]
+            words_out += [{"satir": index, "kelime": w["kelime"], "t0": round(w["t0"] + shift, 3),
+                           "t1": round(w["t1"] + shift, 3)} for w in timed[index - 1]]
         cursor += len(audio)
         records.append({"satir": index, "metin": line, "t0": round(start, 3), "t1": round(cursor / motor.SAMPLE_RATE, 3)})
         cursor += int(pause * motor.SAMPLE_RATE)
+    if timed:
+        (out_dir / "kelimeler.json").write_text(json.dumps(words_out, ensure_ascii=False, indent=0) + "\n",
+                                                encoding="utf-8")
     summary = {"ses": card.get("ad"), "dil": dil, "kimlik_klasoru": str(voice_dir), "tohum": seed, "adim": motor.FIXED["adim"],
                "cfg": motor.FIXED["cfg"], "ses_sn": round(len(joined) / motor.SAMPLE_RATE, 2),
                "sure_sn": result["seconds"], "vram_tepe_mb": result["vram_peak_mb"], "wav": str(wav),
-               "satirlar": records, "supheli_satirlar": speed_outliers(records), "yapay": True, "tarih": time.strftime("%Y-%m-%d %H:%M")}
+               "satirlar": records, "supheli_satirlar": speed_outliers(records), "yapay": True, "tarih": time.strftime("%Y-%m-%d %H:%M"),
+               "kelimeler": "kelimeler.json" if timed else None, "kelime_zamani_hata": timing_error}
     (out_dir / "ozet.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return summary
 

@@ -127,13 +127,14 @@ proyektong ito sa Mac!
 1. **Pagdidisenyo ng boses.** Isang *paglalarawan ng boses* sa Ingles + isang *tekstong binabasa habang nililikha ang
    boses* (sa wika ng boses) + bilang ng mga variant. May sariling seed ang bawat variant; tinatanggap ng engine ang
    `(description)text` at nagbabalik ng isang design recording bawat seed. Ang teksto ay maikling sample para makilala
-   ang boses: 1-2 pangungusap, hanggang ~20 segundo (ipinapakita ng UI ang tantiya at hindi ito magsisimula kapag
-   lampas 22 segundo); ang mahabang teksto ay para sa hakbang 2.
+   ang boses: 1-3 pangungusap, hanggang ~30 segundo (ipinapakita ng UI ang tantiya at hindi ito magsisimula kapag
+   lampas 33 segundo); ang mahabang teksto ay para sa hakbang 2.
 2. **Pagbasa batay sa reference.** Ipinapasa ang design recording sa **parehong** input ng engine (`audio` at
    `voice_ref`), kasama ang transcript nito (`reference_text`) at ang bagong tekstong babasahin, sa parehong seed. Ang
    recording ang nagdadala ng boses, hindi ang paglalarawan, kaya hindi ito lumilihis sa bawat teksto. Binabasa ang
    teksto nang pangungusap-bawat-pangungusap.
 3. Nakapirmi ang kalidad: 16 na diffusion step, CFG 2.0. Hindi pang-adjust ng kalidad ang seed.
+4. **Oras ng bawat salita, parehong audio sa bawat pagpapatakbo.** Habang nagbabasa, ang engine mismo ang nagsasabi kung saan nagsisimula at nagtatapos ang bawat salita (patch 0002, walang dagdag na model). Isinusulat ang mga oras sa `kelimeler.json`, at pinuputol ang mga linya para ang puwang sa pagitan ng mga linya ay katumbas ng setting ng paghinto. Katumpakan kumpara sa CTC forced alignment (CTC = 100%): 88% (Turkish, 12 boses; setting `kelime_zamani`, naka-on bilang default). Sa patch 0003, ang parehong seed ay nagbibigay ng byte-identical na audio sa bawat pagpapatakbo.
 
 Ang hilaw na design recording ay isang beses lang na sample ng boses; walang susunod na pagbasa ang eksaktong kapareho
 nito. Ang naririnig mo sa bawat susunod na pagbasa ay ang hakbang 2: ang design recording bilang reference kasama ang
@@ -370,7 +371,7 @@ AI-generated ang anumang inilalathala mo.
 (malalim/maliwanag, mainit, ngongo, paos), tono at papel (kalmadong documentary narrator, masiglang presenter), tempo
 (mabagal, may sukat), at "clean studio recording, no background noise". Panatilihin itong paglalarawan, hindi script;
 walang panaklong. Humingi ng 3-5 variant at pakinggan: malaki ang nababago ng seed sa boses. Para sa tekstong
-paglikha, gumamit ng 1-2 natural na pangungusap sa wika ng boses, sa mood na gusto mo (hanggang ~20 s na pananalita).
+paglikha, gumamit ng 1-3 natural na pangungusap sa wika ng boses, sa mood na gusto mo (hanggang ~30 s na pananalita).
 Kapag nagbabasa, isang pangungusap bawat linya; hatiin ang mahahabang pangungusap, isulat ang mga numero sa salita.
 
 ## Pag-aambag

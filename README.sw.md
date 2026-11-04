@@ -122,13 +122,14 @@ hatua za usakinishaji na maswali ya msaada yapelekwe huko. Asante, Emre, kwa kuu
 
 1. **Ubunifu wa sauti.** *Maelezo ya sauti* kwa Kiingereza + *maandishi yanayosomwa wakati sauti inaundwa* (katika lugha
    ya sauti hiyo) + idadi ya matoleo. Kila toleo linapata mbegu yake; injini inapokea `(description)text` na kurudisha
-   rekodi ya ubunifu kwa kila mbegu. Maandishi ni mfano mfupi wa kuifahamu sauti: sentensi 1-2, si zaidi ya ~s 20
-   (kiolesura kinaonyesha makadirio na hakianzi ikiwa ni zaidi ya s 22); maandishi marefu ni ya hatua ya 2.
+   rekodi ya ubunifu kwa kila mbegu. Maandishi ni mfano mfupi wa kuifahamu sauti: sentensi 1-3, si zaidi ya ~s 30
+   (kiolesura kinaonyesha makadirio na hakianzi ikiwa ni zaidi ya s 33); maandishi marefu ni ya hatua ya 2.
 2. **Usomaji unaotegemea marejeo.** Rekodi ya ubunifu inapelekwa kwenye pembejeo **zote mbili** za injini (`audio` na
    `voice_ref`), pamoja na nakala yake ya maandishi (`reference_text`) na maandishi mapya ya kusoma, kwa mbegu ileile.
    Sauti inabebwa na rekodi, si na maelezo, hivyo haipotoki kutoka maandishi moja hadi mengine. Maandishi yanasomwa
    sentensi moja moja.
 3. Ubora haubadiliki: hatua 16 za diffusion, CFG 2.0. Mbegu si kitufe cha ubora.
+4. **Muda wa kila neno, sauti ileile kila mara.** Wakati wa kusoma, injini yenyewe huonyesha mahali kila neno linapoanza na kuishia (marekebisho 0002, bila modeli ya ziada). Nyakati huandikwa kwenye `kelimeler.json`, na mistari hupunguzwa ili pengo kati ya mistari liwe sawa na mpangilio wa kituo. Usahihi ukilinganishwa na upangaji wa lazima wa CTC (forced alignment, CTC = 100%): 88% (Kituruki, sauti 12; mpangilio `kelime_zamani`, umewashwa kwa chaguo-msingi). Kwa marekebisho 0003, mbegu ileile hutoa sauti inayofanana baiti kwa baiti kila mara.
 
 Rekodi ghafi ya ubunifu ni mfano wa mara moja tu wa sauti; hakuna usomaji wa baadaye unaosikika sawa kabisa nayo. Unachosikia
 katika kila usomaji wa baadaye ni hatua ya 2: rekodi ya ubunifu kama marejeo pamoja na mbegu ya toleo hilo. Ndiyo maana
@@ -355,8 +356,8 @@ kimetengenezwa na AI.
 **Ninaandikaje maelezo mazuri ya sauti?** Kwa Kiingereza, sentensi 1-3: umri na jinsia, rangi ya sauti (nzito/angavu, ya
 joto, ya puani, yenye kwaruza), toni na jukumu (msimulizi mtulivu wa makala, mtangazaji mchangamfu), kasi (polepole,
 iliyopimwa), na "clean studio recording, no background noise". Yabaki kuwa maelezo, si hati ya kusoma; bila mabano. Omba
-matoleo 3-5 na usikilize: mbegu inabadilisha sauti sana. Kwa maandishi ya uundaji tumia sentensi 1-2 za kawaida katika
-lugha ya sauti hiyo, kwa hisia unayoitaka (si zaidi ya ~s 20 za usemi). Wakati wa kusoma, sentensi moja kwa kila mstari;
+matoleo 3-5 na usikilize: mbegu inabadilisha sauti sana. Kwa maandishi ya uundaji tumia sentensi 1-3 za kawaida katika
+lugha ya sauti hiyo, kwa hisia unayoitaka (si zaidi ya ~s 30 za usemi). Wakati wa kusoma, sentensi moja kwa kila mstari;
 gawanya sentensi ndefu, andika namba kwa maneno.
 
 ## Kuchangia

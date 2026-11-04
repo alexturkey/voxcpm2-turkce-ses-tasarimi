@@ -1,0 +1,194 @@
+diff --git a/include/engine/models/voxcpm2/minicpm.h b/include/engine/models/voxcpm2/minicpm.h
+index de3b0c5..b1cfa30 100644
+--- a/include/engine/models/voxcpm2/minicpm.h
++++ b/include/engine/models/voxcpm2/minicpm.h
+@@ -90,6 +90,11 @@ enum class VoxCPM2MiniCPMKind {
+ struct VoxCPM2MiniCPMStepOutput {
+   std::vector<float> hidden;
+   int64_t position = 0;
++  // vocxcpm2 yamasi (c): VOXCPM2_PROBE_ATTENTION ile katman x kafa x onbellek konumu attention olasiliklari (BaseLM)
++  std::vector<float> attention_probe;
++  int64_t attention_probe_layers = 0;
++  int64_t attention_probe_heads = 0;
++  int64_t attention_probe_steps = 0;
+ };
+ 
+ struct VoxCPM2PromptPrefillInput {
+diff --git a/src/models/voxcpm2/generator.cpp b/src/models/voxcpm2/generator.cpp
+index 2c18e07..d15a60a 100644
+--- a/src/models/voxcpm2/generator.cpp
++++ b/src/models/voxcpm2/generator.cpp
+@@ -1664,6 +1664,17 @@ private:
+     const char *disable_value = std::getenv("VOXCPM2_PROBE_DISABLE_EOS");
+     const bool probe_disable_eos = disable_value && std::string(disable_value) == "1";
+     const char *confirm_value = std::getenv("VOXCPM2_PROBE_EOS_CONFIRMATIONS");
++    if (std::getenv("VOXCPM2_PROBE_ATTENTION") != nullptr) {
++      // vocxcpm2 yamasi (c): on doldurma satirlari (metin token id, ses satiri -1); attention satirlari bu sirayla
++      std::ostringstream rows_out;
++      rows_out << '[';
++      for (size_t i = 0; i < prefill.rows.size(); ++i) {
++        if (i) rows_out << ',';
++        rows_out << (prefill.rows[i].text_mask ? prefill.rows[i].token : -1);
++      }
++      rows_out << ']';
++      debug::trace_log_scalar("voxcpm2.probe.prefill_tokens", rows_out.str());
++    }
+     const int64_t probe_eos_confirmations = confirm_value ? std::stoll(confirm_value) : 2;
+     if (probe_eos_confirmations < 1) { throw std::invalid_argument("EOS confirmations must be positive"); }
+     const char *consensus_value = std::getenv("VOXCPM2_PROBE_POSITION_CONSENSUS");
+@@ -1751,6 +1762,30 @@ private:
+       const auto curr_embed = local_encoder_.encode_patch(patch);
+       const auto next_lm_result = base_lm_.run_step(curr_embed);
+       const auto &next_lm = next_lm_result.hidden;
++      if (!next_lm_result.attention_probe.empty()) {
++        // vocxcpm2 yamasi (c): katman basina, kafalar uzerinden ortalanmis, yalniz on doldurma satirlarina dusen attention
++        const int64_t layers = next_lm_result.attention_probe_layers;
++        const int64_t heads = next_lm_result.attention_probe_heads;
++        const int64_t steps = next_lm_result.attention_probe_steps;
++        const int64_t rows = static_cast<int64_t>(prefill.rows.size());
++        std::ostringstream attn_out;
++        attn_out << std::setprecision(4) << '[';
++        for (int64_t l = 0; l < layers; ++l) {
++          if (l) attn_out << ',';
++          attn_out << '[';
++          for (int64_t r = 0; r < rows; ++r) {
++            double total = 0.0;
++            for (int64_t h = 0; h < heads; ++h) {
++              total += next_lm_result.attention_probe[static_cast<size_t>((l * heads + h) * steps + r)];
++            }
++            if (r) attn_out << ',';
++            attn_out << total / static_cast<double>(heads);
++          }
++          attn_out << ']';
++        }
++        attn_out << ']';
++        debug::trace_log_scalar("voxcpm2.probe.attention_rows", attn_out.str());
++      }
+       debug::trace_log_scalar("voxcpm2.internal.next_state_step", index + 2);
+       debug::trace_log_scalar("voxcpm2.internal.base_position_actual", next_lm_result.position);
+       const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 2 >= 170 && index + 2 <= 220);
+diff --git a/src/models/voxcpm2/minicpm.cpp b/src/models/voxcpm2/minicpm.cpp
+index 88f0e06..904a2c8 100644
+--- a/src/models/voxcpm2/minicpm.cpp
++++ b/src/models/voxcpm2/minicpm.cpp
+@@ -19,6 +19,7 @@
+ #include <cmath>
+ #include <cstddef>
+ #include <cstdint>
++#include <cstdlib>
+ #include <limits>
+ #include <memory>
+ #include <stdexcept>
+@@ -894,7 +895,8 @@ minicpm_layer_with_static_cache(engine::core::ModuleBuildContext &ctx,
+                                 const engine::core::TensorValue &cache_key,
+                                 const engine::core::TensorValue &cache_value,
+                                 const VoxCPM2MiniCPMLayerWeights &layer,
+-                                const VoxCPM2MiniCPMWeights &weights) {
++                                const VoxCPM2MiniCPMWeights &weights,
++                                engine::core::TensorValue *attention_probe) {
+   const auto &config = weights.config;
+   const int64_t dim = head_dim(config);
+   const engine::modules::AddModule add;
+@@ -933,6 +935,20 @@ minicpm_layer_with_static_cache(engine::core::ModuleBuildContext &ctx,
+   auto v_heads =
+       engine::modules::TransposeModule({{0, 2, 1, 3}, updated_value.shape.rank})
+           .build(ctx, updated_value);
++  if (attention_probe != nullptr) {
++    // vocxcpm2 yamasi (c): yalniz sonda icin ayri skor + softmax dali; ana yol (flash attention) degismez.
++    // kopyasiz GQA: ggml_mul_mat k'yi sorgu kafalarina yayar (kafa h -> kv kafasi h / tekrar), repeat_kv_heads
++    // birlestirme zinciri ve ek VRAM yok. / copy-free GQA via mul_mat broadcast, no concat chain, no extra VRAM.
++    ggml_tensor *k_cont = ggml_cont(ctx.ggml, k_heads.tensor);   // [kv, adim, dim]
++    ggml_tensor *q_cont = ggml_cont(ctx.ggml, q_heads.tensor);   // [kafa, 1, dim]
++    ggml_tensor *scores = ggml_mul_mat(ctx.ggml, k_cont, q_cont); // [kafa, 1, adim]
++    *attention_probe = engine::core::wrap_tensor(
++        ggml_soft_max_ext(ctx.ggml, scores, attention_mask.tensor,
++                          1.0F / std::sqrt(static_cast<float>(dim)), 0.0F),
++        engine::core::TensorShape::from_dims(
++            {1, config.num_attention_heads, 1, k_heads.shape.dims[2]}),
++        GGML_TYPE_F32);
++  }
+   auto context = flash_attention_from_grouped_heads(
+       ctx, q_heads, k_heads, v_heads, dim, attention_mask);
+   context = engine::modules::TransposeModule({{0, 2, 1, 3}, context.shape.rank})
+@@ -1066,6 +1082,21 @@ public:
+     output.hidden.resize(static_cast<size_t>(config.hidden_size), 0.0F);
+     ggml_backend_tensor_get(hidden_output_, output.hidden.data(), 0,
+                             output.hidden.size() * sizeof(float));
++    if (!attention_probe_outputs_.empty()) {
++      const int64_t layers = static_cast<int64_t>(attention_probe_outputs_.size());
++      const int64_t heads = config.num_attention_heads;
++      output.attention_probe_layers = layers;
++      output.attention_probe_heads = heads;
++      output.attention_probe_steps = cache_steps_;
++      output.attention_probe.resize(
++          static_cast<size_t>(layers * heads * cache_steps_), 0.0F);
++      for (int64_t l = 0; l < layers; ++l) {
++        ggml_backend_tensor_get(
++            attention_probe_outputs_[static_cast<size_t>(l)],
++            output.attention_probe.data() + l * heads * cache_steps_, 0,
++            static_cast<size_t>(heads * cache_steps_) * sizeof(float));
++      }
++    }
+     step_cache_.advance_after_direct_append(1);
+     return output;
+   }
+@@ -1093,6 +1124,7 @@ private:
+     cache_slot_ = nullptr;
+     attention_mask_ = nullptr;
+     hidden_output_ = nullptr;
++    attention_probe_outputs_.clear();
+     attention_mask_buffer_.clear();
+     step_cache_ = engine::runtime::TransformerKVCache();
+     ctx_.reset();
+@@ -1141,6 +1173,7 @@ private:
+     std::vector<engine::core::TensorValue> cache_values;
+     cache_keys.reserve(static_cast<size_t>(config.num_hidden_layers));
+     cache_values.reserve(static_cast<size_t>(config.num_hidden_layers));
++    int64_t layer_index = 0;
+     for (const auto &layer : lm_weights.layers) {
+       cache_keys.push_back(engine::core::make_tensor(
+           ctx, GGML_TYPE_F32,
+@@ -1150,9 +1183,18 @@ private:
+           ctx, GGML_TYPE_F32,
+           engine::core::TensorShape::from_dims(
+               {1, cache_steps_, config.num_key_value_heads, dim})));
++      engine::core::TensorValue probe;
++      const bool probe_this_layer =
++          attention_probe_enabled_ && layer_index == attention_probe_layer_;
+       x = minicpm_layer_with_static_cache(
+           ctx, x, position, cache_slot, attention_mask, cache_keys.back(),
+-          cache_values.back(), layer, lm_weights);
++          cache_values.back(), layer, lm_weights,
++          probe_this_layer ? &probe : nullptr);
++      if (probe_this_layer) {
++        ggml_set_output(probe.tensor);
++        attention_probe_outputs_.push_back(probe.tensor);
++      }
++      ++layer_index;
+     }
+     step_cache_ = engine::runtime::TransformerKVCache(
+         cache_steps_, config.num_key_value_heads * dim, std::move(cache_keys),
+@@ -1164,6 +1206,9 @@ private:
+     ggml_set_output(hidden_output_);
+     graph_ = ggml_new_graph_custom(ctx_.get(), kDefaultGraphNodes, false);
+     ggml_build_forward_expand(graph_, hidden_output_);
++    for (auto *probe_tensor : attention_probe_outputs_) {
++      ggml_build_forward_expand(graph_, probe_tensor);
++    }
+     buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
+     if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
+     if (buffer_ == nullptr) {
+@@ -1183,6 +1228,13 @@ private:
+   ggml_tensor *cache_slot_ = nullptr;
+   ggml_tensor *attention_mask_ = nullptr;
+   ggml_tensor *hidden_output_ = nullptr;
++  // vocxcpm2 yamasi (c): VOXCPM2_PROBE_ATTENTION tanimliysa (yalniz BaseLM) her katmanin attention olasiliklari cikis olur
++  bool attention_probe_enabled_ =
++      std::getenv("VOXCPM2_PROBE_ATTENTION") != nullptr &&
++      kind_ == VoxCPM2MiniCPMKind::BaseLM;
++  int64_t attention_probe_layer_ = std::getenv("VOXCPM2_PROBE_ATTENTION") != nullptr
++      ? std::atoll(std::getenv("VOXCPM2_PROBE_ATTENTION")) : -1;
++  std::vector<ggml_tensor *> attention_probe_outputs_;
+   std::vector<ggml_fp16_t> attention_mask_buffer_;
+   engine::runtime::TransformerKVCache step_cache_;
+   ggml_cgraph *graph_ = nullptr;

@@ -126,12 +126,13 @@ asennusohjeet ja tukikysymykset kuuluvat sinne. Kiitos, Emre, että toit projekt
 1. **Äänisuunnittelu.** Englanninkielinen *äänen kuvaus* + *teksti, joka luetaan äänen luomisen aikana* (äänen
    kielellä) + muunnelmien määrä. Jokainen muunnelma saa oman siemenensä; moottori vastaanottaa `(description)text`
    ja palauttaa yhden suunnittelutallenteen siementä kohden. Teksti on lyhyt näyte, jonka avulla ääneen tutustutaan:
-   1-2 lausetta, enintään ~20 s (käyttöliittymä näyttää arvion eikä käynnisty yli 22 s:n kohdalla); pitkä teksti
+   1-3 lausetta, enintään ~30 s (käyttöliittymä näyttää arvion eikä käynnisty yli 33 s:n kohdalla); pitkä teksti
    kuuluu vaiheeseen 2.
 2. **Referenssiin perustuva lukeminen.** Suunnittelutallenne annetaan moottorin **molempiin** syötteisiin (`audio` ja
    `voice_ref`) yhdessä sen litteroinnin (`reference_text`) ja uuden luettavan tekstin kanssa, samalla siemenellä.
    Äänen kantaa tallenne, ei kuvaus, joten ääni ei ajaudu tekstistä toiseen. Teksti luetaan lause kerrallaan.
 3. Laatu on kiinteä: 16 diffuusioaskelta, CFG 2.0. Siemen ei ole laatuasetus.
+4. **Sanojen ajoitus, sama ääni joka kerta.** Luennan aikana moottori itse kertoo, missä kukin sana alkaa ja päättyy (paikka 0002, ei lisämallia). Ajat tallennetaan tiedostoon `kelimeler.json`, ja rivit rajataan niin, että rivien väli on sama kuin taukoasetus. Tarkkuus CTC-pakkokohdistukseen (forced alignment, CTC = 100 %) verrattuna: 88 % (turkki, 12 ääntä; asetus `kelime_zamani`, oletuksena päällä). Paikan 0003 ansiosta sama siemen tuottaa joka ajolla tavulleen saman äänen.
 
 Raaka suunnittelutallenne on äänen kertaluonteinen näyte; mikään myöhempi lukeminen ei kuulosta täsmälleen samalta.
 Jokaisessa myöhemmässä lukemisessa kuulet vaiheen 2: suunnittelutallenteen referenssinä sekä muunnelman oman siemenen.
@@ -365,8 +366,8 @@ Merkitse julkaisemasi sisältö tekoälyn tuottamaksi.
 **Miten kirjoitan hyvän äänen kuvauksen?** Englanniksi, 1-3 lausetta: ikä ja sukupuoli, sointi (syvä/kirkas, lämmin,
 nasaali, karhea), sävy ja rooli (rauhallinen dokumenttikertoja, energinen juontaja), tempo (hidas, harkittu) sekä
 "clean studio recording, no background noise". Pidä se kuvauksena, ei käsikirjoituksena; ei sulkeita. Pyydä 3-5
-muunnelmaa ja kuuntele: siemen muuttaa ääntä paljon. Käytä luontitekstinä 1-2 luontevaa lausetta äänen kielellä ja
-haluamassasi tunnelmassa (enintään ~20 s puhetta). Lukiessa yksi lause riviä kohden; jaa pitkät lauseet ja kirjoita
+muunnelmaa ja kuuntele: siemen muuttaa ääntä paljon. Käytä luontitekstinä 1-3 luontevaa lausetta äänen kielellä ja
+haluamassasi tunnelmassa (enintään ~30 s puhetta). Lukiessa yksi lause riviä kohden; jaa pitkät lauseet ja kirjoita
 luvut kirjaimin.
 
 ## Osallistuminen

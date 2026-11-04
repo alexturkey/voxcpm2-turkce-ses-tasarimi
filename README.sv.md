@@ -121,12 +121,13 @@ installationssteg och supportfrågor hör hemma där. Tack, Emre, för att du to
 
 1. **Röstdesign.** En engelsk *röstbeskrivning* + en *text som läses medan rösten skapas* (på röstens språk) + ett antal
    varianter. Varje variant får sitt eget seed; motorn tar emot `(description)text` och returnerar en designinspelning
-   per seed. Texten är ett kort prov för att lära känna rösten: 1-2 meningar, högst ~20 s (gränssnittet visar
-   uppskattningen och startar inte över 22 s); lång text hör hemma i steg 2.
+   per seed. Texten är ett kort prov för att lära känna rösten: 1-3 meningar, högst ~30 s (gränssnittet visar
+   uppskattningen och startar inte över 33 s); lång text hör hemma i steg 2.
 2. **Referensbaserad uppläsning.** Designinspelningen skickas till **båda** motorns ingångar (`audio` och `voice_ref`)
    tillsammans med dess transkription (`reference_text`) och den nya text som ska läsas, med samma seed. Rösten bärs av
    inspelningen, inte av beskrivningen, så den glider inte iväg från text till text. Texten läses mening för mening.
 3. Kvaliteten är fast: 16 diffusionssteg, CFG 2.0. Seedet är inte en kvalitetsinställning.
+4. **Ordtider, samma ljud varje gång.** Vid uppläsning anger motorn själv var varje ord börjar och slutar (patch 0002, ingen extra modell). Tiderna skrivs till `kelimeler.json` och raderna beskärs så att mellanrummet mellan rader blir lika med pausinställningen. Noggrannhet mot tvingad justering med CTC (forced alignment, CTC = 100 %): 88 % (turkiska, 12 röster; inställning `kelime_zamani`, på som standard). Med patch 0003 ger samma seed byte-identiskt ljud vid varje körning.
 
 Den råa designinspelningen är ett engångsprov av rösten; ingen senare uppläsning låter exakt som den. Det du hör i varje
 senare uppläsning är steg 2: designinspelningen som referens plus variantens eget seed. Därför gör webbgränssnittet
@@ -350,8 +351,8 @@ modellens egen syntetiska designinspelning. Imitation, bedrägeri och vilseledni
 **Hur skriver jag en bra röstbeskrivning?** På engelska, 1-3 meningar: ålder och kön, klangfärg (djup/ljus, varm,
 nasal, raspig), ton och roll (lugn dokumentärberättare, energisk programledare), tempo (långsamt, avvägt) och "clean
 studio recording, no background noise". Håll det till en beskrivning, inte ett manus; inga parenteser. Be om 3-5
-varianter och lyssna: seedet ändrar rösten mycket. Som text när rösten skapas använder du 1-2 naturliga meningar på
-röstens språk, i den stämning du vill ha (högst ~20 s tal). Vid uppläsning: en mening per rad; dela upp långa meningar
+varianter och lyssna: seedet ändrar rösten mycket. Som text när rösten skapas använder du 1-3 naturliga meningar på
+röstens språk, i den stämning du vill ha (högst ~30 s tal). Vid uppläsning: en mening per rad; dela upp långa meningar
 och skriv tal med bokstäver.
 
 ## Bidra
