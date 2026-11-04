@@ -52,10 +52,10 @@ class SinirDenetimi(unittest.TestCase):
         self.assertEqual(tasarla.check(TARIF, TR_KISA, "tr"), [])
         found = tasarla.check(TARIF, TR_UZUN, "tr")
         self.assertEqual([p.kod for p in found], ["tasarim_uzun"])
-        self.assertEqual(found[0].veri["sinir"], 20)
-        # 20 sn'yi %10'a kadar aşan metin geçer (arayüzle aynı pay) / up to 10 % over the limit is allowed
-        self.assertEqual(tasarla.check(TARIF, "a" * int(14.5 * 21.5), "tr"), [])
-        self.assertTrue(tasarla.check(TARIF, "a" * int(14.5 * 22.5), "tr"))
+        self.assertEqual(found[0].veri["sinir"], 30)
+        # 30 sn'yi %10'a kadar aşan metin geçer (arayüzle aynı pay) / up to 10 % over the limit is allowed
+        self.assertEqual(tasarla.check(TARIF, "a" * int(14.5 * 32.5), "tr"), [])
+        self.assertTrue(tasarla.check(TARIF, "a" * int(14.5 * 33.5), "tr"))
 
 
 def _post(base, path, body):
@@ -78,7 +78,7 @@ class Sunucu(unittest.TestCase):
                 base = f"http://127.0.0.1:{server.server_address[1]}"
                 code, sure = _post(base, "/api/sure", {"metin": TR_KISA})
                 self.assertEqual(code, 200)
-                self.assertEqual((sure["dil"], sure["sinir"], sure["sert"]), ("tr", 20.0, 22.0))
+                self.assertEqual((sure["dil"], sure["sinir"], sure["sert"]), ("tr", 30.0, 33.0))
                 self.assertEqual(sure["sn"], tasarla.estimate_seconds(TR_KISA, "tr"))
                 code, sure = _post(base, "/api/sure", {"metin": TR_UZUN})
                 self.assertGreater(sure["sn"], sure["sert"])

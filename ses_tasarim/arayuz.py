@@ -125,7 +125,7 @@ html,body{height:100%}body{box-sizing:border-box;display:flex;flex-direction:col
 <label class="mini" data-t-title="ornek_ipucu1"><span data-t="ornek">Örnek tarif</span><select id="ornek"></select></label>
 <label for="tarif" class="tarifbas" data-t-title="e_tarif_parantez"><span data-t-bas="tarif">Ses tarifi</span><img src="/bayrak/gb.svg" alt="English"><img src="/bayrak/cn.svg" alt="中文"></label>
 <textarea spellcheck="false" id="tarif" placeholder="A calm woman in her forties with a warm, low voice, speaking slowly and clearly. Clean studio recording, no background noise."></textarea>
-<label for="tasarim_metni"><span data-t="tmetin">Örnek cümle (sesi tanımak için, 1-2 cümle)</span> <small class="soluk" data-t="tmetin_ham">· ham tasarım bunu okur</small></label>
+<label for="tasarim_metni"><span data-t="tmetin">Örnek cümle (sesi tanımak için, 1-3 cümle)</span> <small class="soluk" data-t="tmetin_ham">· ham tasarım bunu okur</small></label>
 <textarea spellcheck="false" id="tasarim_metni" rows="3" data-t-ph="tmetin_ph" aria-describedby="sure_yazi tmetin_ipucu"></textarea>
 <div id="sure" class="sure" hidden><div class="cubuk"><i id="sure_cubuk"></i></div><span id="sure_yazi" aria-live="polite"></span></div>
 <div id="uzun_uyari" class="uzun" role="alert" hidden><span data-t="tmetin_uzun">Bu metin örnek için çok uzun. Uzun metni okuma sekmesinde okutun.</span><button type="button" class="ikincil" id="okumaya_tasi" data-t="okumaya_tasi">Okuma sekmesine taşı</button></div>
@@ -240,8 +240,8 @@ function ornekDoldur(){const s=$('ornek'),secili=s.value;s.innerHTML='';const bo
 $('ornek').addEventListener('change',()=>{const o=ornekler.find(o=>o.id===$('ornek').value);if(!o)return;
  $('tarif').value=o.tarif;$('tasarim_metni').value=o.metin;if(!$('ad').value.trim()||ornekler.some(x=>x.id===$('ad').value))$('ad').value=o.id;sureGuncelle();});
 
-// Tasarım metni kısa bir örnektir (1-2 cümle). Süre tahmini ve sınır sunucuda tek yerde (tasarla.estimate_seconds,
-// dile göre karakter hızı); arayüz yalnız çizer. 20 sn üstü kırmızı, %10 pay (sert sınır) üstünde Tasarla başlamaz.
+// Tasarım metni kısa bir örnektir (1-3 cümle). Süre tahmini ve sınır sunucuda tek yerde (tasarla.estimate_seconds,
+// dile göre karakter hızı); arayüz yalnız çizer. 30 sn üstü kırmızı, %10 pay (sert sınır) üstünde Tasarla başlamaz.
 // The design text is a short sample. The estimate and limits live on the server (one place); the UI only draws them.
 let sure=null,sureSayac=0,sureZaman=null;
 const sureOlc=metin=>api('/api/sure',{metin,ornek:$('ornek').value});

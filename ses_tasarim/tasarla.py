@@ -23,11 +23,13 @@ from . import utf8_cikti, ayarlar, motor, okunus, ornekler
 
 DEFAULT_VARIANTS = 3
 
-# Tasarım metni sesi tanımak için kısa bir örnektir (1-2 cümle). VoxCPM2 tek üretimde ~25 sn'yi aşınca ritim bozulur
-# (duraklama, es); uzun metin okuma adımında cümle cümle okunur. Arayüz 20 sn gösterir, %10 pay ile 22 sn üstü reddedilir.
-# The design text is a short sample to get to know the voice (1-2 sentences). Past ~25 s in one generation VoxCPM2
-# loses its rhythm; long text belongs in the reading step. The UI shows 20 s; above 22 s (10 % margin) it is rejected.
-DESIGN_LIMIT_SECONDS = 20.0
+# Tasarım metni sesi tanımak için bir örnektir (1-3 cümle). Tasarım kaydı okumada referans olur: motorun referans
+# kodlayıcısı 36 sn alır (motor.REFERENCE_OPTION), 25-30 sn'lik kayıtlar sesi daha iyi taşır; uzun metin okuma adımında
+# cümle cümle okunur. Arayüz 30 sn gösterir, %10 pay ile 33 sn üstü reddedilir.
+# The design text is a sample to get to know the voice (1-3 sentences). The design recording becomes the reading
+# reference: the engine's reference encoder takes 36 s and 25-30 s recordings carry the voice better; long text belongs
+# in the reading step. The UI shows 30 s; above 33 s (10 % margin) it is rejected.
+DESIGN_LIMIT_SECONDS = 30.0
 DESIGN_HARD_LIMIT_SECONDS = DESIGN_LIMIT_SECONDS * 1.1
 # Konuşma hızı, karakter/saniye (boşluk ve noktalama dahil, ardışık boşluk tek sayılır). Ölçüm 2026-10-31: hazır seslerin
 # tasarım kaydı (metin + referans süresi) ve örnek okuması (metin + mp3 süresi, satır arası duraklar düşülerek).
@@ -85,7 +87,7 @@ def check(description: str, text: str, dil: str = None) -> list:
     if seconds > DESIGN_HARD_LIMIT_SECONDS:
         limit = round(DESIGN_LIMIT_SECONDS)
         found.append(okunus.Sorun(f"ses yaratılırken okutulan metin örnek için çok uzun (~{seconds:.0f} sn > {limit} sn); "
-                                  "1-2 cümle yeter, uzun metni okuma adımında okut / design text too long, keep 1-2 "
+                                  "1-3 cümle yeter, uzun metni okuma adımında okut / design text too long, keep 1-3 "
                                   "sentences and read long text in the reading step",
                                   "tasarim_uzun", sn=round(seconds), sinir=limit))
     return found
