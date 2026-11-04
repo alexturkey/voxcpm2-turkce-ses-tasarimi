@@ -383,7 +383,7 @@ def line_words(request: dict, pieces: dict, spoken: str, audio: np.ndarray, samp
 # --- birleştirici: kenar adayları arasında seçim / combiner: pick the edge among candidates --------------------------
 # Çekirdek kenarın ±160 ms penceresindeki (10 ms adım) her aday için 9 ipucunun doğrusal puanı; en yüksek puanlı aday kenar
 # olur. Ağırlıklar bütün seslere aynıdır (sese ya da cümleye özel ayar yok): 12 onaylı ses, 22 okuma, öğretmen CTC ile bir kez
-# öğrenildi. Ölçüm (CTC zorlamalı hizalama = %100, ses dışarıda bırakılarak, 6223 kenar): ilk sürüm %88,48; sonda güveni 3,
+# öğrenildi. Ölçüm (CTC zorlamalı hizalama = %100, ses dışarıda bırakılarak, 6223 kenar): geliştirmedeki ilk hâl %88,48; sonda güveni 3,
 # susma düzeltmesi ve satır kuralıyla %89,66 (ort 37,7 ms; 0,5 sn'den büyük kayma 18 → 3, en büyük 1,16 → 0,68 sn).
 # Each candidate in a ±160 ms window around the core edge gets a linear score of 9 cues; the best candidate wins.
 # Weights are shared by all voices, learned once (12 voices, 22 readings, CTC as teacher).

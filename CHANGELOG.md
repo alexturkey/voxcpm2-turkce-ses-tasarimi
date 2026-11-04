@@ -12,7 +12,7 @@
   başlayan susma artık kelimenin önüne değil arkasına konur (önce "balkona çıktım ve" içinde "çıktım" 0,8 sn geç
   başlıyordu); satır kuralı: kelimenin içinde uzun susma olmaz, satırın ilk/son kelimesi susmada başlar/biter, kırpma da
   satır sonundaki nefesi/tıkı atar. Doğruluk (CTC zorlamalı hizalama = %100, 12 ses, 22 okuma, 6223 kenar, ses dışarıda
-  bırakılarak): %89,66; ortalama kenar hatası 37,7 ms, ortanca 24 ms; 0,5 sn'den büyük kayma 3 (ilk sürümde 18), en büyük
+  bırakılarak): %89,66; ortalama kenar hatası 37,7 ms, ortanca 24 ms; 0,5 sn'den büyük kayma 3 (geliştirmede 18'den indi), en büyük
   0,68 sn. Test: `tests/test_kelime_zamani.py`.
 - Aynı tohum aynı ses: yama 0003, ggml CUDA softmax/group_norm paylaşımlı bellek yarışını kapatır (upstream audio.cpp
   #837). Önceden okumanın 2. satırdan sonrası koşudan koşuya farklıydı; şimdi bayt bayt aynı (GTX 1050 Ti, 3 satır x 2
@@ -41,8 +41,8 @@
   1 → 3); a pause that starts late in a word is placed after that word, not before it (previously "çıktım" in "balkona
   çıktım ve" started 0.8 s late); line rule: no long silence inside a word, so a line's first/last word starts/ends at the
   silence and trimming drops a trailing breath or click. Accuracy (CTC forced alignment = 100%, 12 voices, 22 readings,
-  6223 edges, leave-one-voice-out): 89.66%; mean edge error 37.7 ms, median 24 ms; shifts above 0.5 s: 3 (18 in the first
-  version), largest 0.68 s. Test: `tests/test_kelime_zamani.py`.
+  6223 edges, leave-one-voice-out): 89.66%; mean edge error 37.7 ms, median 24 ms; shifts above 0.5 s: 3 (down from 18 during
+  development), largest 0.68 s. Test: `tests/test_kelime_zamani.py`.
 - Same seed, same audio: patch 0003 closes a shared-memory race in the ggml CUDA softmax/group_norm reduction (upstream
   audio.cpp #837). Lines 2+ of a reading used to differ between runs; now byte-identical (GTX 1050 Ti, 3 lines x 2 runs).
   Time and quality settings unchanged. Install scripts apply the patches in order.

@@ -19,7 +19,7 @@ index ef98f67..7fdd501 100644
      }
  
 -    tmp = block_reduce<block_reduce_method::SUM, block_size>(tmp, s_sum);
-+    // ahenk yama c4a (upstream #837): ikinci azaltma ayri paylasimli bellek kullanir / second reduction uses its own buffer
++    // yama c4a (upstream #837): ikinci azaltma ayri paylasimli bellek kullanir / second reduction uses its own buffer
 +    tmp = block_reduce<block_reduce_method::SUM, block_size>(tmp, s_sum + 32);
  
      const float variance = tmp / group_size;
@@ -42,7 +42,7 @@ index 285c0e9..9815f20 100644
      }
  
 +    if (block_size > WARP_SIZE) {
-+        // ahenk yama c4a (upstream #837 / ggml #26385): buf_iw iki block_reduce arasinda paylasiliyor, yaris olmasin
++        // yama c4a (upstream #837 / ggml #26385): buf_iw iki block_reduce arasinda paylasiliyor, yaris olmasin
 +        // sync is needed as we reuse buf_iw across block_reduce invocations
 +        __syncthreads();
 +    }

@@ -11,7 +11,7 @@
      AppBatchResult out;
      out.prepare_ms = to_ms(Clock::now() - prepare_start);
      out.results.reserve(batch.requests.size());
-+    // ahenk yama c5: oturum destekliyor ve VOXCPM2_TOPLU_COZ=1 ise once butun satirlar uretilir,
++    // yama c5: oturum destekliyor ve VOXCPM2_TOPLU_COZ=1 ise once butun satirlar uretilir,
 +    // cozme sonda bir kez yapilir; sonuclar yine sirayla bildirilir.
 +    auto * deferred = dynamic_cast<engine::runtime::IDeferredDecodeSession *>(&offline);
 +    const bool defer = deferred != nullptr && batch.requests.size() > 1 &&
@@ -51,7 +51,7 @@
          GGML_LOG_ERROR("%s: allocating %.2f MiB on device %d: cudaMalloc failed: %s\n", __func__, size / 1024.0 / 1024.0, buft_ctx->device, cudaGetErrorString(err));
          return nullptr;
      }
-+    CUDA_CHECK(cudaMemset(dev_ptr, 0, size));  // ahenk yama f: yeniden kullanilan VRAM'deki eski veri sonuca sizmasin
++    CUDA_CHECK(cudaMemset(dev_ptr, 0, size));  // yama f: yeniden kullanilan VRAM'deki eski veri sonuca sizmasin
  
      ggml_backend_cuda_buffer_context * ctx = new ggml_backend_cuda_buffer_context(buft_ctx->device, dev_ptr);
  
@@ -66,7 +66,7 @@
 +
 +namespace engine::runtime {
 +
-+// ahenk yama c5: toplu cozme. Oturum destekliyorsa toplu istekte once butun satirlar uretilir
++// yama c5: toplu cozme. Oturum destekliyorsa toplu istekte once butun satirlar uretilir
 +// (latent ana bellekte), sonra cozucu bir kez kurulup hepsi cozulur.
 +class IDeferredDecodeSession {
 +public:
@@ -164,7 +164,7 @@
        encoded_prompt_cache_;
    std::optional<EncodedPromptCacheEntry> uncached_encoded_prompt_;
 +
-+  // ahenk yama c5: toplu cozme (VOXCPM2_TOPLU_COZ=1)
++  // yama c5: toplu cozme (VOXCPM2_TOPLU_COZ=1)
 +  struct PendingDecode {
 +    std::vector<float> features;
 +    int64_t patches = 0;
@@ -361,7 +361,7 @@
        return;
      }
      buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
-+    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // yama e: temiz bellek
      if (buffer_ == nullptr) {
        throw std::runtime_error(
            "failed to allocate VoxCPM2 step projection graph");
@@ -369,7 +369,7 @@
        }
      } else {
        buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
-+      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
++      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // yama e: temiz bellek
      }
      if (!mem_saver_ && buffer_ == nullptr) {
        throw std::runtime_error(
@@ -377,7 +377,7 @@
        }
      } else {
        buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
-+      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
++      if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // yama e: temiz bellek
      }
      if (!mem_saver_ && buffer_ == nullptr) {
        throw std::runtime_error(
@@ -416,7 +416,7 @@
 +  return value != nullptr && std::string(value) == "auto";
 +}
 +
-+// ahenk yama d: prompt ses gomme onbellegi oturuma ait; yama b her istekte uretici yeniden kurdugunda kaybolmaz.
++// yama d: prompt ses gomme onbellegi oturuma ait; yama b her istekte uretici yeniden kurdugunda kaybolmaz.
 +struct VoxCPM2PromptEmbeddingStore {
 +  struct Key {
 +    std::vector<float> prompt_features;
@@ -699,7 +699,7 @@
        return;
      }
      buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
-+    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // yama e: temiz bellek
      if (buffer_ == nullptr) {
        throw std::runtime_error(
            "failed to allocate VoxCPM2 text embedding graph");
@@ -725,7 +725,7 @@
      graph_ = ggml_new_graph_custom(ctx_.get(), kDefaultGraphNodes, false);
      ggml_build_forward_expand(graph_, hidden_output_);
      buffer_ = ggml_backend_alloc_ctx_tensors(ctx_.get(), weights_->backend());
-+    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // ahenk yama e: temiz bellek
++    if (buffer_ != nullptr) ggml_backend_buffer_clear(buffer_, 0);  // yama e: temiz bellek
      if (buffer_ == nullptr) {
        throw std::runtime_error("failed to allocate VoxCPM2 MiniCPM step graph");
      }
@@ -773,7 +773,7 @@
    return out;
 +}
 +
-+// ahenk yama c4: referans kodlamasinin (prompt_encode) diske onbellegi. VOXCPM2_PROMPT_CACHE_DIR
++// yama c4: referans kodlamasinin (prompt_encode) diske onbellegi. VOXCPM2_PROMPT_CACHE_DIR
 +// verilmezse kapali. Anahtar sha256: AudioVAE agirlik dosyasi (yol, boyut, zaman), kodlayici ayarlari,
 +// yeniden ornekleyici (soxr/dogrusal) parmak izi, referans metni ve referans seslerin ornekleri.
 +// Kayit float'lari birebir yazar ve okur.
@@ -1018,7 +1018,7 @@
 +        &chunk_request == &chunk_requests.back() &&
 +        execution_context().backend_type() != engine::core::BackendType::Cpu;
 +    if (defer_decode_ && gpu_chunked && chunk_requests.size() == 1) {
-+      // ahenk yama c5: cozme toplu istegin sonuna ertelenir; LM VRAM'de kalir (yalniz
++      // yama c5: cozme toplu istegin sonuna ertelenir; LM VRAM'de kalir (yalniz
 +      // calisma bellegi birakilir), latent ana bellekte bekler.
 +      PendingDecode pending;
 +      pending.features = generated.decode_features;
@@ -1079,7 +1079,7 @@
 +}
 +
 +bool VoxCPM2SessionBase::begin_deferred_decode_impl() {
-+  // ahenk yama c5: VOXCPM2_TOPLU_COZ=1 ve GPU parcali cozme (4 GB yolu) aciksa
++  // yama c5: VOXCPM2_TOPLU_COZ=1 ve GPU parcali cozme (4 GB yolu) aciksa
 +  const char *flag = std::getenv("VOXCPM2_TOPLU_COZ");
 +  const char *gpu_chunk = std::getenv("VOXCPM2_AUDIOVAE_GPU_CHUNK");
 +  defer_decode_ = flag != nullptr && std::string(flag) == "1" &&
@@ -1233,7 +1233,7 @@
    EncodedPromptCacheEntry entry;
 -  entry.encoded =
 -      decoder_->encode_prompt_audio(prompt_audio, prompt_text, reference_audio);
-+  // ahenk yama c4: diskteki onbellek (VOXCPM2_PROMPT_CACHE_DIR)
++  // yama c4: diskteki onbellek (VOXCPM2_PROMPT_CACHE_DIR)
 +  std::filesystem::path disk_path;
 +  std::string disk_key;
 +  if (const char *cache_dir = std::getenv("VOXCPM2_PROMPT_CACHE_DIR");
