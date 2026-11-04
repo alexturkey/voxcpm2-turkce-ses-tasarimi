@@ -123,7 +123,7 @@ hier; installatiestappen en supportvragen horen daar thuis. Bedankt, Emre, dat j
    samen met de transcriptie (`reference_text`) en de nieuwe voor te lezen tekst, met dezelfde seed. De stem wordt gedragen
    door de opname, niet door de beschrijving, en drijft dus niet af van tekst tot tekst. Tekst wordt zin voor zin voorgelezen.
 3. De kwaliteit ligt vast: 16 diffusiestappen, CFG 2.0. De seed is geen kwaliteitsknop.
-4. **Woordtijden, elke keer dezelfde audio.** Tijdens het voorlezen geeft de engine zelf aan waar elk woord begint en eindigt (patch 0002, geen extra model). De tijden komen in `kelimeler.json` en regels worden zo bijgesneden dat de ruimte tussen regels gelijk is aan de pauze-instelling. Nauwkeurigheid ten opzichte van CTC-forced alignment (CTC = 100%): 88% (Turks, 12 stemmen; instelling `kelime_zamani`, standaard aan). Met patch 0003 geeft dezelfde seed bij elke run byte-identieke audio.
+4. **Woordtijden, elke keer dezelfde audio.** Tijdens het voorlezen geeft de engine zelf aan waar elk woord begint en eindigt (patch 0002, geen extra model). De tijden komen in `kelimeler.json` en regels worden zo bijgesneden dat de ruimte tussen regels gelijk is aan de pauze-instelling. Nauwkeurigheid ten opzichte van CTC-forced alignment (CTC = 100%): 89,66% (Turks, 12 stemmen; instelling `kelime_zamani`, standaard aan). Met patch 0003 geeft dezelfde seed bij elke run byte-identieke audio.
 
 De ruwe ontwerpopname is een eenmalig voorbeeld van de stem; geen enkele latere voorlezing klinkt precies zo. Wat je bij
 elke latere voorlezing hoort, is stap 2: de ontwerpopname als referentie plus de eigen seed van de variant. Daarom voert de

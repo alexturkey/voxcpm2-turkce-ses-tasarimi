@@ -52,16 +52,18 @@ $SRC_URL = "https://github.com/0xShug0/audio.cpp/archive/refs/tags/v0.7.2.tar.gz
 $SRC_SHA = "cab8db31cec26ef8f1e39eabea1df5f02a87e8de87a5ae334b1e66217339c6bf"
 $PATCHES = @((Join-Path $Repo "patches\0001-voxcpm2-4gb-ve-hiz.patch"), (Join-Path $Repo "patches\0002-voxcpm2-kelime-zamani.patch"), (Join-Path $Repo "patches\0003-ggml-cuda-block-reduce-yarisi.patch"))
 # Hazır motor: GitHub Release. Sürüm, zip ve exe sha256'sı burada sabit; yeni sürümde üçü birlikte güncellenir.
-$REL_SURUM = "v0.1.1"
-$REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip"
+$REL_SURUM = "v0.3.0"
+$REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip"
 $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP"
-$REL_ZIP_SHA = "0c7a596590500f52b9cc44bd036df874e04358107a9793dddbe0e5b6d0c27c26"
-$REL_EXE_SHA = "eb75f6e6de3440c5a6b3583ba7581d539adbf80d6c069bde6611d350c95747d4"
-# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez). Aynı sürüm etiketinde ayrı zip. / Experimental Vulkan engine, same release tag.
+$REL_ZIP_SHA = "60966998f7d85222f7bfad5197ffc09adcb347a2581d2b02fc36564aabaf3880"
+$REL_EXE_SHA = "053cea0457a72aa6955d147b6a83e98371d8a00825c5ef75e3c0f2aaba08d09e"
+# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez): v0.1.1 etiketinde kalır (yama 0002/0003 yok: kelime zamanı çıkmaz, okuma
+# eskisi gibi sürer). / Experimental Vulkan engine stays on the v0.1.1 tag (no patches 0002/0003: no word timing, reading unchanged).
+$REL_VK_SURUM = "v0.1.1"
 $REL_VK_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip"
 $REL_VK_ZIP_SHA = "93367a1e5c380d916fea00b5596ff0b7e8ab1ddc5a6d36330ac416676726ce18"
 $REL_VK_EXE_SHA = "29fa97c8869369ca186f9bfceb7b307fa3d24181f7a3711da3e135ad7731645b"
-if ($Vulkan) { $REL_ZIP = $REL_VK_ZIP; $REL_ZIP_SHA = $REL_VK_ZIP_SHA; $REL_EXE_SHA = $REL_VK_EXE_SHA; $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP" }
+if ($Vulkan) { $REL_ZIP = $REL_VK_ZIP; $REL_ZIP_SHA = $REL_VK_ZIP_SHA; $REL_EXE_SHA = $REL_VK_EXE_SHA; $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_VK_SURUM/$REL_ZIP" }
 $CUDA_BASE = "https://developer.download.nvidia.com/compute/cuda/redist"
 # CUDA 12.8 redist zipleri (kurulumsuz). Manifest: $CUDA_BASE/redistrib_12.8.2.json  Çalışma için ilk 3, derleme için 5'i.
 $CUDA = @(

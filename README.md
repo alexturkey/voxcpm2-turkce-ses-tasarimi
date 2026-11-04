@@ -123,7 +123,7 @@ here; installation steps and support questions go there. Thank you, Emre, for br
    together with its transcript (`reference_text`) and the new text to read, with the same seed. The voice is carried by
    the recording, not by the description, so it does not drift from text to text. Text is read sentence by sentence.
 3. Quality is fixed: 16 diffusion steps, CFG 2.0. The seed is not a quality knob.
-4. **Word timing, same audio every run.** While reading, the engine itself reports where each word starts and ends (patch 0002, no extra model). Timings are written to `kelimeler.json`, and lines are trimmed so the gap between lines equals the pause setting. Accuracy against CTC forced alignment (CTC = 100%): 88% (Turkish, 12 voices; setting `kelime_zamani`, on by default). With patch 0003 the same seed gives byte-identical audio on every run.
+4. **Word timing, same audio every run.** While reading, the engine itself reports where each word starts and ends (patch 0002, no extra model). Timings are written to `kelimeler.json`, and lines are trimmed so the gap between lines equals the pause setting. Accuracy against CTC forced alignment (CTC = 100%): 89.66% (Turkish, 12 voices; setting `kelime_zamani`, on by default). With patch 0003 the same seed gives byte-identical audio on every run.
 
 The raw design recording is a one-off sample of the voice; no later reading sounds exactly like it. What you hear in
 every later reading is step 2: the design recording as reference plus the variant's own seed. That is why the web UI

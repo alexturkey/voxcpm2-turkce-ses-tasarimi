@@ -132,7 +132,7 @@ asennusohjeet ja tukikysymykset kuuluvat sinne. Kiitos, Emre, että toit projekt
    `voice_ref`) yhdessä sen litteroinnin (`reference_text`) ja uuden luettavan tekstin kanssa, samalla siemenellä.
    Äänen kantaa tallenne, ei kuvaus, joten ääni ei ajaudu tekstistä toiseen. Teksti luetaan lause kerrallaan.
 3. Laatu on kiinteä: 16 diffuusioaskelta, CFG 2.0. Siemen ei ole laatuasetus.
-4. **Sanojen ajoitus, sama ääni joka kerta.** Luennan aikana moottori itse kertoo, missä kukin sana alkaa ja päättyy (paikka 0002, ei lisämallia). Ajat tallennetaan tiedostoon `kelimeler.json`, ja rivit rajataan niin, että rivien väli on sama kuin taukoasetus. Tarkkuus CTC-pakkokohdistukseen (forced alignment, CTC = 100 %) verrattuna: 88 % (turkki, 12 ääntä; asetus `kelime_zamani`, oletuksena päällä). Paikan 0003 ansiosta sama siemen tuottaa joka ajolla tavulleen saman äänen.
+4. **Sanojen ajoitus, sama ääni joka kerta.** Luennan aikana moottori itse kertoo, missä kukin sana alkaa ja päättyy (paikka 0002, ei lisämallia). Ajat tallennetaan tiedostoon `kelimeler.json`, ja rivit rajataan niin, että rivien väli on sama kuin taukoasetus. Tarkkuus CTC-pakkokohdistukseen (forced alignment, CTC = 100 %) verrattuna: 89,66 % (turkki, 12 ääntä; asetus `kelime_zamani`, oletuksena päällä). Paikan 0003 ansiosta sama siemen tuottaa joka ajolla tavulleen saman äänen.
 
 Raaka suunnittelutallenne on äänen kertaluonteinen näyte; mikään myöhempi lukeminen ei kuulosta täsmälleen samalta.
 Jokaisessa myöhemmässä lukemisessa kuulet vaiheen 2: suunnittelutallenteen referenssinä sekä muunnelman oman siemenen.

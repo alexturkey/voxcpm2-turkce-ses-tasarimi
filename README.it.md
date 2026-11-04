@@ -129,7 +129,7 @@ installazione e le richieste di supporto vanno lì. Grazie, Emre, per aver porta
    seed. La voce è sostenuta dalla registrazione, non dalla descrizione, quindi non deriva da un testo all'altro. Il
    testo viene letto frase per frase.
 3. La qualità è fissa: 16 passi di diffusione, CFG 2.0. Il seed non è una manopola della qualità.
-4. **Tempi delle parole, stesso audio a ogni esecuzione.** Durante la lettura è il motore stesso a indicare dove inizia e finisce ogni parola (patch 0002, nessun modello aggiuntivo). I tempi vanno in `kelimeler.json` e le righe vengono rifilate in modo che lo spazio tra le righe sia uguale all'impostazione della pausa. Precisione rispetto all'allineamento forzato CTC (forced alignment, CTC = 100%): 88% (turco, 12 voci; impostazione `kelime_zamani`, attiva per impostazione predefinita). Con la patch 0003 lo stesso seed produce un audio identico byte per byte a ogni esecuzione.
+4. **Tempi delle parole, stesso audio a ogni esecuzione.** Durante la lettura è il motore stesso a indicare dove inizia e finisce ogni parola (patch 0002, nessun modello aggiuntivo). I tempi vanno in `kelimeler.json` e le righe vengono rifilate in modo che lo spazio tra le righe sia uguale all'impostazione della pausa. Precisione rispetto all'allineamento forzato CTC (forced alignment, CTC = 100%): 89,66% (turco, 12 voci; impostazione `kelime_zamani`, attiva per impostazione predefinita). Con la patch 0003 lo stesso seed produce un audio identico byte per byte a ogni esecuzione.
 
 La registrazione di design grezza è un campione unico della voce; nessuna lettura successiva suona esattamente uguale.
 Ciò che senti in ogni lettura successiva è il passo 2: la registrazione di design come riferimento più il seed proprio

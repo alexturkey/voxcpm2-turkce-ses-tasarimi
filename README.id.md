@@ -129,7 +129,7 @@ proyek ini ke Mac!
    bersama transkripnya (`reference_text`) dan teks baru yang akan dibacakan, dengan seed yang sama. Suara dibawa oleh
    rekaman, bukan oleh deskripsi, sehingga tidak bergeser dari satu teks ke teks lain. Teks dibacakan kalimat demi kalimat.
 3. Kualitas bersifat tetap: 16 langkah difusi, CFG 2.0. Seed bukan pengatur kualitas.
-4. **Waktu kata, audio sama setiap kali.** Saat membaca, engine sendiri memberi tahu di mana setiap kata mulai dan berakhir (patch 0002, tanpa model tambahan). Waktunya ditulis ke `kelimeler.json`, dan baris dipangkas agar jeda antarbaris sama dengan pengaturan jeda. Akurasi terhadap forced alignment CTC (CTC = 100%): 88% (bahasa Turki, 12 suara; pengaturan `kelime_zamani`, aktif secara bawaan). Dengan patch 0003, seed yang sama menghasilkan audio yang identik per byte setiap kali dijalankan.
+4. **Waktu kata, audio sama setiap kali.** Saat membaca, engine sendiri memberi tahu di mana setiap kata mulai dan berakhir (patch 0002, tanpa model tambahan). Waktunya ditulis ke `kelimeler.json`, dan baris dipangkas agar jeda antarbaris sama dengan pengaturan jeda. Akurasi terhadap forced alignment CTC (CTC = 100%): 89,66% (bahasa Turki, 12 suara; pengaturan `kelime_zamani`, aktif secara bawaan). Dengan patch 0003, seed yang sama menghasilkan audio yang identik per byte setiap kali dijalankan.
 
 Rekaman desain mentah adalah contoh suara yang hanya muncul sekali; tidak ada pembacaan berikutnya yang terdengar
 persis sama dengannya. Yang kamu dengar di setiap pembacaan berikutnya adalah langkah 2: rekaman desain sebagai

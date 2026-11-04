@@ -125,7 +125,7 @@ installasjonssteg og spørsmål om støtte hører hjemme der. Takk, Emre, for at
    med transkripsjonen (`reference_text`) og den nye teksten som skal leses, med samme seed. Stemmen bæres av opptaket,
    ikke av beskrivelsen, så den driver ikke fra tekst til tekst. Teksten leses setning for setning.
 3. Kvaliteten er fast: 16 diffusjonssteg, CFG 2.0. Seedet er ikke en kvalitetsinnstilling.
-4. **Ordtider, samme lyd hver gang.** Under opplesning oppgir motoren selv hvor hvert ord begynner og slutter (patch 0002, ingen ekstra modell). Tidene skrives til `kelimeler.json`, og linjene beskjæres slik at mellomrommet mellom linjer tilsvarer pauseinnstillingen. Nøyaktighet mot tvungen justering med CTC (forced alignment, CTC = 100 %): 88 % (tyrkisk, 12 stemmer; innstilling `kelime_zamani`, på som standard). Med patch 0003 gir samme seed byte-identisk lyd ved hver kjøring.
+4. **Ordtider, samme lyd hver gang.** Under opplesning oppgir motoren selv hvor hvert ord begynner og slutter (patch 0002, ingen ekstra modell). Tidene skrives til `kelimeler.json`, og linjene beskjæres slik at mellomrommet mellom linjer tilsvarer pauseinnstillingen. Nøyaktighet mot tvungen justering med CTC (forced alignment, CTC = 100 %): 89,66 % (tyrkisk, 12 stemmer; innstilling `kelime_zamani`, på som standard). Med patch 0003 gir samme seed byte-identisk lyd ved hver kjøring.
 
 Det rå designopptaket er en engangsprøve av stemmen; ingen senere opplesing høres nøyaktig slik ut. Det du hører i hver
 senere opplesing, er steg 2: designopptaket som referanse pluss variantens eget seed. Derfor gjør nettgrensesnittet

@@ -133,7 +133,7 @@ gebracht hast!
    von der Aufnahme getragen, nicht von der Beschreibung, und driftet deshalb von Text zu Text nicht ab. Der Text wird
    Satz für Satz vorgelesen.
 3. Die Qualität ist fest: 16 Diffusionsschritte, CFG 2.0. Der Seed ist kein Qualitätsregler.
-4. **Wortzeiten, bei jedem Lauf derselbe Klang.** Beim Vorlesen meldet die Engine selbst, wo jedes Wort beginnt und endet (Patch 0002, kein zusätzliches Modell). Die Zeiten werden in `kelimeler.json` geschrieben, und die Zeilen werden so gekürzt, dass die Lücke zwischen den Zeilen der Pauseneinstellung entspricht. Genauigkeit gegenüber CTC-Forced-Alignment (CTC = 100 %): 88 % (Türkisch, 12 Stimmen; Einstellung `kelime_zamani`, standardmäßig an). Mit Patch 0003 liefert derselbe Seed bei jedem Lauf byteidentisches Audio.
+4. **Wortzeiten, bei jedem Lauf derselbe Klang.** Beim Vorlesen meldet die Engine selbst, wo jedes Wort beginnt und endet (Patch 0002, kein zusätzliches Modell). Die Zeiten werden in `kelimeler.json` geschrieben, und die Zeilen werden so gekürzt, dass die Lücke zwischen den Zeilen der Pauseneinstellung entspricht. Genauigkeit gegenüber CTC-Forced-Alignment (CTC = 100 %): 89,66 % (Türkisch, 12 Stimmen; Einstellung `kelime_zamani`, standardmäßig an). Mit Patch 0003 liefert derselbe Seed bei jedem Lauf byteidentisches Audio.
 
 Die rohe Entwurfsaufnahme ist eine einmalige Probe der Stimme; keine spätere Lesung klingt genau so. Was du in jeder
 späteren Lesung hörst, ist Schritt 2: die Entwurfsaufnahme als Referenz plus der eigene Seed der Variante. Deshalb führt

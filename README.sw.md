@@ -129,7 +129,7 @@ hatua za usakinishaji na maswali ya msaada yapelekwe huko. Asante, Emre, kwa kuu
    Sauti inabebwa na rekodi, si na maelezo, hivyo haipotoki kutoka maandishi moja hadi mengine. Maandishi yanasomwa
    sentensi moja moja.
 3. Ubora haubadiliki: hatua 16 za diffusion, CFG 2.0. Mbegu si kitufe cha ubora.
-4. **Muda wa kila neno, sauti ileile kila mara.** Wakati wa kusoma, injini yenyewe huonyesha mahali kila neno linapoanza na kuishia (marekebisho 0002, bila modeli ya ziada). Nyakati huandikwa kwenye `kelimeler.json`, na mistari hupunguzwa ili pengo kati ya mistari liwe sawa na mpangilio wa kituo. Usahihi ukilinganishwa na upangaji wa lazima wa CTC (forced alignment, CTC = 100%): 88% (Kituruki, sauti 12; mpangilio `kelime_zamani`, umewashwa kwa chaguo-msingi). Kwa marekebisho 0003, mbegu ileile hutoa sauti inayofanana baiti kwa baiti kila mara.
+4. **Muda wa kila neno, sauti ileile kila mara.** Wakati wa kusoma, injini yenyewe huonyesha mahali kila neno linapoanza na kuishia (marekebisho 0002, bila modeli ya ziada). Nyakati huandikwa kwenye `kelimeler.json`, na mistari hupunguzwa ili pengo kati ya mistari liwe sawa na mpangilio wa kituo. Usahihi ukilinganishwa na upangaji wa lazima wa CTC (forced alignment, CTC = 100%): 89.66% (Kituruki, sauti 12; mpangilio `kelime_zamani`, umewashwa kwa chaguo-msingi). Kwa marekebisho 0003, mbegu ileile hutoa sauti inayofanana baiti kwa baiti kila mara.
 
 Rekodi ghafi ya ubunifu ni mfano wa mara moja tu wa sauti; hakuna usomaji wa baadaye unaosikika sawa kabisa nayo. Unachosikia
 katika kila usomaji wa baadaye ni hatua ya 2: rekodi ya ubunifu kama marejeo pamoja na mbegu ya toleo hilo. Ndiyo maana

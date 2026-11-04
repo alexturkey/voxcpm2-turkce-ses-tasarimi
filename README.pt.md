@@ -123,7 +123,7 @@ instruções de instalação e as dúvidas de suporte ficam lá. Obrigado, Emre,
    junto com sua transcrição (`reference_text`) e o novo texto a ser lido, com a mesma semente. A voz é sustentada pela
    gravação, não pela descrição, por isso não se desvia de um texto para outro. O texto é lido frase por frase.
 3. A qualidade é fixa: 16 passos de difusão, CFG 2.0. A semente não é um ajuste de qualidade.
-4. **Tempo de cada palavra, mesmo áudio em cada execução.** Durante a leitura, o próprio motor informa onde cada palavra começa e termina (patch 0002, sem modelo extra). Os tempos vão para `kelimeler.json` e as linhas são aparadas para que o intervalo entre linhas seja igual à configuração de pausa. Precisão em relação ao alinhamento forçado com CTC (forced alignment, CTC = 100%): 88% (turco, 12 vozes; configuração `kelime_zamani`, ativada por padrão). Com o patch 0003, a mesma semente gera áudio idêntico byte a byte em cada execução.
+4. **Tempo de cada palavra, mesmo áudio em cada execução.** Durante a leitura, o próprio motor informa onde cada palavra começa e termina (patch 0002, sem modelo extra). Os tempos vão para `kelimeler.json` e as linhas são aparadas para que o intervalo entre linhas seja igual à configuração de pausa. Precisão em relação ao alinhamento forçado com CTC (forced alignment, CTC = 100%): 89,66% (turco, 12 vozes; configuração `kelime_zamani`, ativada por padrão). Com o patch 0003, a mesma semente gera áudio idêntico byte a byte em cada execução.
 
 A gravação de design bruta é uma amostra única da voz; nenhuma leitura posterior soa exatamente igual a ela. O que você ouve
 em todas as leituras seguintes é o passo 2: a gravação de design como referência mais a semente própria da variante. Por

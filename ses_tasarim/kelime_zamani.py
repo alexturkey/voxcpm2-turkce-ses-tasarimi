@@ -278,14 +278,20 @@ def _pause_bounds(words: list, voiced: np.ndarray, min_pause: int) -> dict:
         owner = next((i for i, w in enumerate(words) if w["t0"] <= pause_start < w["t1"]), None)
         if owner is None:
             continue
-        if not words[owner]["kelime"][-1].isalnum():
+        word = words[owner]
+        # Susma kelimenin ikinci yarısında başlıyorsa kelimenin arkasıdır (önü değil): "balkona çıktım ve" içinde "çıktım"dan
+        # sonraki nefes "çıktım"ı 0,8 sn geç başlatıyordu. A pause starting in the word's second half follows the word.
+        if not word["kelime"][-1].isalnum() or pause_start - word["t0"] > word["t1"] - pause_start:
             owner += 1
         if 0 < owner < len(words) and owner - 1 not in forced:
             forced[owner - 1] = (before + 1, after)
     return forced
 
 
-def snap_line(words: list, audio: np.ndarray, sample_rate: int, probe_weight: float = 1.0,
+SNAP_PROBE_WEIGHT = 3.0  # sonda sınırına güven (1 → 3: kaba kenar sondayı daha az eziyor; ölçüm deneme_12, LOVO %88,60 → %89,66)
+
+
+def snap_line(words: list, audio: np.ndarray, sample_rate: int, probe_weight: float = SNAP_PROBE_WEIGHT,
               duration_weight: float = 3.0, energy_weight: float = 3.0, below_speech_db: float = 35.0,
               min_pause_seconds: float = 0.15) -> list:
     """Bir satırın kaba zamanlarını (satır başına göre saniye) sesin enerjisine oturtur."""
@@ -371,13 +377,14 @@ def line_words(request: dict, pieces: dict, spoken: str, audio: np.ndarray, samp
         return [], (0.0, len(audio) / sample_rate)
     rough = rough_times(request, pieces, spoken, words, len(audio) / sample_rate)
     audible = snap_line(rough, audio, sample_rate)
-    return core_edges(audible, audio, sample_rate), trim_bounds(audible, len(audio) / sample_rate)
+    return core_edges(audible, audio, sample_rate), trim_bounds(audible, len(audio) / sample_rate, audio, sample_rate)
 
 
 # --- birleştirici: kenar adayları arasında seçim / combiner: pick the edge among candidates --------------------------
 # Çekirdek kenarın ±160 ms penceresindeki (10 ms adım) her aday için 9 ipucunun doğrusal puanı; en yüksek puanlı aday kenar
 # olur. Ağırlıklar bütün seslere aynıdır (sese ya da cümleye özel ayar yok): 12 onaylı ses, 22 okuma, öğretmen CTC ile bir kez
-# öğrenildi. Ölçüm (CTC zorlamalı hizalama = %100, ses dışarıda bırakılarak): çekirdek kenar %86,0 → birleştirici %88,5.
+# öğrenildi. Ölçüm (CTC zorlamalı hizalama = %100, ses dışarıda bırakılarak, 6223 kenar): ilk sürüm %88,48; sonda güveni 3,
+# susma düzeltmesi ve satır kuralıyla %89,66 (ort 37,7 ms; 0,5 sn'den büyük kayma 18 → 3, en büyük 1,16 → 0,68 sn).
 # Each candidate in a ±160 ms window around the core edge gets a linear score of 9 cues; the best candidate wins.
 # Weights are shared by all voices, learned once (12 voices, 22 readings, CTC as teacher).
 
@@ -385,9 +392,9 @@ COMBINER_WINDOW = 16              # aday yarı genişliği, çerçeve (16 x 10 m
 COMBINER_GAP = 0.35               # ipuçları satırlar arasına bu kadar sessizlik konarak hesaplanır (öğrenme verisiyle aynı)
 COMBINER_LETTER_SECONDS = 0.06    # süre ipucu: harf başına beklenen süre / expected seconds per letter
 COMBINER_INTERNAL_GAP = 0.05      # komşu kelimeye bundan kısa boşluk: kelime içi geçiş / below this the edge is a transition
-COMBINER_WEIGHTS = {"d2": -0.43827074585699977, "abs_d": -0.6187486094301136, "egim": 0.3324710611960567,
-                    "tini": 0.111268665368629, "sure": -0.6827649660627761, "ic*seviye": -0.10525484158266439,
-                    "k_bic": 0.9766683005477729, "k_bdurak": 0.19113667063820894, "dik": 0.6654789838321357}
+COMBINER_WEIGHTS = {"d2": -0.6247187773936547, "abs_d": -0.409397500489501, "egim": 0.3722002428409541,
+                    "tini": 0.11928912848021733, "sure": -0.7577336915093991, "ic*seviye": -0.17517597182213396,
+                    "k_bic": 1.353039975703895, "k_bdurak": 0.41866650608017886, "dik": 0.5601866167767763}
 _MEL_BANDS, _MEL_FFT = 40, 1024
 
 
@@ -432,6 +439,48 @@ def _cues(audio: np.ndarray, sample_rate: int) -> dict:
         b = mel[f:f + 4].mean(axis=0)
         timbre[f] = 1 - float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-9))
     return {"L": levels, "tini": timbre, "n": count, "ref": float(np.percentile(levels, 95))}
+
+
+LINE_SILENCE_DB = 30.0       # satır kuralı: okumanın tepe seviyesinin (p95) bu kadar altı susmadır
+LINE_SILENCE_SECONDS = 0.3   # satır kuralı: kelimenin içinde bundan uzun susma olamaz
+
+
+def _silences(quiet: np.ndarray, minimum: int) -> list:
+    runs, f = [], 0
+    while f < len(quiet):
+        if quiet[f]:
+            g = f
+            while g < len(quiet) and quiet[g]:
+                g += 1
+            if g - f >= minimum:
+                runs.append((f, g))
+            f = g
+        else:
+            f += 1
+    return runs
+
+
+def _line_silence(words: list, picked: dict, levels: np.ndarray, ref: float) -> None:
+    """Satır kuralı: kelimenin içinde uzun susma olmaz. Satırın son kelimesi içindeki ilk susmanın başında biter, ilk kelimesi
+    içindeki son susmanın sonunda başlar (satır sonundaki nefes/tık kelimeyi 1 sn uzatıyordu; ölçüm deneme_12 %88,48 → %88,60).
+    Line rule: no long silence inside a word; the line's last word ends at the silence, its first word starts after it."""
+    FR = FRAME_SECONDS
+    minimum = int(round(LINE_SILENCE_SECONDS / FR))
+    for i, w in enumerate(words):
+        if (i, "b") not in picked or (i, "s") not in picked:
+            continue
+        last = i == len(words) - 1 or words[i + 1]["satir"] != w["satir"]
+        first = i == 0 or words[i - 1]["satir"] != w["satir"]
+        if not (last or first):
+            continue
+        f0, f1 = int(picked[(i, "b")] / FR), int(picked[(i, "s")] / FR)
+        runs = _silences(levels[f0:f1] < ref - LINE_SILENCE_DB, minimum) if f1 - f0 > minimum else []
+        if not runs:
+            continue
+        if last:
+            picked[(i, "s")] = (f0 + runs[0][0]) * FR
+        else:
+            picked[(i, "b")] = (f0 + runs[-1][1]) * FR
 
 
 def combine_reading(lines: list, sample_rate: int) -> list:
@@ -499,6 +548,7 @@ def combine_reading(lines: list, sample_rate: int) -> list:
         a, b = (i, "s"), (i + 1, "b")
         if a in picked and b in picked and picked[a] > picked[b]:
             picked[a] = picked[b] = 0.5 * (picked[a] + picked[b])
+    _line_silence(words, picked, L, cue["ref"])
     out = [[] for _ in lines]
     for i, w in enumerate(words):
         start = starts[w["satir"]]
@@ -522,7 +572,7 @@ def reading_words(requests: list, pieces: dict, spokens: list, audios: list, sam
         audible = snap_line(rough_times(request, pieces, spoken, words, seconds), audio, sample_rate)
         lines.append({"words": core_edges(audible, audio, sample_rate), "mass": word_mass(request, pieces, spoken, words),
                       "patches": request["patches"], "audio": audio})
-        bounds.append(trim_bounds(audible, seconds))
+        bounds.append(trim_bounds(audible, seconds, audio, sample_rate))
     return list(zip(combine_reading(lines, sample_rate), bounds))
 
 
@@ -532,11 +582,21 @@ TRIM_PAD = 0.04      # ilk kelimeden önce ve son kelimeden sonra bırakılan pa
 TRIM_FADE = 0.008    # kesim yerinde yumuşak giriş/çıkış (sn)
 
 
-def trim_bounds(words: list, line_seconds: float) -> tuple:
-    """Satırın tutulacak aralığı (sn): ilk kelime - pay, son kelime + pay."""
+def trim_bounds(words: list, line_seconds: float, audio: np.ndarray = None, sample_rate: int = 0) -> tuple:
+    """Satırın tutulacak aralığı (sn): ilk kelime - pay, son kelime + pay. Ses verilirse satır kuralı kırpmaya da uygulanır:
+    ilk/son kelimenin içinde uzun susma varsa ötesindeki nefes/tık kırpılır (kelime zamanıyla aynı kural)."""
     if not words:
         return 0.0, line_seconds
-    return max(0.0, words[0]["t0"] - TRIM_PAD), min(line_seconds, words[-1]["t1"] + TRIM_PAD)
+    t0, t1 = words[0]["t0"], words[-1]["t1"]
+    if audio is not None and sample_rate:
+        levels = _levels_db(highpass(audio, sample_rate), sample_rate)
+        picked = {(0, "b"): words[0]["t0"], (0, "s"): words[0]["t1"]}
+        line = [{"satir": 0}] * len(words)
+        if len(words) > 1:
+            picked.update({(len(words) - 1, "b"): words[-1]["t0"], (len(words) - 1, "s"): words[-1]["t1"]})
+        _line_silence(line, picked, levels, float(np.percentile(levels, 95)))
+        t0, t1 = picked[(0, "b")], picked[(len(words) - 1, "s")]
+    return max(0.0, t0 - TRIM_PAD), min(line_seconds, t1 + TRIM_PAD)
 
 
 def trim(audio: np.ndarray, sample_rate: int, start: float, end: float) -> np.ndarray:

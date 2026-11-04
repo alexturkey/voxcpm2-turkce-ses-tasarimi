@@ -4,7 +4,7 @@ Turkish voice design and reference-based reading with VoxCPM2 on a 4 GB GPU (aud
 """
 import sys
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 
 def utf8_cikti() -> None:

@@ -123,7 +123,7 @@ instalacji i pytania o wsparcie kieruj tam. Dziękujemy, Emre, że przeniosłeś
    razem z transkrypcją (`reference_text`) i nowym tekstem do przeczytania, z tym samym ziarnem. Głos niesie nagranie,
    a nie opis, więc nie odpływa od tekstu do tekstu. Tekst jest czytany zdanie po zdaniu.
 3. Jakość jest stała: 16 kroków dyfuzji, CFG 2.0. Ziarno nie jest pokrętłem jakości.
-4. **Czas słów, ten sam dźwięk przy każdym uruchomieniu.** Podczas czytania sam silnik podaje, gdzie każde słowo się zaczyna i kończy (łatka 0002, bez dodatkowego modelu). Czasy trafiają do `kelimeler.json`, a wiersze są przycinane tak, by odstęp między nimi był równy ustawieniu pauzy. Dokładność względem wymuszonego dopasowania CTC (forced alignment, CTC = 100%): 88% (turecki, 12 głosów; ustawienie `kelime_zamani`, domyślnie włączone). Dzięki łatce 0003 to samo ziarno daje identyczny co do bajtu dźwięk przy każdym uruchomieniu.
+4. **Czas słów, ten sam dźwięk przy każdym uruchomieniu.** Podczas czytania sam silnik podaje, gdzie każde słowo się zaczyna i kończy (łatka 0002, bez dodatkowego modelu). Czasy trafiają do `kelimeler.json`, a wiersze są przycinane tak, by odstęp między nimi był równy ustawieniu pauzy. Dokładność względem wymuszonego dopasowania CTC (forced alignment, CTC = 100%): 89,66% (turecki, 12 głosów; ustawienie `kelime_zamani`, domyślnie włączone). Dzięki łatce 0003 to samo ziarno daje identyczny co do bajtu dźwięk przy każdym uruchomieniu.
 
 Surowe nagranie projektu to jednorazowa próbka głosu; żadne późniejsze czytanie nie brzmi dokładnie tak samo. W każdym
 kolejnym czytaniu słyszysz krok 2: nagranie projektu jako referencję plus własne ziarno wariantu. Dlatego interfejs webowy

@@ -177,6 +177,40 @@ class Birlestirici(unittest.TestCase):
         self.assertEqual(len(kz.COMBINER_WEIGHTS), 9)
 
 
+class SusmaVeSatir(unittest.TestCase):
+    WORDS = [{"kelime": "balkona", "t0": 0.0, "t1": 0.5}, {"kelime": "çıktım", "t0": 0.5, "t1": 1.0},
+             {"kelime": "ve", "t0": 1.0, "t1": 1.2}]
+
+    def test_kelimenin_sonunda_baslayan_susma_arkasina(self):
+        voiced = np.zeros(130, dtype=bool)
+        voiced[:90] = True
+        voiced[110:] = True                       # susma 0,90 sn'de, "çıktım"ın ikinci yarısında
+        self.assertEqual(kz._pause_bounds(self.WORDS, voiced, 15), {1: (90, 110)})
+
+    def test_kelimenin_basinda_baslayan_susma_onune(self):
+        voiced = np.zeros(130, dtype=bool)
+        voiced[:55] = True
+        voiced[75:] = True                        # susma 0,55 sn'de, "çıktım"ın ilk yarısında
+        self.assertEqual(kz._pause_bounds(self.WORDS, voiced, 15), {0: (55, 75)})
+
+    def test_satir_sonu_kelimesi_susmada_biter(self):
+        levels = np.full(150, -10.0)
+        levels[100:140] = -80.0                   # 0,4 sn susma, sonra kısa tık / 0.4 s silence then a click
+        words = [{"kelime": "a", "satir": 0}, {"kelime": "b", "satir": 0}]
+        picked = {(0, "b"): 0.0, (0, "s"): 0.5, (1, "b"): 0.5, (1, "s"): 1.45}
+        kz._line_silence(words, picked, levels, -10.0)
+        self.assertAlmostEqual(picked[(1, "s")], 1.0)
+        self.assertEqual(picked[(0, "s")], 0.5)   # satır ortası kenara dokunulmaz / mid-line edge untouched
+
+    def test_kisa_susma_kelimeyi_bolmez(self):
+        levels = np.full(150, -10.0)
+        levels[100:120] = -80.0                   # 0,2 sn: kural için kısa / too short for the rule
+        words = [{"kelime": "a", "satir": 0}]
+        picked = {(0, "b"): 0.0, (0, "s"): 1.45}
+        kz._line_silence(words, picked, levels, -10.0)
+        self.assertEqual(picked[(0, "s")], 1.45)
+
+
 class Kirpma(unittest.TestCase):
     def test_satir_arasi_tam_durak(self):
         words = [{"kelime": "a", "t0": 0.50, "t1": 1.00}]
@@ -191,6 +225,12 @@ class Kirpma(unittest.TestCase):
 
     def test_kelime_yoksa_satir_aynen(self):
         self.assertEqual(kz.trim_bounds([], 2.0), (0.0, 2.0))
+
+    def test_satir_sonundaki_tik_kirpilir(self):
+        audio = _burst([(0.5, 1.0), (1.5, 1.52)], 2.0)  # kelime + 0,5 sn sonra tık / word + click after 0.5 s
+        words = [{"kelime": "a", "t0": 0.5, "t1": 1.52}]
+        self.assertAlmostEqual(kz.trim_bounds(words, 2.0)[1], 1.52 + kz.TRIM_PAD)
+        self.assertAlmostEqual(kz.trim_bounds(words, 2.0, audio, SR)[1], 1.0 + kz.TRIM_PAD, delta=0.02)
 
 
 class OkumaYanUrun(unittest.TestCase):

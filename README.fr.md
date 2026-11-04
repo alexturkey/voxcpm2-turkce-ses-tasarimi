@@ -133,7 +133,7 @@ sur Mac !
    La voix est portée par l'enregistrement, et non par la description : elle ne dérive donc pas d'un texte à l'autre.
    Le texte est lu phrase par phrase.
 3. La qualité est fixe : 16 étapes de diffusion, CFG 2.0. La graine n'est pas un réglage de qualité.
-4. **Minutage des mots, même audio à chaque fois.** Pendant la lecture, le moteur indique lui-même où chaque mot commence et finit (patch 0002, aucun modèle supplémentaire). Les temps sont écrits dans `kelimeler.json` et les lignes sont rognées pour que l'écart entre deux lignes soit égal au réglage de pause. Précision par rapport à l'alignement forcé CTC (forced alignment, CTC = 100 %) : 88 % (turc, 12 voix ; réglage `kelime_zamani`, activé par défaut). Avec le patch 0003, la même graine donne un audio identique à l'octet près à chaque exécution.
+4. **Minutage des mots, même audio à chaque fois.** Pendant la lecture, le moteur indique lui-même où chaque mot commence et finit (patch 0002, aucun modèle supplémentaire). Les temps sont écrits dans `kelimeler.json` et les lignes sont rognées pour que l'écart entre deux lignes soit égal au réglage de pause. Précision par rapport à l'alignement forcé CTC (forced alignment, CTC = 100 %) : 89,66 % (turc, 12 voix ; réglage `kelime_zamani`, activé par défaut). Avec le patch 0003, la même graine donne un audio identique à l'octet près à chaque exécution.
 
 L'enregistrement de conception brut est un échantillon unique de la voix ; aucune lecture ultérieure ne sonne
 exactement pareil. Ce que vous entendez dans chaque lecture ultérieure, c'est l'étape 2 : l'enregistrement de

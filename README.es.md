@@ -129,7 +129,7 @@ pasos de instalación y las preguntas de soporte van allí. ¡Gracias, Emre, por
    La voz la sostiene la grabación, no la descripción, así que no se desvía de un texto a otro. El texto se lee frase a
    frase.
 3. La calidad es fija: 16 pasos de difusión, CFG 2.0. La semilla no es un ajuste de calidad.
-4. **Tiempos por palabra, mismo audio en cada ejecución.** Al leer, el propio motor indica dónde empieza y termina cada palabra (parche 0002, sin modelo adicional). Los tiempos se guardan en `kelimeler.json` y las líneas se recortan para que el hueco entre líneas sea igual al ajuste de pausa. Precisión frente a la alineación forzada con CTC (forced alignment, CTC = 100 %): 88 % (turco, 12 voces; ajuste `kelime_zamani`, activado por defecto). Con el parche 0003 la misma semilla da un audio idéntico byte a byte en cada ejecución.
+4. **Tiempos por palabra, mismo audio en cada ejecución.** Al leer, el propio motor indica dónde empieza y termina cada palabra (parche 0002, sin modelo adicional). Los tiempos se guardan en `kelimeler.json` y las líneas se recortan para que el hueco entre líneas sea igual al ajuste de pausa. Precisión frente a la alineación forzada con CTC (forced alignment, CTC = 100 %): 89,66 % (turco, 12 voces; ajuste `kelime_zamani`, activado por defecto). Con el parche 0003 la misma semilla da un audio idéntico byte a byte en cada ejecución.
 
 La grabación de diseño en bruto es una muestra irrepetible de la voz; ninguna lectura posterior suena exactamente
 igual. Lo que oyes en cada lectura posterior es el paso 2: la grabación de diseño como referencia más la semilla propia

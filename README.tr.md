@@ -122,7 +122,7 @@ teşekkür ederiz!
    kaydın metni (`reference_text`), okunacak yeni metin ve aynı tohum. Sesi tarif değil kayıt taşır; metinden metne
    kaymaz. Metin cümle cümle okunur.
 3. Kalite sabittir: 16 adım, CFG 2.0. Tohum kalite ayarı değildir.
-4. **Kelime zamanı, her seferinde aynı ses.** Okurken motorun kendisi her kelimenin nerede başlayıp bittiğini verir (yama 0002, ek model yok). Zamanlar `kelimeler.json`'a yazılır; satırlar kırpılır, satır arası boşluk durak ayarına eşit olur. CTC zorlamalı hizalamaya (forced alignment; CTC = %100 kabul edilir) göre doğruluk %88 (Türkçe, 12 ses; ayar `kelime_zamani`, varsayılan açık). Yama 0003 ile aynı tohum her koşuda bayt bayt aynı sesi verir.
+4. **Kelime zamanı, her seferinde aynı ses.** Okurken motorun kendisi her kelimenin nerede başlayıp bittiğini verir (yama 0002, ek model yok). Zamanlar `kelimeler.json`'a yazılır; satırlar kırpılır, satır arası boşluk durak ayarına eşit olur. CTC zorlamalı hizalamaya (forced alignment; CTC = %100 kabul edilir) göre doğruluk %89,66 (Türkçe, 12 ses; ayar `kelime_zamani`, varsayılan açık). Yama 0003 ile aynı tohum her koşuda bayt bayt aynı sesi verir.
 
 Ham tasarım kaydı sesin tek seferlik bir örneğidir; sonraki hiçbir okuma onun birebir aynısı gibi duyulmaz. Sonraki her
 okumada duyduğun 2. adımdır: tasarım kaydı referans, yanında çeşidin kendi tohumu. Web arayüzü bu yüzden 2. adımı

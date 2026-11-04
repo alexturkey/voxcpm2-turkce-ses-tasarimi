@@ -134,7 +134,7 @@ proyektong ito sa Mac!
    recording ang nagdadala ng boses, hindi ang paglalarawan, kaya hindi ito lumilihis sa bawat teksto. Binabasa ang
    teksto nang pangungusap-bawat-pangungusap.
 3. Nakapirmi ang kalidad: 16 na diffusion step, CFG 2.0. Hindi pang-adjust ng kalidad ang seed.
-4. **Oras ng bawat salita, parehong audio sa bawat pagpapatakbo.** Habang nagbabasa, ang engine mismo ang nagsasabi kung saan nagsisimula at nagtatapos ang bawat salita (patch 0002, walang dagdag na model). Isinusulat ang mga oras sa `kelimeler.json`, at pinuputol ang mga linya para ang puwang sa pagitan ng mga linya ay katumbas ng setting ng paghinto. Katumpakan kumpara sa CTC forced alignment (CTC = 100%): 88% (Turkish, 12 boses; setting `kelime_zamani`, naka-on bilang default). Sa patch 0003, ang parehong seed ay nagbibigay ng byte-identical na audio sa bawat pagpapatakbo.
+4. **Oras ng bawat salita, parehong audio sa bawat pagpapatakbo.** Habang nagbabasa, ang engine mismo ang nagsasabi kung saan nagsisimula at nagtatapos ang bawat salita (patch 0002, walang dagdag na model). Isinusulat ang mga oras sa `kelimeler.json`, at pinuputol ang mga linya para ang puwang sa pagitan ng mga linya ay katumbas ng setting ng paghinto. Katumpakan kumpara sa CTC forced alignment (CTC = 100%): 89.66% (Turkish, 12 boses; setting `kelime_zamani`, naka-on bilang default). Sa patch 0003, ang parehong seed ay nagbibigay ng byte-identical na audio sa bawat pagpapatakbo.
 
 Ang hilaw na design recording ay isang beses lang na sample ng boses; walang susunod na pagbasa ang eksaktong kapareho
 nito. Ang naririnig mo sa bawat susunod na pagbasa ay ang hakbang 2: ang design recording bilang reference kasama ang
