@@ -62,6 +62,88 @@ def _gpu_used_mb(backend: str = "cuda", pid: int | None = None) -> int:
     return int(out.strip().splitlines()[0])
 
 
+def _pid_toplam_mb(ogeler, pid: int) -> int:
+    """PDH satırlarından (ad, durum, bayt) motor sürecinin ayrılmış belleği (MB); bütün bağdaştırıcılar toplanır.
+    Değer yoksa ya da 0 ise ValueError: ölçüm sayılmaz, yanıltıcı 0 yazılmaz.
+    Sum of dedicated memory over the engine PID's rows (all adapters); no value or 0 is not a reading."""
+    onek = f"pid_{int(pid)}_"
+    toplam = sum(deger for ad, durum, deger in ogeler if ad and ad.startswith(onek) and durum in (0, 1))
+    mb = int(toplam) // (1024 * 1024)
+    if mb <= 0:
+        raise ValueError("Vulkan GPU sayacı değer vermedi / no GPU counter value")
+    return mb
+
+
+class PdhGpuBellek:
+    """Windows GPU süreç belleği sayacını PDH ile doğrudan okur; ölçüm başına süreç açmaz (#17).
+    Reads the Windows GPU process memory counter directly via PDH, without starting a process per reading."""
+    YOL = "\\GPU Process Memory(*)\\Dedicated Usage"
+    PDH_FMT_LARGE = 0x00000400
+    PDH_MORE_DATA = 0x800007D2
+
+    def __init__(self):
+        import ctypes
+        from ctypes import wintypes
+
+        class _Deger(ctypes.Structure):  # PDH_FMT_COUNTERVALUE (birliğin yalnız largeValue alanı / union: largeValue)
+            _fields_ = [("CStatus", wintypes.DWORD), ("largeValue", ctypes.c_longlong)]
+
+        class _Oge(ctypes.Structure):  # PDH_FMT_COUNTERVALUE_ITEM_W
+            _fields_ = [("szName", ctypes.c_wchar_p), ("FmtValue", _Deger)]
+
+        self._c, self._w, self._Oge = ctypes, wintypes, _Oge
+        pdh = ctypes.WinDLL("pdh")
+        pdh.PdhOpenQueryW.argtypes = [wintypes.LPCWSTR, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
+        pdh.PdhAddEnglishCounterW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR, ctypes.c_void_p,
+                                              ctypes.POINTER(ctypes.c_void_p)]
+        pdh.PdhCollectQueryData.argtypes = [ctypes.c_void_p]
+        pdh.PdhGetFormattedCounterArrayW.argtypes = [ctypes.c_void_p, wintypes.DWORD, ctypes.POINTER(wintypes.DWORD),
+                                                     ctypes.POINTER(wintypes.DWORD), ctypes.c_void_p]
+        pdh.PdhCloseQuery.argtypes = [ctypes.c_void_p]
+        for ad in ("PdhOpenQueryW", "PdhAddEnglishCounterW", "PdhCollectQueryData", "PdhGetFormattedCounterArrayW",
+                   "PdhCloseQuery"):
+            getattr(pdh, ad).restype = wintypes.DWORD
+        self._pdh = pdh
+        self._sorgu, self._sayac = ctypes.c_void_p(), ctypes.c_void_p()
+        if pdh.PdhOpenQueryW(None, None, ctypes.byref(self._sorgu)):
+            raise OSError("PdhOpenQueryW")
+        if pdh.PdhAddEnglishCounterW(self._sorgu, self.YOL, None, ctypes.byref(self._sayac)):
+            self.kapat()
+            raise OSError("PdhAddEnglishCounterW: GPU Process Memory sayacı yok / counter not available")
+
+    def ogeler(self) -> list:
+        """Anlık (ad, durum, bayt) satırları. / Current (name, status, bytes) rows."""
+        c, w = self._c, self._w
+        if self._pdh.PdhCollectQueryData(self._sorgu):
+            raise OSError("PdhCollectQueryData")
+        for _ in range(3):  # örnek sayısı iki çağrı arasında değişebilir / instance count may change between calls
+            boyut, sayi = w.DWORD(0), w.DWORD(0)
+            r = self._pdh.PdhGetFormattedCounterArrayW(self._sayac, self.PDH_FMT_LARGE, c.byref(boyut),
+                                                       c.byref(sayi), None)
+            if r == 0:  # hiç örnek yok (GPU'yu kullanan süreç yok) / no instances at all
+                return []
+            if r != self.PDH_MORE_DATA:
+                raise OSError(f"PdhGetFormattedCounterArrayW boyut: {r:#x}")
+            tampon = c.create_string_buffer(boyut.value)
+            r = self._pdh.PdhGetFormattedCounterArrayW(self._sayac, self.PDH_FMT_LARGE, c.byref(boyut),
+                                                       c.byref(sayi), tampon)
+            if r == self.PDH_MORE_DATA:
+                continue
+            if r:
+                raise OSError(f"PdhGetFormattedCounterArrayW: {r:#x}")
+            dizi = c.cast(tampon, c.POINTER(self._Oge))
+            return [(dizi[i].szName, dizi[i].FmtValue.CStatus, dizi[i].FmtValue.largeValue) for i in range(sayi.value)]
+        raise OSError("PdhGetFormattedCounterArrayW: boyut oturmadı / size kept changing")
+
+    def oku_mb(self, pid: int) -> int:
+        return _pid_toplam_mb(self.ogeler(), pid)
+
+    def kapat(self):
+        if self._sorgu:
+            self._pdh.PdhCloseQuery(self._sorgu)
+            self._sorgu = self._c.c_void_p()
+
+
 class VramWatcher:
     """CUDA, Metal ve Windows Vulkan tepe VRAM ölçümü. Ölçülemezse peak_mb None kalır, yanıltıcı 0 yazılmaz.
     Peak VRAM for CUDA, Metal and Windows Vulkan. When unavailable, peak_mb stays None instead of a misleading 0."""
@@ -76,20 +158,48 @@ class VramWatcher:
 
     @staticmethod
     def aralik(backend: str, pid: int | None) -> float:
-        """Ölçüm aralığı (sn). Windows Vulkan her ölçümde PowerShell açar (~0,6 işlemci sn): 2 sn. CUDA/macOS 0,5 sn.
-        Ölçüm (GTX 1050 Ti, Vulkan): 0,5 sn'de işlemci +%94, 2 sn'de +%30; süre +%1, VRAM tepe aynı.
-        Polling interval: Windows Vulkan spawns PowerShell per reading, so 2 s; CUDA/macOS stay at 0.5 s."""
+        """Ölçüm aralığı (sn). Windows Vulkan'ın yedek yolu (PowerShell) her ölçümde süreç açar (~0,6 işlemci sn): 2 sn.
+        PDH açılırsa (#17) süreç açılmaz, aralık 0,5 sn'ye iner. CUDA/macOS 0,5 sn.
+        Ölçüm (GTX 1050 Ti, Vulkan, PowerShell): 0,5 sn'de işlemci +%94, 2 sn'de +%30; süre +%1, VRAM tepe aynı.
+        PDH 0,5 sn (#17, meşgul işlemci izleme kapalıya göre): GTX 1050 Ti +%9 (PowerShell 2 sn +%43), Intel HD 630 +%1 (+%62).
+        Polling interval: the PowerShell fallback spawns a process per reading, so 2 s; with PDH and on CUDA/macOS 0.5 s."""
         return 2.0 if WINDOWS and backend == "vulkan" and pid is not None else 0.5
 
+    def _vulkan_pdh(self):
+        """Windows Vulkan'da PDH okuyucusu; açılamazsa None (PowerShell yedeğine düşülür). / PDH reader or None."""
+        if not (WINDOWS and self.backend == "vulkan" and self.pid is not None):
+            return None
+        try:
+            return PdhGpuBellek()
+        except Exception:  # noqa: BLE001 — pdh.dll ya da sayaç yok: yedek yol / no PDH or counter: fallback
+            return None
+
+    PDH_HATA_SINIRI = 3  # art arda bu kadar PDH okuma hatası: PowerShell yedeğine geç / consecutive errors → fallback
+
     def _loop(self):
-        while not self._stop.is_set():
-            try:
-                self.peak_mb = max(self.peak_mb or 0, _gpu_used_mb(self.backend, self.pid))
-            except FileNotFoundError:  # ölçüm aracı yok: boşuna süreç açılmaz / no tool, stop polling
-                return
-            except Exception:
-                pass
-            self._stop.wait(self.interval)
+        pdh = self._vulkan_pdh()
+        if pdh is not None:
+            self.interval = 0.5  # süreç açılmıyor / no process per reading
+        hata = 0
+        try:
+            while not self._stop.is_set():
+                try:
+                    mb = pdh.oku_mb(self.pid) if pdh is not None else _gpu_used_mb(self.backend, self.pid)
+                    self.peak_mb = max(self.peak_mb or 0, mb)
+                    hata = 0
+                except FileNotFoundError:  # ölçüm aracı yok: boşuna süreç açılmaz / no tool, stop polling
+                    return
+                except ValueError:  # okuma oldu ama o an değer yok (0): ölçüm sayılmaz, hata da değil / read ok, no value
+                    hata = 0
+                except Exception:  # noqa: BLE001 — PDH okunamıyor: art arda sınırda yedek yola / PDH read keeps failing
+                    hata += 1
+                    if pdh is not None and hata >= self.PDH_HATA_SINIRI:
+                        pdh.kapat()
+                        pdh, self.interval = None, self.aralik(self.backend, self.pid)
+                self._stop.wait(self.interval)
+        finally:
+            if pdh is not None:
+                pdh.kapat()
 
     def __enter__(self):
         self._thread.start()
