@@ -222,6 +222,8 @@ sulle schede AMD/Intel.*
 
 **Test della community (AMD):** @mitraTR ha eseguito la v0.1.1 con Vulkan su una AMD Radeon RX 6900 XT con Windows 11: installazione, creazione della voce, lettura, interfaccia web e test hanno funzionato; la lettura ha richiesto circa 0,8-0,9 s di calcolo per ogni secondo di parlato ([resoconto in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installa in una cartella breve il cui percorso contenga solo caratteri ASCII (ad es. `C:\vox`): su Windows il motore non riesce ad aprire percorsi con lettere accentate o altri caratteri non ASCII. Tutti i resoconti finora: [hardware testato](docs/donanim_testleri.md).
 
+**Note su Vulkan:** per ora i tempi delle parole sono disponibili solo su NVIDIA (CUDA) e Mac; su AMD/Intel non vengono generati finché il motore Vulkan non sarà aggiornato (la lettura funziona comunque). Il primo avvio con Vulkan può richiedere qualche minuto perché vengono compilati gli shader della GPU; le letture successive sono più veloci.
+
 ### Alternativa: compilare il motore dal sorgente
 
 Servono i Build Tools di Visual Studio 2022 con «Sviluppo di applicazioni desktop con C++» (inclusi gli strumenti CMake

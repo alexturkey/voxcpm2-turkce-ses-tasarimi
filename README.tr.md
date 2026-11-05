@@ -211,6 +211,8 @@ olarak yazar.
 
 **Topluluk testi (AMD):** @mitraTR, v0.1.1'i Windows 11'de AMD Radeon RX 6900 XT üzerinde Vulkan ile çalıştırdı: kurulum, ses tasarımı, okuma, web arayüzü ve testler sorunsuz geçti; okuma, 1 saniyelik konuşma için yaklaşık 0,8-0,9 saniye hesap sürdü ([#6'daki rapor](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Kurulumu yolunda yalnız İngilizce harfler olan kısa bir klasöre yap (ör. `C:\vox`): motor Windows'ta Türkçe harf ya da başka ASCII dışı karakter içeren yolları açamıyor. Şimdiye kadarki bütün raporlar: [test edilmiş donanım](docs/donanim_testleri.md).
 
+**Vulkan notları:** kelime zamanları şu an yalnız NVIDIA (CUDA) ve Mac'te çıkıyor; Vulkan motoru güncellenene kadar AMD/Intel'de çıkmaz (okuma yine çalışır). Vulkan'da ilk açılış, ekran kartı gölgelendiricileri derlendiği için birkaç dakika sürebilir; sonraki okumalar hızlanır.
+
 ### Seçenek: motoru kaynaktan derlemek
 
 Visual Studio 2022 Build Tools "Desktop development with C++" (C++ CMake tools dahil, ~7 GB) gerekir. Sonra:

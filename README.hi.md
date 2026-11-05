@@ -212,6 +212,8 @@ Ubuntu 24.04 Docker, CUDA 12.8.1 (विवरण [docs/linux.md](docs/linux.md)
 
 **समुदाय परीक्षण (AMD):** @mitraTR ने Windows 11 पर AMD Radeon RX 6900 XT में Vulkan के साथ v0.1.1 चलाया: इंस्टॉल, आवाज़ डिज़ाइन, पढ़ना, वेब इंटरफ़ेस और टेस्ट सब ठीक चले; पढ़ने में हर 1 सेकंड बोली के लिए लगभग 0.8-0.9 सेकंड गणना लगी ([#6 में रिपोर्ट](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))। ऐसे छोटे फ़ोल्डर में इंस्टॉल करें जिसके पथ में केवल ASCII अक्षर हों (जैसे `C:\vox`): Windows पर इंजन हिंदी या अन्य गैर-ASCII अक्षरों वाले पथ नहीं खोल पाता। अब तक की सभी रिपोर्टें: [जाँचा गया हार्डवेयर](docs/donanim_testleri.md)।
 
+**Vulkan के बारे में:** शब्दों का समय (word timing) अभी सिर्फ़ NVIDIA (CUDA) और Mac पर मिलता है; AMD/Intel पर यह तब तक नहीं बनेगा जब तक Vulkan इंजन अपडेट नहीं होता (पढ़ना फिर भी काम करता है)। Vulkan पर पहली बार चालू होने में कुछ मिनट लग सकते हैं, क्योंकि GPU शेडर कंपाइल होते हैं; उसके बाद पढ़ना तेज़ होता है।
+
 ### विकल्प: इंजन को सोर्स से बिल्ड करें
 
 "Desktop development with C++" (C++ CMake tools सहित) के साथ Visual Studio 2022 Build Tools चाहिए, ~7 GB। फिर:

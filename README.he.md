@@ -195,6 +195,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 
 **בדיקת קהילה (AMD):** @mitraTR הריץ את v0.1.1 עם Vulkan על AMD Radeon RX 6900 XT ב-Windows 11: ההתקנה, עיצוב הקול, ההקראה, ממשק הרשת והבדיקות עבדו; ההקראה דרשה כ-0.8-0.9 שנ׳ חישוב לכל שנייה של דיבור ([הדוח ב-#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). התקינו בתיקייה קצרה שהנתיב שלה כולל רק תווי ASCII (למשל `C:\vox`): ב-Windows המנוע לא מצליח לפתוח נתיבים עם עברית או תווים אחרים שאינם ASCII. כל הדוחות עד עכשיו: [חומרה שנבדקה](docs/donanim_testleri.md).
 
+**הערות על Vulkan:** תזמוני מילים זמינים כרגע רק ב-NVIDIA ‏(CUDA) וב-Mac; ב-AMD/Intel הם לא נוצרים עד שמנוע ה-Vulkan יעודכן (ההקראה עצמה עובדת). ההפעלה הראשונה ב-Vulkan עשויה להימשך כמה דקות, כי ה-shaders של כרטיס המסך עוברים הידור; ההקראות הבאות מהירות יותר.
+
 ### חלופה: בניית המנוע מקוד המקור
 
 נדרשים Visual Studio 2022 Build Tools עם "Desktop development with C++" (כולל C++ CMake tools), כ-7 GB. לאחר מכן:

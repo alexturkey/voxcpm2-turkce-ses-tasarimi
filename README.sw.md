@@ -222,6 +222,8 @@ bado yanahitajika.
 
 **Jaribio la jamii (AMD):** @mitraTR aliendesha v0.1.1 kwa Vulkan kwenye AMD Radeon RX 6900 XT katika Windows 11: usakinishaji, kubuni sauti, kusoma, kiolesura cha wavuti na majaribio vyote vilifanya kazi; kusoma kulichukua takriban sek 0.8-0.9 za hesabu kwa kila sek 1 ya usemi ([ripoti katika #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Sakinisha kwenye folda fupi ambayo njia yake ina herufi za ASCII pekee (k.m. `C:\vox`): kwenye Windows injini haiwezi kufungua njia zenye herufi zisizo za ASCII. Ripoti zote hadi sasa: [vifaa vilivyojaribiwa](docs/donanim_testleri.md).
 
+**Maelezo kuhusu Vulkan:** kwa sasa, nyakati za maneno zinapatikana tu kwenye NVIDIA (CUDA) na Mac; kwenye AMD/Intel hazitolewi hadi injini ya Vulkan isasishwe (usomaji bado unafanya kazi). Kuwasha kwa mara ya kwanza kwenye Vulkan kunaweza kuchukua dakika kadhaa kwa sababu shader za GPU zinakusanywa; usomaji unaofuata ni wa haraka zaidi.
+
 ### Njia mbadala: jenga injini kutoka msimbo chanzo
 
 Inahitaji Visual Studio 2022 Build Tools pamoja na "Desktop development with C++" (ikijumuisha C++ CMake tools), ~7 GB. Kisha:

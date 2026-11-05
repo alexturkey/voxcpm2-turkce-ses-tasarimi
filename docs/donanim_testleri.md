@@ -27,10 +27,12 @@ Intel Arc or Intel integrated graphics would help a lot ([#6](https://github.com
   kısa, ASCII bir klasöre koy (ör. `C:\vox`); `kur.ps1` artık ASCII olmayan `-Kok` yolunda baştan uyarıp durur (#6, @mitraTR).
   The engine opens ASCII-only paths on Windows; keep the install and the repo in a short ASCII folder such as `C:\vox`.
   `kur.ps1` now stops early on a non-ASCII `-Kok` path.
-- **VRAM ölçümü / VRAM reading:** tepe VRAM yalnız NVIDIA (`nvidia-smi`) ve macOS'ta ölçülür. AMD/Intel'de özet artık
-  0 MB yazmaz, VRAM kısmını göstermez; ölçülemeyen değer `ozet.json`'da `null` olur (#6, @mitraTR).
-  Peak VRAM is measured only on NVIDIA and macOS; on AMD/Intel the summary leaves the VRAM part out instead of showing
-  0 MB, and `ozet.json` stores `null`.
+- **VRAM ölçümü / VRAM reading:** Windows Vulkan'da motor sürecinin ayrılmış GPU belleği Windows performans
+  sayaçlarından PID ile izlenir; AMD RX 6900 XT'de doğrulandı: 24,5 sn ses, tepe VRAM 2839 MB (#16, @mitraTR). CUDA
+  `nvidia-smi`, macOS `ioreg` kullanır. Sayaç yoksa özet VRAM kısmını göstermez ve `ozet.json` değeri `null` olur.
+  On Windows Vulkan, dedicated GPU memory for the engine PID is read from Windows performance counters; verified on
+  an AMD RX 6900 XT: 24.5 s of speech, peak VRAM 2839 MB (#16, @mitraTR). CUDA uses `nvidia-smi`, macOS uses `ioreg`;
+  unavailable readings remain `null`.
 - **Birden çok Vulkan aygıtı / Several Vulkan devices:** dahili + harici kart varsa `kur.ps1 -Vulkan` harici kartın
   numarasını `ayarlar.json` içine `cihaz` olarak yazar (AMD + Intel UHD 770 makinesinde doğrulandı, #6).
   With integrated + discrete GPUs the installer writes the discrete card's index as `cihaz` (confirmed on an AMD +

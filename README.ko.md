@@ -210,6 +210,8 @@ AMD나 Intel 하드웨어에서는 저희가 직접 테스트하지 **않았습�
 
 **커뮤니티 테스트(AMD):** @mitraTR 님이 Windows 11의 AMD Radeon RX 6900 XT에서 v0.1.1을 Vulkan으로 실행했습니다. 설치, 음성 디자인, 읽기, 웹 UI, 테스트가 모두 정상 동작했고, 읽기는 음성 1초당 약 0.8~0.9초의 연산 시간이 걸렸습니다([#6의 보고](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). 경로에 ASCII 문자만 있는 짧은 폴더에 설치하세요(예: `C:\vox`). Windows에서는 엔진이 한글 등 ASCII가 아닌 문자가 들어간 경로를 열지 못합니다. 지금까지의 모든 보고: [테스트된 하드웨어](docs/donanim_testleri.md).
 
+**Vulkan 참고 사항:** 단어별 타이밍은 현재 NVIDIA(CUDA)와 Mac에서만 제공됩니다. AMD/Intel에서는 Vulkan 엔진이 업데이트될 때까지 나오지 않습니다(읽기 자체는 작동합니다). Vulkan에서 처음 실행할 때는 GPU 셰이더를 컴파일하느라 몇 분 걸릴 수 있으며, 이후 읽기는 더 빨라집니다.
+
 ### 대안: 소스에서 엔진 빌드하기
 
 "Desktop development with C++"(C++ CMake tools 포함)가 설치된 Visual Studio 2022 Build Tools가 필요하며, 약 7 GB입니다. 그다음:
