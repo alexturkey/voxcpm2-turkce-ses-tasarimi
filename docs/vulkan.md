@@ -5,21 +5,30 @@
 An integrated GPU (for example Intel HD/UHD Graphics) has no memory of its own: the model and the engine's buffers live
 in system RAM. On a dedicated card the same data sits in the card's memory.
 
-**With integrated graphics the engine uses about 8 GB of RAM.** On a computer with 8 GB of RAM in total this may not
-be enough together with Windows and other programs (not tested on such a machine). Generation is also much slower than
-on a dedicated card.
+**With integrated graphics the engine uses up to about 8 GB of RAM** (measured: 8.0 GB while reading, 6.5 GB while
+designing a voice). On a computer with 8 GB of RAM in total this may not be enough together with Windows and other
+programs (not tested on such a machine). Generation is also much slower: the same two-line reading took 446 s on the
+integrated Intel HD Graphics 630 and 110 s on a GTX 1050 Ti (both Vulkan, first reading of the voice).
 
-Dahili kartla üretimde motor yaklaşık 8 GB RAM kullanır. Toplam 8 GB RAM'li bilgisayarda Windows ve diğer programlarla
-birlikte yetmeyebilir (böyle bir makinede denenmedi). Üretim ayrı ekran kartına göre çok daha yavaştır.
+**Dahili kartla üretimde motor en çok yaklaşık 8 GB RAM kullanır** (ölçüm: okumada 8,0 GB, ses tasarımında 6,5 GB).
+Toplam 8 GB RAM'li bilgisayarda Windows ve diğer programlarla birlikte yetmeyebilir (böyle bir makinede denenmedi).
+Üretim de çok daha yavaştır: aynı iki satırlık okuma dahili Intel HD Graphics 630'da 446 sn, GTX 1050 Ti'de 110 sn
+sürdü (ikisi de Vulkan, sesin ilk okuması).
 
-Measurement (Intel HD Graphics 630, 16 GB RAM, Windows 10, Vulkan engine v0.3.1, AVX2 build, first reading with an
-empty reference cache; the engine's peak working set as reported by Windows, sampled every 5 s):
+Measurement / Ölçüm: Intel HD Graphics 630, 16 GB RAM, Windows 10, Vulkan AVX2 build, first reading of the voice
+(reference not cached yet). "Engine peak RAM" is the engine process's peak working set as reported by Windows;
+"lowest free RAM" is free memory of the whole system (Windows and background programs included), sampled every 5 s.
+/ "Motor tepe RAM" Windows'un bildirdiği motor sürecinin en yüksek çalışma kümesi; "en az boş RAM" bütün sistemin boş
+belleği (Windows ve arka plan programları dahil), 5 sn'de bir örnek.
 
-| Job | Engine peak RAM | Lowest free RAM | Time | Audio |
+| Job / İş | Engine peak RAM / Motor tepe RAM | Lowest free RAM / En az boş RAM | Time / Süre | Audio / Ses |
 |---|---|---|---|---|
-| Reading, 2 lines | 8,001 MB | 2,561 MB (10,540 MB before start) | 446 s | 9.2 s |
-| Voice design, 30 s text | 6,506 MB | 3,907 MB | 902 s | 26.9 s |
+| Reading, 2 lines / Okuma, 2 satır | 8,001 MB | 2,561 MB (10,540 MB before start / başlamadan önce) | 446 s | 9.2 s |
+| Voice design, 30 s text / Ses tasarımı, 30 sn metin | 6,506 MB | 3,907 MB | 902 s | 26.9 s |
 
-The engine also reserves more virtual memory than it keeps in RAM (peak private bytes 16,050 MB in the reading above);
-this has to fit in RAM plus the page file (on by default in Windows). With the page file turned off the engine may
-not have enough memory (not tested).
+Windows also counted more committed memory for the engine than it kept in RAM (peak private bytes 16,050 MB in the
+reading above). Committed memory must fit within RAM plus the page file (the Windows commit limit), so leave the page
+file on (the Windows default); with it turned off the engine may run out of memory (not tested).
+/ Windows motor için RAM'de tuttuğundan fazla ayrılmış bellek saydı (yukarıdaki okumada en çok 16.050 MB). Ayrılmış
+bellek RAM ile sayfa dosyasının toplamına sığmalıdır (Windows'un ayırma sınırı); sayfa dosyasını açık bırakın (Windows
+varsayılanı), kapalıyken bellek yetmeyebilir (denenmedi).

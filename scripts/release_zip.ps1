@@ -29,7 +29,7 @@ if ($Vulkan) {
     # Stamp: the cache shows the configuration, not the binary; derle.ps1's stamp binds this exact exe to the option
     $damga = Join-Path (Split-Path $cache) "islemci.txt"
     if (-not (Test-Path -LiteralPath $damga)) { throw "islemci.txt yok: $damga (derle.ps1 -Islemci $derleAdi ile yeniden calistirin; degisiklik yoksa derleme aninda biter)" }
-    $d = (Get-Content -LiteralPath $damga -TotalCount 1).Trim() -split ' '
+    $d = "$(Get-Content -LiteralPath $damga -TotalCount 1)".Trim() -split ' '   # bos dosya: "" -> asagida anlasilir hata
     $sha = (Get-FileHash -Algorithm SHA256 -LiteralPath $Exe).Hash.ToLower()
     if ($d[0] -ne $derleAdi -or $d[1] -ne $sha) { throw "damga exe'ye uymuyor: '$($d -join ' ')' (beklenen '$derleAdi $sha'); derleme dusmus ya da exe degismis olabilir" }
     Write-Output "ISLEMCI: $Islemci ($cache, damga $($sha.Substring(0, 8)))"
