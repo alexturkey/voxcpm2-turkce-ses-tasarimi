@@ -83,4 +83,8 @@ if ($LASTEXITCODE -ne 0) { throw "build failed" }
 $exe = Join-Path $Build "bin\audiocpp_cli.exe"
 if (-not (Test-Path $exe)) { throw "exe yok: $exe" }
 Write-Output ("EXE: {0} ({1} bytes)" -f $exe, (Get-Item $exe).Length)
+# Damga: bu exe hangi -Islemci ile basariyla derlendi (release_zip.ps1 denetler; derleme duserse eski exe yeni etiketle paketlenmez)
+# Stamp: which -Islemci produced this exe (checked by release_zip.ps1, so a stale exe cannot get a new label)
+$sha = (Get-FileHash -Algorithm SHA256 -LiteralPath $exe).Hash.ToLower()
+Set-Content -LiteralPath (Join-Path $Build "islemci.txt") -Encoding ascii -Value "$Islemci $sha"
 Write-Output "BUILD_OK"

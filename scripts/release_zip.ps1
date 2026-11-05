@@ -18,12 +18,21 @@ if ($Vulkan) {
     $cache = Join-Path (Split-Path (Split-Path (Resolve-Path -LiteralPath $Exe).Path)) "CMakeCache.txt"
     if (-not (Test-Path -LiteralPath $cache)) { throw "CMakeCache.txt yok: $cache (exe'yi derle.ps1 -Build klasorunden verin / pass the exe from its build folder)" }
     $deger = @{}
-    foreach ($satir in Get-Content -LiteralPath $cache) { if ($satir -match '^(ENGINE_ENABLE_NATIVE_CPU|GGML_NATIVE|GGML_AVX|GGML_AVX2):BOOL=(\w+)$') { $deger[$matches[1]] = $matches[2] } }
-    $beklenen = if ($Islemci -eq "uyumlu") { @{ GGML_NATIVE = "OFF"; GGML_AVX = "OFF"; GGML_AVX2 = "OFF" } } else { @{ GGML_NATIVE = "OFF"; GGML_AVX2 = "ON" } }
+    foreach ($satir in Get-Content -LiteralPath $cache) { if ($satir -match '^(GGML_\w+):BOOL=(\w+)$') { $deger[$matches[1]] = $matches[2] } }
+    $ust = @{ GGML_AVX512 = "OFF"; GGML_AVX512_VBMI = "OFF"; GGML_AVX512_VNNI = "OFF"; GGML_AVX512_BF16 = "OFF"; GGML_AVX_VNNI = "OFF"; GGML_BMI2 = "OFF" }
+    $beklenen = if ($Islemci -eq "uyumlu") { @{ GGML_NATIVE = "OFF"; GGML_SSE42 = "OFF"; GGML_AVX = "OFF"; GGML_AVX2 = "OFF" } + $ust } else { @{ GGML_NATIVE = "OFF"; GGML_AVX2 = "ON" } + $ust }
+    $derleAdi = if ($Islemci -eq "uyumlu") { "tasinabilir" } else { "avx2" }
     foreach ($k in $beklenen.Keys) {
-        if ($deger[$k] -ne $beklenen[$k]) { throw "exe -Islemci $Islemci ile uyusmuyor: $k=$($deger[$k]) (beklenen $($beklenen[$k])); derle.ps1 -Islemci $(if ($Islemci -eq 'uyumlu') { 'tasinabilir' } else { 'avx2' }) ile derleyin" }
+        if ($deger[$k] -ne $beklenen[$k]) { throw "exe -Islemci $Islemci ile uyusmuyor: $k=$($deger[$k]) (beklenen $($beklenen[$k])); derle.ps1 -Islemci $derleAdi ile derleyin" }
     }
-    Write-Output "ISLEMCI: $Islemci ($cache)"
+    # Damga: CMakeCache yapilandirmayi gosterir, exe'yi degil; derle.ps1'in basarida yazdigi damga exe'nin kendisini baglar
+    # Stamp: the cache shows the configuration, not the binary; derle.ps1's stamp binds this exact exe to the option
+    $damga = Join-Path (Split-Path $cache) "islemci.txt"
+    if (-not (Test-Path -LiteralPath $damga)) { throw "islemci.txt yok: $damga (derle.ps1 -Islemci $derleAdi ile yeniden calistirin; degisiklik yoksa derleme aninda biter)" }
+    $d = (Get-Content -LiteralPath $damga -TotalCount 1).Trim() -split ' '
+    $sha = (Get-FileHash -Algorithm SHA256 -LiteralPath $Exe).Hash.ToLower()
+    if ($d[0] -ne $derleAdi -or $d[1] -ne $sha) { throw "damga exe'ye uymuyor: '$($d -join ' ')' (beklenen '$derleAdi $sha'); derleme dusmus ya da exe degismis olabilir" }
+    Write-Output "ISLEMCI: $Islemci ($cache, damga $($sha.Substring(0, 8)))"
 }
 $name = "voxcpm2-turkce-ses-tasarimi-motor-$Surum-win64-" + $(if ($Vulkan) { "vulkan" + $(if ($Islemci -eq "uyumlu") { "-uyumlu" } else { "" }) } else { "cuda12.8" })
 $stage = Join-Path $env:TEMP ("rel_" + [guid]::NewGuid().ToString("N").Substring(0, 8))
@@ -72,8 +81,9 @@ voxcpm2-q8_0.gguf (kur.ps1 -Adim model). NVIDIA driver >= 570. The exe is a comm
 "@
 }
 [IO.File]::WriteAllText((Join-Path $dir "README.txt"), $note, (New-Object Text.UTF8Encoding $false))
-New-Item -ItemType Directory -Force (Join-Path $Repo $Cikti) | Out-Null
-$zip = Join-Path (Join-Path $Repo $Cikti) "$name.zip"
+$ciktiDir = if ([IO.Path]::IsPathRooted($Cikti)) { $Cikti } else { Join-Path $Repo $Cikti }   # goreli: repoya gore / relative: under the repo
+New-Item -ItemType Directory -Force $ciktiDir | Out-Null
+$zip = Join-Path $ciktiDir "$name.zip"
 if (Test-Path $zip) { Remove-Item $zip -Force }
 # Girdi adları elle "/" ile yazılır: Compress-Archive ve .NET Framework ZipFile "\" yazar; unzip ve Linux araçları bozuk ad verir.
 Add-Type -AssemblyName System.IO.Compression
