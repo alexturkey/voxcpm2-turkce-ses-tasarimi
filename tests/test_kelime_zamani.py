@@ -96,6 +96,21 @@ class Log(unittest.TestCase):
         requests = kz.parse_log(self._log("voxcpm2.toplu_coz.deferred 1\nvoxcpm2.toplu_coz.deferred 2\n"))
         self.assertEqual(requests, [None, None])
 
+    def test_tek_istek_toplu_cozme_satiri_olmadan(self):
+        # tek satırlık okumada motor toplu çözmeye girmez, 'deferred' satırı yazılmaz (gerçek log, 2026-11-05)
+        # a single-line reading never logs 'toplu_coz.deferred': the unclosed block is that request
+        log = self._log("\n".join([
+            "voxcpm2.probe.prefill_tokens [1,5,6]", "voxcpm2.probe.attention_rows [[0.2,0.3,0.5]]",
+            "voxcpm2.probe.ar_patch 4", "voxcpm2.probe.eos_accepted_at_patch 4",
+            "voxcpm2.audiovae.gpu_chunk.chunks 2", "voxcpm2.audiovae_decoder_ms 0", ""]))
+        requests = kz.parse_log(log)
+        self.assertEqual(len(requests), 1)
+        self.assertEqual(requests[0]["rows"], [[0.2, 0.3, 0.5]])
+        self.assertEqual(requests[0]["patches"], 4)
+        # çok istekli dizide kapanmamış son blok eklenmez (sayı tutmaz, okuma kelime zamanı olmadan biter)
+        cok = self._log("voxcpm2.probe.prefill_tokens [1]\nvoxcpm2.toplu_coz.deferred 1\nvoxcpm2.probe.prefill_tokens [2]\n")
+        self.assertEqual(len(kz.parse_log(cok)), 1)
+
 
 class InceAyar(unittest.TestCase):
     def test_kelimeler_sese_oturur(self):

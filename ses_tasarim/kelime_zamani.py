@@ -109,7 +109,11 @@ def _piece_bytes(piece: str) -> bytes:
 
 def parse_log(log_path: Path, cpu: bool = False) -> list:
     """İstek başına {'tokens', 'rows', 'patches'}. İstek bloğu 'toplu_coz.deferred' ile biter (CPU'da kod çözücü satırı);
-    aynı blokta sonda yeniden başlarsa (yeniden deneme) son deneme geçerlidir. Log satır satır okunur (büyük olabilir)."""
+    aynı blokta sonda yeniden başlarsa (yeniden deneme) son deneme geçerlidir. Log satır satır okunur (büyük olabilir).
+    Tek istekli dizide motor toplu çözmeye girmez (app/workflow/execution.cpp: istek sayısı > 1), 'deferred' satırı
+    yazılmaz: dosya sonunda kapanmamış blok o isteğin kaydıdır.
+    A single-request sequence never logs 'toplu_coz.deferred' (deferred decode needs > 1 request): an unclosed block at
+    end of file is that request."""
     requests, current, decoder_seen = [], None, False
     with open(log_path, encoding="utf-8", errors="replace") as handle:
         for line in handle:
@@ -129,6 +133,8 @@ def parse_log(log_path: Path, cpu: bool = False) -> list:
                 current, decoder_seen = None, cpu
             elif "eos_accepted_at_patch" in line:
                 decoder_seen = False
+    if current is not None and not requests:
+        requests.append(current)
     return requests
 
 
