@@ -59,13 +59,16 @@ DENEYSEL / EXPERIMENTAL Vulkan build (ggml Vulkan backend, MSVC 2022, Vulkan hea
 $(if ($Islemci -eq "uyumlu") { "CPU: UYUMLU / COMPATIBLE build, no AVX (SSE2 baseline): runs on any x86-64 CPU. Reference-voice encoding on the CPU is
 about 3.8x slower than the AVX2 build; use it only if the AVX2 build does not start on your CPU." } else { "CPU: needs AVX2 (Intel 4th gen Core / Haswell 2013+, AMD 2015+). If it does not start on an older CPU, use the
 -uyumlu (compatible) zip of the same release." })
-Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.3 driver. This build was tested on an NVIDIA GTX 1050 Ti (4 GB) and an
-Intel HD Graphics 630 (integrated, slow: about 40-50 s of compute per 1 s of speech; VRAM is shown as not measurable because
-integrated GPUs use shared memory). An earlier Vulkan build (v0.1.1, without word timing) was reported working on an AMD
-Radeon RX 6900 XT; this build is NOT yet tested on AMD: please report results in the repository's Discussions.
+Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.2 or newer driver (the engine's minimum; tested with Vulkan 1.3 drivers).
+Tested with this exact exe on an NVIDIA GTX 1050 Ti (4 GB) and an Intel HD Graphics 630 (integrated): reading, word timing,
+30 s voice design, same seed = same audio. Integrated GPUs are slow (about 40-50 s of compute per 1 s of speech), use up
+to about 8 GB of system RAM, and VRAM is shown as not measurable (shared memory). On cards with a low compute dispatch
+limit (e.g. Intel) the Python package decodes audio in 5 s pieces instead of 10 s automatically (same audio, measured).
+An earlier Vulkan build (v0.1.1, without word timing) was reported working on an AMD Radeon RX 6900 XT; this build is NOT
+yet tested on AMD: please report results in the repository's Discussions.
 sha256 $sha
 
-Needs at runtime (NOT in this zip): a GPU driver with Vulkan 1.3 (vulkan-1.dll ships with the driver) and the model
+Needs at runtime (NOT in this zip): a GPU driver with Vulkan 1.2 or newer (vulkan-1.dll ships with the driver) and the model
 voxcpm2-q8_0.gguf (kur.ps1 -Vulkan downloads it). The exe is a command-line engine driven by the Python package.
 "@
 } else {

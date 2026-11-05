@@ -3,6 +3,20 @@
 ## Yayınlanmadı / Unreleased
 
 **TR**
+- Vulkan motoru v0.3.1 (yamalar 0001 + 0002: 4 GB + kelime zamanı; 0003 yalnız CUDA çekirdeği olduğu için Vulkan'da yok):
+  Vulkan'da da kelime zamanı çıkar. İki paket: `vulkan` (AVX2'li işlemci, Haswell 2013+) ve `vulkan-uyumlu` (AVX'siz,
+  her x86-64 işlemci; sesin ilk okumasında referans kodlaması ~3,8 kat yavaş). Uyumlu paket Intel SDE ile Sandy Bridge
+  ve Merom (AVX yok) taklidinde gerçek okumayla denendi; AVX2 paketi aynı taklitte beklendiği gibi durdu.
+  `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`; `scripts/release_zip.ps1 -Islemci avx2|uyumlu` derleme
+  bayraklarını ve derlemenin yazdığı damgayı (`islemci.txt`: seçenek + exe sha256) denetler.
+- Vulkan, düşük iş kümesi sınırlı kartlar (ör. Intel HD 630, maxComputeWorkGroupCount 65536): AudioVAE çözücü dilimi
+  kart sınırına göre otomatik 5 sn (diğer kartlarda 10 sn kalır). Önceden Intel'de 30 sn tasarım ve uzun tek satırlı okuma
+  (ölçülen: 13,9 sn'lik satır) `GGML_ASSERT ... maxComputeWorkGroupCount` ile çöküyordu. Dilim boyu sesi değiştirmez (ölçüldü: 10/5 sn
+  bayt bayt aynı; çözücü nedensel, bağlam 32 kare >= alıcı alan 20). `ses_tasarim/vulkan_sinir.py`,
+  `tests/test_vulkan_dilim.py`.
+- Kelime zamanı tek satırlık okumada çıkmıyordu ("sonda kaydı yok"; v0.3.0 dahil, CUDA ve Vulkan): motor tek istekte
+  toplu çözme satırını yazmadığı için kayıt kapanmıyordu. Düzeltildi, test eklendi.
+- `docs/vulkan.md`: dahili kartta RAM ihtiyacı (ölçüm: okumada 8,0 GB, tasarımda 6,5 GB).
 - VRAM ölçümü Windows Vulkan'da (@mitraTR, #16): AMD/Intel kartta tepe VRAM artık ölçülüyor. Motor sürecinin ayrılmış
   GPU belleği Windows GPU performans sayaçlarından süreç numarasıyla (PID) okunur, bütün bağdaştırıcılar toplanır; dahili +
   harici kartlı makinede de motorun kendi kullanımı çıkar. CUDA `nvidia-smi`, macOS `ioreg` ile ölçmeye devam eder;
@@ -15,6 +29,21 @@
   kadar AMD/Intel'de çıkmaz (okuma çalışır); Vulkan'da ilk açılış gölgelendirici derlemesiyle birkaç dakika sürebilir.
 
 **EN**
+- Vulkan engine v0.3.1 (patches 0001 + 0002: 4 GB + word timing; 0003 is CUDA kernels only, not in the Vulkan build):
+  word timing now works on Vulkan too. Two packages: `vulkan` (AVX2 CPU, Haswell 2013+) and `vulkan-uyumlu`
+  (compatible, no AVX, any x86-64 CPU; reference encoding on a voice's first reading ~3.8x slower). The compatible
+  package was tested with real readings under Intel SDE emulating Sandy Bridge and Merom (no AVX); the AVX2 package
+  stopped under the same emulation, as expected. `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`;
+  `scripts/release_zip.ps1 -Islemci avx2|uyumlu` checks the build flags and the stamp the build writes (`islemci.txt`:
+  option + exe sha256).
+- Vulkan on cards with a low compute dispatch limit (e.g. Intel HD 630, maxComputeWorkGroupCount 65536): the AudioVAE
+  decode chunk is chosen from the card limit, 5 s automatically (other cards keep 10 s). Before, a 30 s voice design and
+  a long single-line reading (measured: a 13.9 s line) crashed on Intel with `GGML_ASSERT ... maxComputeWorkGroupCount`. The chunk
+  length does not change the audio (measured: 10/5 s byte-identical; the decoder is causal, 32-frame context >= 20-frame
+  receptive field). `ses_tasarim/vulkan_sinir.py`, `tests/test_vulkan_dilim.py`.
+- Word timing was missing for single-line readings ("no probe trace"; including v0.3.0, CUDA and Vulkan): the engine
+  does not log the batch-decode line for a single request, so the record never closed. Fixed, test added.
+- `docs/vulkan.md`: RAM needed with integrated graphics (measured: 8.0 GB while reading, 6.5 GB while designing).
 - VRAM reading on Windows Vulkan (@mitraTR, #16): peak VRAM is now measured on AMD/Intel cards. Dedicated GPU memory of
   the engine process is read from Windows GPU performance counters by process id (PID) and summed over all adapters, so
   machines with integrated + discrete GPUs report the engine's own use. CUDA keeps `nvidia-smi`, macOS keeps `ioreg`;
