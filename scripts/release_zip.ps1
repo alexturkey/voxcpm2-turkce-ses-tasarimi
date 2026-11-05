@@ -56,12 +56,14 @@ audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxc
 if ($Vulkan) {
     $note += @"
 DENEYSEL / EXPERIMENTAL Vulkan build (ggml Vulkan backend, MSVC 2022, Vulkan headers 1.4, glslc). No CUDA needed.
-$(if ($Islemci -eq "uyumlu") { "CPU: UYUMLU / COMPATIBLE build, no AVX (SSE2 baseline): runs on any x86-64 CPU. Reference-voice encoding on the CPU is
-about 3.8x slower than the AVX2 build; use it only if the AVX2 build does not start on your CPU." } else { "CPU: needs AVX2 (Intel 4th gen Core / Haswell 2013+, AMD 2015+). If it does not start on an older CPU, use the
+$(if ($Islemci -eq "uyumlu") { "CPU: UYUMLU / COMPATIBLE build, no AVX (SSE2 baseline): runs on any x86-64 CPU. A voice's first reading takes
+about 2.2x as long as with the AVX2 build (GTX 1050 Ti: 244 s vs 110 s; the reference voice is encoded on the CPU); later
+readings use the cached reference and run at the same speed (58 s both). Use it only if the AVX2 build does not start on your CPU." } else { "CPU: needs AVX2 (Intel 4th gen Core / Haswell 2013+, AMD 2015+). If it does not start on an older CPU, use the
 -uyumlu (compatible) zip of the same release." })
 Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.2 or newer driver (the engine's minimum; tested with Vulkan 1.3 drivers).
 Tested with this exact exe on an NVIDIA GTX 1050 Ti (4 GB) and an Intel HD Graphics 630 (integrated): reading, word timing,
-30 s voice design, same seed = same audio. Integrated GPUs are slow (about 40-50 s of compute per 1 s of speech), use up
+voice design with a 30 s text, same seed = same audio on the same card. Integrated GPUs are slow (Intel HD 630: about 35-50 s
+of compute per 1 s of speech with the AVX2 build; a voice's first reading with the compatible build about 63 s), use up
 to about 8 GB of system RAM, and VRAM is shown as not measurable (shared memory). On cards with a low compute dispatch
 limit (e.g. Intel) the Python package decodes audio in 5 s pieces instead of 10 s automatically (same audio, measured).
 An earlier Vulkan build (v0.1.1, without word timing) was reported working on an AMD Radeon RX 6900 XT; this build is NOT

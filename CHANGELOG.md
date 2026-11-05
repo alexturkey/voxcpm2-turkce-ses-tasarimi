@@ -5,8 +5,9 @@
 **TR**
 - Vulkan motoru v0.3.1 (yamalar 0001 + 0002: 4 GB + kelime zamanı; 0003 yalnız CUDA çekirdeği olduğu için Vulkan'da yok):
   Vulkan'da da kelime zamanı çıkar. İki paket: `vulkan` (AVX2'li işlemci, Haswell 2013+) ve `vulkan-uyumlu` (AVX'siz,
-  her x86-64 işlemci; sesin ilk okumasında referans kodlaması ~3,8 kat yavaş). Uyumlu paket Intel SDE ile Sandy Bridge
-  ve Merom (AVX yok) taklidinde gerçek okumayla denendi; AVX2 paketi aynı taklitte beklendiği gibi durdu.
+  her x86-64 işlemci; sesin ilk okuması ~2,2 kat uzun sürer, GTX 1050 Ti'de 243,9 / 109,5 sn; önbellekten sonraki
+  okumalar aynı hızda, 57,8 / 57,8 sn). Uyumlu paket Intel SDE ile Sandy Bridge ve Merom (AVX yok) taklidinde gerçek
+  okumayla denendi; AVX2 paketi Sandy Bridge taklidinde beklendiği gibi durdu (BMI2 komutu `shlx`).
   `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`; `scripts/release_zip.ps1 -Islemci avx2|uyumlu` derleme
   bayraklarını ve derlemenin yazdığı damgayı (`islemci.txt`: seçenek + exe sha256) denetler.
 - Vulkan, düşük iş kümesi sınırlı kartlar (ör. Intel HD 630, maxComputeWorkGroupCount 65536): AudioVAE çözücü dilimi
@@ -31,9 +32,10 @@
 **EN**
 - Vulkan engine v0.3.1 (patches 0001 + 0002: 4 GB + word timing; 0003 is CUDA kernels only, not in the Vulkan build):
   word timing now works on Vulkan too. Two packages: `vulkan` (AVX2 CPU, Haswell 2013+) and `vulkan-uyumlu`
-  (compatible, no AVX, any x86-64 CPU; reference encoding on a voice's first reading ~3.8x slower). The compatible
-  package was tested with real readings under Intel SDE emulating Sandy Bridge and Merom (no AVX); the AVX2 package
-  stopped under the same emulation, as expected. `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`;
+  (compatible, no AVX, any x86-64 CPU; a voice's first reading takes ~2.2x as long, 243.9 / 109.5 s on a GTX 1050 Ti;
+  later readings use the cached reference and run at the same speed, 57.8 / 57.8 s). The compatible package was tested
+  with real readings under Intel SDE emulating Sandy Bridge and Merom (no AVX); the AVX2 package stopped under the
+  Sandy Bridge emulation, as expected (BMI2 instruction `shlx`). `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`;
   `scripts/release_zip.ps1 -Islemci avx2|uyumlu` checks the build flags and the stamp the build writes (`islemci.txt`:
   option + exe sha256).
 - Vulkan on cards with a low compute dispatch limit (e.g. Intel HD 630, maxComputeWorkGroupCount 65536): the AudioVAE
