@@ -65,6 +65,24 @@ class VramOlcumu(unittest.TestCase):
         self.assertIsNone(izci.peak_mb)
         self.assertEqual(motor.vram_metni(izci.peak_mb), "VRAM ölçülemedi")
 
+    def test_olcum_araligi(self):
+        # Windows Vulkan her ölçümde PowerShell açar: 2 sn; CUDA ve macOS 0,5 sn kalır
+        with mock.patch.object(motor, "WINDOWS", True):
+            self.assertEqual(motor.VramWatcher("vulkan", 1234).interval, 2.0)
+            self.assertEqual(motor.VramWatcher("cuda", 1234).interval, 0.5)
+            self.assertEqual(motor.VramWatcher("vulkan", None).interval, 0.5)
+        with mock.patch.object(motor, "WINDOWS", False):  # macOS (ioreg) ve Linux
+            self.assertEqual(motor.VramWatcher("metal", 1234).interval, 0.5)
+            self.assertEqual(motor.VramWatcher("vulkan", 1234).interval, 0.5)
+        # döngü bu aralıkla bekler / the loop waits with this interval
+        izci = motor.VramWatcher("cuda", None)
+        izci.interval = 2.0
+        bekleme = []
+        with mock.patch.object(motor, "_gpu_used_mb", return_value=100), \
+                mock.patch.object(izci._stop, "wait", side_effect=lambda s: (bekleme.append(s), izci._stop.set())):
+            izci._loop()
+        self.assertEqual(bekleme, [2.0])
+
     def test_cuda_nvidia_smi_yolunu_korur(self):
         completed = SimpleNamespace(stdout="3072\n")
         with mock.patch.object(motor, "WINDOWS", True), \

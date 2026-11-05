@@ -220,6 +220,8 @@ test på AMD/Intel-kort.
 
 **Fællesskabstest (AMD):** @mitraTR kørte v0.1.1 med Vulkan på et AMD Radeon RX 6900 XT under Windows 11: installation, stemmedesign, oplæsning, webgrænsefladen og testene virkede alle; oplæsningen tog ca. 0,8-0,9 s beregning pr. sekund tale ([rapport i #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installer i en kort mappe, hvis sti kun indeholder ASCII-tegn (f.eks. `C:\vox`): på Windows kan motoren ikke åbne stier med æ, ø, å eller andre ikke-ASCII-tegn. Alle rapporter indtil nu: [testet hardware](docs/donanim_testleri.md).
 
+**Bemærkninger om Vulkan:** ordtider findes indtil videre kun på NVIDIA (CUDA) og Mac; på AMD/Intel laves de ikke, før Vulkan-motoren er opdateret (oplæsningen virker stadig). Første start med Vulkan kan tage et par minutter, fordi GPU-shaderne kompileres; senere oplæsninger går hurtigere.
+
 ### Alternativ: byg motoren fra kildekoden
 
 Kræver Visual Studio 2022 Build Tools med "Desktop development with C++" (inkl. C++ CMake tools), ~7 GB. Derefter:

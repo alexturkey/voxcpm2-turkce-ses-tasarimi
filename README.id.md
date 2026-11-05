@@ -223,6 +223,8 @@ di kartu AMD/Intel masih diperlukan.*
 
 **Uji komunitas (AMD):** @mitraTR menjalankan v0.1.1 dengan Vulkan di AMD Radeon RX 6900 XT pada Windows 11: instalasi, desain suara, pembacaan, antarmuka web, dan pengujian semuanya berhasil; pembacaan butuh sekitar 0,8-0,9 dtk komputasi per 1 dtk ucapan ([laporan di #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Pasang di folder pendek yang jalurnya hanya berisi karakter ASCII (mis. `C:\vox`): di Windows mesin tidak bisa membuka jalur yang berisi karakter non-ASCII. Semua laporan sejauh ini: [perangkat keras yang sudah diuji](docs/donanim_testleri.md).
 
+**Catatan Vulkan:** waktu kata saat ini hanya tersedia di NVIDIA (CUDA) dan Mac; di AMD/Intel waktu kata belum dibuat sampai mesin Vulkan diperbarui (pembacaan tetap berjalan). Pembukaan pertama di Vulkan bisa memakan beberapa menit karena shader GPU dikompilasi; pembacaan berikutnya lebih cepat.
+
 ### Alternatif: build engine dari kode sumber
 
 Membutuhkan Visual Studio 2022 Build Tools dengan "Desktop development with C++" (termasuk C++ CMake tools), ~7 GB. Lalu:

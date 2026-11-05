@@ -227,6 +227,8 @@ sind noch breitere Tests nötig.*
 
 **Community-Test (AMD):** @mitraTR hat v0.1.1 mit Vulkan auf einer AMD Radeon RX 6900 XT unter Windows 11 ausgeführt: Installation, Stimmdesign, Vorlesen, Weboberfläche und Tests liefen fehlerfrei; das Vorlesen brauchte etwa 0,8-0,9 s Rechenzeit pro 1 s Sprache ([Bericht in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installiere in einen kurzen Ordner, dessen Pfad nur ASCII-Zeichen enthält (z. B. `C:\vox`): Unter Windows kann die Engine keine Pfade mit Umlauten oder anderen Nicht-ASCII-Zeichen öffnen. Alle bisherigen Berichte: [getestete Hardware](docs/donanim_testleri.md).
 
+**Hinweise zu Vulkan:** Wort-Zeitmarken gibt es derzeit nur auf NVIDIA (CUDA) und Mac; auf AMD/Intel entstehen sie erst, wenn die Vulkan-Engine aktualisiert ist (das Vorlesen selbst funktioniert). Der erste Start unter Vulkan kann einige Minuten dauern, weil die GPU-Shader kompiliert werden; danach geht das Vorlesen schneller.
+
 ### Alternative: Engine aus dem Quellcode bauen
 
 Benötigt die Visual Studio 2022 Build Tools mit »Desktopentwicklung mit C++« (inkl. C++-CMake-Tools), ~7 GB. Dann:

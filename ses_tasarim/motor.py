@@ -70,8 +70,16 @@ class VramWatcher:
         self.backend = backend
         self.pid = pid
         self.peak_mb = None
+        self.interval = self.aralik(backend, pid)
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._loop, daemon=True)
+
+    @staticmethod
+    def aralik(backend: str, pid: int | None) -> float:
+        """Ölçüm aralığı (sn). Windows Vulkan her ölçümde PowerShell açar (~0,6 işlemci sn): 2 sn. CUDA/macOS 0,5 sn.
+        Ölçüm (GTX 1050 Ti, Vulkan): 0,5 sn'de işlemci +%94, 2 sn'de +%30; süre +%1, VRAM tepe aynı.
+        Polling interval: Windows Vulkan spawns PowerShell per reading, so 2 s; CUDA/macOS stay at 0.5 s."""
+        return 2.0 if WINDOWS and backend == "vulkan" and pid is not None else 0.5
 
     def _loop(self):
         while not self._stop.is_set():
@@ -81,7 +89,7 @@ class VramWatcher:
                 return
             except Exception:
                 pass
-            self._stop.wait(0.5)
+            self._stop.wait(self.interval)
 
     def __enter__(self):
         self._thread.start()

@@ -211,6 +211,8 @@ instalator zapisuje indeks dedykowanej karty jako `cihaz` w `ayarlar.json`.
 
 **Test społeczności (AMD):** @mitraTR uruchomił v0.1.1 z Vulkanem na AMD Radeon RX 6900 XT w Windows 11: instalacja, projektowanie głosu, czytanie, interfejs WWW i testy zadziałały; czytanie zajęło ok. 0,8-0,9 s obliczeń na 1 s mowy ([raport w #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Instaluj w krótkim folderze, którego ścieżka ma tylko znaki ASCII (np. `C:\vox`): w Windows silnik nie otwiera ścieżek z polskimi znakami ani innymi znakami spoza ASCII. Wszystkie dotychczasowe raporty: [przetestowany sprzęt](docs/donanim_testleri.md).
 
+**Uwagi o Vulkanie:** znaczniki czasu słów są na razie dostępne tylko na NVIDIA (CUDA) i Macu; na AMD/Intel nie powstają, dopóki silnik Vulkan nie zostanie zaktualizowany (samo czytanie działa). Pierwsze uruchomienie z Vulkanem może potrwać kilka minut, bo kompilowane są shadery GPU; kolejne odczyty są szybsze.
+
 ### Alternatywa: zbuduj silnik ze źródeł
 
 Wymaga Visual Studio 2022 Build Tools z «Desktop development with C++» (w tym C++ CMake tools), ~7 GB. Następnie:

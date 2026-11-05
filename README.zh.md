@@ -205,6 +205,8 @@ CUDA 12.8.1（详见 [docs/linux.md](docs/linux.md)）。欢迎在 [Discussions]
 
 **社区测试（AMD）：** @mitraTR 在 Windows 11 的 AMD Radeon RX 6900 XT 上用 Vulkan 运行了 v0.1.1：安装、声音设计、朗读、网页界面和测试全部通过；朗读每 1 秒语音约需 0.8-0.9 秒计算时间（[#6 中的报告](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)）。请安装到路径只含 ASCII 字符的短文件夹（例如 `C:\vox`）：在 Windows 上，引擎无法打开含中文或其他非 ASCII 字符的路径。目前所有报告：[已测试的硬件](docs/donanim_testleri.md)。
 
+**Vulkan 说明：** 逐词时间目前只在 NVIDIA（CUDA）和 Mac 上提供；在 AMD/Intel 上，要等 Vulkan 引擎更新后才会生成（朗读本身可以正常使用）。Vulkan 首次启动需要编译显卡着色器，可能要几分钟；之后的朗读会更快。
+
 ### 另一种方式：从源码构建引擎
 
 需要 Visual Studio 2022 Build Tools，并勾选 "Desktop development with C++"（含 C++ CMake tools），约 7 GB。然后：

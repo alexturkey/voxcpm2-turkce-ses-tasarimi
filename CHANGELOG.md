@@ -8,7 +8,11 @@
   harici kartlı makinede de motorun kendi kullanımı çıkar. CUDA `nvidia-smi`, macOS `ioreg` ile ölçmeye devam eder;
   ölçüm alınamazsa değer `null` kalır, özet VRAM kısmını göstermez, komut satırı "VRAM ölçülemedi" der. Ölçüm (@mitraTR):
   AMD Radeon RX 6900 XT, Windows 11, Vulkan, arayüzden 24,5 sn ses, üretim 27,6 sn, tepe VRAM 2839 MB, tohum 42.
+  Windows Vulkan'da ölçüm aralığı 2 sn (her ölçüm bir PowerShell açar); CUDA ve macOS 0,5 sn kalır. Ölçüm (GTX 1050 Ti,
+  Vulkan, aynı metin ve tohum): 0,5 sn'de meşgul işlemci +%94, 2 sn'de +%30; üretim süresi +%1, VRAM tepe aynı (2810 MB).
   Test: `tests/test_vram_ve_yol.py`.
+- README'ler (30 dil), Vulkan notları: kelime zamanı şu an yalnız NVIDIA (CUDA) ve Mac'te, Vulkan motoru güncellenene
+  kadar AMD/Intel'de çıkmaz (okuma çalışır); Vulkan'da ilk açılış gölgelendirici derlemesiyle birkaç dakika sürebilir.
 
 **EN**
 - VRAM reading on Windows Vulkan (@mitraTR, #16): peak VRAM is now measured on AMD/Intel cards. Dedicated GPU memory of
@@ -16,7 +20,12 @@
   machines with integrated + discrete GPUs report the engine's own use. CUDA keeps `nvidia-smi`, macOS keeps `ioreg`;
   when no reading is available the value stays `null`, the summary leaves VRAM out and the CLI says it was not measured.
   Measurement (@mitraTR): AMD Radeon RX 6900 XT, Windows 11, Vulkan, 24.5 s of speech from the web UI, 27.6 s to
-  generate, peak VRAM 2839 MB, seed 42. Test: `tests/test_vram_ve_yol.py`.
+  generate, peak VRAM 2839 MB, seed 42. On Windows Vulkan the polling interval is 2 s (each reading starts PowerShell);
+  CUDA and macOS stay at 0.5 s. Measured on a GTX 1050 Ti with Vulkan, same text and seed: busy CPU +94% at 0.5 s and
+  +30% at 2 s; generation time +1%, same peak VRAM (2810 MB). Test: `tests/test_vram_ve_yol.py`.
+- READMEs (30 languages), Vulkan notes: word timings are currently only on NVIDIA (CUDA) and Mac and are not produced on
+  AMD/Intel until the Vulkan engine is updated (reading works); the first Vulkan start can take a few minutes while
+  shaders compile.
 
 ## v0.3.0 — 2026-11-04
 

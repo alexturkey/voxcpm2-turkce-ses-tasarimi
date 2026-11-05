@@ -228,6 +228,8 @@ laajempaa testausta.
 
 **Yhteisön testi (AMD):** @mitraTR ajoi v0.1.1:n Vulkanilla AMD Radeon RX 6900 XT -näytönohjaimella Windows 11:ssä: asennus, äänen suunnittelu, lukeminen, verkkokäyttöliittymä ja testit toimivat; lukeminen vei noin 0,8-0,9 s laskenta-aikaa sekuntia puhetta kohden ([raportti #6:ssa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Asenna lyhyeen kansioon, jonka polussa on vain ASCII-merkkejä (esim. `C:\vox`): Windowsissa moottori ei pysty avaamaan polkuja, joissa on ä-, ö- tai muita ei-ASCII-merkkejä. Kaikki raportit tähän mennessä: [testattu laitteisto](docs/donanim_testleri.md).
 
+**Huomioita Vulkanista:** sanojen ajoitukset ovat toistaiseksi saatavilla vain NVIDIAlla (CUDA) ja Macilla; AMD/Intel-korteilla niitä ei synny ennen kuin Vulkan-moottori päivitetään (lukeminen toimii silti). Ensimmäinen käynnistys Vulkanilla voi kestää muutaman minuutin, koska näytönohjaimen varjostimet käännetään; myöhemmät luvut ovat nopeampia.
+
 ### Vaihtoehto: käännä moottori lähdekoodista
 
 Vaatii Visual Studio 2022 Build Toolsin ja työkuorman "Desktop development with C++" (sis. C++ CMake tools), ~7 Gt.

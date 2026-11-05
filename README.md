@@ -213,6 +213,8 @@ the installer writes the discrete GPU's index as `cihaz` into `ayarlar.json`.
 
 **Community test (AMD):** @mitraTR ran v0.1.1 with Vulkan on an AMD Radeon RX 6900 XT under Windows 11: install, voice design, reading, the web UI and the tests all worked; reading took about 0.8-0.9 s of compute per 1 s of speech ([report in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Install into a short folder whose path has only ASCII letters (e.g. `C:\vox`): on Windows the engine cannot open paths with Turkish or other non-ASCII characters. All reports so far: [tested hardware](docs/donanim_testleri.md).
 
+**Vulkan notes:** word timings are currently available only on NVIDIA (CUDA) and Mac; on AMD/Intel they are not produced until the Vulkan engine is updated (reading itself works). The first start on Vulkan can take a few minutes because the GPU shaders are compiled; later readings are faster.
+
 ### Alternative: build the engine from source
 
 Needs Visual Studio 2022 Build Tools with "Desktop development with C++" (incl. C++ CMake tools), ~7 GB. Then:
