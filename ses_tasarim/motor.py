@@ -15,7 +15,7 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
-from . import kelime_zamani
+from . import kelime_zamani, vulkan_sinir
 
 FIXED = {"adim": 16, "cfg": 2.0}
 SAMPLE_RATE = 48000
@@ -134,16 +134,32 @@ def _yol_ipucu(command: list, requests: list) -> str:
             "Move the install, the repo folder and the voices to a short ASCII folder (e.g. C:\\vox).")
 
 
+def _dilim_karti_denetle(settings: dict, stdout_yolu: Path) -> None:
+    """Dilim boyu için okunan kart, motorun seçtiği kartla aynı mı (Vulkan). Değilse yalnız uyarır.
+    Warns if the device whose limit chose the chunk is not the one the engine opened."""
+    if settings.get("backend", "cuda") != "vulkan":
+        return
+    _, beklenen = vulkan_sinir.dilim_sn(settings)
+    try:
+        gercek = vulkan_sinir.motor_adi(stdout_yolu.read_text(encoding="utf-8", errors="replace"), settings.get("cihaz"))
+    except OSError:
+        return
+    if beklenen and gercek and gercek != beklenen:
+        print(f"  uyarı: dilim boyu '{beklenen}' kartına göre seçildi, motor '{gercek}' kartını açtı "
+              f"/ warning: chunk chosen for '{beklenen}', engine opened '{gercek}'", flush=True)
+
+
 def engine_env(settings: dict, work_dir: Path) -> dict:
     """4 GB sığdırma ve hız ayarları; yalnız motor sürecine verilir. / 4 GB fit + speed env, engine process only."""
     env = dict(os.environ)
     if settings.get("cuda_bin"):
         env["PATH"] = str(settings["cuda_bin"]) + os.pathsep + env.get("PATH", "")
+    dilim, _ = vulkan_sinir.dilim_sn(settings)  # sınırı düşük Vulkan kartında (Intel) kısa dilim; NVIDIA/AMD/CUDA 10 sn
     env.update({
         "VOXCPM2_KV_CAPACITY": "auto",                       # KV önbelleği gerektiği kadar (yama a)
         "VOXCPM2_AUDIOVAE_CPU": "1",                         # AudioVAE kodlayıcı CPU'da (yama a)
         "VOXCPM2_AUDIOVAE_THREADS": str(settings.get("audiovae_threads", 6)),
-        "VOXCPM2_AUDIOVAE_GPU_CHUNK": "10",                  # LM boşalt, çözücü GPU'da 10 sn dilimlerle (yama b)
+        "VOXCPM2_AUDIOVAE_GPU_CHUNK": f"{dilim:g}",          # LM boşalt, çözücü GPU'da dilimlerle (yama b): 10 sn, Intel 5
         "VOXCPM2_TOPLU_COZ": "1",                            # önce bütün satırlar, sonra tek seferde çözüm (yama c5)
         "VOXCPM2_PROMPT_CACHE_DIR": str(settings["onbellek"]),  # referans kodlaması diske (yama c4)
         "VOXCPM2_PROBE_EOS_CONFIRMATIONS": "2",
@@ -241,6 +257,7 @@ def run_sequence(settings: dict, requests: list, work_dir: Path, progress=None, 
                 if process.poll() is None:
                     process.kill()
                     process.wait()
+    _dilim_karti_denetle(settings, work_dir / "stdout.txt")
     if process.returncode != 0:
         tail = (work_dir / "stdout.txt").read_text(encoding="utf-8", errors="replace")[-1500:]
         raise MotorHatasi(f"motor rc={process.returncode}; {work_dir / 'stdout.txt'}\n{tail}"
