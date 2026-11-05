@@ -52,6 +52,19 @@ class VramOlcumu(unittest.TestCase):
         self.assertIn("GPUProcessMemory", command[4])
         self.assertIn("DedicatedUsage", command[4])
 
+    def test_windows_vulkan_sayac_yoksa_olculemedi(self):
+        # sayaç satırı yoksa betik 0 basar; bu ölçüm sayılmaz, tepe None kalır (özet "VRAM ölçülemedi")
+        completed = SimpleNamespace(stdout="0\n")
+        with mock.patch.object(motor, "WINDOWS", True), \
+                mock.patch.object(motor.subprocess, "run", return_value=completed):
+            with self.assertRaises(ValueError):
+                motor._gpu_used_mb("vulkan", 1234)
+            izci = motor.VramWatcher("vulkan", 1234)
+            with mock.patch.object(izci._stop, "wait", side_effect=lambda _s: izci._stop.set()):
+                izci._loop()
+        self.assertIsNone(izci.peak_mb)
+        self.assertEqual(motor.vram_metni(izci.peak_mb), "VRAM ölçülemedi")
+
     def test_cuda_nvidia_smi_yolunu_korur(self):
         completed = SimpleNamespace(stdout="3072\n")
         with mock.patch.object(motor, "WINDOWS", True), \

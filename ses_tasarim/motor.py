@@ -53,7 +53,10 @@ def _gpu_used_mb(backend: str = "cuda", pid: int | None = None) -> int:
         )
         out = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
                              capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
-        return int(out.strip().splitlines()[-1])
+        mb = int(out.strip().splitlines()[-1])
+        if mb <= 0:  # sayaç satırı yok ya da boş: ölçüm sayılmaz, yanıltıcı 0 yazılmaz / no counter row: not a reading
+            raise ValueError("Vulkan GPU sayacı değer vermedi / no GPU counter value")
+        return mb
     out = subprocess.run(["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
                          capture_output=True, text=True, timeout=5, creationflags=NO_WINDOW).stdout
     return int(out.strip().splitlines()[0])
