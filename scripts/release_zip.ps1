@@ -6,12 +6,26 @@ param(
     [string]$Surum = "v0.1.1",
     [string]$Mimari = "61-real;75-real;86-real;89;120a",   # derlemede kullanılan CMAKE_CUDA_ARCHITECTURES (README.txt'ye yazılır)
     [switch]$Vulkan,                                        # deneysel Vulkan derlemesi paketi / experimental Vulkan build package
+    [ValidateSet("avx2", "uyumlu")][string]$Islemci = "avx2",  # Vulkan: avx2 = derle.ps1 -Islemci avx2, uyumlu = -Islemci tasinabilir
     [string]$Cikti = "dist"
 )
 $ErrorActionPreference = "Stop"
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 if (-not (Test-Path -LiteralPath $Exe)) { throw "exe yok: $Exe" }
-$name = "voxcpm2-turkce-ses-tasarimi-motor-$Surum-win64-" + $(if ($Vulkan) { "vulkan" } else { "cuda12.8" })
+if ($Vulkan) {
+    # Etiket exe'ye uysun: derleme klasorunun CMakeCache.txt'si okunur (<Build>\bin\audiocpp_cli.exe -> <Build>\CMakeCache.txt)
+    # The label must match the binary: read the build folder's CMakeCache.txt.
+    $cache = Join-Path (Split-Path (Split-Path (Resolve-Path -LiteralPath $Exe).Path)) "CMakeCache.txt"
+    if (-not (Test-Path -LiteralPath $cache)) { throw "CMakeCache.txt yok: $cache (exe'yi derle.ps1 -Build klasorunden verin / pass the exe from its build folder)" }
+    $deger = @{}
+    foreach ($satir in Get-Content -LiteralPath $cache) { if ($satir -match '^(ENGINE_ENABLE_NATIVE_CPU|GGML_NATIVE|GGML_AVX|GGML_AVX2):BOOL=(\w+)$') { $deger[$matches[1]] = $matches[2] } }
+    $beklenen = if ($Islemci -eq "uyumlu") { @{ GGML_NATIVE = "OFF"; GGML_AVX = "OFF"; GGML_AVX2 = "OFF" } } else { @{ GGML_NATIVE = "OFF"; GGML_AVX2 = "ON" } }
+    foreach ($k in $beklenen.Keys) {
+        if ($deger[$k] -ne $beklenen[$k]) { throw "exe -Islemci $Islemci ile uyusmuyor: $k=$($deger[$k]) (beklenen $($beklenen[$k])); derle.ps1 -Islemci $(if ($Islemci -eq 'uyumlu') { 'tasinabilir' } else { 'avx2' }) ile derleyin" }
+    }
+    Write-Output "ISLEMCI: $Islemci ($cache)"
+}
+$name = "voxcpm2-turkce-ses-tasarimi-motor-$Surum-win64-" + $(if ($Vulkan) { "vulkan" + $(if ($Islemci -eq "uyumlu") { "-uyumlu" } else { "" }) } else { "cuda12.8" })
 $stage = Join-Path $env:TEMP ("rel_" + [guid]::NewGuid().ToString("N").Substring(0, 8))
 $dir = Join-Path $stage $name
 New-Item -ItemType Directory -Force $dir | Out-Null
@@ -33,6 +47,9 @@ audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxc
 if ($Vulkan) {
     $note += @"
 DENEYSEL / EXPERIMENTAL Vulkan build (ggml Vulkan backend, MSVC 2022, Vulkan headers 1.4, glslc). No CUDA needed.
+$(if ($Islemci -eq "uyumlu") { "CPU: UYUMLU / COMPATIBLE build, no AVX (SSE2 baseline): runs on any x86-64 CPU. Reference-voice encoding on the CPU is
+about 3.8x slower than the AVX2 build; use it only if the AVX2 build does not start on your CPU." } else { "CPU: needs AVX2 (Intel 4th gen Core / Haswell 2013+, AMD 2015+). If it does not start on an older CPU, use the
+-uyumlu (compatible) zip of the same release." })
 Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.3 driver. This build was tested on an NVIDIA GTX 1050 Ti (4 GB) and an
 Intel HD Graphics 630 (integrated, slow: about 40-50 s of compute per 1 s of speech; VRAM is shown as not measurable because
 integrated GPUs use shared memory). An earlier Vulkan build (v0.1.1, without word timing) was reported working on an AMD
