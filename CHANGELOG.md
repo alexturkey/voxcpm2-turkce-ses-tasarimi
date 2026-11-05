@@ -7,7 +7,7 @@
   (`pdh.dll`) doğrudan okunur, ölçüm başına PowerShell açılmaz; aralık 0,5 sn. PDH açılamazsa ya da okuma art arda 3
   kez düşerse eski PowerShell yolu (2 sn) devralır; değer yoksa (ör. dahili kart, paylaşımlı bellek) "VRAM ölçülemedi"
   aynen kalır. Ölçüm (aynı metin ve tohum, okuma süresince sistemin meşgul işlemci süresi, izleme kapalıya göre fark):
-  GTX 1050 Ti Vulkan (2'şer koşu) PDH +3,6 sn (+%9), PowerShell +17,1 sn (+%43, 22-25 PowerShell); Intel HD 630 Vulkan
+  GTX 1050 Ti Vulkan (2'şer koşu) PDH +3,6 sn (+%9; iki PDH koşusu 41,2 / 45,7 sn, fark koşular arası oynama düzeyinde), PowerShell +17,1 sn (+%43, 22-25 PowerShell); Intel HD 630 Vulkan
   PDH +1,7 sn (+%1), PowerShell +112,2 sn (+%62, 160 PowerShell). VRAM tepe iki yolda aynı (GTX 1050 Ti 2812 MB),
   süre farkı ölçüm gürültüsü içinde. Test: `tests/test_vram_ve_yol.py`.
 - VRAM ölçümü Windows Vulkan'da (@mitraTR, #16): AMD/Intel kartta tepe VRAM artık ölçülüyor. Motor sürecinin ayrılmış
@@ -26,7 +26,8 @@
   through the Windows PDH API (`pdh.dll`), no PowerShell per reading; interval 0.5 s. If PDH cannot be opened, or
   reading fails 3 times in a row, the old PowerShell path (2 s) takes over; with no value (e.g. integrated GPU, shared
   memory) "VRAM not measured" stays as before. Measured (same text and seed, busy CPU time of the whole system during the
-  reading, difference to monitoring off): GTX 1050 Ti Vulkan (2 runs each) PDH +3.6 s (+9%), PowerShell +17.1 s (+43%,
+  reading, difference to monitoring off): GTX 1050 Ti Vulkan (2 runs each) PDH +3.6 s (+9%; the two PDH runs were 41.2 / 45.7 s, the difference is at the
+  level of run-to-run spread), PowerShell +17.1 s (+43%,
   22-25 PowerShell starts); Intel HD 630 Vulkan PDH +1.7 s (+1%), PowerShell +112.2 s (+62%, 160 starts). Same peak
   VRAM on both paths (GTX 1050 Ti 2812 MB), time difference within noise. Test: `tests/test_vram_ve_yol.py`.
 - VRAM reading on Windows Vulkan (@mitraTR, #16): peak VRAM is now measured on AMD/Intel cards. Dedicated GPU memory of
