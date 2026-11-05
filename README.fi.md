@@ -73,8 +73,8 @@ siellä asetuksella `ses.voxcpm2_ses = "<name>/<variant>"`.
 
 1. **Lataa** koodi: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Asennusohjelma hakee näytönohjaimellesi sopivan valmiin moottoripaketin vaiheessa 3:
-   NVIDIA → [CUDA-paketti](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan-paketti, kokeellinen](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [CUDA-paketti](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan-paketti, kokeellinen](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (oletko jo ladannut paketin? Lisää alla olevaan komentoon `-HazirZip <path to the zip>`).
 2. **Pura** zip-tiedosto, avaa kansio `voxcpm2-turkce-ses-tasarimi-main`, kirjoita `powershell` Resurssienhallinnan
    osoiteriville ja paina Enter.
@@ -214,13 +214,7 @@ vanhempia. Testattu itse GTX 1050 Ti 4 Gt:llä (myös Docker Desktopin/WSL2:n ka
 Raportit muista näytönohjaimista ovat tervetulleita
 [Discussionsiin](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**AMD / Intel (kokeellinen):** erillinen Vulkan-moottorin zip (`...-win64-vulkan.zip`, ei CUDAa) asennetaan komennolla
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`. Se on varmennettu vain omalla NVIDIA-kortillamme Vulkan-taustajärjestelmän kautta
-(siellä se toimi CUDAa hitaammin mutta tuotti saman äänen samalla siemenellä; mittaus tehtiin levyn ollessa varattuna
-toiseen työhön, joten puhdas nopeusvertailu on vielä tekemättä), emmekä ole itse testanneet sitä AMD- tai
-Intel-laitteistolla: jos kokeilet sitä, julkaise tulos Discussionsissa. Jos Vulkan-laitteita on useampi kuin yksi
-(integroitu + erillinen), asennusohjelma kirjoittaa erillisen näytönohjaimen indeksin `cihaz`-arvoksi tiedostoon
-`ayarlar.json`.
+**AMD / Intel (kokeellinen):** erillinen Vulkan-moottori (ilman CUDAa) asennetaan komennolla `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Testasimme sitä NVIDIA-kortillamme Vulkan-taustajärjestelmän kautta (siellä CUDAa hitaampi, sama ääni samalla siemenellä; puhdas nopeusvertailu puuttuu vielä) ja integroidulla Intel HD Graphics 630:lla (noin 35-50 s laskentaa 1 s puhetta kohden); AMD:llä emme ole itse **testanneet** sitä: jos kokeilet, kerro tulos Discussionsissa. Jos Vulkan-laitteita on useampi (integroitu + erillinen), asennusohjelma kirjoittaa erillisen näytönohjaimen indeksin `ayarlar.json`-tiedostoon kenttään `cihaz`.
 
 **Huom:** Vulkan-tuki on tällä hetkellä kokeellinen. Se on käännetty ja testattu onnistuneesti GTX 1050 Ti:llä. Lisäksi
 ulkopuolinen käyttäjä (mitra_tr) on ilmoittanut ajaneensa sitä AMD 6900 XT:llä. AMD/Intel-korteilla tarvitaan vielä
@@ -228,7 +222,7 @@ laajempaa testausta.
 
 **Yhteisön testi (AMD):** @mitraTR ajoi v0.1.1:n Vulkanilla AMD Radeon RX 6900 XT -näytönohjaimella Windows 11:ssä: asennus, äänen suunnittelu, lukeminen, verkkokäyttöliittymä ja testit toimivat; lukeminen vei noin 0,8-0,9 s laskenta-aikaa sekuntia puhetta kohden ([raportti #6:ssa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Asenna lyhyeen kansioon, jonka polussa on vain ASCII-merkkejä (esim. `C:\vox`): Windowsissa moottori ei pysty avaamaan polkuja, joissa on ä-, ö- tai muita ei-ASCII-merkkejä. Kaikki raportit tähän mennessä: [testattu laitteisto](docs/donanim_testleri.md).
 
-**Huomioita Vulkanista:** sanojen ajoitukset ovat toistaiseksi saatavilla vain NVIDIAlla (CUDA) ja Macilla; AMD/Intel-korteilla niitä ei synny ennen kuin Vulkan-moottori päivitetään (lukeminen toimii silti). Ensimmäinen käynnistys Vulkanilla voi kestää muutaman minuutin, koska näytönohjaimen varjostimet käännetään; myöhemmät luvut ovat nopeampia.
+**Huomioita Vulkanista:** moottorin v0.3.1:stä lähtien sanojen ajoitukset toimivat myös Vulkanilla. Kaksi pakettia: `vulkan` vaatii AVX2-suorittimen (useimmat Intel Core -suorittimet vuodesta 2013, AMD vuodesta 2015; monesta Pentiumista/Celeronista se puuttuu); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) toimii kaikilla 64-bittisillä x86-suorittimilla, mutta äänen ensimmäinen luenta kestää noin 2,2-kertaisesti (myöhemmät luennat yhtä nopeasti). `kur.ps1 -Vulkan` tarkistaa suorittimen ja valitsee paketin itse. Integroidulla grafiikalla moottori käyttää luennan aikana noin 8 Gt RAM-muistia. Ensimmäinen käynnistys Vulkanilla voi kestää muutaman minuutin, koska näytönohjaimen varjostimet käännetään; myöhemmät luennat ovat nopeampia. Lisätietoja: [docs/vulkan.md](docs/vulkan.md).
 
 ### Vaihtoehto: käännä moottori lähdekoodista
 

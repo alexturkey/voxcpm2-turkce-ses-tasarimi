@@ -3,7 +3,8 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox -Derle     # kaynaktan derle / build from source
 # Adım seçmek / select steps:  -Adim model,cuda,hazir,python,ayar,kontrol   (derleme: kaynak,derle)
 # Her adım yeniden çalıştırılabilir: mevcut ve sha256'sı doğru dosya atlanır. / Idempotent: verified files are skipped.
-# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip
+# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip
+# AMD / Intel (deneysel):  -Vulkan  [-Islemci oto|avx2|uyumlu]   paket işlemciye göre seçilir / package picked from the CPU
 param(
     [string]$Kok = "C:\vox",                      # kısa yol şart (derlemede nvcc 260 karakter sınırı) / short path
     [string[]]$Adim = @(),                        # boş = varsayılan akış / empty = default flow
@@ -11,7 +12,9 @@ param(
     [switch]$Vulkan,                              # DENEYSEL: AMD/Intel için Vulkan motoru (CUDA DLL'leri inmez) / EXPERIMENTAL Vulkan engine
     [string]$Mimari = "native",                   # derlemede CMAKE_CUDA_ARCHITECTURES: native = bu PC'nin kartı; 61 = GTX 10xx; 75/86/89/120
     [int]$Paralel = 6,
-    [string]$HazirZip = ""                        # yerel sürüm zip'i (sha256 yine doğrulanır) / local release zip
+    [string]$HazirZip = "",                       # yerel sürüm zip'i (sha256 yine doğrulanır) / local release zip
+    [ValidateSet("oto", "avx2", "uyumlu")]
+    [string]$Islemci = "oto"                      # Vulkan paketi: oto = işlemciye göre; avx2 / uyumlu = elle / Vulkan package choice
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
@@ -20,7 +23,7 @@ $known = @("model", "cuda", "hazir", "kaynak", "derle", "python", "ayar", "kontr
 $Adim = @($Adim | ForEach-Object { $_ -split "," } | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ })
 if ($Adim.Count -eq 0) {
     if ($Vulkan -and $Derle) { throw "-Vulkan ile derleme bu betikte yok; scripts\derle.ps1 -Vulkan -VulkanSdk <LunarG SDK> ile elle derleyin" }
-    if ($Vulkan)    { $Adim = @("model", "hazir", "python", "ayar", "kontrol") }
+    if ($Vulkan)    { $Adim = @("model", "python", "hazir", "ayar", "kontrol") }   # python önce: paket seçimi onunla / python first: it picks the package
     elseif ($Derle) { $Adim = @("model", "cuda", "kaynak", "derle", "python", "ayar", "kontrol") }
     else            { $Adim = @("model", "cuda", "hazir", "python", "ayar", "kontrol") }
 }
@@ -57,13 +60,24 @@ $REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip"
 $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP"
 $REL_ZIP_SHA = "60966998f7d85222f7bfad5197ffc09adcb347a2581d2b02fc36564aabaf3880"
 $REL_EXE_SHA = "053cea0457a72aa6955d147b6a83e98371d8a00825c5ef75e3c0f2aaba08d09e"
-# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez): v0.1.1 etiketinde kalır (yama 0002/0003 yok: kelime zamanı çıkmaz, okuma
-# eskisi gibi sürer). / Experimental Vulkan engine stays on the v0.1.1 tag (no patches 0002/0003: no word timing, reading unchanged).
-$REL_VK_SURUM = "v0.1.1"
-$REL_VK_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip"
-$REL_VK_ZIP_SHA = "93367a1e5c380d916fea00b5596ff0b7e8ab1ddc5a6d36330ac416676726ce18"
-$REL_VK_EXE_SHA = "29fa97c8869369ca186f9bfceb7b307fa3d24181f7a3711da3e135ad7731645b"
-if ($Vulkan) { $REL_ZIP = $REL_VK_ZIP; $REL_ZIP_SHA = $REL_VK_ZIP_SHA; $REL_EXE_SHA = $REL_VK_EXE_SHA; $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_VK_SURUM/$REL_ZIP" }
+# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez), v0.3.1: yama 0001 + 0002 (kelime zamanı). İki paket:
+#   avx2   AVX2 + FMA + F16C + BMI2 isteyen işlemci (Intel Haswell 2013+, AMD Excavator 2015+); hızlı olan
+#   uyumlu AVX'siz, her x86-64 işlemci; sesin ilk okuması ~2,2 kat uzun (referans kodlaması işlemcide)
+# Seçim (-Islemci oto, varsayılan): ses_tasarim/islemci.py (numpy işlemci tespiti) + AVX2 exe'sinin yerleşmeden önce deneme
+# çalışması ("ok" dışı her sonuç -> uyumlu). -Islemci avx2|uyumlu elle seçer, deneme yapılmaz.
+# Experimental Vulkan engine v0.3.1, two packages; the installer picks one from the CPU and a test run of the AVX2 exe.
+$REL_VK_SURUM = "v0.3.1"
+$REL_VK = @{
+    avx2   = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip"
+                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip"
+                zip_sha = "94f9acd6bcc6664a6b62d76c37f67828ec60cc58f35e48a2d96c56b787cacee8"
+                exe_sha = "9c97b39c175c97409cfda56a7a7153eb135e680c14ae90f6059726d4a7ffc3e2" }
+    uyumlu = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip"
+                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip"
+                zip_sha = "ed3bd8f34e2d7d6feadd5e48ee0b3282315079d3da5dda5c3fe747d9b4da9717"
+                exe_sha = "370ae6736a62c083924aaa4372711c5699fe18f3d3f2971bfa6dc11fb8881c70" }
+}
+if ($Vulkan) { $REL_SURUM = $REL_VK_SURUM }
 $CUDA_BASE = "https://developer.download.nvidia.com/compute/cuda/redist"
 # CUDA 12.8 redist zipleri (kurulumsuz). Manifest: $CUDA_BASE/redistrib_12.8.2.json  Çalışma için ilk 3, derleme için 5'i.
 $CUDA = @(
@@ -141,33 +155,113 @@ if ($Adim -contains "cuda") {
     Write-Output "CUDA_OK"
 }
 
+if ($Adim -contains "python") {
+    Write-Output "== Python paketleri (.venv + numpy, soundfile)"
+    $py = PythonBul
+    if (-not $py) { throw "64-bit Python 3.10+ bulunamadı. Kurun: winget install Python.Python.3.12  (ya da python.org), sonra yeni bir PowerShell açın" }
+    Write-Output "  python: $py"
+    $venv = Join-Path $Repo ".venv"
+    $vpy = Join-Path $venv "Scripts\python.exe"
+    if (-not (Test-Path $vpy)) { & $py -m venv $venv; if ($LASTEXITCODE -ne 0) { throw "venv oluşturulamadı" } }
+    & $vpy -m pip install --quiet --disable-pip-version-check -r (Join-Path $Repo "requirements.txt")
+    if ($LASTEXITCODE -ne 0) { throw "pip install başarısız" }
+    & $vpy -c "import numpy, soundfile"
+    if ($LASTEXITCODE -ne 0) { throw "numpy/soundfile içe aktarılamadı" }
+    Write-Output "PYTHON_OK"
+}
+
+# Sürüm zip'i: indir ya da yerel zip'i doğrula; açılan exe önce geçici klasörde sha256 ile doğrulanır, sonra yerleştirilir.
+# Release zip: fetch or verify the local one; the exe is verified in a temp folder first, then installed.
+# (Bu yardımcılar Write-Output ile yazar; sonucu $script: değişkenine koyar, değer döndürmez.)
+function ZipAl([string]$zipAdi, [string]$zipSha, [string]$url, [string]$yerel) {
+    if ($yerel) {
+        if (-not (Test-Path -LiteralPath $yerel)) { throw "yerel zip yok: $yerel" }
+        $script:zipYol = (Resolve-Path -LiteralPath $yerel).Path
+        $got = Sha256 $script:zipYol
+        if ($got -ne $zipSha) { throw "yerel zip sha256 tutmadı ($zipAdi beklenen): $got" }
+        Write-Output "  yerel zip, sha256 doğru: $script:zipYol"
+    } else {
+        $script:zipYol = Join-Path $Kok ("indirme\" + $zipAdi)
+        Indir $url $script:zipYol $zipSha
+    }
+}
+$hazirTmp = Join-Path $Kok "indirme\_ac_hazir"
+function ZipAc([string]$zip, [string]$exeSha) {
+    if (Test-Path $hazirTmp) { Remove-Item -Recurse -Force $hazirTmp }
+    Expand-Archive -LiteralPath $zip -DestinationPath $hazirTmp -Force
+    $exe = Get-ChildItem $hazirTmp -Recurse -Filter audiocpp_cli.exe | Select-Object -First 1
+    if (-not $exe) { throw "zip içinde audiocpp_cli.exe yok" }
+    $got = Sha256 $exe.FullName
+    if ($got -ne $exeSha) { Remove-Item -Recurse -Force $hazirTmp; throw "exe sha256 tutmadı: $got" }
+    $script:acikExe = $exe.FullName
+}
+function ExeYerlestir {
+    $bin = Split-Path $motorExe
+    New-Item -ItemType Directory -Force $bin | Out-Null
+    Get-ChildItem (Split-Path $script:acikExe) | ForEach-Object { Copy-Item -LiteralPath $_.FullName (Join-Path $bin $_.Name) -Force }   # exe + LICENSE + THIRD_PARTY.md + README.txt
+    Remove-Item -Recurse -Force $hazirTmp
+    Write-Output "  açıldı, exe sha256 doğru: $motorExe"
+}
+function ExeDogru([string]$exeSha) { (Test-Path -LiteralPath $motorExe) -and ((Sha256 $motorExe) -eq $exeSha) }
+function VenvPython([string[]]$argv) {
+    # Repo .venv Python'u ile ses_tasarim komutu; satırları dizi olarak döner, çalışmazsa $null / runs a ses_tasarim command in the repo venv
+    $vpy = Join-Path $Repo ".venv\Scripts\python.exe"
+    if (-not (Test-Path $vpy)) { return $null }
+    $eap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+    try { Push-Location $Repo; $c = @(& $vpy @argv 2>$null) } finally { Pop-Location; $ErrorActionPreference = $eap }
+    if ($LASTEXITCODE -ne 0 -or $c.Count -eq 0) { return $null }
+    return ,$c   # tek satır da dizi kalsın / keep a one-line result an array
+}
+
 if ($Adim -contains "hazir") {
     Write-Output ("== hazır motor $REL_SURUM (GitHub Release" + $(if ($Vulkan) { ", Vulkan, DENEYSEL)" } else { ")" }))
-    if ($REL_ZIP_SHA -like "__*") { throw "bu kur.ps1 sürümünde hazır motor sha256'sı yok; depoyu güncelleyin (git pull)" }
-    if ($HazirZip) {
-        if (-not (Test-Path -LiteralPath $HazirZip)) { throw "yerel zip yok: $HazirZip" }
-        $zip = (Resolve-Path -LiteralPath $HazirZip).Path
-        $got = Sha256 $zip
-        if ($got -ne $REL_ZIP_SHA) { throw "yerel zip sha256 tutmadı ($REL_ZIP beklenen): $got" }
-        Write-Output "  yerel zip, sha256 doğru: $zip"
+    if (-not $Vulkan) {
+        if ($REL_ZIP_SHA -like "__*") { throw "bu kur.ps1 sürümünde hazır motor sha256'sı yok; depoyu güncelleyin (git pull)" }
+        ZipAl $REL_ZIP $REL_ZIP_SHA $REL_URL $HazirZip
+        if (ExeDogru $REL_EXE_SHA) { Write-Output "  exe var ve doğru: $motorExe" } else { ZipAc $script:zipYol $REL_EXE_SHA; ExeYerlestir }
     } else {
-        $zip = Join-Path $Kok ("indirme\" + $REL_ZIP)
-        Indir $REL_URL $zip $REL_ZIP_SHA
-    }
-    $bin = Split-Path $motorExe
-    if ((Test-Path -LiteralPath $motorExe) -and ((Sha256 $motorExe) -eq $REL_EXE_SHA)) { Write-Output "  exe var ve doğru: $motorExe" }
-    else {
-        $tmp = Join-Path $Kok "indirme\_ac_hazir"
-        if (Test-Path $tmp) { Remove-Item -Recurse -Force $tmp }
-        Expand-Archive -LiteralPath $zip -DestinationPath $tmp -Force
-        $exe = Get-ChildItem $tmp -Recurse -Filter audiocpp_cli.exe | Select-Object -First 1
-        if (-not $exe) { throw "zip içinde audiocpp_cli.exe yok" }
-        $got = Sha256 $exe.FullName
-        if ($got -ne $REL_EXE_SHA) { throw "exe sha256 tutmadı: $got" }
-        New-Item -ItemType Directory -Force $bin | Out-Null
-        Get-ChildItem $exe.DirectoryName | ForEach-Object { Copy-Item -LiteralPath $_.FullName (Join-Path $bin $_.Name) -Force }   # exe + LICENSE + THIRD_PARTY.md + README.txt
-        Remove-Item -Recurse -Force $tmp
-        Write-Output "  açıldı, exe sha256 doğru: $motorExe"
+        # Paket seçimi / package choice: -Islemci elle > yerel zip'in kendisi (sha256) > işlemci denetimi (denetlenemezse uyumlu)
+        $paket = $Islemci
+        if ($paket -eq "oto" -and $HazirZip) {
+            if (-not (Test-Path -LiteralPath $HazirZip)) { throw "yerel zip yok: $HazirZip" }
+            $got = Sha256 (Resolve-Path -LiteralPath $HazirZip).Path
+            $paket = @($REL_VK.Keys | Where-Object { $REL_VK[$_].zip_sha -eq $got })[0]
+            if (-not $paket) { throw "yerel zip $REL_VK_SURUM Vulkan paketlerinden biri değil (sha256 $got)" }
+            Write-Output "  yerel zip paketi: $paket"
+        } elseif ($paket -eq "oto") {
+            $karar = VenvPython @("-m", "ses_tasarim.islemci")
+            if ($karar -and @("avx2", "uyumlu") -contains $karar[0]) {
+                $paket = $karar[0]; Write-Output "  işlemci denetimi: $paket ($($karar[1..9] -join ' '))"
+            } else {
+                $paket = "uyumlu"; Write-Warning "işlemci denetlenemedi (.venv yok ya da numpy açılmadı; adım: python): uyumlu paket seçildi. Hızlı paket için: -Adim python,hazir"
+            }
+        } else { Write-Output "  paket elle seçildi: $paket (-Islemci)" }
+        # Kendiliğinden seçilen AVX2 paketi yerleştirilmeden önce geçici klasörde bir kez çalıştırılır; "ok" dışındaki her
+        # sonuç (geçersiz komut 0xC000001D, başka hata, zaman aşımı, deneme yapılamadı) uyumlu pakete geçirir.
+        # An automatically chosen AVX2 package runs once from the temp folder before it is installed; anything but "ok" -> compatible.
+        $dene = ($paket -eq "avx2" -and $Islemci -eq "oto")
+        $p = $REL_VK[$paket]
+        ZipAl $p.zip $p.zip_sha $p.url $HazirZip
+        if (ExeDogru $p.exe_sha) { Write-Output "  exe var ve doğru: $motorExe" }   # AVX2 exe yalnız denemeyi geçince yerleşir
+        else {
+            ZipAc $script:zipYol $p.exe_sha
+            $sonuc = "ok"
+            if ($dene) {
+                $r = VenvPython @("-m", "ses_tasarim.islemci", "--dene", $script:acikExe)
+                $sonuc = $(if ($r) { $r[0] } else { "yapilamadi" })
+                Write-Output "  AVX2 exe deneme çalışması: $sonuc"
+            }
+            if ($sonuc -eq "ok") { ExeYerlestir }
+            else {
+                Remove-Item -Recurse -Force $hazirTmp
+                if ($HazirZip) { throw "AVX2 paketi bu bilgisayarda denemeyi geçmedi ($sonuc); kurulu motora dokunulmadı. Uyumlu zip'i ($($REL_VK.uyumlu.zip)) -HazirZip ile verin ya da -HazirZip olmadan yeniden çalıştırın" }
+                Write-Warning "AVX2 paketi denemeyi geçmedi ($sonuc): uyumlu pakete geçiliyor"
+                $paket = "uyumlu"; $p = $REL_VK[$paket]
+                ZipAl $p.zip $p.zip_sha $p.url ""
+                if (ExeDogru $p.exe_sha) { Write-Output "  exe var ve doğru: $motorExe" } else { ZipAc $script:zipYol $p.exe_sha; ExeYerlestir }
+            }
+        }
+        Write-Output "VULKAN_PAKET: $paket"
     }
     Write-Output "HAZIR_OK"
 }
@@ -213,21 +307,6 @@ if ($Adim -contains "derle") {
         -Kaynak (Join-Path $Kok "motor\src") -Build (Join-Path $Kok "motor\build") -Cuda $cudaRoot -Mimari $Mimari -Paralel $Paralel
     if ($LASTEXITCODE -ne 0) { throw "derleme başarısız" }
     Write-Output "DERLE_OK"
-}
-
-if ($Adim -contains "python") {
-    Write-Output "== Python paketleri (.venv + numpy, soundfile)"
-    $py = PythonBul
-    if (-not $py) { throw "64-bit Python 3.10+ bulunamadı. Kurun: winget install Python.Python.3.12  (ya da python.org), sonra yeni bir PowerShell açın" }
-    Write-Output "  python: $py"
-    $venv = Join-Path $Repo ".venv"
-    $vpy = Join-Path $venv "Scripts\python.exe"
-    if (-not (Test-Path $vpy)) { & $py -m venv $venv; if ($LASTEXITCODE -ne 0) { throw "venv oluşturulamadı" } }
-    & $vpy -m pip install --quiet --disable-pip-version-check -r (Join-Path $Repo "requirements.txt")
-    if ($LASTEXITCODE -ne 0) { throw "pip install başarısız" }
-    & $vpy -c "import numpy, soundfile"
-    if ($LASTEXITCODE -ne 0) { throw "numpy/soundfile içe aktarılamadı" }
-    Write-Output "PYTHON_OK"
 }
 
 if ($Adim -contains "ayar") {

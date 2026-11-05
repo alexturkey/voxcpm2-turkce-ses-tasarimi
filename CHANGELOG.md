@@ -3,6 +3,28 @@
 ## Yayınlanmadı / Unreleased
 
 **TR**
+- Vulkan motoru v0.3.1 (yamalar 0001 + 0002: 4 GB + kelime zamanı; 0003 yalnız CUDA çekirdeği olduğu için Vulkan'da yok):
+  Vulkan'da da kelime zamanı çıkar. İki paket: `vulkan` (AVX2'li işlemci, Haswell 2013+) ve `vulkan-uyumlu` (AVX'siz,
+  her x86-64 işlemci; sesin ilk okuması ~2,2 kat uzun sürer, GTX 1050 Ti'de 243,9 / 109,5 sn; önbellekten sonraki
+  okumalar aynı hızda, 57,8 / 57,8 sn). Uyumlu paket Intel SDE ile Sandy Bridge ve Merom (AVX yok) taklidinde gerçek
+  okumayla denendi; AVX2 paketi Sandy Bridge taklidinde beklendiği gibi durdu (BMI2 komutu `shlx`).
+  `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`; `scripts/release_zip.ps1 -Islemci avx2|uyumlu` derleme
+  bayraklarını ve derlemenin yazdığı damgayı (`islemci.txt`: seçenek + exe sha256) denetler.
+- `scripts/kur.ps1 -Vulkan` paketi işlemciye göre kendisi seçer (`-Islemci oto`, varsayılan; `avx2` / `uyumlu` elle seçer,
+  deneme yapılmaz). AVX2 paketi yalnız AVX2 değil FMA, F16C ve BMI2 komutları da kullanır (exe taraması); bunlardan biri
+  eksikse uyumlu paket iner. Denetim iki katman: `ses_tasarim/islemci.py` numpy'nin işlemci tespitini okur (okunamazsa
+  uyumlu); seçilen AVX2 exe'si yerleştirilmeden önce geçici klasörde bir kez `--list-devices` ile çalıştırılır ve "ok"
+  dışındaki her sonuçta (ör. geçersiz komut 0xC000001D) uyumlu paket kurulur; Windows hata kutusu açılmaz. Bu yüzden
+  Vulkan kurulumunda Python adımı motordan önce gelir. `-HazirZip` ile `oto`da paket zip'in sha256'sından anlaşılır; AVX2
+  zip'i denemeyi geçmezse kurulu motora dokunulmaz ve uyumlu zip istenir. Test: `tests/test_islemci.py`.
+- Vulkan, düşük iş kümesi sınırlı kartlar (ör. Intel HD 630, maxComputeWorkGroupCount 65536): AudioVAE çözücü dilimi
+  kart sınırına göre otomatik 5 sn (diğer kartlarda 10 sn kalır). Önceden Intel'de 30 sn tasarım ve uzun tek satırlı okuma
+  (ölçülen: 13,9 sn'lik satır) `GGML_ASSERT ... maxComputeWorkGroupCount` ile çöküyordu. Dilim boyu sesi değiştirmez (ölçüldü: 10/5 sn
+  bayt bayt aynı; çözücü nedensel, bağlam 32 kare >= alıcı alan 20). `ses_tasarim/vulkan_sinir.py`,
+  `tests/test_vulkan_dilim.py`.
+- Kelime zamanı tek satırlık okumada çıkmıyordu ("sonda kaydı yok"; v0.3.0 dahil, CUDA ve Vulkan): motor tek istekte
+  toplu çözme satırını yazmadığı için kayıt kapanmıyordu. Düzeltildi, test eklendi.
+- `docs/vulkan.md`: dahili kartta RAM ihtiyacı (ölçüm: okumada 8,0 GB, tasarımda 6,5 GB).
 - Windows Vulkan'da VRAM ölçümü süreç açmadan (#17): motor sürecinin ayrılmış GPU belleği Windows PDH arayüzüyle
   (`pdh.dll`) doğrudan okunur, ölçüm başına PowerShell açılmaz; aralık 0,5 sn. PDH açılamazsa ya da okuma art arda 3
   kez düşerse eski PowerShell yolu (2 sn) devralır; değer yoksa (ör. dahili kart, paylaşımlı bellek) "VRAM ölçülemedi"
@@ -18,10 +40,37 @@
   Windows Vulkan'da ölçüm aralığı 2 sn (her ölçüm bir PowerShell açar); CUDA ve macOS 0,5 sn kalır. Ölçüm (GTX 1050 Ti,
   Vulkan, aynı metin ve tohum): 0,5 sn'de meşgul işlemci +%94, 2 sn'de +%30; üretim süresi +%1, VRAM tepe aynı (2810 MB).
   Test: `tests/test_vram_ve_yol.py`.
-- README'ler (30 dil), Vulkan notları: kelime zamanı şu an yalnız NVIDIA (CUDA) ve Mac'te, Vulkan motoru güncellenene
-  kadar AMD/Intel'de çıkmaz (okuma çalışır); Vulkan'da ilk açılış gölgelendirici derlemesiyle birkaç dakika sürebilir.
+- README'ler (30 dil), Vulkan notları: kelime zamanı Vulkan'da da çıkar; iki paket ve uyumlu paketin bağlantısı, kurulumun
+  paketi kendisi seçtiği, dahili kartta ~8 GB RAM; Intel HD Graphics 630'da denendi; ilk açılış gölgelendirici
+  derlemesiyle birkaç dakika sürebilir. Hızlı başlangıç bağlantıları güncel sürüme (CUDA v0.3.0, Vulkan v0.3.1).
+  `docs/vulkan.md`: paketler, seçim, çözücü dilimi, kendin derle, SDE ile uyumlu paket denemesi, sık hatalar.
+  `AGENTS.md`: Vulkan alt sınırı 1.2 (1.3 yazıyordu), olmayan `kur.ps1 -Derle -Vulkan` yolu çıkarıldı.
 
 **EN**
+- Vulkan engine v0.3.1 (patches 0001 + 0002: 4 GB + word timing; 0003 is CUDA kernels only, not in the Vulkan build):
+  word timing now works on Vulkan too. Two packages: `vulkan` (AVX2 CPU, Haswell 2013+) and `vulkan-uyumlu`
+  (compatible, no AVX, any x86-64 CPU; a voice's first reading takes ~2.2x as long, 243.9 / 109.5 s on a GTX 1050 Ti;
+  later readings use the cached reference and run at the same speed, 57.8 / 57.8 s). The compatible package was tested
+  with real readings under Intel SDE emulating Sandy Bridge and Merom (no AVX); the AVX2 package stopped under the
+  Sandy Bridge emulation, as expected (BMI2 instruction `shlx`). `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`;
+  `scripts/release_zip.ps1 -Islemci avx2|uyumlu` checks the build flags and the stamp the build writes (`islemci.txt`:
+  option + exe sha256).
+- `scripts/kur.ps1 -Vulkan` picks the package from the CPU (`-Islemci oto`, default; `avx2` / `uyumlu` choose by hand,
+  without a test run). The AVX2 package also uses FMA, F16C and BMI2 instructions (exe scan); if any is missing the
+  compatible package is installed. Two layers: `ses_tasarim/islemci.py` reads numpy's CPU detection (unreadable:
+  compatible); the chosen AVX2 exe then runs `--list-devices` once from a temp folder before it is installed, and any
+  result other than "ok" (e.g. illegal instruction 0xC000001D) installs the compatible package; no Windows error dialog
+  opens. The Python step therefore runs before the engine step in the Vulkan install. With `-HazirZip` and `oto` the
+  package is recognised from the zip's sha256; if the AVX2 zip fails the test run, the installed engine is left as it
+  was and the compatible zip is asked for. Test: `tests/test_islemci.py`.
+- Vulkan on cards with a low compute dispatch limit (e.g. Intel HD 630, maxComputeWorkGroupCount 65536): the AudioVAE
+  decode chunk is chosen from the card limit, 5 s automatically (other cards keep 10 s). Before, a 30 s voice design and
+  a long single-line reading (measured: a 13.9 s line) crashed on Intel with `GGML_ASSERT ... maxComputeWorkGroupCount`. The chunk
+  length does not change the audio (measured: 10/5 s byte-identical; the decoder is causal, 32-frame context >= 20-frame
+  receptive field). `ses_tasarim/vulkan_sinir.py`, `tests/test_vulkan_dilim.py`.
+- Word timing was missing for single-line readings ("no probe trace"; including v0.3.0, CUDA and Vulkan): the engine
+  does not log the batch-decode line for a single request, so the record never closed. Fixed, test added.
+- `docs/vulkan.md`: RAM needed with integrated graphics (measured: 8.0 GB while reading, 6.5 GB while designing).
 - VRAM reading on Windows Vulkan without starting processes (#17): the engine's dedicated GPU memory is read directly
   through the Windows PDH API (`pdh.dll`), no PowerShell per reading; interval 0.5 s. If PDH cannot be opened, or
   reading fails 3 times in a row, the old PowerShell path (2 s) takes over; with no value (e.g. integrated GPU, shared
@@ -38,9 +87,11 @@
   generate, peak VRAM 2839 MB, seed 42. On Windows Vulkan the polling interval is 2 s (each reading starts PowerShell);
   CUDA and macOS stay at 0.5 s. Measured on a GTX 1050 Ti with Vulkan, same text and seed: busy CPU +94% at 0.5 s and
   +30% at 2 s; generation time +1%, same peak VRAM (2810 MB). Test: `tests/test_vram_ve_yol.py`.
-- READMEs (30 languages), Vulkan notes: word timings are currently only on NVIDIA (CUDA) and Mac and are not produced on
-  AMD/Intel until the Vulkan engine is updated (reading works); the first Vulkan start can take a few minutes while
-  shaders compile.
+- READMEs (30 languages), Vulkan notes: word timings work on Vulkan too; the two packages with a link to the compatible
+  one, the installer picking the package, ~8 GB RAM on integrated graphics; tested on Intel HD Graphics 630; the first
+  start can take a few minutes while shaders compile. Quick-start links point to the current releases (CUDA v0.3.0,
+  Vulkan v0.3.1). `docs/vulkan.md`: packages, choice, decoder chunk, building, checking the compatible build with SDE,
+  common errors. `AGENTS.md`: Vulkan minimum is 1.2 (it said 1.3); the non-existent `kur.ps1 -Derle -Vulkan` path removed.
 
 ## v0.3.0 — 2026-11-04
 

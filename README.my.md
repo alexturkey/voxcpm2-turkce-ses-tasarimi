@@ -73,8 +73,8 @@ web UI တွင် *နမူနာ ဖော်ပြချက်* ကို �
 
 1. code ကို **ဒေါင်းလုဒ်** လုပ်ပါ- [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)။
    သင့်ကတ်အတွက် အသင့် engine package ကို အဆင့် 3 တွင် installer က ယူပေးမည်-
-   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip)၊
-   AMD / Intel → [Vulkan package, စမ်းသပ်ဆဲ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip)၊
+   AMD / Intel → [Vulkan package, စမ်းသပ်ဆဲ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (တစ်ခု ဒေါင်းလုဒ်ပြီးပြီလား။ အောက်ပါ command တွင် `-HazirZip <path to the zip>` ကို ထည့်ပါ)။
 2. zip ကို **ဖြည်ပါ**၊ `voxcpm2-turkce-ses-tasarimi-main` folder ကို ဖွင့်ပါ၊ Explorer ၏ လိပ်စာဘားတွင် `powershell` ဟု ရိုက်ပြီး
    Enter နှိပ်ပါ။
@@ -211,12 +211,7 @@ GTX 1050 Ti 4 GB ပေါ်တွင် စမ်းသပ်ထားသည�
 တိုင်းတာထားသည်- RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (အသေးစိတ် [docs/linux.md](docs/linux.md) တွင်)။ အခြား
 ကတ်များမှ ရလဒ်များကို [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) တွင် ကြိုဆိုပါသည်။
 
-**AMD / Intel (စမ်းသပ်ဆဲ)-** သီးခြား Vulkan engine zip (`...-win64-vulkan.zip`, CUDA မပါ) ကို
-`scripts\kur.ps1 -Kok C:\vox -Vulkan` ဖြင့် ထည့်သွင်းသည်။ ၎င်းကို ကျွန်ုပ်တို့၏ NVIDIA ကတ်ပေါ်တွင် Vulkan backend မှတစ်ဆင့်သာ
-စစ်ဆေးထားသည် (ထိုနေရာတွင် CUDA ထက် နှေးသော်လည်း seed တူလျှင် အသံတူ ထွက်သည်၊ ထိုတိုင်းတာချက်ကို disk က အခြားအလုပ်ဖြင့်
-အလုပ်များနေစဉ် ယူခဲ့သဖြင့် သန့်ရှင်းသော အမြန်နှုန်း နှိုင်းယှဉ်ချက် မရသေးပါ) နှင့် AMD သို့မဟုတ် Intel hardware ပေါ်တွင်
-ကျွန်ုပ်တို့ကိုယ်တိုင် စမ်းသပ်ထားခြင်း **မရှိပါ**- စမ်းကြည့်ပါက ရလဒ်ကို Discussions တွင် တင်ပေးပါ။ Vulkan device တစ်ခုထက်ပို
-ရှိလျှင် (integrated + discrete) installer က discrete GPU ၏ index ကို `ayarlar.json` ထဲသို့ `cihaz` အဖြစ် ရေးသည်။
+**AMD / Intel (စမ်းသပ်ဆဲ)-** သီးခြား Vulkan အင်ဂျင် (CUDA မလိုပါ) ကို `scripts\kur.ps1 -Kok C:\vox -Vulkan` ဖြင့် ထည့်သွင်းပါသည်။ ကျွန်ုပ်တို့၏ NVIDIA ကတ်ပေါ်တွင် Vulkan backend ဖြင့် (ထိုတွင် CUDA ထက် နှေးသော်လည်း seed တူလျှင် အသံတူ; သန့်ရှင်းသော အမြန်နှုန်း နှိုင်းယှဉ်ချက် မရှိသေး) နှင့် Intel HD Graphics 630 ပေါင်းစပ်ဂရပ်ဖစ်ပေါ်တွင် (စကား ၁ စက္ကန့်အတွက် တွက်ချက်မှု ၃၅-၅၀ စက္ကန့်ခန့်) စမ်းသပ်ခဲ့ပါသည်; AMD ပေါ်တွင် ကျွန်ုပ်တို့ကိုယ်တိုင် **မစမ်းရသေးပါ**: စမ်းကြည့်ပါက ရလဒ်ကို Discussions တွင် တင်ပေးပါ။ Vulkan စက်ပစ္စည်း တစ်ခုထက်ပို၍ (ပေါင်းစပ် + သီးခြား) ရှိပါက ထည့်သွင်းစနစ်သည် သီးခြားကတ်၏ နံပါတ်ကို `ayarlar.json` ထဲသို့ `cihaz` အဖြစ် ရေးပါသည်။
 
 **မှတ်ချက်-** Vulkan ပံ့ပိုးမှုသည် လောလောဆယ် စမ်းသပ်ဆဲ ဖြစ်သည်။ GTX 1050 Ti ပေါ်တွင် အောင်မြင်စွာ build လုပ်ပြီး စမ်းသပ်ထားသည်။
 ပြင်ပ အသုံးပြုသူတစ်ဦး (mitra_tr) က AMD 6900 XT ပေါ်တွင်လည်း run နိုင်ကြောင်း အစီရင်ခံထားသည်။ AMD/Intel ကတ်များပေါ်တွင်
@@ -224,7 +219,7 @@ GTX 1050 Ti 4 GB ပေါ်တွင် စမ်းသပ်ထားသည�
 
 **အသိုင်းအဝိုင်း စမ်းသပ်ချက် (AMD):** @mitraTR သည် Windows 11 ပေါ်ရှိ AMD Radeon RX 6900 XT တွင် Vulkan ဖြင့် v0.1.1 ကို လည်ပတ်ခဲ့သည်- ထည့်သွင်းခြင်း၊ အသံဒီဇိုင်း၊ ဖတ်ခြင်း၊ ဝဘ်မျက်နှာပြင်နှင့် စမ်းသပ်ချက်များ အားလုံး အလုပ်လုပ်ခဲ့သည်။ စကား 1 စက္ကန့်အတွက် တွက်ချက်ချိန် 0.8-0.9 စက္ကန့်ခန့် ကြာသည် ([#6 ရှိ အစီရင်ခံစာ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))။ လမ်းကြောင်းတွင် ASCII စာလုံးများသာ ပါသော တိုတောင်းသည့် ဖိုင်တွဲတွင် ထည့်သွင်းပါ (ဥပမာ `C:\vox`)- Windows တွင် မြန်မာစာ သို့မဟုတ် ASCII မဟုတ်သော စာလုံးပါသည့် လမ်းကြောင်းများကို အင်ဂျင်က မဖွင့်နိုင်ပါ။ ယခုအထိ အစီရင်ခံစာများ အားလုံး- [စမ်းသပ်ပြီး ဟာ့ဒ်ဝဲ](docs/donanim_testleri.md)။
 
-**Vulkan အကြောင်း မှတ်ချက်များ:** စကားလုံးတစ်လုံးချင်းစီ၏ အချိန်မှတ်ချက်ကို ယခုအချိန်တွင် NVIDIA (CUDA) နှင့် Mac တွင်သာ ရရှိနိုင်သည်။ AMD/Intel တွင် Vulkan အင်ဂျင်ကို အပ်ဒိတ်မလုပ်မချင်း မထွက်ပါ (ဖတ်ခြင်းကတော့ အလုပ်လုပ်ပါသည်)။ Vulkan တွင် ပထမဆုံးဖွင့်ချိန်၌ ဂရပ်ဖစ်ကတ်၏ shader များကို compile လုပ်ရသဖြင့် မိနစ်အနည်းငယ် ကြာနိုင်သည်။ နောက်ပိုင်းဖတ်ခြင်းများ ပိုမြန်လာပါမည်။
+**Vulkan အကြောင်း မှတ်ချက်များ:** အင်ဂျင် v0.3.1 မှစ၍ စကားလုံးအချိန်များ Vulkan တွင်လည်း ရပါပြီ။ ပက်ကေ့ချ် နှစ်ခုရှိသည်: `vulkan` သည် AVX2 ပါသော CPU လိုအပ်သည် (၂၀၁၃ နောက်ပိုင်း Intel Core အများစု၊ ၂၀၁၅ နောက်ပိုင်း AMD; Pentium/Celeron အများအပြားတွင် မပါ); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) သည် 64-bit x86 CPU မည်သည့်တွင်မဆို အလုပ်လုပ်သော်လည်း အသံတစ်ခု၏ ပထမဆုံးဖတ်ခြင်းသည် အချိန် ၂.၂ ဆခန့် ကြာသည် (နောက်ပိုင်းဖတ်ခြင်းများ အမြန်နှုန်းတူ)။ `kur.ps1 -Vulkan` သည် CPU ကို စစ်ဆေးပြီး ပက်ကေ့ချ်ကို ကိုယ်တိုင်ရွေးသည်။ ပေါင်းစပ်ဂရပ်ဖစ်တွင် အင်ဂျင်သည် ဖတ်နေစဉ် RAM 8 GB ခန့် သုံးသည်။ Vulkan တွင် ပထမဆုံးဖွင့်ခြင်းသည် GPU shader များကို compile လုပ်ရသဖြင့် မိနစ်အနည်းငယ် ကြာနိုင်သည်; နောက်ပိုင်းဖတ်ခြင်းများ ပိုမြန်သည်။ အသေးစိတ်: [docs/vulkan.md](docs/vulkan.md)။
 
 ### အခြားနည်းလမ်း- engine ကို source မှ build လုပ်ခြင်း
 

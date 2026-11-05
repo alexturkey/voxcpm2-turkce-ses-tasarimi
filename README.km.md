@@ -67,8 +67,8 @@ Claude Code skill សម្រាប់លំហូររចនាទាំង�
 
 1. **ទាញយក** កូដ៖ [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)។
    កញ្ចប់ engine ដែលរៀបចំរួចសម្រាប់កាតរបស់អ្នក នឹងត្រូវបាន installer ទាញយកនៅជំហានទី 3៖
-   NVIDIA → [កញ្ចប់ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [កញ្ចប់ Vulkan ពិសោធន៍](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [កញ្ចប់ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [កញ្ចប់ Vulkan ពិសោធន៍](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (បានទាញយកមួយរួចហើយ? បន្ថែម `-HazirZip <path to the zip>` ទៅពាក្យបញ្ជាខាងក្រោម)។
 2. **ពន្លា** zip បើក folder `voxcpm2-turkce-ses-tasarimi-main` វាយ `powershell` នៅរបារអាសយដ្ឋានរបស់ Explorer
    ហើយចុច Enter។
@@ -201,19 +201,14 @@ GTX 1050 Ti 4 GB (ក៏តាមរយៈ Docker Desktop/WSL2 លើ Windows �
 Ubuntu 24.04 Docker, CUDA 12.8.1 (ព័ត៌មានលម្អិតក្នុង [docs/linux.md](docs/linux.md))។ យើងស្វាគមន៍របាយការណ៍ពីកាតផ្សេងទៀត
 នៅក្នុង [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)។
 
-**AMD / Intel (ពិសោធន៍)៖** zip engine Vulkan ដាច់ដោយឡែក (`...-win64-vulkan.zip`, គ្មាន CUDA) ដំឡើងដោយ
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`។ វាត្រូវបានផ្ទៀងផ្ទាត់តែលើកាត NVIDIA របស់យើងតាមរយៈ Vulkan backend ប៉ុណ្ណោះ (នៅទីនោះ
-វាដំណើរការយឺតជាង CUDA ប៉ុន្តែផ្តល់សំឡេងដូចគ្នាសម្រាប់ seed ដូចគ្នា ការវាស់វែងនោះធ្វើឡើងខណៈ disk រវល់ជាមួយការងារផ្សេង ដូច្នេះ
-ការប្រៀបធៀបល្បឿនស្អាតនៅមិនទាន់មានទេ) ហើយយើង **មិនទាន់** បានសាកល្បងវាលើ hardware AMD ឬ Intel ដោយខ្លួនឯងទេ៖ បើអ្នក
-សាកល្បង សូមបង្ហោះលទ្ធផលនៅក្នុង Discussions។ បើមានឧបករណ៍ Vulkan ច្រើនជាងមួយ (integrated + discrete) installer សរសេរលេខ
-index របស់ GPU discrete ជា `cihaz` ទៅក្នុង `ayarlar.json`។
+**AMD / Intel (ពិសោធន៍)៖** ម៉ាស៊ីន Vulkan ដាច់ដោយឡែក (គ្មាន CUDA) ដំឡើងដោយ `scripts\kur.ps1 -Kok C:\vox -Vulkan`។ យើងបានសាកល្បងវានៅលើកាត NVIDIA របស់យើងតាម Vulkan backend (នៅទីនោះយឺតជាង CUDA បានសំឡេងដូចគ្នាពេលប្រើ seed ដូចគ្នា ការប្រៀបធៀបល្បឿនដ៏ស្អាតនៅមិនទាន់មាន) និងនៅលើក្រាហ្វិកក្នុងខ្លួន Intel HD Graphics 630 (ប្រហែល 35-50 វិនាទីនៃការគណនាសម្រាប់ការនិយាយ 1 វិនាទី); លើ AMD យើង**មិនទាន់**បានសាកល្បងខ្លួនឯងទេ៖ បើអ្នកសាក សូមបង្ហោះលទ្ធផលនៅ Discussions។ បើមានឧបករណ៍ Vulkan ច្រើនជាងមួយ (ក្នុងខ្លួន + ដាច់ដោយឡែក) កម្មវិធីដំឡើងសរសេរលេខរៀងរបស់កាតដាច់ដោយឡែកជា `cihaz` ទៅក្នុង `ayarlar.json`។
 
 **ចំណាំ៖** ការគាំទ្រ Vulkan បច្ចុប្បន្ននៅជាការពិសោធន៍។ វាត្រូវបាន build និងសាកល្បងដោយជោគជ័យលើ GTX 1050 Ti។ អ្នកប្រើខាងក្រៅ
 ម្នាក់ (mitra_tr) ក៏បានរាយការណ៍ថាបានដំណើរការវាលើ AMD 6900 XT ដែរ។ នៅតែត្រូវការការសាកល្បងទូលំទូលាយជាងនេះលើកាត AMD/Intel។
 
 **ការសាកល្បងពីសហគមន៍ (AMD)៖** @mitraTR បានដំណើរការ v0.1.1 ជាមួយ Vulkan លើ AMD Radeon RX 6900 XT ក្នុង Windows 11៖ ការដំឡើង ការរចនាសំឡេង ការអាន ផ្ទៃវេប និងការធ្វើតេស្ត ដំណើរការបានទាំងអស់ ការអានចំណាយពេលគណនាប្រហែល 0.8-0.9 វិនាទី សម្រាប់ការនិយាយ 1 វិនាទី ([របាយការណ៍ក្នុង #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))។ សូមដំឡើងក្នុងថតខ្លីមួយ ដែលផ្លូវរបស់វាមានតែតួអក្សរ ASCII (ឧ. `C:\vox`)៖ នៅលើ Windows ម៉ាស៊ីនមិនអាចបើកផ្លូវដែលមានអក្សរខ្មែរ ឬតួអក្សរក្រៅ ASCII ផ្សេងទៀតបានទេ។ របាយការណ៍ទាំងអស់រហូតមកដល់ពេលនេះ៖ [ផ្នែករឹងដែលបានសាកល្បង](docs/donanim_testleri.md)។
 
-**កំណត់ចំណាំអំពី Vulkan៖** ពេលវេលានៃពាក្យនីមួយៗ បច្ចុប្បន្នមានតែលើ NVIDIA (CUDA) និង Mac ប៉ុណ្ណោះ។ លើ AMD/Intel វានឹងមិនទាន់មានទេ រហូតដល់ម៉ាស៊ីន Vulkan ត្រូវបានធ្វើបច្ចុប្បន្នភាព (ការអាននៅតែដំណើរការ)។ ការបើកលើកដំបូងលើ Vulkan អាចចំណាយពេលពីរបីនាទី ព្រោះត្រូវចងក្រង shader របស់កាតក្រាហ្វិក ការអានលើកក្រោយៗនឹងលឿនជាងមុន។
+**កំណត់ចំណាំអំពី Vulkan៖** ចាប់ពីម៉ាស៊ីន v0.3.1 ពេលវេលានៃពាក្យនីមួយៗដំណើរការលើ Vulkan ផងដែរ។ មានកញ្ចប់ពីរ៖ `vulkan` ត្រូវការ CPU ដែលមាន AVX2 (Intel Core ភាគច្រើនចាប់ពីឆ្នាំ 2013, AMD ចាប់ពីឆ្នាំ 2015; Pentium/Celeron ជាច្រើនគ្មាន); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) ដំណើរការលើ CPU x86 64 ប៊ីតណាមួយក៏បាន ប៉ុន្តែការអានលើកដំបូងនៃសំឡេងមួយចំណាយពេលប្រហែល 2.2 ដង (ការអានបន្ទាប់មានល្បឿនដូចគ្នា)។ `kur.ps1 -Vulkan` ពិនិត្យ CPU ហើយជ្រើសកញ្ចប់ដោយខ្លួនឯង។ លើក្រាហ្វិកក្នុងខ្លួន ម៉ាស៊ីនប្រើ RAM ប្រហែល 8 GB ពេលអាន។ ការបើកលើកដំបូងលើ Vulkan អាចចំណាយពេលពីរបីនាទី ព្រោះត្រូវចងក្រង shader របស់ GPU; ការអានបន្ទាប់លឿនជាង។ ព័ត៌មានលម្អិត៖ [docs/vulkan.md](docs/vulkan.md)។
 
 ### ជម្រើសផ្សេង៖ build engine ពី source
 

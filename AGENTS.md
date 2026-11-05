@@ -39,15 +39,20 @@ through the driver JIT (works, slower first start). Maxwell (GTX 9xx) and older:
 only on a GTX 1050 Ti 4 GB. Check what a given exe contains with `cuobjdump --list-elf audiocpp_cli.exe` (CUDA
 `cuda_cuobjdump` redist package).
 
-**Vulkan (experimental, AMD/Intel/NVIDIA).** Separate release zip `…-win64-vulkan.zip`; `kur.ps1 -Kok C:\vox -Vulkan`
-runs `model,hazir,python,ayar,kontrol` (no `cuda` step), writes `"backend": "vulkan"`, `"cuda_bin": ""`; `kontrol`
-needs a `Vulkan:N` line from `--list-devices` and, when several devices are listed, writes the index of the `[GPU]` line as
-`"cihaz"` (passed to the engine as `--device N`; default device 0 may be an integrated GPU, where a design aborts with
-`maxComputeWorkGroupCount`). Verified only on a GTX 1050 Ti via Vulkan: design variant 108 s (CUDA 55 s), reading
-6-13 s per 1 s of speech (CUDA ≈ 2 s), same seed → bit-identical wav. Vulkan numbers were taken while the disk was busy
-with another job (CUDA numbers on an idle disk): clean comparison pending. Build: `kur.ps1 -Derle -Vulkan` /
-`derle.ps1 -Vulkan [-VulkanSdk <dir>]` (needs `glslc.exe`, Vulkan headers incl. `spirv/unified1/spirv.hpp`,
-`vulkan-1.lib`; `VULKAN_SDK` env var is the default). Runtime: a driver with Vulkan 1.3 (`vulkan-1.dll`).
+**Vulkan (experimental, AMD/Intel/NVIDIA).** Engine v0.3.1 (patches 0001 + 0002, word timings included), two release
+zips: `…-win64-vulkan.zip` (AVX2 build; also uses FMA, F16C, BMI2) and `…-win64-vulkan-uyumlu.zip` (SSE2, any x86-64; a
+voice's first reading ~2.2x as long, later readings same speed). `kur.ps1 -Kok C:\vox -Vulkan` runs
+`model,python,hazir,ayar,kontrol` (no `cuda` step; `python` first because it picks the package): `-Islemci oto` (default)
+reads numpy's CPU detection via `python -m ses_tasarim.islemci`, then test-runs the AVX2 exe from a temp folder and
+installs the compatible zip on any result but `ok`; `-Islemci avx2|uyumlu` forces one. It writes `"backend": "vulkan"`,
+`"cuda_bin": ""`; `kontrol` needs a `Vulkan:N` line from `--list-devices` and, when several devices are listed, writes
+the index of the `[GPU]` line as `"cihaz"` (passed to the engine as `--device N`). Cards with
+`maxComputeWorkGroupCount` < 2^20 (e.g. Intel HD 630) decode in 5 s chunks (`ses_tasarim/vulkan_sinir.py`; audio
+unchanged). Tested on a GTX 1050 Ti via Vulkan (same seed → bit-identical wav) and Intel HD Graphics 630 (integrated;
+~8 GB system RAM while reading); not on AMD by us. Build: `derle.ps1 -Vulkan [-VulkanSdk <dir>] -Islemci
+native|avx2|tasinabilir` (`kur.ps1` has no Vulkan build path; needs `glslc.exe`, Vulkan headers incl.
+`spirv/unified1/spirv.hpp`, `vulkan-1.lib`; `VULKAN_SDK` env var is the default). Runtime: a driver with Vulkan 1.2+
+(`vulkan-1.dll`). Details: `docs/vulkan.md`.
 
 ## 1. Get the code
 

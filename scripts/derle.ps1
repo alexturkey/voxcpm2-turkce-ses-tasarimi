@@ -10,7 +10,8 @@ param(
     [string]$Mimari = "61",                          # CMAKE_CUDA_ARCHITECTURES: "native" = bu PC'nin kartı; "61" = GTX 10xx; liste: "61-real;75-real;86-real;89-real;120"
     [switch]$Vulkan,                                 # deneysel: CUDA yerine Vulkan arka ucu (AMD/Intel/NVIDIA) / experimental Vulkan backend instead of CUDA
     [string]$VulkanSdk = $env:VULKAN_SDK,            # Vulkan SDK koku (LunarG: Include, Lib, Bin) ya da glslc + headers + vulkan-1.lib iceren klasor
-    [switch]$DusukOncelik                            # derlemeyi BelowNormal oncelikle calistir
+    [switch]$DusukOncelik,                           # derlemeyi BelowNormal oncelikle calistir
+    [ValidateSet("native", "avx2", "tasinabilir")][string]$Islemci = "native"  # native: bu PC; avx2: yayin (Haswell+); tasinabilir: yayin yedegi, her x86-64 (SSE2)
 )
 $ErrorActionPreference = "Stop"
 
@@ -55,6 +56,17 @@ if ($Vulkan) { $env:PATH = (Split-Path $glslc) + ";" + $env:PATH }   # glslc'nin
 $tmp = Join-Path $Build "tmp"; New-Item -ItemType Directory -Force $tmp | Out-Null
 $env:TEMP = $tmp; $env:TMP = $tmp
 if ($DusukOncelik) { (Get-Process -Id $PID).PriorityClass = "BelowNormal" }
+# Islemci komut seti / CPU instruction set:
+#   native      bu PC'nin komut seti (yerel derleme, en hizli; baska islemcide calismayabilir) / this PC's ISA
+#   avx2        yayin zip'i: NATIVE kapali, yalniz AVX2 (/arch:AVX2: FMA, F16C dahil); AVX2'li her islemci / release: AVX2
+#   tasinabilir yayin yedegi: NATIVE ve AVX kapali, SSE2 tabani; her x86-64 islemci; sesin ilk okumasi ~2,2 kat uzun (GTX 1050 Ti 243,9 / 109,5 sn), sonrakiler ayni hizda
+$kapali = @("-DGGML_AVX_VNNI=OFF", "-DGGML_BMI2=OFF", "-DGGML_AVX512=OFF", "-DGGML_AVX512_VBMI=OFF", "-DGGML_AVX512_VNNI=OFF", "-DGGML_AVX512_BF16=OFF")
+$cpuFlags = switch ($Islemci) {
+    "avx2"        { @("-DENGINE_ENABLE_NATIVE_CPU=OFF", "-DGGML_SSE42=ON", "-DGGML_AVX=ON", "-DGGML_AVX2=ON") + $kapali }
+    "tasinabilir" { @("-DENGINE_ENABLE_NATIVE_CPU=OFF", "-DGGML_SSE42=OFF", "-DGGML_AVX=OFF", "-DGGML_AVX2=OFF") + $kapali }
+    default       { @("-DENGINE_ENABLE_NATIVE_CPU=ON") }
+}
+Write-Output "CPU: $Islemci"
 
 & $cmake -S $Kaynak -B $Build -G Ninja "-DCMAKE_MAKE_PROGRAM=$ninja" `
   -DCMAKE_C_FLAGS=/utf-8 "-DCMAKE_CXX_FLAGS=/utf-8 /EHsc /MP4" `
@@ -63,7 +75,7 @@ if ($DusukOncelik) { (Get-Process -Id $PID).PriorityClass = "BelowNormal" }
   -DAUDIOCPP_BUILD_NATIVE_MODEL_MANAGER=OFF -DAUDIOCPP_EMBED_DEMO_VOICES=OFF `
   @backendFlags `
   -DENGINE_ENABLE_HIP=OFF -DENGINE_ENABLE_METAL=OFF `
-  -DENGINE_ENABLE_OPENMP=ON -DGGML_OPENMP=ON -DENGINE_ENABLE_NATIVE_CPU=ON -DENGINE_ENABLE_LLAMAFILE=ON `
+  -DENGINE_ENABLE_OPENMP=ON -DGGML_OPENMP=ON @cpuFlags -DENGINE_ENABLE_LLAMAFILE=ON `
   -DENGINE_BUILD_TESTS=OFF -DENGINE_BUILD_EXAMPLES=OFF -DCMAKE_OBJECT_PATH_MAX=220 -DCMAKE_BUILD_TYPE=Release
 if ($LASTEXITCODE -ne 0) { throw "cmake configure failed" }
 & $cmake --build $Build --target audiocpp_cli --parallel $Paralel
@@ -71,4 +83,8 @@ if ($LASTEXITCODE -ne 0) { throw "build failed" }
 $exe = Join-Path $Build "bin\audiocpp_cli.exe"
 if (-not (Test-Path $exe)) { throw "exe yok: $exe" }
 Write-Output ("EXE: {0} ({1} bytes)" -f $exe, (Get-Item $exe).Length)
+# Damga: bu exe hangi -Islemci ile basariyla derlendi (release_zip.ps1 denetler; derleme duserse eski exe yeni etiketle paketlenmez)
+# Stamp: which -Islemci produced this exe (checked by release_zip.ps1, so a stale exe cannot get a new label)
+$sha = (Get-FileHash -Algorithm SHA256 -LiteralPath $exe).Hash.ToLower()
+Set-Content -LiteralPath (Join-Path $Build "islemci.txt") -Encoding ascii -Value "$Islemci $sha"
 Write-Output "BUILD_OK"

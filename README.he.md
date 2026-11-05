@@ -61,8 +61,8 @@
 
 1. **הורידו** את הקוד: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    את חבילת המנוע המוכנה לכרטיס שלכם המתקין מוריד בשלב 3:
-   כרטיסי NVIDIA ← [חבילת CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   כרטיסי AMD / Intel ← [חבילת Vulkan, ניסיונית](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   כרטיסי NVIDIA ← [חבילת CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   כרטיסי AMD / Intel ← [חבילת Vulkan, ניסיונית](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (כבר הורדתם אחת? הוסיפו `-HazirZip <path to the zip>` לפקודה שלמטה).
 2. **חלצו** את קובץ ה-zip, פתחו את התיקייה `voxcpm2-turkce-ses-tasarimi-main`, הקלידו `powershell` בשורת הכתובת של סייר הקבצים
    והקישו Enter.
@@ -185,17 +185,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 נמדד על ידי @mslmyilmaz5 (#15): RTX 3060 Ti של 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (פרטים ב-[docs/linux.md](docs/linux.md)).
 דיווחים מכרטיסים אחרים יתקבלו בברכה ב-[Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**כרטיסי AMD / Intel (ניסיוני):** קובץ zip נפרד של מנוע Vulkan (`...-win64-vulkan.zip`, בלי CUDA) מותקן עם
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`. הוא אומת רק על כרטיס ה-NVIDIA שלנו דרך ה-backend של Vulkan (שם הוא רץ לאט יותר מ-CUDA אבל
-נתן את אותו שמע לאותו זרע; המדידה נעשתה כשהדיסק היה עסוק בעבודה אחרת, כך שהשוואת מהירות נקייה עדיין ממתינה), ו**לא** בדקנו אותו
-בעצמנו על חומרת AMD או Intel: אם תנסו, פרסמו את התוצאה ב-Discussions. כשיש יותר מהתקן Vulkan אחד (משולב + נפרד), המתקין כותב
-את האינדקס של הכרטיס הנפרד כ-`cihaz` בקובץ `ayarlar.json`.
+**כרטיסי AMD / Intel (ניסיוני):** מנוע Vulkan נפרד (בלי CUDA) מותקן עם `scripts\kur.ps1 -Kok C:\vox -Vulkan`. בדקנו אותו בכרטיס ה-NVIDIA שלנו דרך שכבת Vulkan (שם איטי יותר מ-CUDA, אותו שמע עם אותו זרע; השוואת מהירות נקייה עדיין חסרה) ובכרטיס המשולב Intel HD Graphics 630 (כ-35-50 שניות חישוב לכל שנייה של דיבור); ב-AMD **לא** בדקנו אותו בעצמנו: אם ניסיתם, פרסמו את התוצאה ב-Discussions. כשיש יותר ממכשיר Vulkan אחד (משולב + נפרד) המתקין כותב את מספר הכרטיס הנפרד בתור `cihaz` בקובץ `ayarlar.json`.
 
 *הערה: התמיכה ב-Vulkan ניסיונית כרגע. היא נבנתה ונבדקה בהצלחה על GTX 1050 Ti. משתמש חיצוני (mitra_tr) דיווח גם שהריץ אותה על AMD 6900 XT. עדיין נדרשות בדיקות רחבות יותר על כרטיסי AMD/Intel.*
 
 **בדיקת קהילה (AMD):** @mitraTR הריץ את v0.1.1 עם Vulkan על AMD Radeon RX 6900 XT ב-Windows 11: ההתקנה, עיצוב הקול, ההקראה, ממשק הרשת והבדיקות עבדו; ההקראה דרשה כ-0.8-0.9 שנ׳ חישוב לכל שנייה של דיבור ([הדוח ב-#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). התקינו בתיקייה קצרה שהנתיב שלה כולל רק תווי ASCII (למשל `C:\vox`): ב-Windows המנוע לא מצליח לפתוח נתיבים עם עברית או תווים אחרים שאינם ASCII. כל הדוחות עד עכשיו: [חומרה שנבדקה](docs/donanim_testleri.md).
 
-**הערות על Vulkan:** תזמוני מילים זמינים כרגע רק ב-NVIDIA ‏(CUDA) וב-Mac; ב-AMD/Intel הם לא נוצרים עד שמנוע ה-Vulkan יעודכן (ההקראה עצמה עובדת). ההפעלה הראשונה ב-Vulkan עשויה להימשך כמה דקות, כי ה-shaders של כרטיס המסך עוברים הידור; ההקראות הבאות מהירות יותר.
+**הערות על Vulkan:** מאז מנוע v0.3.1 תזמוני המילים עובדים גם ב-Vulkan. יש שתי חבילות: `vulkan` דורשת מעבד עם AVX2 (רוב מעבדי Intel Core מ-2013, AMD מ-2015; בהרבה Pentium/Celeron אין); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) רצה על כל מעבד x86 של 64 סיביות, אבל הקריאה הראשונה של קול לוקחת בערך פי 2.2 זמן (הקריאות הבאות באותה מהירות). `kur.ps1 -Vulkan` בודק את המעבד ובוחר את החבילה בעצמו. בכרטיס משולב המנוע משתמש בכ-8 GB זיכרון בזמן הקריאה. ההפעלה הראשונה ב-Vulkan עשויה להימשך כמה דקות כי ה-shaders של כרטיס המסך עוברים הידור; הקריאות הבאות מהירות יותר. פרטים: [docs/vulkan.md](docs/vulkan.md).
 
 ### חלופה: בניית המנוע מקוד המקור
 

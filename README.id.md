@@ -71,8 +71,8 @@ desain di sini dipakai di sana dengan `ses.voxcpm2_ses = "<name>/<variant>"`.
 
 1. **Unduh** kodenya: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Paket engine siap pakai untuk kartu grafismu akan diambil oleh installer di langkah 3:
-   NVIDIA → [paket CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [paket Vulkan, eksperimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [paket CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [paket Vulkan, eksperimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (sudah mengunduh salah satunya? tambahkan `-HazirZip <path to the zip>` ke perintah di bawah).
 2. **Ekstrak** berkas zip, buka folder `voxcpm2-turkce-ses-tasarimi-main`, ketik `powershell` di bilah alamat
    Explorer, lalu tekan Enter.
@@ -209,13 +209,7 @@ hanya mendengarkan di localhost).
 lebih lambat). Maxwell (GTX 9xx) dan yang lebih lama tidak didukung oleh CUDA 12.8. Kami mengujinya di GTX 1050 Ti 4 GB (juga lewat Docker Desktop/WSL2 di Windows, hanya CLI); diukur oleh @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (detail di [docs/linux.md](docs/linux.md)). Laporan dari kartu grafis lain sangat kami harapkan di [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**AMD / Intel (eksperimental):** zip engine Vulkan terpisah (`...-win64-vulkan.zip`, tanpa CUDA) dipasang dengan
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`. Ini baru diverifikasi di kartu NVIDIA kami melalui backend Vulkan (di sana ia
-berjalan lebih lambat daripada CUDA tetapi menghasilkan audio yang sama untuk seed yang sama; pengukuran itu dilakukan
-saat disk sedang sibuk dengan pekerjaan lain, jadi perbandingan kecepatan yang bersih masih tertunda) dan kami **belum**
-mengujinya sendiri di perangkat keras AMD atau Intel: jika kamu mencobanya, silakan unggah hasilnya di Discussions.
-Jika ada lebih dari satu perangkat Vulkan (terintegrasi + diskret), installer menulis indeks GPU diskret sebagai `cihaz`
-ke dalam `ayarlar.json`.
+**AMD / Intel (eksperimental):** mesin Vulkan terpisah (tanpa CUDA) dipasang dengan `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Kami mengujinya di kartu NVIDIA kami lewat backend Vulkan (di sana lebih lambat dari CUDA, audio sama untuk seed yang sama; perbandingan kecepatan yang bersih masih tertunda) dan di grafis terintegrasi Intel HD Graphics 630 (sekitar 35-50 detik komputasi per 1 detik ucapan); di AMD kami **belum** mengujinya sendiri: jika Anda mencobanya, tulis hasilnya di Discussions. Jika ada lebih dari satu perangkat Vulkan (terintegrasi + diskret), pemasang menulis indeks GPU diskret sebagai `cihaz` ke `ayarlar.json`.
 
 *Catatan: Dukungan Vulkan saat ini masih eksperimental. Dukungan ini sudah berhasil di-build dan diuji di GTX 1050 Ti.
 Seorang pengguna eksternal (mitra_tr) juga melaporkan berhasil menjalankannya di AMD 6900 XT. Pengujian yang lebih luas
@@ -223,7 +217,7 @@ di kartu AMD/Intel masih diperlukan.*
 
 **Uji komunitas (AMD):** @mitraTR menjalankan v0.1.1 dengan Vulkan di AMD Radeon RX 6900 XT pada Windows 11: instalasi, desain suara, pembacaan, antarmuka web, dan pengujian semuanya berhasil; pembacaan butuh sekitar 0,8-0,9 dtk komputasi per 1 dtk ucapan ([laporan di #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Pasang di folder pendek yang jalurnya hanya berisi karakter ASCII (mis. `C:\vox`): di Windows mesin tidak bisa membuka jalur yang berisi karakter non-ASCII. Semua laporan sejauh ini: [perangkat keras yang sudah diuji](docs/donanim_testleri.md).
 
-**Catatan Vulkan:** waktu kata saat ini hanya tersedia di NVIDIA (CUDA) dan Mac; di AMD/Intel waktu kata belum dibuat sampai mesin Vulkan diperbarui (pembacaan tetap berjalan). Pembukaan pertama di Vulkan bisa memakan beberapa menit karena shader GPU dikompilasi; pembacaan berikutnya lebih cepat.
+**Catatan Vulkan:** sejak mesin v0.3.1 penanda waktu kata juga berjalan di Vulkan. Ada dua paket: `vulkan` butuh prosesor dengan AVX2 (sebagian besar Intel Core sejak 2013, AMD sejak 2015; banyak Pentium/Celeron tidak punya); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) berjalan di semua prosesor x86 64-bit, tetapi pembacaan pertama sebuah suara butuh sekitar 2,2 kali lebih lama (pembacaan berikutnya sama cepat). `kur.ps1 -Vulkan` memeriksa prosesor dan memilih paket sendiri. Dengan grafis terintegrasi, mesin memakai sekitar 8 GB RAM saat membaca. Awal pertama di Vulkan bisa makan beberapa menit karena shader GPU dikompilasi; pembacaan berikutnya lebih cepat. Rincian: [docs/vulkan.md](docs/vulkan.md).
 
 ### Alternatif: build engine dari kode sumber
 

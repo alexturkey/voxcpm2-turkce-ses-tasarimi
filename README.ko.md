@@ -68,8 +68,8 @@ GTX 1050 Ti(4 GB)에 맞게 패치한 [audio.cpp](https://github.com/0xShug0/aud
 
 1. 코드를 **다운로드**합니다: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    그래픽 카드에 맞는 미리 빌드된 엔진 패키지는 3단계에서 설치 스크립트가 받아 옵니다.
-   NVIDIA → [CUDA 패키지](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan 패키지, 실험적](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [CUDA 패키지](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan 패키지, 실험적](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (이미 받아 두었다면 아래 명령에 `-HazirZip <path to the zip>`을 추가하세요).
 2. zip의 **압축을 풀고** `voxcpm2-turkce-ses-tasarimi-main` 폴더를 연 다음, 파일 탐색기 주소 표시줄에 `powershell`을
    입력하고 Enter를 누릅니다.
@@ -200,17 +200,13 @@ PowerShell에서 같은 작업을 하려면:
 시작이 느림). Maxwell(GTX 9xx) 이전 세대는 CUDA 12.8에서 지원되지 않습니다. 저희는 GTX 1050 Ti 4 GB에서 테스트했습니다(Windows에서 Docker Desktop/WSL2를 통해서도, CLI만). @mslmyilmaz5 님의 측정(#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1(자세한 내용은 [docs/linux.md](docs/linux.md)). 다른 카드에서의 결과 보고는 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)에서 환영합니다.
 
-**AMD / Intel(실험적):** CUDA가 없는 별도의 Vulkan 엔진 zip(`...-win64-vulkan.zip`)은
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`으로 설치합니다. 이 버전은 저희 NVIDIA 카드에서 Vulkan 백엔드로만 검증했습니다(그 환경에서
-CUDA보다 느렸지만 같은 시드로 같은 오디오를 만들었습니다. 다만 이 측정은 디스크가 다른 작업으로 바쁠 때 한 것이라, 깨끗한 속도 비교는 아직 남아 있습니다).
-AMD나 Intel 하드웨어에서는 저희가 직접 테스트하지 **않았습니다**. 사용해 보셨다면 결과를 Discussions에 올려 주세요. Vulkan 장치가 둘 이상이면(내장 + 외장)
-설치 스크립트가 외장 GPU의 인덱스를 `cihaz`로 `ayarlar.json`에 기록합니다.
+**AMD / Intel(실험적):** CUDA가 필요 없는 별도의 Vulkan 엔진은 `scripts\kur.ps1 -Kok C:\vox -Vulkan`로 설치합니다. 저희 NVIDIA 카드에서 Vulkan 백엔드로(그곳에서는 CUDA보다 느리지만 같은 시드에서 같은 음성; 깔끔한 속도 비교는 아직입니다), 그리고 Intel HD Graphics 630 내장 그래픽에서(음성 1초당 약 35-50초 계산) 시험했습니다. AMD에서는 저희가 직접 테스트하지 **않았습니다**. 시도해 보셨다면 결과를 Discussions에 올려 주세요. Vulkan 장치가 둘 이상이면(내장 + 외장) 설치 프로그램이 외장 GPU의 번호를 `ayarlar.json`에 `cihaz`로 기록합니다.
 
 **참고:** Vulkan 지원은 현재 실험 단계입니다. GTX 1050 Ti에서 빌드와 테스트에 성공했습니다. 또한 외부 사용자(mitra_tr)가 AMD 6900 XT에서도 실행했다고 알려 왔습니다. AMD/Intel 카드에서는 더 폭넓은 테스트가 필요합니다.
 
 **커뮤니티 테스트(AMD):** @mitraTR 님이 Windows 11의 AMD Radeon RX 6900 XT에서 v0.1.1을 Vulkan으로 실행했습니다. 설치, 음성 디자인, 읽기, 웹 UI, 테스트가 모두 정상 동작했고, 읽기는 음성 1초당 약 0.8~0.9초의 연산 시간이 걸렸습니다([#6의 보고](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). 경로에 ASCII 문자만 있는 짧은 폴더에 설치하세요(예: `C:\vox`). Windows에서는 엔진이 한글 등 ASCII가 아닌 문자가 들어간 경로를 열지 못합니다. 지금까지의 모든 보고: [테스트된 하드웨어](docs/donanim_testleri.md).
 
-**Vulkan 참고 사항:** 단어별 타이밍은 현재 NVIDIA(CUDA)와 Mac에서만 제공됩니다. AMD/Intel에서는 Vulkan 엔진이 업데이트될 때까지 나오지 않습니다(읽기 자체는 작동합니다). Vulkan에서 처음 실행할 때는 GPU 셰이더를 컴파일하느라 몇 분 걸릴 수 있으며, 이후 읽기는 더 빨라집니다.
+**Vulkan 참고 사항:** 엔진 v0.3.1부터 Vulkan에서도 단어 타이밍이 나옵니다. 패키지는 두 가지입니다: `vulkan`은 AVX2를 지원하는 CPU가 필요하고(2013년 이후 대부분의 Intel Core, 2015년 이후 AMD; 많은 Pentium/Celeron은 미지원), [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip)는 모든 64비트 x86 CPU에서 돌아가지만 어떤 목소리의 첫 읽기에 약 2.2배 시간이 걸립니다(이후 읽기는 같은 속도). `kur.ps1 -Vulkan`이 CPU를 확인해 패키지를 스스로 고릅니다. 내장 그래픽에서는 읽는 동안 엔진이 RAM을 약 8 GB 씁니다. Vulkan 첫 실행은 GPU 셰이더를 컴파일하느라 몇 분 걸릴 수 있으며, 이후 읽기는 더 빨라집니다. 자세히: [docs/vulkan.md](docs/vulkan.md).
 
 ### 대안: 소스에서 엔진 빌드하기
 
