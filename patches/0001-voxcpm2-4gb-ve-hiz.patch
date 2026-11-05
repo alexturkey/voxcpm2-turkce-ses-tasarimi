@@ -566,7 +566,7 @@
        prefill_input.text_mask.push_back(row.text_mask ? 1.0F : 0.0F);
        prefill_input.audio_mask.push_back(row.audio_mask ? 1.0F : 0.0F);
      }
-+    probe_vector("prefill_embeddings", prefill_input.input_embeddings, true);
++    probe_vector("prefill_embeddings", prefill_input.input_embeddings, (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1"));
      const auto prefill_output = prefill_.run(prefill_input);
      base_lm_.import_state(prefill_output.base_state);
      residual_lm_.import_state(prefill_output.residual_state);
@@ -625,7 +625,7 @@
 +      debug::trace_log_scalar("voxcpm2.internal.acoustic_rescue_applied", probe_rescue_applied ? 1 : 0);
 +      debug::trace_log_scalar("voxcpm2.internal.base_position_expected", prefill.rows.size() + index);
 +      debug::trace_log_scalar("voxcpm2.internal.noise_start", patch_noise_start - patch_elems);
-+      const bool probe_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 1 >= 170 && index + 1 <= 220);
++      const bool probe_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1");
 +      probe_vector("lm_hidden", lm_hidden, probe_full);
 +      probe_vector("residual_hidden", residual_hidden, probe_full);
 +      probe_vector("mu", mu, probe_full);
@@ -658,8 +658,8 @@
 +      const auto &next_lm = next_lm_result.hidden;
 +      debug::trace_log_scalar("voxcpm2.internal.next_state_step", index + 2);
 +      debug::trace_log_scalar("voxcpm2.internal.base_position_actual", next_lm_result.position);
-+      const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 2 >= 170 && index + 2 <= 220);
-+      probe_vector("next_encoder_embed", curr_embed, true);
++      const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1");
++      probe_vector("next_encoder_embed", curr_embed, probe_next_full);
 +      probe_vector("next_lm_raw", next_lm, probe_next_full);
        const auto next_projected =
            projection_.run(next_lm, residual_hidden, curr_embed);
