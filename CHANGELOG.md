@@ -10,6 +10,13 @@
   okumayla denendi; AVX2 paketi Sandy Bridge taklidinde beklendiği gibi durdu (BMI2 komutu `shlx`).
   `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`; `scripts/release_zip.ps1 -Islemci avx2|uyumlu` derleme
   bayraklarını ve derlemenin yazdığı damgayı (`islemci.txt`: seçenek + exe sha256) denetler.
+- `scripts/kur.ps1 -Vulkan` paketi işlemciye göre kendisi seçer (`-Islemci oto`, varsayılan; `avx2` / `uyumlu` elle seçer,
+  deneme yapılmaz). AVX2 paketi yalnız AVX2 değil FMA, F16C ve BMI2 komutları da kullanır (exe taraması); bunlardan biri
+  eksikse uyumlu paket iner. Denetim iki katman: `ses_tasarim/islemci.py` numpy'nin işlemci tespitini okur (okunamazsa
+  uyumlu); seçilen AVX2 exe'si yerleştirilmeden önce geçici klasörde bir kez `--list-devices` ile çalıştırılır ve "ok"
+  dışındaki her sonuçta (ör. geçersiz komut 0xC000001D) uyumlu paket kurulur; Windows hata kutusu açılmaz. Bu yüzden
+  Vulkan kurulumunda Python adımı motordan önce gelir. `-HazirZip` ile `oto`da paket zip'in sha256'sından anlaşılır; AVX2
+  zip'i denemeyi geçmezse kurulu motora dokunulmaz ve uyumlu zip istenir. Test: `tests/test_islemci.py`.
 - Vulkan, düşük iş kümesi sınırlı kartlar (ör. Intel HD 630, maxComputeWorkGroupCount 65536): AudioVAE çözücü dilimi
   kart sınırına göre otomatik 5 sn (diğer kartlarda 10 sn kalır). Önceden Intel'de 30 sn tasarım ve uzun tek satırlı okuma
   (ölçülen: 13,9 sn'lik satır) `GGML_ASSERT ... maxComputeWorkGroupCount` ile çöküyordu. Dilim boyu sesi değiştirmez (ölçüldü: 10/5 sn
@@ -38,6 +45,14 @@
   Sandy Bridge emulation, as expected (BMI2 instruction `shlx`). `scripts/derle.ps1 -Islemci native|avx2|tasinabilir`;
   `scripts/release_zip.ps1 -Islemci avx2|uyumlu` checks the build flags and the stamp the build writes (`islemci.txt`:
   option + exe sha256).
+- `scripts/kur.ps1 -Vulkan` picks the package from the CPU (`-Islemci oto`, default; `avx2` / `uyumlu` choose by hand,
+  without a test run). The AVX2 package also uses FMA, F16C and BMI2 instructions (exe scan); if any is missing the
+  compatible package is installed. Two layers: `ses_tasarim/islemci.py` reads numpy's CPU detection (unreadable:
+  compatible); the chosen AVX2 exe then runs `--list-devices` once from a temp folder before it is installed, and any
+  result other than "ok" (e.g. illegal instruction 0xC000001D) installs the compatible package; no Windows error dialog
+  opens. The Python step therefore runs before the engine step in the Vulkan install. With `-HazirZip` and `oto` the
+  package is recognised from the zip's sha256; if the AVX2 zip fails the test run, the installed engine is left as it
+  was and the compatible zip is asked for. Test: `tests/test_islemci.py`.
 - Vulkan on cards with a low compute dispatch limit (e.g. Intel HD 630, maxComputeWorkGroupCount 65536): the AudioVAE
   decode chunk is chosen from the card limit, 5 s automatically (other cards keep 10 s). Before, a 30 s voice design and
   a long single-line reading (measured: a 13.9 s line) crashed on Intel with `GGML_ASSERT ... maxComputeWorkGroupCount`. The chunk
