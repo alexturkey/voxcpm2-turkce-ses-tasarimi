@@ -68,8 +68,8 @@ dublagem de vídeo; ele instala este repositório como seu motor de voz VoxCPM2.
 
 1. **Baixe** o código: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    O pacote de motor pronto para a sua placa é baixado pelo instalador no passo 3:
-   NVIDIA → [pacote CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [pacote Vulkan, experimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [pacote CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [pacote Vulkan, experimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (já baixou um? acrescente `-HazirZip <path to the zip>` ao comando abaixo).
 2. **Extraia** o zip, abra a pasta `voxcpm2-turkce-ses-tasarimi-main`, digite `powershell` na barra de endereços do
    Explorador de Arquivos e pressione Enter.
@@ -200,18 +200,13 @@ localhost).
 inicialização mais lenta). Maxwell (GTX 9xx) e anteriores não são suportadas pelo CUDA 12.8. Testado por nós numa GTX 1050 Ti de 4 GB (também via Docker Desktop/WSL2 no Windows, só CLI); medido por @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (detalhes em [docs/linux.md](docs/linux.md)). Relatos de outras placas são bem-vindos nas [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**AMD / Intel (experimental):** um zip separado do motor Vulkan (`...-win64-vulkan.zip`, sem CUDA) é instalado com
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`. Ele foi verificado só na nossa placa NVIDIA pelo backend Vulkan (lá rodou mais devagar
-que o CUDA, mas gerou o mesmo áudio para a mesma semente; essa medição foi feita enquanto o disco estava ocupado com outra
-tarefa, então uma comparação limpa de velocidade ainda está pendente) e **não** o testamos nós mesmos em hardware AMD ou
-Intel: se você testar, publique o resultado nas Discussions. Com mais de um dispositivo Vulkan (integrado + dedicado), o
-instalador grava o índice da GPU dedicada como `cihaz` em `ayarlar.json`.
+**AMD / Intel (experimental):** um motor Vulkan separado (sem CUDA) é instalado com `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Testamos na nossa placa NVIDIA pelo backend Vulkan (lá mais lento que CUDA, mesmo áudio com a mesma semente; ainda falta uma comparação de velocidade limpa) e no gráfico integrado Intel HD Graphics 630 (cerca de 35-50 s de cálculo por 1 s de fala); em AMD **não** testamos nós mesmos: se você testar, publique o resultado em Discussions. Com mais de um dispositivo Vulkan (integrado + dedicado), o instalador grava o índice da GPU dedicada como `cihaz` em `ayarlar.json`.
 
 **Nota:** o suporte a Vulkan é experimental no momento. Ele foi compilado e testado com sucesso numa GTX 1050 Ti. Além disso, um usuário externo (mitra_tr) relatou tê-lo executado numa AMD 6900 XT. Ainda são necessários testes mais amplos em placas AMD/Intel.
 
 **Teste da comunidade (AMD):** @mitraTR executou a v0.1.1 com Vulkan numa AMD Radeon RX 6900 XT no Windows 11: instalação, criação de voz, leitura, interface web e testes funcionaram; a leitura levou cerca de 0,8-0,9 s de processamento por segundo de fala ([relato em #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Instale numa pasta curta cujo caminho tenha apenas caracteres ASCII (ex.: `C:\vox`): no Windows, o motor não consegue abrir caminhos com acentos ou outros caracteres não ASCII. Todos os relatos até agora: [hardware testado](docs/donanim_testleri.md).
 
-**Notas sobre o Vulkan:** por enquanto, os tempos das palavras só estão disponíveis na NVIDIA (CUDA) e no Mac; na AMD/Intel eles não são gerados até que o motor Vulkan seja atualizado (a leitura funciona normalmente). A primeira abertura no Vulkan pode levar alguns minutos porque os shaders da GPU são compilados; as leituras seguintes ficam mais rápidas.
+**Notas sobre o Vulkan:** desde o motor v0.3.1 os tempos de palavra também funcionam no Vulkan. Dois pacotes: `vulkan` precisa de um processador com AVX2 (a maioria dos Intel Core desde 2013, AMD desde 2015; muitos Pentium/Celeron não têm); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) roda em qualquer processador x86 de 64 bits, mas a primeira leitura de uma voz leva cerca de 2,2 vezes mais (as leituras seguintes têm a mesma velocidade). `kur.ps1 -Vulkan` verifica o processador e escolhe o pacote sozinho. Com gráfico integrado, o motor usa cerca de 8 GB de RAM durante a leitura. A primeira inicialização no Vulkan pode levar alguns minutos porque os shaders da GPU são compilados; as leituras seguintes são mais rápidas. Detalhes: [docs/vulkan.md](docs/vulkan.md).
 
 ### Alternativa: compilar o motor a partir do código-fonte
 

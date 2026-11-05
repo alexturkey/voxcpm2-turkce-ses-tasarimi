@@ -33,8 +33,11 @@
   Windows Vulkan'da ölçüm aralığı 2 sn (her ölçüm bir PowerShell açar); CUDA ve macOS 0,5 sn kalır. Ölçüm (GTX 1050 Ti,
   Vulkan, aynı metin ve tohum): 0,5 sn'de meşgul işlemci +%94, 2 sn'de +%30; üretim süresi +%1, VRAM tepe aynı (2810 MB).
   Test: `tests/test_vram_ve_yol.py`.
-- README'ler (30 dil), Vulkan notları: kelime zamanı şu an yalnız NVIDIA (CUDA) ve Mac'te, Vulkan motoru güncellenene
-  kadar AMD/Intel'de çıkmaz (okuma çalışır); Vulkan'da ilk açılış gölgelendirici derlemesiyle birkaç dakika sürebilir.
+- README'ler (30 dil), Vulkan notları: kelime zamanı Vulkan'da da çıkar; iki paket ve uyumlu paketin bağlantısı, kurulumun
+  paketi kendisi seçtiği, dahili kartta ~8 GB RAM; Intel HD Graphics 630'da denendi; ilk açılış gölgelendirici
+  derlemesiyle birkaç dakika sürebilir. Hızlı başlangıç bağlantıları güncel sürüme (CUDA v0.3.0, Vulkan v0.3.1).
+  `docs/vulkan.md`: paketler, seçim, çözücü dilimi, kendin derle, SDE ile uyumlu paket denemesi, sık hatalar.
+  `AGENTS.md`: Vulkan alt sınırı 1.2 (1.3 yazıyordu), olmayan `kur.ps1 -Derle -Vulkan` yolu çıkarıldı.
 
 **EN**
 - Vulkan engine v0.3.1 (patches 0001 + 0002: 4 GB + word timing; 0003 is CUDA kernels only, not in the Vulkan build):
@@ -69,9 +72,11 @@
   generate, peak VRAM 2839 MB, seed 42. On Windows Vulkan the polling interval is 2 s (each reading starts PowerShell);
   CUDA and macOS stay at 0.5 s. Measured on a GTX 1050 Ti with Vulkan, same text and seed: busy CPU +94% at 0.5 s and
   +30% at 2 s; generation time +1%, same peak VRAM (2810 MB). Test: `tests/test_vram_ve_yol.py`.
-- READMEs (30 languages), Vulkan notes: word timings are currently only on NVIDIA (CUDA) and Mac and are not produced on
-  AMD/Intel until the Vulkan engine is updated (reading works); the first Vulkan start can take a few minutes while
-  shaders compile.
+- READMEs (30 languages), Vulkan notes: word timings work on Vulkan too; the two packages with a link to the compatible
+  one, the installer picking the package, ~8 GB RAM on integrated graphics; tested on Intel HD Graphics 630; the first
+  start can take a few minutes while shaders compile. Quick-start links point to the current releases (CUDA v0.3.0,
+  Vulkan v0.3.1). `docs/vulkan.md`: packages, choice, decoder chunk, building, checking the compatible build with SDE,
+  common errors. `AGENTS.md`: Vulkan minimum is 1.2 (it said 1.3); the non-existent `kur.ps1 -Derle -Vulkan` path removed.
 
 ## v0.3.0 — 2026-11-04
 

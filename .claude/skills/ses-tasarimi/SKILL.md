@@ -11,6 +11,9 @@ This skill drives the repo's own code: `ses_tasarim/tasarla.py` (design), `ses_t
 reading), `ses_tasarim/okunus.py` (text preparation per language). Install first (`AGENTS.md`); every command below
 needs a working `ayarlar.json`. Quality is fixed: 16 steps, cfg 2.0 (`motor.FIXED`); never lower it, never suggest
 another model. Run one GPU job at a time. Voices are synthetic: do not imitate a real, identifiable person (`ETHICS.md`).
+On AMD/Intel the engine is the experimental Vulkan build (`ayarlar.json` `"backend": "vulkan"`): the flow is the same,
+word timings included; generation is slower, the first start compiles shaders (a few minutes), and on integrated graphics
+the engine needs about 8 GB of system RAM, so tell the user before a long job (`docs/vulkan.md`).
 
 ## Why this flow
 

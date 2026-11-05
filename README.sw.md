@@ -72,8 +72,8 @@ yake ya sauti ya VoxCPM2. Sauti unayoibuni hapa inatumika huko kwa `ses.voxcpm2_
 
 1. **Pakua** msimbo: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Kifurushi cha injini kilicho tayari kwa kadi yako kinapakuliwa na kisakinishi katika hatua ya 3:
-   NVIDIA → [kifurushi cha CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip),
-   AMD / Intel → [kifurushi cha Vulkan, cha majaribio](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.1.1/voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-vulkan.zip)
+   NVIDIA → [kifurushi cha CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
+   AMD / Intel → [kifurushi cha Vulkan, cha majaribio](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
    (umeshapakua kimoja? ongeza `-HazirZip <path to the zip>` kwenye amri iliyo hapa chini).
 2. **Fungua** zip, ingia kwenye folda ya `voxcpm2-turkce-ses-tasarimi-main`, andika `powershell` kwenye upau wa anwani wa
    Explorer kisha bonyeza Enter.
@@ -209,12 +209,7 @@ Imejaribiwa nasi kwenye GTX 1050 Ti 4 GB (pia kupitia Docker Desktop/WSL2 kwenye
 @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (maelezo katika [docs/linux.md](docs/linux.md)).
 Ripoti kutoka kadi nyingine zinakaribishwa katika [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
-**AMD / Intel (ya majaribio):** zip tofauti ya injini ya Vulkan (`...-win64-vulkan.zip`, bila CUDA) inasakinishwa kwa
-`scripts\kur.ps1 -Kok C:\vox -Vulkan`. Imethibitishwa tu kwenye kadi yetu ya NVIDIA kupitia backend ya Vulkan (huko
-ilienda polepole kuliko CUDA lakini ilitoa sauti ileile kwa mbegu ileile; kipimo hicho kilichukuliwa wakati diski
-ilikuwa na shughuli nyingine, hivyo ulinganisho safi wa kasi bado unasubiriwa) na **hatujaijaribu** sisi wenyewe kwenye
-vifaa vya AMD wala Intel: ukiijaribu, tafadhali weka matokeo katika Discussions. Kukiwa na zaidi ya kifaa kimoja cha Vulkan
-(kilichojengwa ndani + cha pekee), kisakinishi kinaandika namba ya GPU ya pekee kama `cihaz` ndani ya `ayarlar.json`.
+**AMD / Intel (ya majaribio):** injini tofauti ya Vulkan (bila CUDA) husakinishwa kwa `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Tuliijaribu kwenye kadi yetu ya NVIDIA kupitia backend ya Vulkan (huko ni polepole kuliko CUDA, sauti ileile kwa mbegu ileile; ulinganisho safi wa kasi bado haujafanyika) na kwenye michoro jumuishi ya Intel HD Graphics 630 (takriban sekunde 35-50 za hesabu kwa sekunde 1 ya usemi); kwenye AMD **hatujaijaribu** sisi wenyewe: ukiijaribu, tafadhali weka matokeo kwenye Discussions. Kukiwa na kifaa zaidi ya kimoja cha Vulkan (jumuishi + tofauti), kisakinishi huandika namba ya GPU tofauti kama `cihaz` ndani ya `ayarlar.json`.
 
 **Kumbuka:** Usaidizi wa Vulkan kwa sasa ni wa majaribio. Umejengwa na kujaribiwa kwa mafanikio kwenye GTX 1050 Ti.
 Mtumiaji wa nje (mitra_tr) pia ameripoti kuuendesha kwenye AMD 6900 XT. Majaribio mapana zaidi kwenye kadi za AMD/Intel
@@ -222,7 +217,7 @@ bado yanahitajika.
 
 **Jaribio la jamii (AMD):** @mitraTR aliendesha v0.1.1 kwa Vulkan kwenye AMD Radeon RX 6900 XT katika Windows 11: usakinishaji, kubuni sauti, kusoma, kiolesura cha wavuti na majaribio vyote vilifanya kazi; kusoma kulichukua takriban sek 0.8-0.9 za hesabu kwa kila sek 1 ya usemi ([ripoti katika #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Sakinisha kwenye folda fupi ambayo njia yake ina herufi za ASCII pekee (k.m. `C:\vox`): kwenye Windows injini haiwezi kufungua njia zenye herufi zisizo za ASCII. Ripoti zote hadi sasa: [vifaa vilivyojaribiwa](docs/donanim_testleri.md).
 
-**Maelezo kuhusu Vulkan:** kwa sasa, nyakati za maneno zinapatikana tu kwenye NVIDIA (CUDA) na Mac; kwenye AMD/Intel hazitolewi hadi injini ya Vulkan isasishwe (usomaji bado unafanya kazi). Kuwasha kwa mara ya kwanza kwenye Vulkan kunaweza kuchukua dakika kadhaa kwa sababu shader za GPU zinakusanywa; usomaji unaofuata ni wa haraka zaidi.
+**Maelezo kuhusu Vulkan:** tangu injini v0.3.1 nyakati za maneno zinafanya kazi pia kwenye Vulkan. Vifurushi viwili: `vulkan` kinahitaji prosesa yenye AVX2 (Intel Core nyingi tangu 2013, AMD tangu 2015; Pentium/Celeron nyingi hazina); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) kinafanya kazi kwenye prosesa yoyote ya x86 ya biti 64, lakini usomaji wa kwanza wa sauti huchukua takriban mara 2.2 zaidi (usomaji unaofuata una kasi ileile). `kur.ps1 -Vulkan` hukagua prosesa na kuchagua kifurushi chenyewe. Kwenye michoro jumuishi, injini hutumia takriban GB 8 za RAM wakati wa kusoma. Mwanzo wa kwanza kwenye Vulkan unaweza kuchukua dakika chache kwa sababu shader za GPU hukusanywa; usomaji unaofuata ni wa haraka zaidi. Maelezo: [docs/vulkan.md](docs/vulkan.md).
 
 ### Njia mbadala: jenga injini kutoka msimbo chanzo
 

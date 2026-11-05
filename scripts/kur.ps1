@@ -3,7 +3,8 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox -Derle     # kaynaktan derle / build from source
 # Adım seçmek / select steps:  -Adim model,cuda,hazir,python,ayar,kontrol   (derleme: kaynak,derle)
 # Her adım yeniden çalıştırılabilir: mevcut ve sha256'sı doğru dosya atlanır. / Idempotent: verified files are skipped.
-# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.1.1-win64-cuda12.8.zip
+# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip
+# AMD / Intel (deneysel):  -Vulkan  [-Islemci oto|avx2|uyumlu]   paket işlemciye göre seçilir / package picked from the CPU
 param(
     [string]$Kok = "C:\vox",                      # kısa yol şart (derlemede nvcc 260 karakter sınırı) / short path
     [string[]]$Adim = @(),                        # boş = varsayılan akış / empty = default flow
