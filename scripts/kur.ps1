@@ -341,11 +341,14 @@ if ($Adim -contains "kontrol") {
         if ($sec -match "(?i)vulkan:(\d+)") {
             $no = [int]$matches[1]
             $hedef = Join-Path $Repo "ayarlar.json"
-            if (Test-Path $hedef) {
-                $j = Get-Content -Raw -Encoding UTF8 $hedef | ConvertFrom-Json
+            $j = $(if (Test-Path $hedef) { Get-Content -Raw -Encoding UTF8 $hedef | ConvertFrom-Json } else { $null })
+            if ($j -and $j.backend -eq "vulkan") {
                 if ($j.PSObject.Properties["cihaz"]) { $j.cihaz = $no } else { $j | Add-Member -NotePropertyName cihaz -NotePropertyValue $no }
                 [IO.File]::WriteAllText($hedef, (($j | ConvertTo-Json) + "`n"), (New-Object Text.UTF8Encoding $false))
                 Write-Output "  seçilen Vulkan cihazı: $no ($sec) → ayarlar.json cihaz"
+            } elseif ($j) {
+                # CUDA ayarına Vulkan cihaz numarası yazılmaz (CUDA'da numara başka karta düşer) / never write a Vulkan index into CUDA settings
+                Write-Output "  ayarlar.json Vulkan değil (backend $($j.backend)); cihaz yazılmadı. Vulkan için: -Adim ayar,kontrol -Vulkan (Vulkan cihazı: $no)"
             }
         }
     }

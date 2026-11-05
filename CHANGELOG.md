@@ -1,5 +1,15 @@
 # Sürüm notları / Release notes
 
+## Yayınlanmadı / Unreleased
+
+**TR**
+- `kur.ps1 -Vulkan -Adim kontrol` tek başına çalışınca var olan CUDA `ayarlar.json`'una Vulkan cihaz numarası
+  (`cihaz`) yazıyordu; CUDA'da bu numara başka karta düşer. Artık yalnız `backend` `vulkan` ise yazılır, değilse uyarı.
+
+**EN**
+- `kur.ps1 -Vulkan -Adim kontrol` on its own wrote a Vulkan device index (`cihaz`) into an existing CUDA `ayarlar.json`,
+  where that index points to another card. It is now written only when `backend` is `vulkan`; otherwise a note is shown.
+
 ## v0.3.1 — 2026-11-05
 
 **TR**
