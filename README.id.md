@@ -204,16 +204,12 @@ hanya mendengarkan di localhost).
 > yang membutuhkan DLL CUDA dan model di sebelahnya; `kur.ps1` menempatkan semuanya dan paket Python yang
 > menjalankannya. Mengklik dua kali hanya akan menampilkan "cudart64_12.dll not found".
 
-**GPU yang didukung (rilis v0.1.1):** kode native untuk GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU yang didukung (rilis v0.3.0):** kode native untuk GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89), dan RTX 50xx (sm_120a); GPU CUDA lain mulai dari Pascal menjalankan PTX tertanam melalui driver (start pertama
 lebih lambat). Maxwell (GTX 9xx) dan yang lebih lama tidak didukung oleh CUDA 12.8. Kami mengujinya di GTX 1050 Ti 4 GB (juga lewat Docker Desktop/WSL2 di Windows, hanya CLI); diukur oleh @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (detail di [docs/linux.md](docs/linux.md)). Laporan dari kartu grafis lain sangat kami harapkan di [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (eksperimental):** mesin Vulkan terpisah (tanpa CUDA) dipasang dengan `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Kami mengujinya di kartu NVIDIA kami lewat backend Vulkan (di sana lebih lambat dari CUDA, audio sama untuk seed yang sama; perbandingan kecepatan yang bersih masih tertunda) dan di grafis terintegrasi Intel HD Graphics 630 (sekitar 35-50 detik komputasi per 1 detik ucapan); di AMD kami **belum** mengujinya sendiri: jika Anda mencobanya, tulis hasilnya di Discussions. Jika ada lebih dari satu perangkat Vulkan (terintegrasi + diskret), pemasang menulis indeks GPU diskret sebagai `cihaz` ke `ayarlar.json`.
-
-*Catatan: Dukungan Vulkan saat ini masih eksperimental. Dukungan ini sudah berhasil di-build dan diuji di GTX 1050 Ti.
-Seorang pengguna eksternal (mitra_tr) juga melaporkan berhasil menjalankannya di AMD 6900 XT. Pengujian yang lebih luas
-di kartu AMD/Intel masih diperlukan.*
 
 **Uji komunitas (AMD):** @mitraTR menjalankan v0.1.1 dengan Vulkan di AMD Radeon RX 6900 XT pada Windows 11: instalasi, desain suara, pembacaan, antarmuka web, dan pengujian semuanya berhasil; pembacaan butuh sekitar 0,8-0,9 dtk komputasi per 1 dtk ucapan ([laporan di #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Pasang di folder pendek yang jalurnya hanya berisi karakter ASCII (mis. `C:\vox`): di Windows mesin tidak bisa membuka jalur yang berisi karakter non-ASCII. Semua laporan sejauh ini: [perangkat keras yang sudah diuji](docs/donanim_testleri.md).
 
@@ -276,7 +272,7 @@ Hanya lokal (127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz` → bu
 *Bacakan dengan suara ini*, *Kloning suara*. Alur yang biasa: *Desain* → dengarkan variannya → *Tambahkan ke daftar
 baca saya* → *Bacakan dengan suara ini* → unduh. Atau pilih suara bawaan dari menu suara lalu bacakan.
 
-- **Versi di bagian header.** Teks kecil dan samar `v0.2.0 · <short commit>` (dengan `+` jika berkas yang dilacak punya
+- **Versi di bagian header.** Teks kecil dan samar `v0.3.1 · <short commit>` (dengan `+` jika berkas yang dilacak punya
   perubahan yang belum di-commit; hanya versi jika tanpa git), agar tangkapan layar dan video menunjukkan versi yang dipakai.
 - **Dua suara di setiap kartu varian.** Di atas, berwarna abu-abu, ada *Suara desain mentah*: dibuat sekali dan tidak
   akan keluar persis sama lagi. Di bawahnya, dalam bingkai oranye, ada *↻ Inilah suara yang akan selalu kamu dengar*:
@@ -328,8 +324,7 @@ dan mengumpulkan berkas-berkasnya.
 
 **GPU apa saja?** Lihat "GPU yang didukung" di atas: NVIDIA mulai dari GTX 10xx, VRAM 4 GB atau lebih, driver ≥ 570.
 Kode native ada di rilis untuk sm_61/75/86/89/120a; kartu lain dari Pascal atau yang lebih baru memakai PTX tertanam
-(start pertama lebih lambat). AMD/Intel: zip Vulkan eksperimental, `kur.ps1 -Vulkan`; seorang pengguna eksternal
-melaporkan berhasil menjalankannya di AMD 6900 XT, tetapi pengujian AMD/Intel yang lebih luas masih diperlukan (lihat
+(start pertama lebih lambat). AMD/Intel: zip Vulkan eksperimental, `kur.ps1 -Vulkan`; sudah kami uji di grafis terintegrasi Intel HD Graphics 630; @mitraTR menjalankan versi sebelumnya v0.1.1 di AMD RX 6900 XT, paket v0.3.1 yang baru belum dicoba di AMD (lihat
 "AMD / Intel" di atas). Hanya CPU (`"backend": "cpu"` di `ayarlar.json`) bisa berjalan tetapi ~6× lebih lambat daripada
 GTX 1050 Ti (pengukuran engine, 535 dtk vs 94 dtk untuk 48 dtk ucapan); bukan jalur yang didukung.
 
@@ -361,7 +356,7 @@ Bingung mulai dari mana? Empat issue kecil ini adalah langkah awal yang bagus:
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Tambahkan satu kalimat ke set uji
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Bagikan suara yang kamu desain, beserta deskripsi dan seed-nya
 
-**Uji kartu grafismu, tulis laporan:** tidak perlu bisa koding, cukup isi [formulir laporan uji perangkat keras](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); belum ada laporan dari kartu grafis Intel.
+**Uji kartu grafismu, tulis laporan:** tidak perlu bisa koding, cukup isi [formulir laporan uji perangkat keras](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); Intel HD Graphics 630 (terintegrasi) sudah kami uji sendiri; belum ada laporan dari Intel Arc, juga belum dari AMD dengan v0.3.1.
 
 Set uji bersama: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); panduan suara merek:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); cara mengirim kode: [CONTRIBUTING.md](CONTRIBUTING.md).

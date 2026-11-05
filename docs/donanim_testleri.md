@@ -3,14 +3,15 @@
 **TR:** Bu listedeki her satır gerçek bir makinede çalıştırılmış bir denemedir. Hız, 1 saniyelik konuşma için geçen hesap
 süresidir (küçük = hızlı); ölçenin kendi ölçümüdür, karşılaştırmalı bir hız testi değildir. Kalite her satırda aynı:
 16 adım, cfg 2.0. Kendi kartında denedin mi? [Donanım test raporu formunu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)
-doldur, satırın adınla buraya eklensin. **Intel ekran kartında henüz hiç deneme yok**; Intel Arc ya da dahili Intel
-grafikle Vulkan sürümünü deneyen ilk rapor çok değerli olur ([#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6)).
+doldur, satırın adınla buraya eklensin. Intel dahili grafikte (HD Graphics 630) kendimiz denedik; **Intel Arc'tan henüz
+rapor yok**, yeni v0.3.1 Vulkan paketleri AMD'de de henüz denenmedi. İlk raporlar çok değerli olur ([#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6)).
 
 **EN:** Every row is a run on a real machine. Speed is the compute time per 1 second of speech (lower = faster), as
 measured by the reporter; it is not a side-by-side benchmark. Quality is the same in every row: 16 steps, cfg 2.0.
 Tried it on your GPU? Fill in the [hardware test report form](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)
-and your row is added here with your name. **There is no Intel GPU report yet**; a first run of the Vulkan build on
-Intel Arc or Intel integrated graphics would help a lot ([#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6)).
+and your row is added here with your name. We tested Intel integrated graphics (HD Graphics 630) ourselves; **there is
+no Intel Arc report yet**, and the new v0.3.1 Vulkan packages have not been tried on AMD yet. First reports would help a
+lot ([#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6)).
 
 | Kart / GPU | İşletim sistemi / OS | Backend | Sürüm / Version | Hız / Speed (1 sn ses / 1 s speech) | Ne çalıştı / What worked | Raporlayan / Reported by | Kaynak / Source |
 |---|---|---|---|---|---|---|---|
@@ -18,7 +19,8 @@ Intel Arc or Intel integrated graphics would help a lot ([#6](https://github.com
 | NVIDIA RTX 3060 Ti 8 GB | Ubuntu 26.04 (Docker, Ubuntu 24.04) | CUDA 12.8.1, kaynaktan / from source | main, 2026-10-31 | kısa duman testi, hız ölçümü değil / short smoke test, not a speed benchmark | derleme, testler, tasarım, okuma / build, tests, design, reading | @mslmyilmaz5 | [#15](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/15), [docs/linux.md](linux.md) |
 | Apple M4 (MacBook Air, 16 GB) | macOS 27.0.1 | Metal | main, 2026-10-23 | ~2.0 sn / s | derleme, tasarım, okuma / build, design, reading | @cayir21 | [#10](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/pull/10), [docs/mac.md](mac.md) |
 | AMD Radeon RX 6900 XT 16 GB | Windows 11 Home | Vulkan (deneysel / experimental) | v0.1.1 | ~0.8-0.9 sn / s | kurulum, tasarım, okuma, arayüz, testler / install, design, reading, UI, tests | @mitraTR | [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655) |
-| Intel (Arc / dahili / integrated) | - | Vulkan | - | henüz rapor yok / no report yet | - | sen? / you? | [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) |
+| Intel HD Graphics 630 (dahili / integrated), 16 GB RAM | Windows 10 | Vulkan (deneysel / experimental) | v0.3.1 | ~35-50 sn / s | tasarım, okuma, kelime zamanı; okumada ~8 GB RAM / design, reading, word timing; ~8 GB RAM while reading | @alexturkey | [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6662203094), [docs/vulkan.md](vulkan.md) |
+| Intel Arc | - | Vulkan | - | henüz rapor yok / no report yet | - | sen? / you? | [#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6) |
 
 ## Bilinen notlar / Known notes
 

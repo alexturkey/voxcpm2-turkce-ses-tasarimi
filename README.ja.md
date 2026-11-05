@@ -195,14 +195,12 @@ localhost からの接続のみを受け付けます）。
 > 同じ場所に CUDA の DLL とモデルが必要です。`kur.ps1` がすべてを配置し、Python パッケージがエンジンを動かします。
 > ダブルクリックしても "cudart64_12.dll not found" と表示されるだけです。
 
-**対応 GPU（リリース v0.1.1）：** GTX 10xx（sm_61）、RTX 20xx（sm_75）、RTX 30xx（sm_86）、RTX 40xx
+**対応 GPU（リリース v0.3.0）：** GTX 10xx（sm_61）、RTX 20xx（sm_75）、RTX 30xx（sm_86）、RTX 40xx
 （sm_89）、RTX 50xx（sm_120a）向けのネイティブコードを収録。Pascal 以降のその他の CUDA GPU は、ドライバー経由で埋め込みの PTX を実行します（初回起動は
 遅くなります）。Maxwell（GTX 9xx）以前は CUDA 12.8 の対象外です。私たちは GTX 1050 Ti 4 GB でテストしました（Windows の Docker Desktop/WSL2 経由でも、CLI のみ）。@mslmyilmaz5 さんによる測定（#15）：RTX 3060 Ti 8 GB、Ubuntu 24.04 Docker、
 CUDA 12.8.1（詳細は [docs/linux.md](docs/linux.md)）。ほかのカードでの報告は [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) で歓迎しています。
 
 **AMD / Intel（実験的）：** CUDA を使わない別の Vulkan エンジンは `scripts\kur.ps1 -Kok C:\vox -Vulkan` でインストールします。私たちの NVIDIA カードで Vulkan バックエンドを通して（そこでは CUDA より遅く、同じシードで同じ音声。条件をそろえた速度比較はまだです）、また Intel HD Graphics 630 内蔵グラフィックスで（音声 1 秒あたり約 35〜50 秒の計算）試しました。AMD では私たち自身はテスト**していません**。試した方は、ぜひ結果を Discussions に投稿してください。Vulkan デバイスが複数ある場合（内蔵 + 単体）、インストーラーは単体 GPU のインデックスを `cihaz` として `ayarlar.json` に書き込みます。
-
-**注：** Vulkan 対応は現在実験的な段階です。GTX 1050 Ti 上でのビルドとテストには成功しています。また、外部のユーザー（mitra_tr）から AMD 6900 XT でも動作したとの報告がありました。AMD/Intel のカードでは、さらに幅広いテストが必要です。
 
 **コミュニティによるテスト（AMD）：** @mitraTR さんが Windows 11 の AMD Radeon RX 6900 XT で v0.1.1 を Vulkan で動かしました。インストール、音声デザイン、読み上げ、Web UI、テストのすべてが成功し、読み上げは音声 1 秒あたり約 0.8〜0.9 秒の計算時間でした（[#6 のレポート](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)）。インストール先は、パスに ASCII 文字だけを含む短いフォルダーにしてください（例：`C:\vox`）。Windows ではエンジンが日本語などの ASCII 以外の文字を含むパスを開けません。これまでのすべてのレポート：[動作確認済みハードウェア](docs/donanim_testleri.md)。
 
@@ -262,7 +260,7 @@ nvcc は長いパスで失敗します。チェック付きの手順：[AGENTS.m
 *この声で読み上げ*、*ボイスクローン*。一般的な流れ：*デザインする* → 候補を聞き比べる → *読み上げリストに追加* →
 *この声で読み上げる* → ダウンロード。または、ボイスメニューから収録済みボイスを選んで読み上げます。
 
-- **ヘッダーのバージョン表示。** 小さく薄い文字で `v0.2.0 · <short commit>`（追跡対象のファイルに未コミットの変更があれば `+` 付き。
+- **ヘッダーのバージョン表示。** 小さく薄い文字で `v0.3.1 · <short commit>`（追跡対象のファイルに未コミットの変更があれば `+` 付き。
   git がなければバージョンのみ）。スクリーンショットや動画で、どのバージョンを使ったかがわかります。
 - **各候補カードに 2 つの声。** 上段のグレーは*素の設計音声*：一度だけ生成され、同じものは二度と出ません。
   その下のオレンジ枠は *↻ これからずっと聞く声です*：設計音声をリファレンスにして、その候補専用のシード（カードに表示）で
@@ -308,9 +306,7 @@ audio.cpp は*エンジン*で、お使いの GPU 上でモデルを動かす C+
 このリポジトリの Python パッケージは、テキストの準備、エンジンの呼び出し、ファイルの収集だけを行います。
 
 **どの GPU で動く？** 上の「対応 GPU」を参照してください：GTX 10xx 以降の NVIDIA、VRAM 4 GB 以上、ドライバー ≥ 570。ネイティブコードは
-リリースに sm_61/75/86/89/120a 向けが含まれ、その他の Pascal 以降のカードは埋め込みの PTX を使います（初回起動は遅くなります）。AMD/Intel：
-実験的な Vulkan zip、`kur.ps1 -Vulkan`。外部のユーザーから AMD 6900 XT で動作したとの報告がありますが、AMD/Intel での
-より幅広いテストはまだ必要です（上の「AMD / Intel」を参照）。CPU のみ（`ayarlar.json` で `"backend": "cpu"`）でも動きますが、
+リリースに sm_61/75/86/89/120a 向けが含まれ、その他の Pascal 以降のカードは埋め込みの PTX を使います（初回起動は遅くなります）。AMD/Intel：実験的な Vulkan zip、`kur.ps1 -Vulkan`。Intel HD Graphics 630 内蔵グラフィックスでは私たちが試しました。@mitraTR は以前の v0.1.1 を AMD RX 6900 XT で動かしましたが、新しい v0.3.1 パッケージは AMD ではまだ試されていません（上の「AMD / Intel」を参照）。CPU のみ（`ayarlar.json` で `"backend": "cpu"`）でも動きますが、
 GTX 1050 Ti より約 6 倍遅く（エンジンでの測定、48 秒の音声で 535 秒対 94 秒）、サポート対象外です。
 
 **速度は？** GTX 1050 Ti 4 GB（i7-7700HQ）での測定：デザインの候補 1 つ（≈ 25 秒の録音）で 55 秒。読み上げは音声 1 秒あたり ≈ 2 秒の
@@ -339,7 +335,7 @@ UI ではその許可の確認を求められます。声のデザインには�
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) テストセットに文を 1 つ追加する
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) デザインした声を、説明とシードを添えて共有する
 
-**お使いの GPU で試して、レポートを書いてください：** コーディングは不要で、[ハードウェアテストレポートのフォーム](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)だけで十分です。Intel GPU のレポートはまだありません。
+**お使いの GPU で試して、レポートを書いてください：** コーディングは不要で、[ハードウェアテストレポートのフォーム](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)だけで十分です。Intel HD Graphics 630（内蔵）は私たちが試しました。Intel Arc のレポートはまだなく、v0.3.1 での AMD のレポートもまだありません。
 
 共有テストセット：[docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt)、ブランドボイスガイド：
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md)、コードの送り方：[CONTRIBUTING.md](CONTRIBUTING.md)。

@@ -209,7 +209,7 @@ que sur localhost).
 > ligne de commande qui a besoin des DLL CUDA et du modèle à côté de lui ; `kur.ps1` met tout en place et le paquet
 > Python le pilote. Un double-clic affiche seulement « cudart64_12.dll not found ».
 
-**GPU pris en charge (release v0.1.1) :** code natif pour les GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
+**GPU pris en charge (release v0.3.0) :** code natif pour les GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
 RTX 40xx (sm_89) et RTX 50xx (sm_120a) ; tout autre GPU CUDA à partir de Pascal exécute le PTX embarqué via le pilote
 (premier démarrage plus lent). Maxwell (GTX 9xx) et les générations antérieures ne sont pas prises en charge par
 CUDA 12.8. Testé par nos soins sur une GTX 1050 Ti 4 Go (également via Docker Desktop/WSL2 sous Windows, en CLI
@@ -218,10 +218,6 @@ uniquement) ; mesuré par @mslmyilmaz5 (#15) : RTX 3060 Ti 8 Go, Ubuntu 24.04 Do
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (expérimental) :** un moteur Vulkan séparé (sans CUDA) s'installe avec `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Nous l'avons testé sur notre carte NVIDIA via le backend Vulkan (plus lent que CUDA, même audio pour la même graine ; une comparaison de vitesse propre reste à faire) et sur la puce graphique intégrée Intel HD Graphics 630 (environ 35-50 s de calcul pour 1 s de parole) ; nous ne l'avons **pas** testé nous-mêmes sur AMD : si vous l'essayez, publiez le résultat dans Discussions. Avec plusieurs périphériques Vulkan (intégré + dédié), l'installateur écrit l'indice du GPU dédié comme `cihaz` dans `ayarlar.json`.
-
-*Remarque : la prise en charge de Vulkan est pour l'instant expérimentale. Elle a été compilée et testée avec succès sur
-une GTX 1050 Ti. Un utilisateur externe (mitra_tr) a par ailleurs signalé l'avoir fait fonctionner sur une AMD 6900 XT.
-Des tests plus larges sur les cartes AMD/Intel restent nécessaires.*
 
 **Test de la communauté (AMD) :** @mitraTR a fait tourner la v0.1.1 avec Vulkan sur une AMD Radeon RX 6900 XT sous Windows 11 : installation, création de voix, lecture, interface web et tests ont tous fonctionné ; la lecture a demandé environ 0,8-0,9 s de calcul par seconde de parole ([rapport dans #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installez dans un dossier court dont le chemin ne contient que des caractères ASCII (par ex. `C:\vox`) : sous Windows, le moteur ne peut pas ouvrir les chemins contenant des accents ou d'autres caractères non ASCII. Tous les rapports à ce jour : [matériel testé](docs/donanim_testleri.md).
 
@@ -286,7 +282,7 @@ Ctrl+C. Trois onglets : *Créer une voix*, *Lire avec cette voix*, *Clonage de v
 écouter les variantes → *Ajouter à ma liste de lecture* → *Lire avec cette voix* → télécharger. Ou choisissez une voix
 fournie dans le menu des voix et lancez la lecture.
 
-- **Version dans l'en-tête.** Un petit `v0.2.0 · <short commit>` discret (avec `+` lorsque des fichiers suivis ont des
+- **Version dans l'en-tête.** Un petit `v0.3.1 · <short commit>` discret (avec `+` lorsque des fichiers suivis ont des
   modifications non commitées ; la version seule sans git), pour que les captures d'écran et les vidéos montrent quelle
   version a été utilisée.
 - **Deux voix sur chaque carte de variante.** En haut, en gris, la *Voix brute de conception* : elle est générée une
@@ -349,9 +345,7 @@ le moteur et de rassembler les fichiers.
 
 **Quels GPU ?** Voir « GPU pris en charge » plus haut : NVIDIA à partir des GTX 10xx, 4 Go de VRAM ou plus, pilote
 ≥ 570. La release contient du code natif pour sm_61/75/86/89/120a ; les autres cartes Pascal ou plus récentes utilisent
-le PTX embarqué (premier démarrage plus lent). AMD/Intel : zip Vulkan expérimental, `kur.ps1 -Vulkan` ; un utilisateur
-externe a signalé l'avoir fait fonctionner sur une AMD 6900 XT, mais des tests plus larges sur AMD/Intel restent
-nécessaires (voir « AMD / Intel » plus haut). Le mode CPU seul (`"backend": "cpu"` dans `ayarlar.json`) fonctionne mais
+le PTX embarqué (premier démarrage plus lent). AMD/Intel : zip Vulkan expérimental, `kur.ps1 -Vulkan` ; testé par nous sur la puce intégrée Intel HD Graphics 630 ; @mitraTR a fait tourner l'ancienne v0.1.1 sur une AMD RX 6900 XT, les nouveaux paquets v0.3.1 n'ont pas encore été essayés sur AMD (voir « AMD / Intel » plus haut). Le mode CPU seul (`"backend": "cpu"` dans `ayarlar.json`) fonctionne mais
 est ~6× plus lent qu'une GTX 1050 Ti (mesure du moteur : 535 s contre 94 s pour 48 s de parole) ; ce n'est pas une voie
 prise en charge.
 
@@ -385,7 +379,7 @@ Vous ne savez pas par où commencer ? Ces quatre petits tickets sont une bonne p
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Ajoutez une phrase au jeu de test
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Partagez une voix que vous avez conçue, avec sa description et sa graine
 
-**Testez votre carte graphique, envoyez un rapport :** pas besoin de coder, le [formulaire de rapport de test matériel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) suffit ; aucun rapport sur carte Intel pour l'instant.
+**Testez votre carte graphique, envoyez un rapport :** pas besoin de coder, le [formulaire de rapport de test matériel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) suffit ; nous avons testé nous-mêmes l'Intel HD Graphics 630 intégrée ; aucun rapport sur Intel Arc pour l'instant, ni sur AMD avec la v0.3.1.
 
 Jeu de test commun : [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt) ; guide de la voix de marque :
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md) ; comment proposer du code : [CONTRIBUTING.md](CONTRIBUTING.md).

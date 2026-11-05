@@ -195,14 +195,12 @@ PowerShell에서 같은 작업을 하려면:
 > 같은 위치에 CUDA DLL과 모델이 있어야 합니다. `kur.ps1`이 모든 것을 제자리에 두고, Python 패키지가 엔진을 구동합니다.
 > 더블클릭하면 "cudart64_12.dll not found"만 표시됩니다.
 
-**지원 GPU(릴리스 v0.1.1):** GTX 10xx(sm_61), RTX 20xx(sm_75), RTX 30xx(sm_86), RTX 40xx
+**지원 GPU(릴리스 v0.3.0):** GTX 10xx(sm_61), RTX 20xx(sm_75), RTX 30xx(sm_86), RTX 40xx
 (sm_89), RTX 50xx(sm_120a)용 네이티브 코드가 포함되어 있습니다. Pascal 이후의 다른 CUDA GPU는 드라이버를 통해 내장 PTX를 실행합니다(첫
 시작이 느림). Maxwell(GTX 9xx) 이전 세대는 CUDA 12.8에서 지원되지 않습니다. 저희는 GTX 1050 Ti 4 GB에서 테스트했습니다(Windows에서 Docker Desktop/WSL2를 통해서도, CLI만). @mslmyilmaz5 님의 측정(#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1(자세한 내용은 [docs/linux.md](docs/linux.md)). 다른 카드에서의 결과 보고는 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)에서 환영합니다.
 
 **AMD / Intel(실험적):** CUDA가 필요 없는 별도의 Vulkan 엔진은 `scripts\kur.ps1 -Kok C:\vox -Vulkan`로 설치합니다. 저희 NVIDIA 카드에서 Vulkan 백엔드로(그곳에서는 CUDA보다 느리지만 같은 시드에서 같은 음성; 깔끔한 속도 비교는 아직입니다), 그리고 Intel HD Graphics 630 내장 그래픽에서(음성 1초당 약 35-50초 계산) 시험했습니다. AMD에서는 저희가 직접 테스트하지 **않았습니다**. 시도해 보셨다면 결과를 Discussions에 올려 주세요. Vulkan 장치가 둘 이상이면(내장 + 외장) 설치 프로그램이 외장 GPU의 번호를 `ayarlar.json`에 `cihaz`로 기록합니다.
-
-**참고:** Vulkan 지원은 현재 실험 단계입니다. GTX 1050 Ti에서 빌드와 테스트에 성공했습니다. 또한 외부 사용자(mitra_tr)가 AMD 6900 XT에서도 실행했다고 알려 왔습니다. AMD/Intel 카드에서는 더 폭넓은 테스트가 필요합니다.
 
 **커뮤니티 테스트(AMD):** @mitraTR 님이 Windows 11의 AMD Radeon RX 6900 XT에서 v0.1.1을 Vulkan으로 실행했습니다. 설치, 음성 디자인, 읽기, 웹 UI, 테스트가 모두 정상 동작했고, 읽기는 음성 1초당 약 0.8~0.9초의 연산 시간이 걸렸습니다([#6의 보고](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). 경로에 ASCII 문자만 있는 짧은 폴더에 설치하세요(예: `C:\vox`). Windows에서는 엔진이 한글 등 ASCII가 아닌 문자가 들어간 경로를 열지 못합니다. 지금까지의 모든 보고: [테스트된 하드웨어](docs/donanim_testleri.md).
 
@@ -262,7 +260,7 @@ GPU, Windows 버전, 실행한 명령과 그 마지막 몇 줄을 함께 올려 
 *이 목소리로 읽기*, *보이스 클로닝*. 일반적인 흐름: *디자인하기* → 후보 듣기 → *내 읽기 목록에 추가* →
 *이 목소리로 읽기* → 다운로드. 또는 목소리 메뉴에서 기본 제공 목소리를 골라 바로 읽을 수도 있습니다.
 
-- **헤더의 버전 표시.** 작고 흐린 `v0.2.0 · <short commit>`(추적 중인 파일에 커밋하지 않은 변경이 있으면 `+`가 붙고,
+- **헤더의 버전 표시.** 작고 흐린 `v0.3.1 · <short commit>`(추적 중인 파일에 커밋하지 않은 변경이 있으면 `+`가 붙고,
   git이 없으면 버전만 표시). 스크린샷과 영상에서 어떤 버전을 썼는지 알 수 있습니다.
 - **모든 후보 카드에 두 가지 목소리.** 위쪽 회색은 *원본 디자인 목소리*입니다. 한 번만 생성되며 똑같이 다시 나오지
   않습니다. 그 아래 주황색 테두리 안은 *↻ 앞으로 계속 듣게 될 목소리*입니다. 디자인 녹음을 참조로 삼아 그 후보 고유의 시드(카드에 표시)로
@@ -308,9 +306,7 @@ audio.cpp는 *엔진*으로, 여러분의 GPU에서 모델을 실행하는 C++/C
 이 저장소의 Python 패키지는 텍스트를 준비하고, 엔진을 호출하고, 파일을 모으는 일만 합니다.
 
 **어떤 GPU에서 되나요?** 위의 '지원 GPU'를 참고하세요. GTX 10xx 이상의 NVIDIA, VRAM 4 GB 이상, 드라이버 ≥ 570. 릴리스에는
-sm_61/75/86/89/120a용 네이티브 코드가 들어 있고, 그 밖의 Pascal 이후 카드는 내장 PTX를 사용합니다(첫 시작이 느림). AMD/Intel:
-실험적인 Vulkan zip, `kur.ps1 -Vulkan`. 외부 사용자가 AMD 6900 XT에서 실행했다고 알려 왔지만, 더 폭넓은 AMD/Intel
-테스트가 아직 필요합니다(위의 'AMD / Intel' 참고). CPU 전용(`ayarlar.json`에서 `"backend": "cpu"`)으로도 동작하지만
+sm_61/75/86/89/120a용 네이티브 코드가 들어 있고, 그 밖의 Pascal 이후 카드는 내장 PTX를 사용합니다(첫 시작이 느림). AMD/Intel: 실험적인 Vulkan zip, `kur.ps1 -Vulkan`. Intel HD Graphics 630 내장 그래픽에서는 저희가 시험했습니다. @mitraTR가 이전 v0.1.1을 AMD RX 6900 XT에서 실행했으며, 새 v0.3.1 패키지는 AMD에서 아직 시험되지 않았습니다(위의 'AMD / Intel' 참고). CPU 전용(`ayarlar.json`에서 `"backend": "cpu"`)으로도 동작하지만
 GTX 1050 Ti보다 약 6배 느리며(엔진 측정, 48초 음성에 535초 대 94초), 지원하는 방식이 아닙니다.
 
 **얼마나 빠른가요?** GTX 1050 Ti 4 GB(i7-7700HQ)에서 측정: 디자인 후보 하나(≈ 25초 녹음)에 55초. 읽기는 음성 1초당 ≈ 2초의
@@ -339,7 +335,7 @@ UI에서 그 허락을 확인하도록 요청합니다. 목소리 디자인에�
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) 테스트 세트에 문장 하나 추가하기
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) 직접 디자인한 목소리를 설명과 시드와 함께 공유하기
 
-**내 그래픽카드로 테스트하고 보고서를 써 주세요:** 코딩은 필요 없고 [하드웨어 테스트 보고 양식](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)만 작성하면 됩니다. Intel 그래픽카드 보고는 아직 없습니다.
+**내 그래픽카드로 테스트하고 보고서를 써 주세요:** 코딩은 필요 없고 [하드웨어 테스트 보고 양식](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)만 작성하면 됩니다. Intel HD Graphics 630(내장)은 저희가 직접 시험했습니다. Intel Arc 보고는 아직 없고, v0.3.1로 AMD에서 한 보고도 아직 없습니다.
 
 공용 테스트 세트: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt), 브랜드 보이스 가이드:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md), 코드 보내는 방법: [CONTRIBUTING.md](CONTRIBUTING.md).

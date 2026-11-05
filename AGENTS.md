@@ -33,7 +33,7 @@ from source (needs Visual Studio Build Tools). Use A unless the user asks for B 
 Known-good toolchain: VS 2022 17.14 (MSVC 14.44), CUDA 12.8.2 redist, Windows 10 22H2, driver 581.29. CUDA 13 does
 **not** support Pascal (GTX 10xx); CUDA 11.8 does not build with MSVC 14.44. This is why the installer pins CUDA 12.8.
 
-**Supported GPUs.** Release v0.1.1 `audiocpp_cli.exe` carries native code for sm_61 (GTX 10xx), sm_75 (RTX 20xx),
+**Supported GPUs.** CUDA release v0.3.0 `audiocpp_cli.exe` carries native code for sm_61 (GTX 10xx), sm_75 (RTX 20xx),
 sm_86 (RTX 30xx), sm_89 (RTX 40xx), sm_120a (RTX 50xx) plus compute_89 PTX; other CUDA GPUs from Pascal on run the PTX
 through the driver JIT (works, slower first start). Maxwell (GTX 9xx) and older: not supported by CUDA 12.8. Verified
 only on a GTX 1050 Ti 4 GB. Check what a given exe contains with `cuobjdump --list-elf audiocpp_cli.exe` (CUDA

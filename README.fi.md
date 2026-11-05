@@ -206,7 +206,7 @@ localhost-osoitetta).
 > joka tarvitsee viereensä CUDA-DLL-tiedostot ja mallin; `kur.ps1` asettaa kaiken paikoilleen ja Python-paketti ohjaa
 > sitä. Kaksoisnapsautus näyttää vain virheen "cudart64_12.dll not found".
 
-**Tuetut näytönohjaimet (julkaisu v0.1.1):** natiivikoodi GTX 10xx:lle (sm_61), RTX 20xx:lle (sm_75), RTX 30xx:lle
+**Tuetut näytönohjaimet (julkaisu v0.3.0):** natiivikoodi GTX 10xx:lle (sm_61), RTX 20xx:lle (sm_75), RTX 30xx:lle
 (sm_86), RTX 40xx:lle (sm_89) ja RTX 50xx:lle (sm_120a); muut Pascalista alkaen julkaistut CUDA-näytönohjaimet ajavat
 sulautettua PTX-koodia ajurin kautta (hitaampi ensimmäinen käynnistys). CUDA 12.8 ei tue Maxwellia (GTX 9xx) eikä sitä
 vanhempia. Testattu itse GTX 1050 Ti 4 Gt:llä (myös Docker Desktopin/WSL2:n kautta Windowsissa, vain CLI); mitannut
@@ -215,10 +215,6 @@ Raportit muista näytönohjaimista ovat tervetulleita
 [Discussionsiin](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (kokeellinen):** erillinen Vulkan-moottori (ilman CUDAa) asennetaan komennolla `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Testasimme sitä NVIDIA-kortillamme Vulkan-taustajärjestelmän kautta (siellä CUDAa hitaampi, sama ääni samalla siemenellä; puhdas nopeusvertailu puuttuu vielä) ja integroidulla Intel HD Graphics 630:lla (noin 35-50 s laskentaa 1 s puhetta kohden); AMD:llä emme ole itse **testanneet** sitä: jos kokeilet, kerro tulos Discussionsissa. Jos Vulkan-laitteita on useampi (integroitu + erillinen), asennusohjelma kirjoittaa erillisen näytönohjaimen indeksin `ayarlar.json`-tiedostoon kenttään `cihaz`.
-
-**Huom:** Vulkan-tuki on tällä hetkellä kokeellinen. Se on käännetty ja testattu onnistuneesti GTX 1050 Ti:llä. Lisäksi
-ulkopuolinen käyttäjä (mitra_tr) on ilmoittanut ajaneensa sitä AMD 6900 XT:llä. AMD/Intel-korteilla tarvitaan vielä
-laajempaa testausta.
 
 **Yhteisön testi (AMD):** @mitraTR ajoi v0.1.1:n Vulkanilla AMD Radeon RX 6900 XT -näytönohjaimella Windows 11:ssä: asennus, äänen suunnittelu, lukeminen, verkkokäyttöliittymä ja testit toimivat; lukeminen vei noin 0,8-0,9 s laskenta-aikaa sekuntia puhetta kohden ([raportti #6:ssa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Asenna lyhyeen kansioon, jonka polussa on vain ASCII-merkkejä (esim. `C:\vox`): Windowsissa moottori ei pysty avaamaan polkuja, joissa on ä-, ö- tai muita ei-ASCII-merkkejä. Kaikki raportit tähän mennessä: [testattu laitteisto](docs/donanim_testleri.md).
 
@@ -281,7 +277,7 @@ Vain paikallisesti (127.0.0.1): `.venv\Scripts\python.exe -m ses_tasarim.arayuz`
 *Suunnittele ääni*, *Lue tällä äänellä*, *Äänen kloonaus*. Tavallinen kulku: *Suunnittele* → kuuntele muunnelmat →
 *Lisää lukulistaani* → *Lue tällä äänellä* → lataa. Tai valitse valmis ääni äänivalikosta ja lue.
 
-- **Versio otsakkeessa.** Pieni, himmeä `v0.2.0 · <short commit>` (mukana `+`, kun seurattuihin tiedostoihin on tehty
+- **Versio otsakkeessa.** Pieni, himmeä `v0.3.1 · <short commit>` (mukana `+`, kun seurattuihin tiedostoihin on tehty
   muutoksia, joita ei ole kommitoitu; ilman gitiä vain versio), jotta kuvakaappauksista ja videoista näkee, mitä
   versiota käytettiin.
 - **Kaksi ääntä jokaisessa muunnelmakortissa.** Ylimpänä harmaalla *Raaka suunnitteluääni*: se tuotetaan kerran eikä
@@ -341,9 +337,7 @@ kerta saman äänen. Tämän repositorion Python-paketti vain valmistelee teksti
 
 **Mitkä näytönohjaimet?** Katso "Tuetut näytönohjaimet" yllä: NVIDIA GTX 10xx:stä ylöspäin, vähintään 4 Gt VRAM-muistia,
 ajuri ≥ 570. Julkaisussa on natiivikoodi kohteille sm_61/75/86/89/120a; muut Pascal-sukupolven tai uudemmat kortit
-käyttävät sulautettua PTX-koodia (hitaampi ensimmäinen käynnistys). AMD/Intel: kokeellinen Vulkan-zip,
-`kur.ps1 -Vulkan`; ulkopuolinen käyttäjä on ilmoittanut ajaneensa sitä AMD 6900 XT:llä, mutta laajempaa
-AMD/Intel-testausta tarvitaan vielä (katso "AMD / Intel" yllä). Pelkkä suoritin (`"backend": "cpu"` tiedostossa
+käyttävät sulautettua PTX-koodia (hitaampi ensimmäinen käynnistys). AMD/Intel: kokeellinen Vulkan-zip, `kur.ps1 -Vulkan`; testasimme sen itse integroidulla Intel HD Graphics 630:lla; @mitraTR ajoi aiempaa v0.1.1:tä AMD RX 6900 XT:llä, uusia v0.3.1-paketteja ei ole vielä kokeiltu AMD:llä (katso "AMD / Intel" yllä). Pelkkä suoritin (`"backend": "cpu"` tiedostossa
 `ayarlar.json`) toimii, mutta on ~6× hitaampi kuin GTX 1050 Ti (moottorimittaus, 535 s vs. 94 s 48 s:n puheelle); se
 ei ole tuettu tapa.
 
@@ -375,7 +369,7 @@ Etkö tiedä, mistä aloittaa? Nämä neljä pientä issueta ovat hyvä ensimmä
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Lisää lause testijoukkoon
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Jaa suunnittelemasi ääni kuvauksineen ja siemenineen
 
-**Testaa näytönohjaimesi, kirjoita raportti:** koodaustaitoa ei tarvita, pelkkä [laitteistotestiraportin lomake](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) riittää; Intel-näytönohjaimesta ei ole vielä yhtään raporttia.
+**Testaa näytönohjaimesi, kirjoita raportti:** koodaustaitoa ei tarvita, pelkkä [laitteistotestiraportin lomake](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) riittää; integroidun Intel HD Graphics 630:n testasimme itse; Intel Arcista ei ole vielä raporttia, eikä AMD:ltä v0.3.1:llä.
 
 Yhteinen testijoukko: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); brändiäänen opas:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); näin lähetät koodia: [CONTRIBUTING.md](CONTRIBUTING.md).

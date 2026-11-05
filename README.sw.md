@@ -202,7 +202,7 @@ localhost pekee).
 > inayohitaji DLL za CUDA na modeli kando yake; `kur.ps1` inaweka kila kitu mahali pake na kifurushi cha Python ndicho
 > kinachoiendesha. Ukiibofya mara mbili utaona tu "cudart64_12.dll not found".
 
-**GPU zinazoungwa mkono (toleo v0.1.1):** msimbo asilia kwa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU zinazoungwa mkono (toleo v0.3.0):** msimbo asilia kwa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) na RTX 50xx (sm_120a); GPU nyingine yoyote ya CUDA kuanzia Pascal inaendesha PTX iliyopachikwa kupitia kiendeshi
 (uanzishaji wa kwanza ni wa polepole zaidi). Maxwell (GTX 9xx) na za zamani zaidi haziungwi mkono na CUDA 12.8.
 Imejaribiwa nasi kwenye GTX 1050 Ti 4 GB (pia kupitia Docker Desktop/WSL2 kwenye Windows, CLI pekee); imepimwa na
@@ -210,10 +210,6 @@ Imejaribiwa nasi kwenye GTX 1050 Ti 4 GB (pia kupitia Docker Desktop/WSL2 kwenye
 Ripoti kutoka kadi nyingine zinakaribishwa katika [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (ya majaribio):** injini tofauti ya Vulkan (bila CUDA) husakinishwa kwa `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Tuliijaribu kwenye kadi yetu ya NVIDIA kupitia backend ya Vulkan (huko ni polepole kuliko CUDA, sauti ileile kwa mbegu ileile; ulinganisho safi wa kasi bado haujafanyika) na kwenye michoro jumuishi ya Intel HD Graphics 630 (takriban sekunde 35-50 za hesabu kwa sekunde 1 ya usemi); kwenye AMD **hatujaijaribu** sisi wenyewe: ukiijaribu, tafadhali weka matokeo kwenye Discussions. Kukiwa na kifaa zaidi ya kimoja cha Vulkan (jumuishi + tofauti), kisakinishi huandika namba ya GPU tofauti kama `cihaz` ndani ya `ayarlar.json`.
-
-**Kumbuka:** Usaidizi wa Vulkan kwa sasa ni wa majaribio. Umejengwa na kujaribiwa kwa mafanikio kwenye GTX 1050 Ti.
-Mtumiaji wa nje (mitra_tr) pia ameripoti kuuendesha kwenye AMD 6900 XT. Majaribio mapana zaidi kwenye kadi za AMD/Intel
-bado yanahitajika.
 
 **Jaribio la jamii (AMD):** @mitraTR aliendesha v0.1.1 kwa Vulkan kwenye AMD Radeon RX 6900 XT katika Windows 11: usakinishaji, kubuni sauti, kusoma, kiolesura cha wavuti na majaribio vyote vilifanya kazi; kusoma kulichukua takriban sek 0.8-0.9 za hesabu kwa kila sek 1 ya usemi ([ripoti katika #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Sakinisha kwenye folda fupi ambayo njia yake ina herufi za ASCII pekee (k.m. `C:\vox`): kwenye Windows injini haiwezi kufungua njia zenye herufi zisizo za ASCII. Ripoti zote hadi sasa: [vifaa vilivyojaribiwa](docs/donanim_testleri.md).
 
@@ -275,7 +271,7 @@ mwenyewe (port nyingine: `--port 8800`), au bofya mara mbili `baslat.bat`. Simam
 *Buni sauti*, *Soma kwa sauti hii*, *Kunakili sauti*. Njia ya kawaida: *Buni* → sikiliza matoleo → *Ongeza kwenye orodha
 yangu ya kusoma* → *Soma kwa sauti hii* → pakua. Au chagua sauti iliyojumuishwa kutoka menyu ya sauti na usome.
 
-- **Toleo kwenye kichwa cha ukurasa.** `v0.2.0 · <short commit>` ndogo na hafifu (pamoja na `+` faili zinazofuatiliwa
+- **Toleo kwenye kichwa cha ukurasa.** `v0.3.1 · <short commit>` ndogo na hafifu (pamoja na `+` faili zinazofuatiliwa
   zinapokuwa na mabadiliko ambayo hayajafanyiwa commit; toleo pekee bila git), ili picha za skrini na video zionyeshe
   toleo lililotumika.
 - **Sauti mbili kwenye kila kadi ya toleo.** Juu, kwa rangi ya kijivu, *Sauti ghafi ya muundo*: inatengenezwa mara moja na
@@ -333,8 +329,7 @@ mara. Kifurushi cha Python katika hazina hii kinaandaa maandishi tu, kinaita inj
 
 **GPU zipi?** Tazama "GPU zinazoungwa mkono" hapo juu: NVIDIA kuanzia GTX 10xx, VRAM ya 4 GB au zaidi, kiendeshi ≥ 570.
 Msimbo asilia upo katika toleo kwa sm_61/75/86/89/120a; kadi nyingine za Pascal au mpya zaidi zinatumia PTX iliyopachikwa
-(uanzishaji wa kwanza ni wa polepole zaidi). AMD/Intel: zip ya Vulkan ya majaribio, `kur.ps1 -Vulkan`; mtumiaji wa nje
-ameripoti kuiendesha kwenye AMD 6900 XT, lakini majaribio mapana zaidi ya AMD/Intel bado yanahitajika (tazama "AMD /
+(uanzishaji wa kwanza ni wa polepole zaidi). AMD/Intel: zip ya Vulkan ya majaribio, `kur.ps1 -Vulkan`; tumeijaribu sisi wenyewe kwenye michoro jumuishi ya Intel HD Graphics 630; @mitraTR aliendesha toleo la awali v0.1.1 kwenye AMD RX 6900 XT, vifurushi vipya vya v0.3.1 bado havijajaribiwa kwenye AMD (tazama "AMD /
 Intel" hapo juu). CPU pekee (`"backend": "cpu"` ndani ya `ayarlar.json`) inafanya kazi lakini ni ~mara 6 polepole kuliko
 GTX 1050 Ti (kipimo cha injini, s 535 dhidi ya s 94 kwa s 48 za usemi); si njia inayoungwa mkono.
 
@@ -366,7 +361,7 @@ Hujui uanzie wapi? Masuala haya manne madogo ni hatua nzuri ya kwanza:
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Ongeza sentensi kwenye seti ya majaribio
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Shiriki sauti uliyoibuni, pamoja na maelezo yake na mbegu
 
-**Jaribu kadi yako ya michoro, andika ripoti:** huhitaji kujua kuandika msimbo, inatosha [fomu ya ripoti ya majaribio ya vifaa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); bado hakuna ripoti kutoka kadi ya Intel.
+**Jaribu kadi yako ya michoro, andika ripoti:** huhitaji kujua kuandika msimbo, inatosha [fomu ya ripoti ya majaribio ya vifaa](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); Intel HD Graphics 630 (jumuishi) tumeijaribu sisi wenyewe; bado hakuna ripoti kutoka Intel Arc, wala kutoka AMD kwa v0.3.1.
 
 Seti ya majaribio ya pamoja: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); mwongozo wa sauti ya chapa:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); jinsi ya kutuma msimbo: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -210,16 +210,12 @@ ang browser; sa localhost lang ito nakikinig).
 > ng mga CUDA DLL at ng model sa tabi nito; inilalagay ng `kur.ps1` ang lahat sa tamang lugar at ang Python package ang
 > nagpapatakbo rito. Kapag dinouble-click ito, "cudart64_12.dll not found" lang ang lalabas.
 
-**Mga sinusuportahang GPU (release v0.1.1):** native code para sa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
+**Mga sinusuportahang GPU (release v0.3.0):** native code para sa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
 RTX 40xx (sm_89) at RTX 50xx (sm_120a); ang ibang CUDA GPU mula Pascal pataas ay nagpapatakbo ng naka-embed na PTX sa
 pamamagitan ng driver (mas mabagal ang unang start). Hindi sinusuportahan ng CUDA 12.8 ang Maxwell (GTX 9xx) at mas luma. Nasubukan namin sa GTX 1050 Ti 4 GB (pati sa Docker Desktop/WSL2 sa Windows, CLI lang); sinukat ni @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (mga detalye sa [docs/linux.md](docs/linux.md)). Malugod naming tinatanggap ang mga ulat mula sa ibang card sa [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (eksperimental):** isang hiwalay na Vulkan engine (walang CUDA) ang ini-install gamit ang `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Sinubukan namin ito sa aming NVIDIA card sa pamamagitan ng Vulkan backend (doon mas mabagal kaysa CUDA, parehong audio sa parehong seed; wala pang malinis na paghahambing ng bilis) at sa integrated na Intel HD Graphics 630 (mga 35-50 segundong compute bawat 1 segundong pananalita); sa AMD ay **hindi** pa namin ito mismo nasubukan: kung susubukan mo, i-post ang resulta sa Discussions. Kapag may higit sa isang Vulkan device (integrated + discrete), isinusulat ng installer ang index ng discrete GPU bilang `cihaz` sa `ayarlar.json`.
-
-*Paalala: Eksperimental pa ang suporta sa Vulkan. Matagumpay itong na-build at nasubukan sa GTX 1050 Ti. May isang
-external na user (mitra_tr) din na nag-ulat na napatakbo niya ito sa AMD 6900 XT. Kailangan pa ng mas malawak na
-pagsubok sa mga AMD/Intel na card.*
 
 **Pagsubok ng komunidad (AMD):** Pinatakbo ni @mitraTR ang v0.1.1 gamit ang Vulkan sa AMD Radeon RX 6900 XT sa Windows 11: gumana ang pag-install, pagdisenyo ng boses, pagbasa, web interface at mga test; ang pagbasa ay umabot nang mga 0.8-0.9 seg na compute bawat 1 seg ng pananalita ([ulat sa #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Mag-install sa maikling folder na ASCII lang ang laman ng path (hal. `C:\vox`): sa Windows, hindi mabuksan ng engine ang mga path na may ñ o iba pang hindi ASCII na karakter. Lahat ng ulat sa ngayon: [nasubukang hardware](docs/donanim_testleri.md).
 
@@ -284,7 +280,7 @@ Ctrl+C. Tatlong tab: *Magdisenyo ng boses*, *Basahin gamit ang boses na ito*, *V
 *Idisenyo* → pakinggan ang mga variant → *Idagdag sa aking babasahin* → *Basahin gamit ang boses na ito* → i-download.
 O pumili ng kasamang boses mula sa voice menu at magbasa.
 
-- **Bersyon sa header.** Isang maliit at malabong `v0.2.0 · <short commit>` (may `+` kapag may hindi pa naka-commit na
+- **Bersyon sa header.** Isang maliit at malabong `v0.3.1 · <short commit>` (may `+` kapag may hindi pa naka-commit na
   pagbabago ang mga tracked file; bersyon lang kapag walang git), para makita sa mga screenshot at video kung aling
   bersyon ang ginamit.
 - **Dalawang boses sa bawat variant card.** Sa itaas, kulay abo, ang *Hilaw na boses ng disenyo*: isang beses lang itong
@@ -344,9 +340,7 @@ lang ng teksto, tumatawag sa engine at nagtitipon ng mga file.
 
 **Aling mga GPU?** Tingnan ang "Mga sinusuportahang GPU" sa itaas: NVIDIA mula GTX 10xx pataas, 4 GB VRAM o higit pa,
 driver ≥ 570. May native code sa release para sa sm_61/75/86/89/120a; ang ibang card na Pascal o mas bago ay gumagamit
-ng naka-embed na PTX (mas mabagal ang unang start). AMD/Intel: eksperimental na Vulkan zip, `kur.ps1 -Vulkan`; may
-external na user na nag-ulat na napatakbo niya ito sa AMD 6900 XT, pero kailangan pa ng mas malawak na pagsubok sa
-AMD/Intel (tingnan ang "AMD / Intel" sa itaas). Tumatakbo ang CPU-only (`"backend": "cpu"` sa `ayarlar.json`) pero
+ng naka-embed na PTX (mas mabagal ang unang start). AMD/Intel: eksperimental na Vulkan zip, `kur.ps1 -Vulkan`; nasubukan na namin sa integrated na Intel HD Graphics 630; pinatakbo ni @mitraTR ang naunang v0.1.1 sa AMD RX 6900 XT, hindi pa nasusubukan sa AMD ang mga bagong package ng v0.3.1 (tingnan ang "AMD / Intel" sa itaas). Tumatakbo ang CPU-only (`"backend": "cpu"` sa `ayarlar.json`) pero
 ~6× na mas mabagal kaysa GTX 1050 Ti (sukat ng engine, 535 s laban sa 94 s para sa 48 s na pananalita); hindi ito
 sinusuportahang paraan.
 
@@ -379,7 +373,7 @@ Hindi sigurado kung saan magsisimula? Magandang unang hakbang ang apat na malili
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Magdagdag ng pangungusap sa test set
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Ibahagi ang isang boses na idinisenyo mo, kasama ang paglalarawan at seed nito
 
-**Subukan ang graphics card mo, magsulat ng ulat:** hindi kailangang marunong mag-code, sapat na ang [form ng ulat sa pagsubok ng hardware](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); wala pang ulat mula sa Intel graphics card.
+**Subukan ang graphics card mo, magsulat ng ulat:** hindi kailangang marunong mag-code, sapat na ang [form ng ulat sa pagsubok ng hardware](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); nasubukan na namin mismo ang integrated na Intel HD Graphics 630; wala pang ulat mula sa Intel Arc, at wala pa rin mula sa AMD sa v0.3.1.
 
 Pinagsasaluhang test set: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); gabay sa brand voice:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); paano magpadala ng code: [CONTRIBUTING.md](CONTRIBUTING.md).

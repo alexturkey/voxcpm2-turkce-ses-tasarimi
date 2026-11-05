@@ -5,10 +5,18 @@
 **TR**
 - `kur.ps1 -Vulkan -Adim kontrol` tek başına çalışınca var olan CUDA `ayarlar.json`'una Vulkan cihaz numarası
   (`cihaz`) yazıyordu; CUDA'da bu numara başka karta düşer. Artık yalnız `backend` `vulkan` ise yazılır, değilse uyarı.
+- README'ler (30 dil): Vulkan bölümündeki eski "Not" paragrafı (topluluk testiyle aynı bilgi) kaldırıldı, ad her yerde
+  @mitraTR; SSS ve donanım raporu cümleleri güncel (Intel HD Graphics 630'da denendi, v0.3.1 AMD'de henüz denenmedi,
+  Intel Arc raporu yok); desteklenen kart başlığı CUDA v0.3.0, başlık sürüm örneği v0.3.1. `docs/donanim_testleri.md`
+  Intel HD Graphics 630 satırı; `AGENTS.md` CUDA sürüm adı.
 
 **EN**
 - `kur.ps1 -Vulkan -Adim kontrol` on its own wrote a Vulkan device index (`cihaz`) into an existing CUDA `ayarlar.json`,
   where that index points to another card. It is now written only when `backend` is `vulkan`; otherwise a note is shown.
+- READMEs (30 languages): the old "Note" paragraph in the Vulkan section (same facts as the community test) was removed,
+  the name is @mitraTR everywhere; the FAQ and hardware-report sentences are current (tested on Intel HD Graphics 630,
+  v0.3.1 not yet tried on AMD, no Intel Arc report); supported-GPU heading says CUDA v0.3.0, header version example
+  v0.3.1. `docs/donanim_testleri.md` gets an Intel HD Graphics 630 row; `AGENTS.md` names the CUDA release.
 
 ## v0.3.1 — 2026-11-05
 

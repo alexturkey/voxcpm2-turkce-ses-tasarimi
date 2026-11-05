@@ -192,16 +192,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 > ຂອງ CUDA ແລະ model ຢູ່ຄຽງຂ້າງ; `kur.ps1` ວາງທຸກຢ່າງໄວ້ໃນບ່ອນ ແລະ Python package ເປັນຕົວຂັບເຄື່ອນມັນ. ການຄລິກສອງເທື່ອ
 > ຈະສະແດງພຽງແຕ່ "cudart64_12.dll not found".
 
-**GPU ທີ່ຮອງຮັບ (release v0.1.1):** native code ສຳລັບ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU ທີ່ຮອງຮັບ (release v0.3.0):** native code ສຳລັບ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) ແລະ RTX 50xx (sm_120a); CUDA GPU ອື່ນໆຕັ້ງແຕ່ Pascal ຂຶ້ນໄປ ຈະແລ່ນ PTX ທີ່ຝັງໄວ້ຜ່ານ driver (ການເລີ່ມຄັ້ງທຳອິດຊ້າກວ່າ).
 Maxwell (GTX 9xx) ແລະ ເກົ່າກວ່ານັ້ນ CUDA 12.8 ບໍ່ຮອງຮັບ. ພວກເຮົາທົດສອບເທິງ GTX 1050 Ti 4 GB (ລວມທັງຜ່ານ Docker Desktop/WSL2
 ເທິງ Windows, ສະເພາະ CLI); ວັດແທກໂດຍ @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (ລາຍລະອຽດໃນ
 [docs/linux.md](docs/linux.md)). ຍິນດີຕ້ອນຮັບລາຍງານຈາກກາດອື່ນໆໃນ [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (ທົດລອງ):** ເຄື່ອງຈັກ Vulkan ແຍກຕ່າງຫາກ (ບໍ່ຕ້ອງໃຊ້ CUDA) ຕິດຕັ້ງດ້ວຍ `scripts\kur.ps1 -Kok C:\vox -Vulkan`. ພວກເຮົາທົດສອບໃນກາດ NVIDIA ຂອງພວກເຮົາຜ່ານ Vulkan backend (ຢູ່ນັ້ນຊ້າກວ່າ CUDA, ໄດ້ສຽງດຽວກັນເມື່ອໃຊ້ seed ດຽວກັນ; ຍັງບໍ່ມີການປຽບທຽບຄວາມໄວແບບສະອາດ) ແລະໃນກຣາຟິກໃນຕົວ Intel HD Graphics 630 (ປະມານ 35-50 ວິນາທີຂອງການຄຳນວນຕໍ່ສຽງເວົ້າ 1 ວິນາທີ); ໃນ AMD ພວກເຮົາ**ຍັງບໍ່ໄດ້**ທົດສອບເອງ: ຖ້າທ່ານລອງ, ກະລຸນາໂພສຜົນໃນ Discussions. ຖ້າມີອຸປະກອນ Vulkan ຫຼາຍກວ່າໜຶ່ງ (ໃນຕົວ + ແຍກ) ໂປຣແກຣມຕິດຕັ້ງຈະຂຽນເລກຂອງກາດແຍກເປັນ `cihaz` ລົງໃນ `ayarlar.json`.
-
-**ໝາຍເຫດ:** ການຮອງຮັບ Vulkan ໃນປັດຈຸບັນຍັງເປັນການທົດລອງ. ມັນຖືກ build ແລະ ທົດສອບສຳເລັດເທິງ GTX 1050 Ti. ຜູ້ໃຊ້ພາຍນອກ
-ຄົນໜຶ່ງ (mitra_tr) ຍັງໄດ້ລາຍງານວ່າໄດ້ແລ່ນມັນເທິງ AMD 6900 XT. ຍັງຕ້ອງການການທົດສອບທີ່ກວ້າງຂວາງກວ່ານີ້ເທິງກາດ AMD/Intel.
 
 **ການທົດສອບຈາກຊຸມຊົນ (AMD):** @mitraTR ໄດ້ແລ່ນ v0.1.1 ດ້ວຍ Vulkan ເທິງ AMD Radeon RX 6900 XT ໃນ Windows 11: ການຕິດຕັ້ງ, ການອອກແບບສຽງ, ການອ່ານ, ໜ້າເວັບ ແລະ ການທົດສອບ ເຮັດວຽກໄດ້ທັງໝົດ; ການອ່ານໃຊ້ເວລາຄິດໄລ່ປະມານ 0.8-0.9 ວິ ຕໍ່ສຽງເວົ້າ 1 ວິ ([ລາຍງານໃນ #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). ໃຫ້ຕິດຕັ້ງໃນໂຟນເດີສັ້ນໆ ທີ່ເສັ້ນທາງມີແຕ່ຕົວອັກສອນ ASCII (ເຊັ່ນ `C:\vox`): ໃນ Windows ເຄື່ອງຈັກບໍ່ສາມາດເປີດເສັ້ນທາງທີ່ມີຕົວອັກສອນລາວ ຫຼື ຕົວອັກສອນອື່ນນອກ ASCII ໄດ້. ລາຍງານທັງໝົດຈົນເຖິງຕອນນີ້: [ຮາດແວທີ່ທົດສອບແລ້ວ](docs/donanim_testleri.md).
 
@@ -262,7 +259,7 @@ Command line:
 *ອ່ານດ້ວຍສຽງນີ້*, *ສຳເນົາສຽງ*. ເສັ້ນທາງປົກກະຕິ: *ອອກແບບ* → ຟັງຕົວເລືອກຕ່າງໆ → *ເພີ່ມໃສ່ລາຍການອ່ານຂອງຂ້ອຍ* →
 *ອ່ານດ້ວຍສຽງນີ້* → ດາວໂຫຼດ. ຫຼື ເລືອກສຽງສຳເລັດຮູບຈາກ menu ສຽງ ແລ້ວອ່ານ.
 
-- **ເວີຊັນໃນສ່ວນຫົວ.** `v0.2.0 · <short commit>` ນ້ອຍໆ ແລະ ຈາງໆ (ມີ `+` ເມື່ອໄຟລ໌ທີ່ຕິດຕາມມີການປ່ຽນແປງທີ່ຍັງບໍ່ໄດ້ commit;
+- **ເວີຊັນໃນສ່ວນຫົວ.** `v0.3.1 · <short commit>` ນ້ອຍໆ ແລະ ຈາງໆ (ມີ `+` ເມື່ອໄຟລ໌ທີ່ຕິດຕາມມີການປ່ຽນແປງທີ່ຍັງບໍ່ໄດ້ commit;
   ບໍ່ມີ git ມີແຕ່ເວີຊັນ), ເພື່ອໃຫ້ພາບໜ້າຈໍ ແລະ ວິດີໂອສະແດງວ່າໃຊ້ເວີຊັນໃດ.
 - **ສອງສຽງໃນບັດຕົວເລືອກທຸກໃບ.** ດ້ານເທິງ, ສີເທົາ, ແມ່ນ *ສຽງອອກແບບດິບ*: ມັນຖືກສ້າງເທື່ອດຽວ ແລະ ຈະບໍ່ອອກມາຄືເກົ່າອີກ.
   ດ້ານລຸ່ມ, ໃນກອບສີສົ້ມ, ແມ່ນ *↻ ນີ້ແມ່ນສຽງທີ່ທ່ານຈະໄດ້ຍິນຕະຫຼອດ*: ການບັນທຶກອອກແບບທີ່ອ່ານຄືນເປັນສຽງອ້າງອີງດ້ວຍ seed
@@ -313,8 +310,7 @@ repo ນີ້ພຽງແຕ່ກະກຽມຂໍ້ຄວາມ, ເອີ�
 
 **GPU ອັນໃດແດ່?** ເບິ່ງ "GPU ທີ່ຮອງຮັບ" ຂ້າງເທິງ: NVIDIA ຕັ້ງແຕ່ GTX 10xx ຂຶ້ນໄປ, VRAM 4 GB ຫຼື ຫຼາຍກວ່າ, driver ≥ 570.
 native code ມີຢູ່ໃນ release ສຳລັບ sm_61/75/86/89/120a; ກາດອື່ນທີ່ເປັນ Pascal ຫຼື ໃໝ່ກວ່າໃຊ້ PTX ທີ່ຝັງໄວ້ (ການເລີ່ມຄັ້ງທຳອິດ
-ຊ້າກວ່າ). AMD/Intel: zip Vulkan ແບບທົດລອງ, `kur.ps1 -Vulkan`; ຜູ້ໃຊ້ພາຍນອກຄົນໜຶ່ງລາຍງານວ່າໄດ້ແລ່ນມັນເທິງ AMD 6900 XT, ແຕ່
-ຍັງຕ້ອງການການທົດສອບ AMD/Intel ທີ່ກວ້າງຂວາງກວ່ານີ້ (ເບິ່ງ "AMD / Intel" ຂ້າງເທິງ). ສະເພາະ CPU (`"backend": "cpu"` ໃນ
+ຊ້າກວ່າ). AMD/Intel: zip Vulkan ແບບທົດລອງ, `kur.ps1 -Vulkan`; ພວກເຮົາທົດສອບເອງແລ້ວໃນກຣາຟິກໃນຕົວ Intel HD Graphics 630; @mitraTR ໄດ້ແລ່ນລຸ້ນກ່ອນ v0.1.1 ເທິງ AMD RX 6900 XT, ແພັກເກັດ v0.3.1 ໃໝ່ຍັງບໍ່ທັນໄດ້ລອງເທິງ AMD (ເບິ່ງ "AMD / Intel" ຂ້າງເທິງ). ສະເພາະ CPU (`"backend": "cpu"` ໃນ
 `ayarlar.json`) ແລ່ນໄດ້ ແຕ່ຊ້າກວ່າ GTX 1050 Ti ~6× (ການວັດແທກຂອງ engine, 535 s ທຽບກັບ 94 s ສຳລັບການເວົ້າ 48 s); ບໍ່ແມ່ນ
 ທາງທີ່ຮອງຮັບ.
 
@@ -343,7 +339,7 @@ background noise". ໃຫ້ມັນເປັນຄຳອະທິບາຍ, �
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) ເພີ່ມປະໂຫຍກໃສ່ຊຸດທົດສອບ
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) ແບ່ງປັນສຽງທີ່ທ່ານອອກແບບ ພ້ອມຄຳອະທິບາຍ ແລະ seed ຂອງມັນ
 
-**ທົດສອບກາດຈໍຂອງທ່ານ ແລ້ວຂຽນລາຍງານ:** ບໍ່ຈຳເປັນຕ້ອງຂຽນໂຄດ, ພຽງແຕ່ໃຊ້ [ແບບຟອມລາຍງານການທົດສອບຮາດແວ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); ຍັງບໍ່ມີລາຍງານຈາກກາດຈໍ Intel ເທື່ອ.
+**ທົດສອບກາດຈໍຂອງທ່ານ ແລ້ວຂຽນລາຍງານ:** ບໍ່ຈຳເປັນຕ້ອງຂຽນໂຄດ, ພຽງແຕ່ໃຊ້ [ແບບຟອມລາຍງານການທົດສອບຮາດແວ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); Intel HD Graphics 630 (ກຣາຟິກໃນຕົວ) ພວກເຮົາທົດສອບເອງແລ້ວ; ຍັງບໍ່ມີລາຍງານຈາກ Intel Arc, ແລະຍັງບໍ່ມີຈາກ AMD ກັບ v0.3.1.
 
 ຊຸດທົດສອບລວມ: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); ຄູ່ມືສຽງແບຣນ:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); ວິທີສົ່ງລະຫັດ: [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -194,15 +194,13 @@ bilgisayardan erişilir).
 > **Sürüm zip'indeki `audiocpp_cli.exe` çift tıklanmaz.** Komut satırı motorudur; yanında CUDA DLL'leri ve model ister,
 > hepsini `kur.ps1` yerine koyar ve Python paketi sürer. Çift tıklayınca yalnız "cudart64_12.dll bulunamadı" görürsünüz.
 
-**Desteklenen kartlar (sürüm v0.1.1):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
+**Desteklenen kartlar (sürüm v0.3.0):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
 RTX 50xx (sm_120a) için yerel kod; Pascal ve sonrası başka CUDA kartlar gömülü PTX ile sürücü üzerinden çalışır (ilk açılış
 yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Biz GTX 1050 Ti 4 GB'de denedik (Windows'ta Docker Desktop/WSL2 ile de, yalnız komut satırı); @mslmyilmaz5'in ölçümü (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1
 (ayrıntı [docs/linux.md](docs/linux.md)). Başka kart deneyimlerinizi
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)'a yazın.
 
 **AMD / Intel (deneysel):** ayrı bir Vulkan motoru (CUDA gerekmez) `scripts\kur.ps1 -Kok C:\vox -Vulkan` ile kurulur. Bizim NVIDIA kartta Vulkan arka ucuyla (orada CUDA'dan yavaş, aynı tohumla aynı ses; temiz bir hız karşılaştırması henüz yok) ve Intel HD Graphics 630 dahili kartta (1 saniyelik konuşma için yaklaşık 35-50 saniye hesap) denendi; AMD'de kendimiz **denemedik**: denerseniz sonucu Discussions'a yazın. Birden çok Vulkan cihazı varsa (dahili + harici) kurulum harici kartın dizinini `ayarlar.json` içine `cihaz` olarak yazar.
-
-**Not:** Vulkan desteği şu an deneyseldir. GTX 1050 Ti üzerinde başarıyla derlenmiş ve test edilmiştir. Ayrıca harici bir kullanıcı (mitra_tr) tarafından AMD 6900 XT üzerinde de çalıştırıldığı bildirilmiştir. AMD/Intel kartlarda daha geniş testlere ihtiyaç vardır.
 
 **Topluluk testi (AMD):** @mitraTR, v0.1.1'i Windows 11'de AMD Radeon RX 6900 XT üzerinde Vulkan ile çalıştırdı: kurulum, ses tasarımı, okuma, web arayüzü ve testler sorunsuz geçti; okuma, 1 saniyelik konuşma için yaklaşık 0,8-0,9 saniye hesap sürdü ([#6'daki rapor](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Kurulumu yolunda yalnız İngilizce harfler olan kısa bir klasöre yap (ör. `C:\vox`): motor Windows'ta Türkçe harf ya da başka ASCII dışı karakter içeren yolları açamıyor. Şimdiye kadarki bütün raporlar: [test edilmiş donanım](docs/donanim_testleri.md).
 
@@ -262,7 +260,7 @@ adresini kendiniz açın (başka port: `--port 8800`) ya da `baslat.bat`'a çift
 Üç sekme: *Ses tasarla*, *Bu sesle oku*, *Ses klonlama*. Olağan yol: *Tasarla* → çeşitleri dinle → *Okuma listeme ekle* →
 *Bu sesle oku* → indir. Ya da ses menüsünden hazır bir ses seçip okut.
 
-- **Başlıkta sürüm.** Küçük, soluk `v0.2.0 · <kısa commit>` yazısı (izlenen dosyada kaydedilmemiş değişiklik varsa `+`
+- **Başlıkta sürüm.** Küçük, soluk `v0.3.1 · <kısa commit>` yazısı (izlenen dosyada kaydedilmemiş değişiklik varsa `+`
   eki; git yoksa yalnız sürüm). Ekran görüntüsünde ve videoda hangi sürümün kullanıldığı görünür.
 - **Her çeşit kartında iki ses.** Üstte gri *Ham tasarım sesi*: bir kez üretilir, aynısı bir daha çıkmaz. Altında turuncu
   çerçevede *↻ Sürekli duyacağın ses bu*: tasarım kaydı referans verilerek çeşidin kendi tohumuyla (kartta yazılı) yapılan
@@ -308,8 +306,7 @@ Python paketi yalnız metni hazırlar, motoru çağırır ve dosyaları toplar.
 
 **Hangi kartlar?** Yukarıdaki "Desteklenen kartlar": GTX 10xx ve üstü NVIDIA, en az 4 GB VRAM, sürücü ≥ 570. Sürümde
 sm_61/75/86/89/120a için yerel kod var; Pascal ve sonrası diğer kartlar gömülü PTX ile çalışır (ilk açılış yavaş).
-AMD/Intel: deneysel Vulkan zip'i, `kur.ps1 -Vulkan`; harici bir kullanıcı AMD 6900 XT'de çalıştırdığını bildirdi, ancak AMD/Intel'de
-daha geniş testler gerekiyor (yukarıdaki "AMD / Intel"). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
+AMD/Intel: deneysel Vulkan zip'i, `kur.ps1 -Vulkan`; Intel HD Graphics 630 dahili kartta bizim tarafımızdan denendi; @mitraTR önceki v0.1.1'i AMD RX 6900 XT'de çalıştırdı, yeni v0.3.1 paketleri AMD'de henüz denenmedi (yukarıdaki "AMD / Intel"). Yalnız CPU (`ayarlar.json` içinde `"backend": "cpu"`) çalışır ama
 GTX 1050 Ti'den ~6 kat yavaştır (motor ölçümü: 48 sn ses için 535 sn / 94 sn); desteklenen yol değildir.
 
 **Ne kadar hızlı?** GTX 1050 Ti 4 GB (i7-7700HQ) üzerinde ölçüldü: bir tasarım çeşidi (≈ 25 sn kayıt) 55 sn; okuma,
@@ -338,7 +335,7 @@ Nereden başlayacağını bilmiyorsan bu dört küçük iş iyi bir ilk adım:
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Test setine bir cümle ekle
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Tasarladığın bir sesi tarifi ve tohumuyla paylaş
 
-**Kartını test et, rapor yaz:** kod bilmen gerekmez, [donanım test raporu formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) yeter; Intel ekran kartından henüz hiç rapor yok.
+**Kartını test et, rapor yaz:** kod bilmen gerekmez, [donanım test raporu formu](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml) yeter; Intel HD Graphics 630 (dahili) bizim tarafımızdan denendi; Intel Arc'tan henüz rapor yok, AMD'de de v0.3.1 ile henüz rapor yok.
 
 Ortak test seti: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); marka sesi rehberi:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); kod gönderme: [CONTRIBUTING.md](CONTRIBUTING.md).

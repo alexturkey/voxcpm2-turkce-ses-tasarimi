@@ -179,15 +179,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 
 > **הקובץ `audiocpp_cli.exe` שב-zip של הגרסה לא נועד ללחיצה כפולה.** זהו מנוע שורת פקודה שצריך לידו את קובצי ה-DLL של CUDA ואת המודל; `kur.ps1` מציב הכול במקום, וחבילת ה-Python היא שמפעילה אותו. לחיצה כפולה עליו רק מציגה "cudart64_12.dll not found".
 
-**כרטיסים נתמכים (גרסה v0.1.1):** קוד מקורי ל-GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ו-RTX 50xx
+**כרטיסים נתמכים (גרסה v0.3.0):** קוד מקורי ל-GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ו-RTX 50xx
 (sm_120a); כל כרטיס CUDA אחר מדור Pascal ואילך מריץ את ה-PTX המוטמע דרך הדרייבר (הפעלה ראשונה איטית יותר). דור Maxwell (GTX 9xx)
 וישנים יותר אינם נתמכים ב-CUDA 12.8. נבדק על ידינו על GTX 1050 Ti של 4 GB (גם דרך Docker Desktop/WSL2 ב-Windows, שורת פקודה בלבד);
 נמדד על ידי @mslmyilmaz5 (#15): RTX 3060 Ti של 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (פרטים ב-[docs/linux.md](docs/linux.md)).
 דיווחים מכרטיסים אחרים יתקבלו בברכה ב-[Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **כרטיסי AMD / Intel (ניסיוני):** מנוע Vulkan נפרד (בלי CUDA) מותקן עם `scripts\kur.ps1 -Kok C:\vox -Vulkan`. בדקנו אותו בכרטיס ה-NVIDIA שלנו דרך שכבת Vulkan (שם איטי יותר מ-CUDA, אותו שמע עם אותו זרע; השוואת מהירות נקייה עדיין חסרה) ובכרטיס המשולב Intel HD Graphics 630 (כ-35-50 שניות חישוב לכל שנייה של דיבור); ב-AMD **לא** בדקנו אותו בעצמנו: אם ניסיתם, פרסמו את התוצאה ב-Discussions. כשיש יותר ממכשיר Vulkan אחד (משולב + נפרד) המתקין כותב את מספר הכרטיס הנפרד בתור `cihaz` בקובץ `ayarlar.json`.
-
-*הערה: התמיכה ב-Vulkan ניסיונית כרגע. היא נבנתה ונבדקה בהצלחה על GTX 1050 Ti. משתמש חיצוני (mitra_tr) דיווח גם שהריץ אותה על AMD 6900 XT. עדיין נדרשות בדיקות רחבות יותר על כרטיסי AMD/Intel.*
 
 **בדיקת קהילה (AMD):** @mitraTR הריץ את v0.1.1 עם Vulkan על AMD Radeon RX 6900 XT ב-Windows 11: ההתקנה, עיצוב הקול, ההקראה, ממשק הרשת והבדיקות עבדו; ההקראה דרשה כ-0.8-0.9 שנ׳ חישוב לכל שנייה של דיבור ([הדוח ב-#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). התקינו בתיקייה קצרה שהנתיב שלה כולל רק תווי ASCII (למשל `C:\vox`): ב-Windows המנוע לא מצליח לפתוח נתיבים עם עברית או תווים אחרים שאינם ASCII. כל הדוחות עד עכשיו: [חומרה שנבדקה](docs/donanim_testleri.md).
 
@@ -247,7 +245,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 *הקראה בקול הזה*, *שכפול קול*. המסלול הרגיל: *עיצוב* ← האזנה לגרסאות ← *הוספה לרשימת הקריאה שלי* ←
 *הקראה בקול הזה* ← הורדה. או בחרו קול כלול מתפריט הקולות והקריאו.
 
-- **הגרסה בכותרת.** טקסט קטן ודהוי `v0.2.0 · <short commit>` (עם `+` כשיש בקבצים במעקב שינויים שלא נשמרו ב-commit; בלי git, רק
+- **הגרסה בכותרת.** טקסט קטן ודהוי `v0.3.1 · <short commit>` (עם `+` כשיש בקבצים במעקב שינויים שלא נשמרו ב-commit; בלי git, רק
   הגרסה), כדי שצילומי מסך וסרטונים יראו באיזו גרסה השתמשו.
 - **שני קולות בכל כרטיס גרסה.** למעלה, באפור, *קול עיצוב גולמי*: הוא נוצר פעם אחת ולעולם לא ייצא שוב אותו דבר. מתחתיו, במסגרת
   כתומה, *↻ זה הקול שתשמעו מעכשיו*: הקלטת העיצוב מוקראת מחדש כייחוס עם הזרע של הגרסה (מוצג על הכרטיס). כך נשמע הקול בכל הקראה
@@ -287,9 +285,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 ואוספת את הקבצים.
 
 **אילו כרטיסים?** ראו «כרטיסים נתמכים» למעלה: NVIDIA מ-GTX 10xx ומעלה, 4 GB VRAM או יותר, דרייבר ≥ 570. בגרסה יש קוד מקורי
-ל-sm_61/75/86/89/120a; כרטיסים אחרים מדור Pascal ואילך משתמשים ב-PTX המוטמע (הפעלה ראשונה איטית יותר). AMD/Intel: קובץ zip
-ניסיוני של Vulkan, `kur.ps1 -Vulkan`; משתמש חיצוני דיווח שהריץ אותו על AMD 6900 XT, אבל עדיין נדרשות בדיקות רחבות יותר על
-AMD/Intel (ראו «AMD / Intel» למעלה). הרצה על מעבד בלבד (`"backend": "cpu"` בקובץ `ayarlar.json`) עובדת, אבל איטית פי ~6 מ-GTX
+ל-sm_61/75/86/89/120a; כרטיסים אחרים מדור Pascal ואילך משתמשים ב-PTX המוטמע (הפעלה ראשונה איטית יותר). AMD/Intel: קובץ zip ניסיוני של Vulkan, `kur.ps1 -Vulkan`; נבדק על ידינו בכרטיס המשולב Intel HD Graphics 630; ‏@mitraTR הריץ את הגרסה הקודמת v0.1.1 על AMD RX 6900 XT, חבילות v0.3.1 החדשות עוד לא נוסו על AMD (ראו «AMD / Intel» למעלה). הרצה על מעבד בלבד (`"backend": "cpu"` בקובץ `ayarlar.json`) עובדת, אבל איטית פי ~6 מ-GTX
 1050 Ti (מדידת מנוע: 535 שנ' לעומת 94 שנ' עבור 48 שנ' של דיבור); זה לא מסלול נתמך.
 
 **כמה מהר?** נמדד על GTX 1050 Ti של 4 GB (i7-7700HQ): גרסת עיצוב אחת (הקלטה של ≈ 25 שנ') 55 שנ'; הקראה ≈ 2 שנ' חישוב לכל שנייה
@@ -315,7 +311,7 @@ AMD/Intel (ראו «AMD / Intel» למעלה). הרצה על מעבד בלבד (
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) הוסיפו משפט לסט הבדיקה
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) שתפו קול שעיצבתם, עם התיאור והזרע שלו
 
-**בדקו את כרטיס המסך שלכם וכתבו דוח:** לא צריך לתכנת, מספיק [טופס דוח בדיקת חומרה](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); מכרטיסי Intel עדיין אין אף דוח.
+**בדקו את כרטיס המסך שלכם וכתבו דוח:** לא צריך לתכנת, מספיק [טופס דוח בדיקת חומרה](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); את Intel HD Graphics 630 המשולב בדקנו בעצמנו; מ-Intel Arc עדיין אין דוח, וגם לא מ-AMD עם v0.3.1.
 
 סט הבדיקה המשותף: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); מדריך קול מותג:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); איך שולחים קוד: [CONTRIBUTING.md](CONTRIBUTING.md).

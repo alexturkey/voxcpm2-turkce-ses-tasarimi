@@ -190,14 +190,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 > 需要旁边放着 CUDA DLL 和模型；`kur.ps1` 会把一切准备好，再由 Python 包来调用它。
 > 双击它只会显示 "cudart64_12.dll not found"。
 
-**支持的 GPU（release v0.1.1）：** 为 GTX 10xx（sm_61）、RTX 20xx（sm_75）、RTX 30xx（sm_86）、RTX 40xx
+**支持的 GPU（release v0.3.0）：** 为 GTX 10xx（sm_61）、RTX 20xx（sm_75）、RTX 30xx（sm_86）、RTX 40xx
 （sm_89）和 RTX 50xx（sm_120a）提供原生代码；Pascal 及以后的其他 CUDA GPU 通过驱动运行内嵌的 PTX（首次启动
 较慢）。Maxwell（GTX 9xx）及更早的显卡不受 CUDA 12.8 支持。我们在 GTX 1050 Ti 4 GB 上做过测试（也在 Windows 上通过 Docker Desktop/WSL2 测试过，仅 CLI）；@mslmyilmaz5 测量过（#15）：RTX 3060 Ti 8 GB、Ubuntu 24.04 Docker、
 CUDA 12.8.1（详见 [docs/linux.md](docs/linux.md)）。欢迎在 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions) 中分享其他显卡的测试报告。
 
 **AMD / Intel（实验性）：** 单独的 Vulkan 引擎（无需 CUDA）通过 `scripts\kur.ps1 -Kok C:\vox -Vulkan` 安装。我们在自己的 NVIDIA 显卡上用 Vulkan 后端测试过（比 CUDA 慢，同一种子得到相同音频；干净的速度对比尚待进行），也在 Intel HD Graphics 630 集成显卡上测试过（每 1 秒语音约需 35-50 秒计算）；我们自己**没有**在 AMD 上测试过：如果你试了，请把结果发到 Discussions。有多个 Vulkan 设备（集成 + 独立）时，安装程序会把独立显卡的编号以 `cihaz` 写入 `ayarlar.json`。
-
-**注意：** Vulkan 支持目前仍处于实验阶段。它已在 GTX 1050 Ti 上成功构建并通过测试。另外，一位外部用户（mitra_tr）报告已在 AMD 6900 XT 上运行成功。AMD/Intel 显卡上仍需要更广泛的测试。
 
 **社区测试（AMD）：** @mitraTR 在 Windows 11 的 AMD Radeon RX 6900 XT 上用 Vulkan 运行了 v0.1.1：安装、声音设计、朗读、网页界面和测试全部通过；朗读每 1 秒语音约需 0.8-0.9 秒计算时间（[#6 中的报告](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)）。请安装到路径只含 ASCII 字符的短文件夹（例如 `C:\vox`）：在 Windows 上，引擎无法打开含中文或其他非 ASCII 字符的路径。目前所有报告：[已测试的硬件](docs/donanim_testleri.md)。
 
@@ -257,7 +255,7 @@ nvcc 在长路径下会失败。带检查步骤的分步说明：[AGENTS.md](AGE
 *用此声音朗读*、*声音克隆*。常用流程：*开始设计* → 试听各个版本 → *加入我的朗读列表* →
 *开始朗读* → 下载。也可以从声音菜单中挑一个内置声音直接朗读。
 
-- **页眉中的版本号。** 一个小而淡的 `v0.2.0 · <short commit>`（当受跟踪的文件有未提交的修改时带 `+`；
+- **页眉中的版本号。** 一个小而淡的 `v0.3.1 · <short commit>`（当受跟踪的文件有未提交的修改时带 `+`；
   没有 git 时只显示版本号），这样截图和视频里就能看出用的是哪个版本。
 - **每张版本卡片上的两个声音。** 上方灰色的是*原始设计声音*：它只生成一次，再也不会一模一样地出现。
   下方橙色框里的是 *↻ 这就是你以后一直听到的声音*：以设计录音为参考、用该版本自己的种子（显示在卡片上）重新朗读的结果。
@@ -301,9 +299,7 @@ audio.cpp 是*引擎*：在你的 GPU 上运行模型的 C++/CUDA 程序（`audi
 本仓库中的 Python 包只负责准备文本、调用引擎和收集文件。
 
 **支持哪些 GPU？** 见上文「支持的 GPU」：GTX 10xx 及以上的 NVIDIA 显卡，显存 4 GB 或以上，驱动 ≥ 570。release 中
-包含 sm_61/75/86/89/120a 的原生代码；其他 Pascal 或更新的显卡使用内嵌的 PTX（首次启动较慢）。AMD/Intel：
-实验性的 Vulkan zip，`kur.ps1 -Vulkan`；有外部用户报告已在 AMD 6900 XT 上运行成功，但仍需要更广泛的 AMD/Intel
-测试（见上文「AMD / Intel」）。纯 CPU（在 `ayarlar.json` 中设置 `"backend": "cpu"`）可以运行，但
+包含 sm_61/75/86/89/120a 的原生代码；其他 Pascal 或更新的显卡使用内嵌的 PTX（首次启动较慢）。AMD/Intel：实验性的 Vulkan zip，`kur.ps1 -Vulkan`；我们已在 Intel HD Graphics 630 集成显卡上测试过；@mitraTR 曾在 AMD RX 6900 XT 上运行旧版 v0.1.1，新的 v0.3.1 包尚未在 AMD 上试过（见上文「AMD / Intel」）。纯 CPU（在 `ayarlar.json` 中设置 `"backend": "cpu"`）可以运行，但
 比 GTX 1050 Ti 慢约 6 倍（引擎实测，生成 48 秒语音用时 535 秒对 94 秒）；这不是受支持的使用方式。
 
 **有多快？** 在 GTX 1050 Ti 4 GB（i7-7700HQ）上实测：一个设计版本（≈ 25 秒录音）用时 55 秒；朗读时每 1 秒语音约需 2 秒
@@ -332,7 +328,7 @@ audio.cpp 是*引擎*：在你的 GPU 上运行模型的 C++/CUDA 程序（`audi
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) 为测试集添加一个句子
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) 分享一个你设计的声音，附上描述和种子
 
-**测试你的显卡，写一份报告：** 不需要会编程，填写[硬件测试报告表单](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)即可；目前还没有 Intel 显卡的报告。
+**测试你的显卡，写一份报告：** 不需要会编程，填写[硬件测试报告表单](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml)即可；我们已自行测试 Intel HD Graphics 630 集成显卡；目前还没有 Intel Arc 的报告，也还没有 AMD 上 v0.3.1 的报告。
 
 共享测试集：[docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt)；品牌声音指南：
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md)；如何提交代码：[CONTRIBUTING.md](CONTRIBUTING.md)。

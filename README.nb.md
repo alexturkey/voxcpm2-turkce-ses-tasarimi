@@ -198,7 +198,7 @@ på localhost).
 > CUDA-DLL-ene og modellen ved siden av seg; `kur.ps1` setter alt på plass, og Python-pakken styrer den. Dobbeltklikker
 > du på den, vises bare "cudart64_12.dll not found".
 
-**Støttede GPU-er (release v0.1.1):** native kode for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**Støttede GPU-er (release v0.3.0):** native kode for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) og RTX 50xx (sm_120a); alle andre CUDA-GPU-er fra Pascal og nyere kjører den innebygde PTX-en via driveren
 (tregere første oppstart). Maxwell (GTX 9xx) og eldre støttes ikke av CUDA 12.8. Testet av oss på et GTX 1050 Ti 4 GB
 (også via Docker Desktop/WSL2 på Windows, bare CLI); målt av @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
@@ -206,10 +206,6 @@ CUDA 12.8.1 (detaljer i [docs/linux.md](docs/linux.md)). Rapporter fra andre kor
 [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
 
 **AMD / Intel (eksperimentell):** en egen Vulkan-motor (uten CUDA) installeres med `scripts\kur.ps1 -Kok C:\vox -Vulkan`. Vi har testet den på vårt NVIDIA-kort via Vulkan-backend (der tregere enn CUDA, samme lyd med samme seed; en ren hastighetssammenligning gjenstår) og på den integrerte Intel HD Graphics 630 (omtrent 35-50 s beregning per 1 s tale); på AMD har vi **ikke** testet den selv: prøver du, så legg resultatet i Discussions. Med mer enn én Vulkan-enhet (integrert + dedikert) skriver installasjonsprogrammet indeksen til det dedikerte skjermkortet som `cihaz` i `ayarlar.json`.
-
-**Merk:** Vulkan-støtten er foreløpig eksperimentell. Den er bygget og testet med hell på et GTX 1050 Ti. En ekstern
-bruker (mitra_tr) har i tillegg rapportert at den kjører på et AMD 6900 XT. Det trengs fortsatt bredere testing på
-AMD/Intel-kort.
 
 **Fellesskapstest (AMD):** @mitraTR kjørte v0.1.1 med Vulkan på et AMD Radeon RX 6900 XT under Windows 11: installasjon, stemmedesign, opplesning, nettgrensesnittet og testene fungerte; opplesningen tok omtrent 0,8-0,9 s beregning per sekund tale ([rapport i #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installer i en kort mappe der stien bare har ASCII-tegn (f.eks. `C:\vox`): på Windows kan motoren ikke åpne stier med æ, ø, å eller andre ikke-ASCII-tegn. Alle rapporter så langt: [testet maskinvare](docs/donanim_testleri.md).
 
@@ -271,7 +267,7 @@ port: `--port 8800`), eller dobbeltklikk på `baslat.bat`. Stopp serveren med Ct
 *Les opp med denne stemmen*, *Stemmekloning*. Den vanlige veien: *Lag* → lytt til variantene → *Legg til i leselisten
 min* → *Les opp med denne stemmen* → last ned. Eller velg en medfølgende stemme i stemmemenyen og les opp.
 
-- **Versjon i toppfeltet.** En liten, svak `v0.2.0 · <short commit>` (med `+` når sporede filer har endringer som ikke
+- **Versjon i toppfeltet.** En liten, svak `v0.3.1 · <short commit>` (med `+` når sporede filer har endringer som ikke
   er committet; bare versjonen uten git), slik at skjermbilder og videoer viser hvilken versjon som ble brukt.
 - **To stemmer på hvert variantkort.** Øverst, i grått, *Rå designstemme*: den genereres én gang og blir aldri helt lik
   igjen. Under den, i en oransje ramme, *↻ Dette er stemmen du vil høre videre*: designopptaket lest tilbake som
@@ -327,8 +323,7 @@ filene.
 
 **Hvilke GPU-er?** Se "Støttede GPU-er" ovenfor: NVIDIA fra GTX 10xx og oppover, 4 GB VRAM eller mer, driver ≥ 570.
 Releasen har native kode for sm_61/75/86/89/120a; andre kort fra Pascal og nyere bruker den innebygde PTX-en (tregere
-første oppstart). AMD/Intel: eksperimentell Vulkan-zip, `kur.ps1 -Vulkan`; en ekstern bruker har rapportert at den
-kjører på et AMD 6900 XT, men det trengs fortsatt bredere testing på AMD/Intel (se "AMD / Intel" ovenfor). Bare CPU
+første oppstart). AMD/Intel: eksperimentell Vulkan-zip, `kur.ps1 -Vulkan`; testet av oss på den integrerte Intel HD Graphics 630; @mitraTR kjørte den tidligere v0.1.1 på et AMD RX 6900 XT, de nye v0.3.1-pakkene er ennå ikke prøvd på AMD (se "AMD / Intel" ovenfor). Bare CPU
 (`"backend": "cpu"` i `ayarlar.json`) fungerer, men er ~6× tregere enn et GTX 1050 Ti (motormåling, 535 s mot 94 s for
 48 s tale); det er ikke en støttet vei.
 
@@ -360,7 +355,7 @@ Usikker på hvor du skal begynne? Disse fire små sakene er et godt første steg
 - [#7](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/7) Legg til en setning i testsettet
 - [#8](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/8) Del en stemme du har designet, med beskrivelse og seed
 
-**Test skjermkortet ditt, skriv en rapport:** du trenger ikke kunne kode, bare bruk [skjemaet for maskinvaretestrapporter](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); det finnes ennå ingen rapport fra et Intel-skjermkort.
+**Test skjermkortet ditt, skriv en rapport:** du trenger ikke kunne kode, bare bruk [skjemaet for maskinvaretestrapporter](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=donanim-testi.yml); den integrerte Intel HD Graphics 630 har vi testet selv; det finnes ennå ingen rapport fra Intel Arc og ingen fra AMD med v0.3.1.
 
 Felles testsett: [docs/test_seti/cumleler.txt](docs/test_seti/cumleler.txt); veiledning for merkevarestemme:
 [docs/marka_sesi_rehberi.md](docs/marka_sesi_rehberi.md); slik sender du kode: [CONTRIBUTING.md](CONTRIBUTING.md).
