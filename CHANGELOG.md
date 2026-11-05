@@ -1,6 +1,6 @@
 # Sürüm notları / Release notes
 
-## Yayınlanmadı / Unreleased
+## v0.3.1 — 2026-11-05
 
 **TR**
 - Vulkan motoru v0.3.1 (yamalar 0001 + 0002: 4 GB + kelime zamanı; 0003 yalnız CUDA çekirdeği olduğu için Vulkan'da yok):
