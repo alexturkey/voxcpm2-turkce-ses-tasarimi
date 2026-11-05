@@ -27,14 +27,16 @@ DO NOT DOUBLE-CLICK THIS EXE. Install: clone the repo and run  powershell -NoPro
   (model + $(if ($Vulkan) { "this exe" } else { "CUDA DLLs + this exe" }) + settings). Web UI:  .venv\Scripts\python.exe -m ses_tasarim.arayuz
 Depo / repo: https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi  ($Surum)
 
-audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxcpm2-4gb-ve-hiz.patch, 0002-voxcpm2-kelime-zamani.patch, 0003-ggml-cuda-block-reduce-yarisi.patch (Apache-2.0 section 4: modified source).
+audiocpp_cli.exe: audio.cpp v0.7.2 (Apache-2.0, ShugoAI LLC) + patches/0001-voxcpm2-4gb-ve-hiz.patch, 0002-voxcpm2-kelime-zamani.patch$(if ($Vulkan) { "" } else { ", 0003-ggml-cuda-block-reduce-yarisi.patch" }) (Apache-2.0 section 4: modified source).$(if ($Vulkan) { "`n0003 (ggml-cuda only) is not part of the Vulkan build: it changes CUDA kernels that a Vulkan build does not compile." } else { "" })
 
 "@
 if ($Vulkan) {
     $note += @"
 DENEYSEL / EXPERIMENTAL Vulkan build (ggml Vulkan backend, MSVC 2022, Vulkan headers 1.4, glslc). No CUDA needed.
-Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.3 driver. Verified only on an NVIDIA GTX 1050 Ti (4 GB) with the Vulkan
-backend; NOT yet tested on AMD or Intel hardware: please report results in the repository's Discussions.
+Targets AMD, Intel and NVIDIA GPUs with a Vulkan 1.3 driver. This build was tested on an NVIDIA GTX 1050 Ti (4 GB) and an
+Intel HD Graphics 630 (integrated, slow: about 40-50 s of compute per 1 s of speech; VRAM is shown as not measurable because
+integrated GPUs use shared memory). An earlier Vulkan build (v0.1.1, without word timing) was reported working on an AMD
+Radeon RX 6900 XT; this build is NOT yet tested on AMD: please report results in the repository's Discussions.
 sha256 $sha
 
 Needs at runtime (NOT in this zip): a GPU driver with Vulkan 1.3 (vulkan-1.dll ships with the driver) and the model
