@@ -61,8 +61,8 @@
 
 1. **הורידו** את הקוד: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    את חבילת המנוע המוכנה לכרטיס שלכם המתקין מוריד בשלב 3:
-   כרטיסי NVIDIA ← [חבילת CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   כרטיסי AMD / Intel ← [חבילת Vulkan, ניסיונית](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   כרטיסי NVIDIA ← [חבילת CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   כרטיסי AMD / Intel ← [חבילת Vulkan, ניסיונית](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (כבר הורדתם אחת? הוסיפו `-HazirZip <path to the zip>` לפקודה שלמטה).
 2. **חלצו** את קובץ ה-zip, פתחו את התיקייה `voxcpm2-turkce-ses-tasarimi-main`, הקלידו `powershell` בשורת הכתובת של סייר הקבצים
    והקישו Enter.
@@ -179,7 +179,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 
 > **הקובץ `audiocpp_cli.exe` שב-zip של הגרסה לא נועד ללחיצה כפולה.** זהו מנוע שורת פקודה שצריך לידו את קובצי ה-DLL של CUDA ואת המודל; `kur.ps1` מציב הכול במקום, וחבילת ה-Python היא שמפעילה אותו. לחיצה כפולה עליו רק מציגה "cudart64_12.dll not found".
 
-**כרטיסים נתמכים (גרסה v0.3.0):** קוד מקורי ל-GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ו-RTX 50xx
+**כרטיסים נתמכים (גרסה v0.3.2):** קוד מקורי ל-GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ו-RTX 50xx
 (sm_120a); כל כרטיס CUDA אחר מדור Pascal ואילך מריץ את ה-PTX המוטמע דרך הדרייבר (הפעלה ראשונה איטית יותר). דור Maxwell (GTX 9xx)
 וישנים יותר אינם נתמכים ב-CUDA 12.8. נבדק על ידינו על GTX 1050 Ti של 4 GB (גם דרך Docker Desktop/WSL2 ב-Windows, שורת פקודה בלבד);
 נמדד על ידי @mslmyilmaz5 (#15): RTX 3060 Ti של 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1 (פרטים ב-[docs/linux.md](docs/linux.md)).
@@ -189,7 +189,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox
 
 **בדיקת קהילה (AMD):** @mitraTR הריץ את v0.1.1 עם Vulkan על AMD Radeon RX 6900 XT ב-Windows 11: ההתקנה, עיצוב הקול, ההקראה, ממשק הרשת והבדיקות עבדו; ההקראה דרשה כ-0.8-0.9 שנ׳ חישוב לכל שנייה של דיבור ([הדוח ב-#6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). התקינו בתיקייה קצרה שהנתיב שלה כולל רק תווי ASCII (למשל `C:\vox`): ב-Windows המנוע לא מצליח לפתוח נתיבים עם עברית או תווים אחרים שאינם ASCII. כל הדוחות עד עכשיו: [חומרה שנבדקה](docs/donanim_testleri.md).
 
-**הערות על Vulkan:** מאז מנוע v0.3.1 תזמוני המילים עובדים גם ב-Vulkan. יש שתי חבילות: `vulkan` דורשת מעבד עם AVX2 (רוב מעבדי Intel Core מ-2013, AMD מ-2015; בהרבה Pentium/Celeron אין); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) רצה על כל מעבד x86 של 64 סיביות, אבל הקריאה הראשונה של קול לוקחת בערך פי 2.2 זמן (הקריאות הבאות באותה מהירות). `kur.ps1 -Vulkan` בודק את המעבד ובוחר את החבילה בעצמו. בכרטיס משולב המנוע משתמש בכ-8 GB זיכרון בזמן הקריאה. ההפעלה הראשונה ב-Vulkan עשויה להימשך כמה דקות כי ה-shaders של כרטיס המסך עוברים הידור; הקריאות הבאות מהירות יותר. פרטים: [docs/vulkan.md](docs/vulkan.md).
+**הערות על Vulkan:** מאז מנוע v0.3.1 תזמוני המילים עובדים גם ב-Vulkan. יש שתי חבילות: `vulkan` דורשת מעבד עם AVX2 (רוב מעבדי Intel Core מ-2013, AMD מ-2015; בהרבה Pentium/Celeron אין); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) רצה על כל מעבד x86 של 64 סיביות, אבל הקריאה הראשונה של קול לוקחת בערך פי 2.2 זמן (הקריאות הבאות באותה מהירות). `kur.ps1 -Vulkan` בודק את המעבד ובוחר את החבילה בעצמו. בכרטיס משולב המנוע משתמש בכ-8 GB זיכרון בזמן הקריאה. ההפעלה הראשונה ב-Vulkan עשויה להימשך כמה דקות כי ה-shaders של כרטיס המסך עוברים הידור; הקריאות הבאות מהירות יותר. פרטים: [docs/vulkan.md](docs/vulkan.md).
 
 ### חלופה: בניית המנוע מקוד המקור
 

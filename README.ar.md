@@ -63,8 +63,8 @@
 
 1. **نزّل** الشيفرة: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    يجلب المُثبّت في الخطوة 3 حزمة المحرك الجاهزة المناسبة لبطاقتك:
-   بطاقات NVIDIA ← [حزمة CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip)،
-   بطاقات AMD / Intel ← [حزمة Vulkan، تجريبية](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   بطاقات NVIDIA ← [حزمة CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip)،
+   بطاقات AMD / Intel ← [حزمة Vulkan، تجريبية](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (هل نزّلت إحداها مسبقًا؟ أضف `-HazirZip <path to the zip>` إلى الأمر أدناه).
 2. **فُكّ ضغط** ملف zip، وافتح المجلد `voxcpm2-turkce-ses-tasarimi-main`، واكتب `powershell` في شريط العنوان في مستكشف الملفات
    ثم اضغط Enter.
@@ -183,7 +183,7 @@ DLL لبيئة تشغيل CUDA 12.8 في ملفات zip محمولة (دون ت�
 
 > **ملف `audiocpp_cli.exe` الموجود في zip الإصدار ليس مُعدًّا للنقر المزدوج.** إنه محرك يعمل من سطر الأوامر ويحتاج إلى ملفات DLL الخاصة بـ CUDA وإلى النموذج بجانبه؛ يضع `kur.ps1` كل شيء في مكانه وحزمة Python هي التي تقوده. النقر المزدوج عليه لا يعرض إلا "cudart64_12.dll not found".
 
-**البطاقات المدعومة (الإصدار v0.3.0):** شيفرة أصلية لبطاقات GTX 10xx (sm_61) وRTX 20xx (sm_75) وRTX 30xx (sm_86) وRTX 40xx
+**البطاقات المدعومة (الإصدار v0.3.2):** شيفرة أصلية لبطاقات GTX 10xx (sm_61) وRTX 20xx (sm_75) وRTX 30xx (sm_86) وRTX 40xx
 (sm_89) وRTX 50xx (sm_120a)؛ وأي بطاقة CUDA أخرى من جيل Pascal فما بعده تشغّل PTX المضمّن عبر التعريف (بداية أولى أبطأ). جيل
 Maxwell (GTX 9xx) وما قبله لا يدعمه CUDA 12.8. اختبرناه بأنفسنا على GTX 1050 Ti بذاكرة 4 GB (وكذلك عبر Docker Desktop/WSL2 على
 Windows، من سطر الأوامر فقط)؛ وقاسه @mslmyilmaz5 (#15): RTX 3060 Ti بذاكرة 8 GB، وUbuntu 24.04 Docker، وCUDA 12.8.1 (التفاصيل في
@@ -193,7 +193,7 @@ Windows، من سطر الأوامر فقط)؛ وقاسه @mslmyilmaz5 (#15): RT
 
 **اختبار من المجتمع (AMD):** شغّل @mitraTR الإصدار v0.1.1 مع Vulkan على بطاقة AMD Radeon RX 6900 XT في Windows 11: نجح التثبيت وتصميم الصوت والقراءة وواجهة الويب والاختبارات؛ واستغرقت القراءة نحو 0.8-0.9 ث من الحساب لكل ثانية كلام ([التقرير في #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). ثبّت البرنامج في مجلد قصير لا يحتوي مساره إلا على أحرف ASCII (مثل `C:\vox`): على Windows لا يستطيع المحرك فتح مسارات تحتوي على أحرف عربية أو غيرها من الأحرف خارج ASCII. كل التقارير حتى الآن: [العتاد المُختبَر](docs/donanim_testleri.md).
 
-**ملاحظات عن Vulkan:** منذ المحرك v0.3.1 صارت توقيتات الكلمات تعمل على Vulkan أيضًا. هناك حزمتان: `vulkan` تحتاج معالجًا يدعم AVX2 (معظم Intel Core منذ 2013، وAMD منذ 2015؛ وكثير من Pentium/Celeron لا يدعمه)؛ و[`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) تعمل على أي معالج x86 بـ64 بت، لكن القراءة الأولى لصوت ما تستغرق نحو 2.2 ضعف الوقت (والقراءات التالية بالسرعة نفسها). يفحص `kur.ps1 -Vulkan` المعالج ويختار الحزمة بنفسه. على البطاقة المدمجة يستخدم المحرك نحو 8 غيغابايت من الذاكرة أثناء القراءة. قد يستغرق التشغيل الأول على Vulkan بضع دقائق لأن مظلِّلات بطاقة الرسوم تُترجم؛ والقراءات التالية أسرع. التفاصيل: [docs/vulkan.md](docs/vulkan.md).
+**ملاحظات عن Vulkan:** منذ المحرك v0.3.1 صارت توقيتات الكلمات تعمل على Vulkan أيضًا. هناك حزمتان: `vulkan` تحتاج معالجًا يدعم AVX2 (معظم Intel Core منذ 2013، وAMD منذ 2015؛ وكثير من Pentium/Celeron لا يدعمه)؛ و[`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) تعمل على أي معالج x86 بـ64 بت، لكن القراءة الأولى لصوت ما تستغرق نحو 2.2 ضعف الوقت (والقراءات التالية بالسرعة نفسها). يفحص `kur.ps1 -Vulkan` المعالج ويختار الحزمة بنفسه. على البطاقة المدمجة يستخدم المحرك نحو 8 غيغابايت من الذاكرة أثناء القراءة. قد يستغرق التشغيل الأول على Vulkan بضع دقائق لأن مظلِّلات بطاقة الرسوم تُترجم؛ والقراءات التالية أسرع. التفاصيل: [docs/vulkan.md](docs/vulkan.md).
 
 ### بديل: بناء المحرك من المصدر
 

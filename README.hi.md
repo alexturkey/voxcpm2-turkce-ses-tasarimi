@@ -67,8 +67,8 @@
 
 1. कोड **डाउनलोड** करें: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)।
    आपके कार्ड के लिए तैयार इंजन पैकेज स्टेप 3 में इंस्टॉलर ख़ुद लाता है:
-   NVIDIA → [CUDA पैकेज](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan पैकेज, प्रायोगिक](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [CUDA पैकेज](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan पैकेज, प्रायोगिक](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (पहले से डाउनलोड कर रखा है? नीचे वाले कमांड में `-HazirZip <path to the zip>` जोड़ दें)।
 2. zip को **एक्सट्रैक्ट** करें, `voxcpm2-turkce-ses-tasarimi-main` फ़ोल्डर खोलें, Explorer के एड्रेस बार में `powershell`
    लिखें और Enter दबाएँ।
@@ -194,7 +194,7 @@ PowerShell से यही काम:
 > CUDA DLL और मॉडल चाहिए; `kur.ps1` सब कुछ अपनी जगह रखता है और Python पैकेज इसे चलाता है।
 > डबल-क्लिक करने पर बस "cudart64_12.dll not found" दिखता है।
 
-**सपोर्टेड GPU (रिलीज़ v0.3.0):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) और RTX 50xx
+**सपोर्टेड GPU (रिलीज़ v0.3.2):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) और RTX 50xx
 (sm_120a) के लिए नेटिव कोड; Pascal या उसके बाद का कोई भी दूसरा CUDA GPU ड्राइवर के ज़रिए एम्बेडेड PTX चलाता है (पहली बार
 शुरू होने में ज़्यादा समय)। Maxwell (GTX 9xx) और उससे पुराने GPU CUDA 12.8 में सपोर्टेड नहीं हैं। हमने GTX 1050 Ti 4 GB पर
 टेस्ट किया है (Windows पर Docker Desktop/WSL2 के ज़रिए भी, सिर्फ़ CLI); @mslmyilmaz5 (#15) का माप: RTX 3060 Ti 8 GB,
@@ -205,7 +205,7 @@ Ubuntu 24.04 Docker, CUDA 12.8.1 (विवरण [docs/linux.md](docs/linux.md)
 
 **समुदाय परीक्षण (AMD):** @mitraTR ने Windows 11 पर AMD Radeon RX 6900 XT में Vulkan के साथ v0.1.1 चलाया: इंस्टॉल, आवाज़ डिज़ाइन, पढ़ना, वेब इंटरफ़ेस और टेस्ट सब ठीक चले; पढ़ने में हर 1 सेकंड बोली के लिए लगभग 0.8-0.9 सेकंड गणना लगी ([#6 में रिपोर्ट](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))। ऐसे छोटे फ़ोल्डर में इंस्टॉल करें जिसके पथ में केवल ASCII अक्षर हों (जैसे `C:\vox`): Windows पर इंजन हिंदी या अन्य गैर-ASCII अक्षरों वाले पथ नहीं खोल पाता। अब तक की सभी रिपोर्टें: [जाँचा गया हार्डवेयर](docs/donanim_testleri.md)।
 
-**Vulkan के बारे में:** इंजन v0.3.1 से शब्दों के समय Vulkan पर भी मिलते हैं। दो पैकेज हैं: `vulkan` को AVX2 वाला प्रोसेसर चाहिए (2013 के बाद के ज़्यादातर Intel Core, 2015 के बाद के AMD; कई Pentium/Celeron में नहीं होता); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) हर 64-बिट x86 प्रोसेसर पर चलता है, पर किसी आवाज़ की पहली रीडिंग लगभग 2.2 गुना समय लेती है (बाद की रीडिंग उसी गति से)। `kur.ps1 -Vulkan` प्रोसेसर जाँचकर पैकेज ख़ुद चुनता है। इंटीग्रेटेड ग्राफ़िक्स पर इंजन पढ़ते समय लगभग 8 GB RAM लेता है। Vulkan पर पहली शुरुआत में कुछ मिनट लग सकते हैं क्योंकि GPU शेडर कंपाइल होते हैं; बाद की रीडिंग तेज़ होती हैं। विवरण: [docs/vulkan.md](docs/vulkan.md)।
+**Vulkan के बारे में:** इंजन v0.3.1 से शब्दों के समय Vulkan पर भी मिलते हैं। दो पैकेज हैं: `vulkan` को AVX2 वाला प्रोसेसर चाहिए (2013 के बाद के ज़्यादातर Intel Core, 2015 के बाद के AMD; कई Pentium/Celeron में नहीं होता); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) हर 64-बिट x86 प्रोसेसर पर चलता है, पर किसी आवाज़ की पहली रीडिंग लगभग 2.2 गुना समय लेती है (बाद की रीडिंग उसी गति से)। `kur.ps1 -Vulkan` प्रोसेसर जाँचकर पैकेज ख़ुद चुनता है। इंटीग्रेटेड ग्राफ़िक्स पर इंजन पढ़ते समय लगभग 8 GB RAM लेता है। Vulkan पर पहली शुरुआत में कुछ मिनट लग सकते हैं क्योंकि GPU शेडर कंपाइल होते हैं; बाद की रीडिंग तेज़ होती हैं। विवरण: [docs/vulkan.md](docs/vulkan.md)।
 
 ### विकल्प: इंजन को सोर्स से बिल्ड करें
 

@@ -3,7 +3,7 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox -Derle     # kaynaktan derle / build from source
 # Adım seçmek / select steps:  -Adim model,cuda,hazir,python,ayar,kontrol   (derleme: kaynak,derle)
 # Her adım yeniden çalıştırılabilir: mevcut ve sha256'sı doğru dosya atlanır. / Idempotent: verified files are skipped.
-# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip
+# Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip
 # AMD / Intel (deneysel):  -Vulkan  [-Islemci oto|avx2|uyumlu]   paket işlemciye göre seçilir / package picked from the CPU
 param(
     [string]$Kok = "C:\vox",                      # kısa yol şart (derlemede nvcc 260 karakter sınırı) / short path
@@ -55,27 +55,27 @@ $SRC_URL = "https://github.com/0xShug0/audio.cpp/archive/refs/tags/v0.7.2.tar.gz
 $SRC_SHA = "cab8db31cec26ef8f1e39eabea1df5f02a87e8de87a5ae334b1e66217339c6bf"
 $PATCHES = @((Join-Path $Repo "patches\0001-voxcpm2-4gb-ve-hiz.patch"), (Join-Path $Repo "patches\0002-voxcpm2-kelime-zamani.patch"), (Join-Path $Repo "patches\0003-ggml-cuda-block-reduce-yarisi.patch"))
 # Hazır motor: GitHub Release. Sürüm, zip ve exe sha256'sı burada sabit; yeni sürümde üçü birlikte güncellenir.
-$REL_SURUM = "v0.3.0"
-$REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip"
+$REL_SURUM = "v0.3.2"
+$REL_ZIP = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip"
 $REL_URL = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/$REL_SURUM/$REL_ZIP"
-$REL_ZIP_SHA = "60966998f7d85222f7bfad5197ffc09adcb347a2581d2b02fc36564aabaf3880"
-$REL_EXE_SHA = "053cea0457a72aa6955d147b6a83e98371d8a00825c5ef75e3c0f2aaba08d09e"
-# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez), v0.3.1: yama 0001 + 0002 (kelime zamanı). İki paket:
+$REL_ZIP_SHA = "46b554ba8b734c3ab477186671f242d323956a47e184858a6b2899788979f6a9"
+$REL_EXE_SHA = "c3e05aedcd3b6d027ac0b61c65688e1ef7099fcce7af96f2c8aa1fc18ae8ef3d"
+# Deneysel Vulkan motoru (AMD/Intel/NVIDIA, CUDA gerekmez), v0.3.2: yama 0001 + 0002 (kelime zamanı). İki paket:
 #   avx2   AVX2 + FMA + F16C + BMI2 isteyen işlemci (Intel Haswell 2013+, AMD Excavator 2015+); hızlı olan
 #   uyumlu AVX'siz, her x86-64 işlemci; sesin ilk okuması ~2,2 kat uzun (referans kodlaması işlemcide)
 # Seçim (-Islemci oto, varsayılan): ses_tasarim/islemci.py (numpy işlemci tespiti) + AVX2 exe'sinin yerleşmeden önce deneme
 # çalışması ("ok" dışı her sonuç -> uyumlu). -Islemci avx2|uyumlu elle seçer, deneme yapılmaz.
-# Experimental Vulkan engine v0.3.1, two packages; the installer picks one from the CPU and a test run of the AVX2 exe.
-$REL_VK_SURUM = "v0.3.1"
+# Experimental Vulkan engine v0.3.2, two packages; the installer picks one from the CPU and a test run of the AVX2 exe.
+$REL_VK_SURUM = "v0.3.2"
 $REL_VK = @{
-    avx2   = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip"
-                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip"
-                zip_sha = "94f9acd6bcc6664a6b62d76c37f67828ec60cc58f35e48a2d96c56b787cacee8"
-                exe_sha = "9c97b39c175c97409cfda56a7a7153eb135e680c14ae90f6059726d4a7ffc3e2" }
-    uyumlu = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip"
-                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip"
-                zip_sha = "ed3bd8f34e2d7d6feadd5e48ee0b3282315079d3da5dda5c3fe747d9b4da9717"
-                exe_sha = "370ae6736a62c083924aaa4372711c5699fe18f3d3f2971bfa6dc11fb8881c70" }
+    avx2   = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip"
+                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip"
+                zip_sha = "8450fa63b8a58a8db13b7991c086f716c308465eb455b60f89214a3da0612aae"
+                exe_sha = "9684f63c8c766d9bcc1667a8eff43a22cf31e824de233c23f91d7ae5c71734ce" }
+    uyumlu = @{ zip = "voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip"
+                url = "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip"
+                zip_sha = "dcebb7ab950f4f8905cd2241d81dc488d9d77ac2b659e688a1ee8d3c50ffd333"
+                exe_sha = "8ad5957384f7774333c095673d05a1c98d5540a7dda37705ce5898c2578721b2" }
 }
 if ($Vulkan) { $REL_SURUM = $REL_VK_SURUM }
 $CUDA_BASE = "https://developer.download.nvidia.com/compute/cuda/redist"

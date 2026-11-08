@@ -72,8 +72,8 @@ yake ya sauti ya VoxCPM2. Sauti unayoibuni hapa inatumika huko kwa `ses.voxcpm2_
 
 1. **Pakua** msimbo: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Kifurushi cha injini kilicho tayari kwa kadi yako kinapakuliwa na kisakinishi katika hatua ya 3:
-   NVIDIA → [kifurushi cha CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [kifurushi cha Vulkan, cha majaribio](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [kifurushi cha CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [kifurushi cha Vulkan, cha majaribio](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (umeshapakua kimoja? ongeza `-HazirZip <path to the zip>` kwenye amri iliyo hapa chini).
 2. **Fungua** zip, ingia kwenye folda ya `voxcpm2-turkce-ses-tasarimi-main`, andika `powershell` kwenye upau wa anwani wa
    Explorer kisha bonyeza Enter.
@@ -202,7 +202,7 @@ localhost pekee).
 > inayohitaji DLL za CUDA na modeli kando yake; `kur.ps1` inaweka kila kitu mahali pake na kifurushi cha Python ndicho
 > kinachoiendesha. Ukiibofya mara mbili utaona tu "cudart64_12.dll not found".
 
-**GPU zinazoungwa mkono (toleo v0.3.0):** msimbo asilia kwa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU zinazoungwa mkono (toleo v0.3.2):** msimbo asilia kwa GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) na RTX 50xx (sm_120a); GPU nyingine yoyote ya CUDA kuanzia Pascal inaendesha PTX iliyopachikwa kupitia kiendeshi
 (uanzishaji wa kwanza ni wa polepole zaidi). Maxwell (GTX 9xx) na za zamani zaidi haziungwi mkono na CUDA 12.8.
 Imejaribiwa nasi kwenye GTX 1050 Ti 4 GB (pia kupitia Docker Desktop/WSL2 kwenye Windows, CLI pekee); imepimwa na
@@ -213,7 +213,7 @@ Ripoti kutoka kadi nyingine zinakaribishwa katika [Discussions](https://github.c
 
 **Jaribio la jamii (AMD):** @mitraTR aliendesha v0.1.1 kwa Vulkan kwenye AMD Radeon RX 6900 XT katika Windows 11: usakinishaji, kubuni sauti, kusoma, kiolesura cha wavuti na majaribio vyote vilifanya kazi; kusoma kulichukua takriban sek 0.8-0.9 za hesabu kwa kila sek 1 ya usemi ([ripoti katika #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Sakinisha kwenye folda fupi ambayo njia yake ina herufi za ASCII pekee (k.m. `C:\vox`): kwenye Windows injini haiwezi kufungua njia zenye herufi zisizo za ASCII. Ripoti zote hadi sasa: [vifaa vilivyojaribiwa](docs/donanim_testleri.md).
 
-**Maelezo kuhusu Vulkan:** tangu injini v0.3.1 nyakati za maneno zinafanya kazi pia kwenye Vulkan. Vifurushi viwili: `vulkan` kinahitaji prosesa yenye AVX2 (Intel Core nyingi tangu 2013, AMD tangu 2015; Pentium/Celeron nyingi hazina); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) kinafanya kazi kwenye prosesa yoyote ya x86 ya biti 64, lakini usomaji wa kwanza wa sauti huchukua takriban mara 2.2 zaidi (usomaji unaofuata una kasi ileile). `kur.ps1 -Vulkan` hukagua prosesa na kuchagua kifurushi chenyewe. Kwenye michoro jumuishi, injini hutumia takriban GB 8 za RAM wakati wa kusoma. Mwanzo wa kwanza kwenye Vulkan unaweza kuchukua dakika chache kwa sababu shader za GPU hukusanywa; usomaji unaofuata ni wa haraka zaidi. Maelezo: [docs/vulkan.md](docs/vulkan.md).
+**Maelezo kuhusu Vulkan:** tangu injini v0.3.1 nyakati za maneno zinafanya kazi pia kwenye Vulkan. Vifurushi viwili: `vulkan` kinahitaji prosesa yenye AVX2 (Intel Core nyingi tangu 2013, AMD tangu 2015; Pentium/Celeron nyingi hazina); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) kinafanya kazi kwenye prosesa yoyote ya x86 ya biti 64, lakini usomaji wa kwanza wa sauti huchukua takriban mara 2.2 zaidi (usomaji unaofuata una kasi ileile). `kur.ps1 -Vulkan` hukagua prosesa na kuchagua kifurushi chenyewe. Kwenye michoro jumuishi, injini hutumia takriban GB 8 za RAM wakati wa kusoma. Mwanzo wa kwanza kwenye Vulkan unaweza kuchukua dakika chache kwa sababu shader za GPU hukusanywa; usomaji unaofuata ni wa haraka zaidi. Maelezo: [docs/vulkan.md](docs/vulkan.md).
 
 ### Njia mbadala: jenga injini kutoka msimbo chanzo
 

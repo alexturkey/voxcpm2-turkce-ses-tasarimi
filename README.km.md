@@ -67,8 +67,8 @@ Claude Code skill សម្រាប់លំហូររចនាទាំង�
 
 1. **ទាញយក** កូដ៖ [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)។
    កញ្ចប់ engine ដែលរៀបចំរួចសម្រាប់កាតរបស់អ្នក នឹងត្រូវបាន installer ទាញយកនៅជំហានទី 3៖
-   NVIDIA → [កញ្ចប់ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [កញ្ចប់ Vulkan ពិសោធន៍](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [កញ្ចប់ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [កញ្ចប់ Vulkan ពិសោធន៍](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (បានទាញយកមួយរួចហើយ? បន្ថែម `-HazirZip <path to the zip>` ទៅពាក្យបញ្ជាខាងក្រោម)។
 2. **ពន្លា** zip បើក folder `voxcpm2-turkce-ses-tasarimi-main` វាយ `powershell` នៅរបារអាសយដ្ឋានរបស់ Explorer
    ហើយចុច Enter។
@@ -194,7 +194,7 @@ localhost ប៉ុណ្ណោះ)។
 > DLL របស់ CUDA និង model នៅក្បែរវា `kur.ps1` ដាក់អ្វីៗទាំងអស់ឱ្យនៅកន្លែង ហើយកញ្ចប់ Python ជាអ្នកបញ្ជាវា។ ការចុចពីរដងលើវា
 > គ្រាន់តែបង្ហាញ "cudart64_12.dll not found" ប៉ុណ្ណោះ។
 
-**GPU ដែលគាំទ្រ (release v0.3.0)៖** native code សម្រាប់ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU ដែលគាំទ្រ (release v0.3.2)៖** native code សម្រាប់ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) និង RTX 50xx (sm_120a) GPU CUDA ផ្សេងទៀតណាមួយចាប់ពី Pascal ឡើងទៅ ដំណើរការ PTX ដែលបង្កប់ តាមរយៈ driver
 (ការចាប់ផ្តើមលើកដំបូងយឺតជាង)។ Maxwell (GTX 9xx) និងចាស់ជាងនេះមិនត្រូវបាន CUDA 12.8 គាំទ្រទេ។ យើងបានសាកល្បងលើ
 GTX 1050 Ti 4 GB (ក៏តាមរយៈ Docker Desktop/WSL2 លើ Windows ដែរ CLI ប៉ុណ្ណោះ) វាស់វែងដោយ @mslmyilmaz5 (#15)៖ RTX 3060 Ti 8 GB,
@@ -205,7 +205,7 @@ Ubuntu 24.04 Docker, CUDA 12.8.1 (ព័ត៌មានលម្អិតក្�
 
 **ការសាកល្បងពីសហគមន៍ (AMD)៖** @mitraTR បានដំណើរការ v0.1.1 ជាមួយ Vulkan លើ AMD Radeon RX 6900 XT ក្នុង Windows 11៖ ការដំឡើង ការរចនាសំឡេង ការអាន ផ្ទៃវេប និងការធ្វើតេស្ត ដំណើរការបានទាំងអស់ ការអានចំណាយពេលគណនាប្រហែល 0.8-0.9 វិនាទី សម្រាប់ការនិយាយ 1 វិនាទី ([របាយការណ៍ក្នុង #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))។ សូមដំឡើងក្នុងថតខ្លីមួយ ដែលផ្លូវរបស់វាមានតែតួអក្សរ ASCII (ឧ. `C:\vox`)៖ នៅលើ Windows ម៉ាស៊ីនមិនអាចបើកផ្លូវដែលមានអក្សរខ្មែរ ឬតួអក្សរក្រៅ ASCII ផ្សេងទៀតបានទេ។ របាយការណ៍ទាំងអស់រហូតមកដល់ពេលនេះ៖ [ផ្នែករឹងដែលបានសាកល្បង](docs/donanim_testleri.md)។
 
-**កំណត់ចំណាំអំពី Vulkan៖** ចាប់ពីម៉ាស៊ីន v0.3.1 ពេលវេលានៃពាក្យនីមួយៗដំណើរការលើ Vulkan ផងដែរ។ មានកញ្ចប់ពីរ៖ `vulkan` ត្រូវការ CPU ដែលមាន AVX2 (Intel Core ភាគច្រើនចាប់ពីឆ្នាំ 2013, AMD ចាប់ពីឆ្នាំ 2015; Pentium/Celeron ជាច្រើនគ្មាន); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) ដំណើរការលើ CPU x86 64 ប៊ីតណាមួយក៏បាន ប៉ុន្តែការអានលើកដំបូងនៃសំឡេងមួយចំណាយពេលប្រហែល 2.2 ដង (ការអានបន្ទាប់មានល្បឿនដូចគ្នា)។ `kur.ps1 -Vulkan` ពិនិត្យ CPU ហើយជ្រើសកញ្ចប់ដោយខ្លួនឯង។ លើក្រាហ្វិកក្នុងខ្លួន ម៉ាស៊ីនប្រើ RAM ប្រហែល 8 GB ពេលអាន។ ការបើកលើកដំបូងលើ Vulkan អាចចំណាយពេលពីរបីនាទី ព្រោះត្រូវចងក្រង shader របស់ GPU; ការអានបន្ទាប់លឿនជាង។ ព័ត៌មានលម្អិត៖ [docs/vulkan.md](docs/vulkan.md)។
+**កំណត់ចំណាំអំពី Vulkan៖** ចាប់ពីម៉ាស៊ីន v0.3.1 ពេលវេលានៃពាក្យនីមួយៗដំណើរការលើ Vulkan ផងដែរ។ មានកញ្ចប់ពីរ៖ `vulkan` ត្រូវការ CPU ដែលមាន AVX2 (Intel Core ភាគច្រើនចាប់ពីឆ្នាំ 2013, AMD ចាប់ពីឆ្នាំ 2015; Pentium/Celeron ជាច្រើនគ្មាន); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) ដំណើរការលើ CPU x86 64 ប៊ីតណាមួយក៏បាន ប៉ុន្តែការអានលើកដំបូងនៃសំឡេងមួយចំណាយពេលប្រហែល 2.2 ដង (ការអានបន្ទាប់មានល្បឿនដូចគ្នា)។ `kur.ps1 -Vulkan` ពិនិត្យ CPU ហើយជ្រើសកញ្ចប់ដោយខ្លួនឯង។ លើក្រាហ្វិកក្នុងខ្លួន ម៉ាស៊ីនប្រើ RAM ប្រហែល 8 GB ពេលអាន។ ការបើកលើកដំបូងលើ Vulkan អាចចំណាយពេលពីរបីនាទី ព្រោះត្រូវចងក្រង shader របស់ GPU; ការអានបន្ទាប់លឿនជាង។ ព័ត៌មានលម្អិត៖ [docs/vulkan.md](docs/vulkan.md)។
 
 ### ជម្រើសផ្សេង៖ build engine ពី source
 

@@ -68,8 +68,8 @@ program; it installs this repository as its VoxCPM2 voice engine. A voice you de
 
 1. **Download** the code: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    The ready-made engine package for your card is fetched by the installer in step 3:
-   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan package, experimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan package, experimental](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (already downloaded one? add `-HazirZip <path to the zip>` to the command below).
 2. **Extract** the zip, open the `voxcpm2-turkce-ses-tasarimi-main` folder, type `powershell` in the Explorer address
    bar and press Enter.
@@ -195,7 +195,7 @@ localhost only).
 > needs the CUDA DLLs and the model next to it; `kur.ps1` puts everything in place and the Python package drives it.
 > Double-clicking it only shows "cudart64_12.dll not found".
 
-**Supported GPUs (release v0.3.0):** native code for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**Supported GPUs (release v0.3.2):** native code for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) and RTX 50xx (sm_120a); any other CUDA GPU from Pascal on runs the embedded PTX via the driver (slower first
 start). Maxwell (GTX 9xx) and older are not supported by CUDA 12.8. Tested on a GTX 1050 Ti 4 GB by us (also via Docker Desktop/WSL2 on Windows, CLI only); measured by @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (details in [docs/linux.md](docs/linux.md)). Reports from other cards are welcome in [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
@@ -204,7 +204,7 @@ CUDA 12.8.1 (details in [docs/linux.md](docs/linux.md)). Reports from other card
 
 **Community test (AMD):** @mitraTR ran v0.1.1 with Vulkan on an AMD Radeon RX 6900 XT under Windows 11: install, voice design, reading, the web UI and the tests all worked; reading took about 0.8-0.9 s of compute per 1 s of speech ([report in #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Install into a short folder whose path has only ASCII letters (e.g. `C:\vox`): on Windows the engine cannot open paths with Turkish or other non-ASCII characters. All reports so far: [tested hardware](docs/donanim_testleri.md).
 
-**Vulkan notes:** since engine v0.3.1 word timings work on Vulkan too. Two packages: `vulkan` needs a CPU with AVX2 (most Intel Core from 2013, AMD from 2015; many Pentium/Celeron lack it); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) runs on any 64-bit x86 CPU, but a voice's first reading takes about 2.2x as long (later readings run at the same speed). `kur.ps1 -Vulkan` checks the CPU and picks the package itself. On integrated graphics the engine uses about 8 GB of RAM while reading. The first start on Vulkan can take a few minutes because the GPU shaders are compiled; later readings are faster. Details: [docs/vulkan.md](docs/vulkan.md).
+**Vulkan notes:** since engine v0.3.1 word timings work on Vulkan too. Two packages: `vulkan` needs a CPU with AVX2 (most Intel Core from 2013, AMD from 2015; many Pentium/Celeron lack it); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) runs on any 64-bit x86 CPU, but a voice's first reading takes about 2.2x as long (later readings run at the same speed). `kur.ps1 -Vulkan` checks the CPU and picks the package itself. On integrated graphics the engine uses about 8 GB of RAM while reading. The first start on Vulkan can take a few minutes because the GPU shaders are compiled; later readings are faster. Details: [docs/vulkan.md](docs/vulkan.md).
 
 ### Alternative: build the engine from source
 

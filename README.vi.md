@@ -68,8 +68,8 @@ tiếng video chạy cục bộ của chúng tôi; nó cài repo này làm engin
 
 1. **Tải** mã nguồn: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Gói engine dựng sẵn cho card của bạn sẽ được trình cài đặt tải ở bước 3:
-   NVIDIA → [gói CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [gói Vulkan, thử nghiệm](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [gói CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [gói Vulkan, thử nghiệm](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (đã tải sẵn một gói? thêm `-HazirZip <path to the zip>` vào lệnh bên dưới).
 2. **Giải nén** file zip, mở thư mục `voxcpm2-turkce-ses-tasarimi-main`, gõ `powershell` vào thanh địa chỉ của
    Explorer và nhấn Enter.
@@ -195,7 +195,7 @@ trên localhost).
 > mô hình nằm cạnh nó; `kur.ps1` sắp xếp mọi thứ vào đúng chỗ và gói Python sẽ điều khiển nó. Nhấp đúp vào nó chỉ hiện
 > thông báo "cudart64_12.dll not found".
 
-**GPU được hỗ trợ (release v0.3.0):** mã native cho GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU được hỗ trợ (release v0.3.2):** mã native cho GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) và RTX 50xx (sm_120a); mọi GPU CUDA khác từ Pascal trở lên chạy PTX nhúng sẵn thông qua driver (lần khởi động
 đầu chậm hơn). Maxwell (GTX 9xx) và cũ hơn không được CUDA 12.8 hỗ trợ. Chúng tôi đã thử trên GTX 1050 Ti 4 GB (cả qua Docker Desktop/WSL2 trên Windows, chỉ CLI); @mslmyilmaz5 đã đo (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (chi tiết trong [docs/linux.md](docs/linux.md)). Rất hoan nghênh báo cáo từ các card khác trong [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
@@ -204,7 +204,7 @@ CUDA 12.8.1 (chi tiết trong [docs/linux.md](docs/linux.md)). Rất hoan nghên
 
 **Thử nghiệm cộng đồng (AMD):** @mitraTR đã chạy v0.1.1 với Vulkan trên AMD Radeon RX 6900 XT trong Windows 11: cài đặt, thiết kế giọng, đọc, giao diện web và các bài kiểm thử đều chạy tốt; việc đọc mất khoảng 0,8-0,9 giây tính toán cho mỗi 1 giây lời nói ([báo cáo trong #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Hãy cài vào một thư mục ngắn mà đường dẫn chỉ có ký tự ASCII (ví dụ `C:\vox`): trên Windows, bộ máy không mở được đường dẫn có chữ có dấu hay ký tự ngoài ASCII khác. Tất cả báo cáo đến nay: [phần cứng đã kiểm thử](docs/donanim_testleri.md).
 
-**Lưu ý về Vulkan:** từ engine v0.3.1, mốc thời gian từng từ cũng chạy trên Vulkan. Có hai gói: `vulkan` cần CPU có AVX2 (hầu hết Intel Core từ 2013, AMD từ 2015; nhiều Pentium/Celeron không có); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) chạy trên mọi CPU x86 64-bit, nhưng lần đọc đầu tiên của một giọng mất khoảng 2,2 lần thời gian (các lần đọc sau cùng tốc độ). `kur.ps1 -Vulkan` tự kiểm tra CPU và chọn gói. Với đồ họa tích hợp, engine dùng khoảng 8 GB RAM khi đọc. Lần khởi động đầu tiên trên Vulkan có thể mất vài phút vì shader GPU được biên dịch; các lần đọc sau nhanh hơn. Chi tiết: [docs/vulkan.md](docs/vulkan.md).
+**Lưu ý về Vulkan:** từ engine v0.3.1, mốc thời gian từng từ cũng chạy trên Vulkan. Có hai gói: `vulkan` cần CPU có AVX2 (hầu hết Intel Core từ 2013, AMD từ 2015; nhiều Pentium/Celeron không có); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) chạy trên mọi CPU x86 64-bit, nhưng lần đọc đầu tiên của một giọng mất khoảng 2,2 lần thời gian (các lần đọc sau cùng tốc độ). `kur.ps1 -Vulkan` tự kiểm tra CPU và chọn gói. Với đồ họa tích hợp, engine dùng khoảng 8 GB RAM khi đọc. Lần khởi động đầu tiên trên Vulkan có thể mất vài phút vì shader GPU được biên dịch; các lần đọc sau nhanh hơn. Chi tiết: [docs/vulkan.md](docs/vulkan.md).
 
 ### Cách khác: build engine từ mã nguồn
 

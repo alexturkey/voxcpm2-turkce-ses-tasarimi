@@ -72,8 +72,8 @@ di sini digunakan di sana dengan `ses.voxcpm2_ses = "<name>/<variant>"`.
 
 1. **Muat turun** kodnya: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Pakej enjin sedia guna untuk kad grafik anda akan diambil oleh pemasang pada langkah 3:
-   NVIDIA → [pakej CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [pakej Vulkan, eksperimen](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [pakej CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [pakej Vulkan, eksperimen](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (sudah memuat turun salah satu? tambah `-HazirZip <path to the zip>` pada arahan di bawah).
 2. **Ekstrak** fail zip, buka folder `voxcpm2-turkce-ses-tasarimi-main`, taip `powershell` dalam bar alamat Explorer
    dan tekan Enter.
@@ -206,7 +206,7 @@ ia hanya mendengar pada localhost).
 > DLL CUDA dan model di sebelahnya; `kur.ps1` meletakkan semuanya di tempat yang betul dan pakej Python yang
 > mengendalikannya. Mengklik dua kali hanya memaparkan "cudart64_12.dll not found".
 
-**GPU yang disokong (keluaran v0.3.0):** kod natif untuk GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX
+**GPU yang disokong (keluaran v0.3.2):** kod natif untuk GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX
 40xx (sm_89) dan RTX 50xx (sm_120a); mana-mana GPU CUDA lain dari Pascal ke atas menjalankan PTX terbenam melalui
 pemacu (permulaan pertama lebih perlahan). Maxwell (GTX 9xx) dan yang lebih lama tidak disokong oleh CUDA 12.8. Diuji oleh kami pada GTX 1050 Ti 4 GB (juga melalui Docker Desktop/WSL2 pada Windows, CLI sahaja); diukur oleh @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (butiran dalam [docs/linux.md](docs/linux.md)). Laporan daripada kad lain amat dialu-alukan di [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
@@ -215,7 +215,7 @@ CUDA 12.8.1 (butiran dalam [docs/linux.md](docs/linux.md)). Laporan daripada kad
 
 **Ujian komuniti (AMD):** @mitraTR menjalankan v0.1.1 dengan Vulkan pada AMD Radeon RX 6900 XT di Windows 11: pemasangan, reka bentuk suara, bacaan, antara muka web dan ujian semuanya berjaya; bacaan mengambil kira-kira 0.8-0.9 saat pengiraan bagi setiap 1 saat pertuturan ([laporan dalam #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Pasang dalam folder pendek yang laluannya hanya mengandungi aksara ASCII (cth. `C:\vox`): di Windows enjin tidak dapat membuka laluan yang mengandungi aksara bukan ASCII. Semua laporan setakat ini: [perkakasan yang telah diuji](docs/donanim_testleri.md).
 
-**Nota Vulkan:** sejak enjin v0.3.1 masa perkataan turut berfungsi pada Vulkan. Dua pakej: `vulkan` memerlukan pemproses dengan AVX2 (kebanyakan Intel Core sejak 2013, AMD sejak 2015; banyak Pentium/Celeron tiada); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) berjalan pada mana-mana pemproses x86 64-bit, tetapi bacaan pertama sesuatu suara mengambil kira-kira 2.2 kali lebih lama (bacaan seterusnya sama laju). `kur.ps1 -Vulkan` memeriksa pemproses dan memilih pakej sendiri. Dengan grafik bersepadu, enjin menggunakan kira-kira 8 GB RAM semasa membaca. Permulaan pertama pada Vulkan boleh mengambil beberapa minit kerana shader GPU dikompil; bacaan seterusnya lebih pantas. Butiran: [docs/vulkan.md](docs/vulkan.md).
+**Nota Vulkan:** sejak enjin v0.3.1 masa perkataan turut berfungsi pada Vulkan. Dua pakej: `vulkan` memerlukan pemproses dengan AVX2 (kebanyakan Intel Core sejak 2013, AMD sejak 2015; banyak Pentium/Celeron tiada); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) berjalan pada mana-mana pemproses x86 64-bit, tetapi bacaan pertama sesuatu suara mengambil kira-kira 2.2 kali lebih lama (bacaan seterusnya sama laju). `kur.ps1 -Vulkan` memeriksa pemproses dan memilih pakej sendiri. Dengan grafik bersepadu, enjin menggunakan kira-kira 8 GB RAM semasa membaca. Permulaan pertama pada Vulkan boleh mengambil beberapa minit kerana shader GPU dikompil; bacaan seterusnya lebih pantas. Butiran: [docs/vulkan.md](docs/vulkan.md).
 
 ### Alternatif: bina enjin daripada kod sumber
 

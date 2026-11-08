@@ -70,8 +70,8 @@ videodubbning; det installerar det här repot som sin VoxCPM2-röstmotor. En rö
 
 1. **Ladda ned** koden: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Det färdiga motorpaketet för ditt grafikkort hämtas av installationsprogrammet i steg 3:
-   NVIDIA → [CUDA-paket](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan-paket, experimentellt](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [CUDA-paket](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan-paket, experimentellt](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (har du redan laddat ned ett? Lägg till `-HazirZip <path to the zip>` i kommandot nedan).
 2. **Packa upp** zip-filen, öppna mappen `voxcpm2-turkce-ses-tasarimi-main`, skriv `powershell` i adressfältet i
    Utforskaren och tryck på Enter.
@@ -200,7 +200,7 @@ lyssnar bara på localhost).
 > CUDA-DLL:erna och modellen bredvid sig; `kur.ps1` lägger allt på plats och Python-paketet styr den. Dubbelklickar du
 > på den visas bara "cudart64_12.dll not found".
 
-**Grafikkort som stöds (release v0.3.0):** inbyggd kod för GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
+**Grafikkort som stöds (release v0.3.2):** inbyggd kod för GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86),
 RTX 40xx (sm_89) och RTX 50xx (sm_120a); alla andra CUDA-grafikkort från Pascal och framåt kör den inbäddade PTX-koden
 via drivrutinen (långsammare första start). Maxwell (GTX 9xx) och äldre stöds inte av CUDA 12.8. Testat av oss på ett
 GTX 1050 Ti 4 GB (även via Docker Desktop/WSL2 på Windows, bara CLI); uppmätt av @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB,
@@ -211,7 +211,7 @@ i [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discus
 
 **Communitytest (AMD):** @mitraTR körde v0.1.1 med Vulkan på ett AMD Radeon RX 6900 XT under Windows 11: installation, röstdesign, uppläsning, webbgränssnittet och testerna fungerade; uppläsningen tog ungefär 0,8-0,9 s beräkning per sekund tal ([rapport i #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Installera i en kort mapp vars sökväg bara har ASCII-tecken (t.ex. `C:\vox`): på Windows kan motorn inte öppna sökvägar med å, ä, ö eller andra icke-ASCII-tecken. Alla rapporter hittills: [testad hårdvara](docs/donanim_testleri.md).
 
-**Om Vulkan:** sedan motor v0.3.1 fungerar ordtider även på Vulkan. Två paket: `vulkan` kräver en processor med AVX2 (de flesta Intel Core från 2013, AMD från 2015; många Pentium/Celeron saknar det); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) körs på alla 64-bitars x86-processorer, men en rösts första uppläsning tar ungefär 2,2 gånger så lång tid (senare uppläsningar går lika fort). `kur.ps1 -Vulkan` kontrollerar processorn och väljer paketet själv. Med integrerad grafik använder motorn cirka 8 GB RAM under uppläsning. Första starten på Vulkan kan ta några minuter eftersom GPU-shaders kompileras; senare uppläsningar går snabbare. Detaljer: [docs/vulkan.md](docs/vulkan.md).
+**Om Vulkan:** sedan motor v0.3.1 fungerar ordtider även på Vulkan. Två paket: `vulkan` kräver en processor med AVX2 (de flesta Intel Core från 2013, AMD från 2015; många Pentium/Celeron saknar det); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) körs på alla 64-bitars x86-processorer, men en rösts första uppläsning tar ungefär 2,2 gånger så lång tid (senare uppläsningar går lika fort). `kur.ps1 -Vulkan` kontrollerar processorn och väljer paketet själv. Med integrerad grafik använder motorn cirka 8 GB RAM under uppläsning. Första starten på Vulkan kan ta några minuter eftersom GPU-shaders kompileras; senare uppläsningar går snabbare. Detaljer: [docs/vulkan.md](docs/vulkan.md).
 
 ### Alternativ: bygg motorn från källkod
 

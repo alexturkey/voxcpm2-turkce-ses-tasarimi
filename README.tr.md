@@ -66,8 +66,8 @@ dublaj programımız; bu repoyu VoxCPM2 ses motoru olarak kurar. Burada tasarlad
 
 1. **İndir:** kodu indirin: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Kartınıza uygun hazır motor paketini 3. adımdaki kurulum kendisi indirir:
-   NVIDIA → [CUDA paketi](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [Vulkan paketi, deneysel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [CUDA paketi](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [Vulkan paketi, deneysel](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (paketi elle indirdiyseniz aşağıdaki komutun sonuna `-HazirZip <zip'in yolu>` ekleyin).
 2. **Aç:** zip'i açın, `voxcpm2-turkce-ses-tasarimi-main` klasörüne girin, Gezgin'in adres çubuğuna `powershell` yazıp
    Enter'a basın.
@@ -194,7 +194,7 @@ bilgisayardan erişilir).
 > **Sürüm zip'indeki `audiocpp_cli.exe` çift tıklanmaz.** Komut satırı motorudur; yanında CUDA DLL'leri ve model ister,
 > hepsini `kur.ps1` yerine koyar ve Python paketi sürer. Çift tıklayınca yalnız "cudart64_12.dll bulunamadı" görürsünüz.
 
-**Desteklenen kartlar (sürüm v0.3.0):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
+**Desteklenen kartlar (sürüm v0.3.2):** GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89) ve
 RTX 50xx (sm_120a) için yerel kod; Pascal ve sonrası başka CUDA kartlar gömülü PTX ile sürücü üzerinden çalışır (ilk açılış
 yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Biz GTX 1050 Ti 4 GB'de denedik (Windows'ta Docker Desktop/WSL2 ile de, yalnız komut satırı); @mslmyilmaz5'in ölçümü (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker, CUDA 12.8.1
 (ayrıntı [docs/linux.md](docs/linux.md)). Başka kart deneyimlerinizi
@@ -204,7 +204,7 @@ yavaş). Maxwell (GTX 9xx) ve eskisi CUDA 12.8'de desteklenmez. Biz GTX 1050 Ti 
 
 **Topluluk testi (AMD):** @mitraTR, v0.1.1'i Windows 11'de AMD Radeon RX 6900 XT üzerinde Vulkan ile çalıştırdı: kurulum, ses tasarımı, okuma, web arayüzü ve testler sorunsuz geçti; okuma, 1 saniyelik konuşma için yaklaşık 0,8-0,9 saniye hesap sürdü ([#6'daki rapor](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Kurulumu yolunda yalnız İngilizce harfler olan kısa bir klasöre yap (ör. `C:\vox`): motor Windows'ta Türkçe harf ya da başka ASCII dışı karakter içeren yolları açamıyor. Şimdiye kadarki bütün raporlar: [test edilmiş donanım](docs/donanim_testleri.md).
 
-**Vulkan notları:** motor v0.3.1'den beri kelime zamanları Vulkan'da da çıkıyor. İki paket var: `vulkan` AVX2'li işlemci ister (2013 sonrası çoğu Intel Core, 2015 sonrası AMD; birçok Pentium/Celeron'da yok); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) her 64 bit x86 işlemcide çalışır, ama bir sesin ilk okuması yaklaşık 2,2 kat uzun sürer (sonraki okumalar aynı hızda). `kur.ps1 -Vulkan` işlemciyi denetleyip paketi kendisi seçer. Dahili kartta motor okuma sırasında yaklaşık 8 GB RAM kullanır. Vulkan'da ilk açılış, ekran kartı gölgelendiricileri derlendiği için birkaç dakika sürebilir; sonraki okumalar hızlanır. Ayrıntı: [docs/vulkan.md](docs/vulkan.md).
+**Vulkan notları:** motor v0.3.1'den beri kelime zamanları Vulkan'da da çıkıyor. İki paket var: `vulkan` AVX2'li işlemci ister (2013 sonrası çoğu Intel Core, 2015 sonrası AMD; birçok Pentium/Celeron'da yok); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) her 64 bit x86 işlemcide çalışır, ama bir sesin ilk okuması yaklaşık 2,2 kat uzun sürer (sonraki okumalar aynı hızda). `kur.ps1 -Vulkan` işlemciyi denetleyip paketi kendisi seçer. Dahili kartta motor okuma sırasında yaklaşık 8 GB RAM kullanır. Vulkan'da ilk açılış, ekran kartı gölgelendiricileri derlendiği için birkaç dakika sürebilir; sonraki okumalar hızlanır. Ayrıntı: [docs/vulkan.md](docs/vulkan.md).
 
 ### Seçenek: motoru kaynaktan derlemek
 

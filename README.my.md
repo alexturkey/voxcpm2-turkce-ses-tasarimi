@@ -73,8 +73,8 @@ web UI တွင် *နမူနာ ဖော်ပြချက်* ကို �
 
 1. code ကို **ဒေါင်းလုဒ်** လုပ်ပါ- [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)။
    သင့်ကတ်အတွက် အသင့် engine package ကို အဆင့် 3 တွင် installer က ယူပေးမည်-
-   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip)၊
-   AMD / Intel → [Vulkan package, စမ်းသပ်ဆဲ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [CUDA package](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip)၊
+   AMD / Intel → [Vulkan package, စမ်းသပ်ဆဲ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (တစ်ခု ဒေါင်းလုဒ်ပြီးပြီလား။ အောက်ပါ command တွင် `-HazirZip <path to the zip>` ကို ထည့်ပါ)။
 2. zip ကို **ဖြည်ပါ**၊ `voxcpm2-turkce-ses-tasarimi-main` folder ကို ဖွင့်ပါ၊ Explorer ၏ လိပ်စာဘားတွင် `powershell` ဟု ရိုက်ပြီး
    Enter နှိပ်ပါ။
@@ -204,7 +204,7 @@ PowerShell မှလည်း အလားတူ-
 > command-line engine ဖြစ်သည်၊ `kur.ps1` က အားလုံးကို နေရာချပေးပြီး Python package က ၎င်းကို မောင်းနှင်သည်။ နှစ်ချက်နှိပ်လျှင်
 > "cudart64_12.dll not found" ကိုသာ ပြလိမ့်မည်။
 
-**ပံ့ပိုးသော GPU များ (release v0.3.0)-** GTX 10xx (sm_61)၊ RTX 20xx (sm_75)၊ RTX 30xx (sm_86)၊ RTX 40xx (sm_89) နှင့်
+**ပံ့ပိုးသော GPU များ (release v0.3.2)-** GTX 10xx (sm_61)၊ RTX 20xx (sm_75)၊ RTX 30xx (sm_86)၊ RTX 40xx (sm_89) နှင့်
 RTX 50xx (sm_120a) အတွက် native code၊ Pascal နှင့်အထက် အခြား CUDA GPU မည်သည့်ကတ်မဆို ထည့်သွင်းထားသော PTX ကို driver မှတစ်ဆင့်
 run သည် (ပထမဆုံး စတင်ချိန် ပိုနှေးသည်)။ Maxwell (GTX 9xx) နှင့် ၎င်းထက်ဟောင်းသော ကတ်များကို CUDA 12.8 မပံ့ပိုးပါ။ ကျွန်ုပ်တို့က
 GTX 1050 Ti 4 GB ပေါ်တွင် စမ်းသပ်ထားသည် (Windows ပေါ်ရှိ Docker Desktop/WSL2 မှတစ်ဆင့်လည်း၊ CLI သာ)၊ @mslmyilmaz5 (#15) က
@@ -215,7 +215,7 @@ GTX 1050 Ti 4 GB ပေါ်တွင် စမ်းသပ်ထားသည�
 
 **အသိုင်းအဝိုင်း စမ်းသပ်ချက် (AMD):** @mitraTR သည် Windows 11 ပေါ်ရှိ AMD Radeon RX 6900 XT တွင် Vulkan ဖြင့် v0.1.1 ကို လည်ပတ်ခဲ့သည်- ထည့်သွင်းခြင်း၊ အသံဒီဇိုင်း၊ ဖတ်ခြင်း၊ ဝဘ်မျက်နှာပြင်နှင့် စမ်းသပ်ချက်များ အားလုံး အလုပ်လုပ်ခဲ့သည်။ စကား 1 စက္ကန့်အတွက် တွက်ချက်ချိန် 0.8-0.9 စက္ကန့်ခန့် ကြာသည် ([#6 ရှိ အစီရင်ခံစာ](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655))။ လမ်းကြောင်းတွင် ASCII စာလုံးများသာ ပါသော တိုတောင်းသည့် ဖိုင်တွဲတွင် ထည့်သွင်းပါ (ဥပမာ `C:\vox`)- Windows တွင် မြန်မာစာ သို့မဟုတ် ASCII မဟုတ်သော စာလုံးပါသည့် လမ်းကြောင်းများကို အင်ဂျင်က မဖွင့်နိုင်ပါ။ ယခုအထိ အစီရင်ခံစာများ အားလုံး- [စမ်းသပ်ပြီး ဟာ့ဒ်ဝဲ](docs/donanim_testleri.md)။
 
-**Vulkan အကြောင်း မှတ်ချက်များ:** အင်ဂျင် v0.3.1 မှစ၍ စကားလုံးအချိန်များ Vulkan တွင်လည်း ရပါပြီ။ ပက်ကေ့ချ် နှစ်ခုရှိသည်: `vulkan` သည် AVX2 ပါသော CPU လိုအပ်သည် (၂၀၁၃ နောက်ပိုင်း Intel Core အများစု၊ ၂၀၁၅ နောက်ပိုင်း AMD; Pentium/Celeron အများအပြားတွင် မပါ); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) သည် 64-bit x86 CPU မည်သည့်တွင်မဆို အလုပ်လုပ်သော်လည်း အသံတစ်ခု၏ ပထမဆုံးဖတ်ခြင်းသည် အချိန် ၂.၂ ဆခန့် ကြာသည် (နောက်ပိုင်းဖတ်ခြင်းများ အမြန်နှုန်းတူ)။ `kur.ps1 -Vulkan` သည် CPU ကို စစ်ဆေးပြီး ပက်ကေ့ချ်ကို ကိုယ်တိုင်ရွေးသည်။ ပေါင်းစပ်ဂရပ်ဖစ်တွင် အင်ဂျင်သည် ဖတ်နေစဉ် RAM 8 GB ခန့် သုံးသည်။ Vulkan တွင် ပထမဆုံးဖွင့်ခြင်းသည် GPU shader များကို compile လုပ်ရသဖြင့် မိနစ်အနည်းငယ် ကြာနိုင်သည်; နောက်ပိုင်းဖတ်ခြင်းများ ပိုမြန်သည်။ အသေးစိတ်: [docs/vulkan.md](docs/vulkan.md)။
+**Vulkan အကြောင်း မှတ်ချက်များ:** အင်ဂျင် v0.3.1 မှစ၍ စကားလုံးအချိန်များ Vulkan တွင်လည်း ရပါပြီ။ ပက်ကေ့ချ် နှစ်ခုရှိသည်: `vulkan` သည် AVX2 ပါသော CPU လိုအပ်သည် (၂၀၁၃ နောက်ပိုင်း Intel Core အများစု၊ ၂၀၁၅ နောက်ပိုင်း AMD; Pentium/Celeron အများအပြားတွင် မပါ); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) သည် 64-bit x86 CPU မည်သည့်တွင်မဆို အလုပ်လုပ်သော်လည်း အသံတစ်ခု၏ ပထမဆုံးဖတ်ခြင်းသည် အချိန် ၂.၂ ဆခန့် ကြာသည် (နောက်ပိုင်းဖတ်ခြင်းများ အမြန်နှုန်းတူ)။ `kur.ps1 -Vulkan` သည် CPU ကို စစ်ဆေးပြီး ပက်ကေ့ချ်ကို ကိုယ်တိုင်ရွေးသည်။ ပေါင်းစပ်ဂရပ်ဖစ်တွင် အင်ဂျင်သည် ဖတ်နေစဉ် RAM 8 GB ခန့် သုံးသည်။ Vulkan တွင် ပထမဆုံးဖွင့်ခြင်းသည် GPU shader များကို compile လုပ်ရသဖြင့် မိနစ်အနည်းငယ် ကြာနိုင်သည်; နောက်ပိုင်းဖတ်ခြင်းများ ပိုမြန်သည်။ အသေးစိတ်: [docs/vulkan.md](docs/vulkan.md)။
 
 ### အခြားနည်းလမ်း- engine ကို source မှ build လုပ်ခြင်း
 

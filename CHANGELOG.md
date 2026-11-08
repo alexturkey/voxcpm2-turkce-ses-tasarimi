@@ -1,8 +1,20 @@
 # Sürüm notları / Release notes
 
-## Yayınlanmadı / Unreleased
+## v0.3.2 — 2026-11-09
 
 **TR**
+- motor.log artık tam vektör dökümü yazmıyor (#18, teşekkürler @akifcankilic): `prefill_embeddings`, `next_encoder_embed`
+  ve 170-220. adım dökümleri yalnız `VOXCPM2_PROBE_FULL_TRACE=1` ile açılır. Ölçüm (GTX 1050 Ti, CUDA, 3 cümle, kelime
+  zamanı açık): motor.log 42,3 MB → 0,75 MB; `okuma.wav` ve kelime zamanları bayt bayt aynı (FULL_TRACE 0 / 1 ve
+  v0.3.0 motoru, md5). Yama 0002'nin bağlam satırı buna göre güncellendi (yoksa kaynaktan kurulum dururdu).
+- Kaynaktan kurulumda eski yamalı kaynak artık sessizce derlenmiyor: yamalar uygulanınca `motor/src/.yama_imzasi`
+  (üç yamanın sha256'sı) yazılır; var olan kaynakta imza yoksa ya da tutmuyorsa kurulum açık hatayla durur
+  (`kur.ps1`, `kur.sh`, `kur-linux.sh`, `macos/scripts/motoru_derle.sh`; otomatik silme yok). Test: `tests/test_yama_imzasi.py`.
+  Kaynaktan derleyenler bir kez "motor/src klasörünü silip yeniden çalıştır" uyarısı görür.
+- `scripts/derle.ps1 -Islemci native` (varsayılan, `kur.ps1 -Derle` bunu kullanır) v0.3.1'den beri cmake'te
+  "Unknown argument -" ile düşüyordu (tek öğeli bayrak listesi harf harf geçiyordu); düzeltildi.
+- CUDA motoru v0.3.2 artık AVX2 tabanlı (`derle.ps1 -Islemci avx2`; Intel Haswell 2013+, AMD 2015+); önceki sürüm
+  derleyen bilgisayarın işlemcisine göre derlenmişti. Vulkan motoru da v0.3.2 (aynı düzeltme; avx2 ve uyumlu paket).
 - `kur.ps1 -Vulkan -Adim kontrol` tek başına çalışınca var olan CUDA `ayarlar.json`'una Vulkan cihaz numarası
   (`cihaz`) yazıyordu; CUDA'da bu numara başka karta düşer. Artık yalnız `backend` `vulkan` ise yazılır, değilse uyarı.
 - README'ler (30 dil): Vulkan bölümündeki eski "Not" paragrafı (topluluk testiyle aynı bilgi) kaldırıldı, ad her yerde
@@ -11,6 +23,18 @@
   Intel HD Graphics 630 satırı; `AGENTS.md` CUDA sürüm adı.
 
 **EN**
+- motor.log no longer gets full vector dumps (#18, thanks @akifcankilic): `prefill_embeddings`, `next_encoder_embed`
+  and the step 170-220 dumps are written only with `VOXCPM2_PROBE_FULL_TRACE=1`. Measured (GTX 1050 Ti, CUDA, 3 sentences,
+  word timing on): motor.log 42.3 MB → 0.75 MB; `okuma.wav` and the word timings are byte-identical (FULL_TRACE 0 / 1 and
+  the v0.3.0 engine, md5). The context line of patch 0002 was updated to match (otherwise building from source stopped).
+- Building from source no longer silently builds an old patched source: after the patches apply, `motor/src/.yama_imzasi`
+  (sha256 of the three patches) is written; an existing source with a missing or different signature stops the install
+  with a clear error (`kur.ps1`, `kur.sh`, `kur-linux.sh`, `macos/scripts/motoru_derle.sh`; nothing is deleted automatically).
+  Test: `tests/test_yama_imzasi.py`. If you build from source you will see "delete motor/src and run again" once.
+- `scripts/derle.ps1 -Islemci native` (the default, used by `kur.ps1 -Derle`) failed in cmake with "Unknown argument -"
+  since v0.3.1 (a one-item flag list was passed character by character); fixed.
+- The CUDA engine v0.3.2 is now built for AVX2 (`derle.ps1 -Islemci avx2`; Intel Haswell 2013+, AMD 2015+); the previous
+  release was built for the build machine's own CPU. The Vulkan engine is v0.3.2 too (same fix; avx2 and compatible packages).
 - `kur.ps1 -Vulkan -Adim kontrol` on its own wrote a Vulkan device index (`cihaz`) into an existing CUDA `ayarlar.json`,
   where that index points to another card. It is now written only when `backend` is `vulkan`; otherwise a note is shown.
 - READMEs (30 languages): the old "Note" paragraph in the Vulkan section (same facts as the community test) was removed,

@@ -68,8 +68,8 @@
 
 1. **Скачайте** код: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip).
    Готовый пакет движка для вашей видеокарты установщик загрузит сам на шаге 3:
-   NVIDIA → [пакет CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [пакет Vulkan, экспериментальный](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [пакет CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [пакет Vulkan, экспериментальный](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (уже скачали? добавьте `-HazirZip <path to the zip>` к команде ниже).
 2. **Распакуйте** zip, откройте папку `voxcpm2-turkce-ses-tasarimi-main`, введите `powershell` в адресной строке Проводника
    и нажмите Enter.
@@ -195,7 +195,7 @@ localhost).
 > нужны DLL CUDA и модель рядом; `kur.ps1` раскладывает всё по местам, а управляет им пакет Python.
 > Двойной щелчок лишь покажет «cudart64_12.dll not found».
 
-**Поддерживаемые видеокарты (релиз v0.3.0):** нативный код для GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**Поддерживаемые видеокарты (релиз v0.3.2):** нативный код для GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) и RTX 50xx (sm_120a); любая другая CUDA-видеокарта начиная с Pascal выполняет встроенный PTX через драйвер (первый
 запуск медленнее). Maxwell (GTX 9xx) и более старые не поддерживаются CUDA 12.8. Мы тестировали на GTX 1050 Ti 4 ГБ (также через Docker Desktop/WSL2 в Windows, только CLI); замеры от @mslmyilmaz5 (#15): RTX 3060 Ti 8 ГБ, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (подробности в [docs/linux.md](docs/linux.md)). Отчёты с других видеокарт ждём в [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions).
@@ -204,7 +204,7 @@ CUDA 12.8.1 (подробности в [docs/linux.md](docs/linux.md)). Отчё
 
 **Тест сообщества (AMD):** @mitraTR запустил v0.1.1 с Vulkan на AMD Radeon RX 6900 XT под Windows 11: установка, создание голоса, чтение, веб-интерфейс и тесты прошли успешно; на чтение ушло около 0,8-0,9 с вычислений на 1 с речи ([отчёт в #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)). Устанавливайте в короткую папку, путь к которой содержит только символы ASCII (например, `C:\vox`): в Windows движок не открывает пути с кириллицей и другими символами вне ASCII. Все отчёты на сегодня: [проверенное оборудование](docs/donanim_testleri.md).
 
-**О Vulkan:** начиная с движка v0.3.1 временные метки слов работают и на Vulkan. Два пакета: `vulkan` требует процессор с AVX2 (большинство Intel Core с 2013 года, AMD с 2015; у многих Pentium/Celeron его нет); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) работает на любом 64-битном процессоре x86, но первое чтение голоса занимает примерно в 2,2 раза больше времени (последующие чтения идут с той же скоростью). `kur.ps1 -Vulkan` проверяет процессор и сам выбирает пакет. На встроенной графике движок во время чтения использует около 8 ГБ ОЗУ. Первый запуск на Vulkan может занять несколько минут, пока компилируются шейдеры GPU; последующие чтения быстрее. Подробности: [docs/vulkan.md](docs/vulkan.md).
+**О Vulkan:** начиная с движка v0.3.1 временные метки слов работают и на Vulkan. Два пакета: `vulkan` требует процессор с AVX2 (большинство Intel Core с 2013 года, AMD с 2015; у многих Pentium/Celeron его нет); [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) работает на любом 64-битном процессоре x86, но первое чтение голоса занимает примерно в 2,2 раза больше времени (последующие чтения идут с той же скоростью). `kur.ps1 -Vulkan` проверяет процессор и сам выбирает пакет. На встроенной графике движок во время чтения использует около 8 ГБ ОЗУ. Первый запуск на Vulkan может занять несколько минут, пока компилируются шейдеры GPU; последующие чтения быстрее. Подробности: [docs/vulkan.md](docs/vulkan.md).
 
 ### Альтернатива: сборка движка из исходников
 

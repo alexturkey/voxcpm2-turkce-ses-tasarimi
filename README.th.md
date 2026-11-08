@@ -68,8 +68,8 @@
 
 1. **ดาวน์โหลด** โค้ด: [voxcpm2-turkce-ses-tasarimi-main.zip](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/archive/refs/heads/main.zip)
    ส่วนแพ็กเกจเอนจินสำเร็จรูปสำหรับการ์ดจอของคุณ ตัวติดตั้งจะดาวน์โหลดให้ในขั้นตอนที่ 3:
-   NVIDIA → [แพ็กเกจ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.0/voxcpm2-turkce-ses-tasarimi-motor-v0.3.0-win64-cuda12.8.zip),
-   AMD / Intel → [แพ็กเกจ Vulkan แบบทดลอง](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan.zip)
+   NVIDIA → [แพ็กเกจ CUDA](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip),
+   AMD / Intel → [แพ็กเกจ Vulkan แบบทดลอง](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan.zip)
    (ดาวน์โหลดไว้แล้ว? เพิ่ม `-HazirZip <path to the zip>` ต่อท้ายคำสั่งด้านล่าง)
 2. **แตกไฟล์** zip เปิดโฟลเดอร์ `voxcpm2-turkce-ses-tasarimi-main` พิมพ์ `powershell` ในแถบที่อยู่ของ File Explorer
    แล้วกด Enter
@@ -195,7 +195,7 @@ localhost เท่านั้น)
 > ต้องมี DLL ของ CUDA และโมเดลวางอยู่ข้าง ๆ `kur.ps1` จะจัดวางทุกอย่างให้ และแพ็กเกจ Python จะเป็นตัวสั่งงานมัน
 > ถ้าดับเบิลคลิกจะเห็นแค่ "cudart64_12.dll not found"
 
-**GPU ที่รองรับ (รีลีส v0.3.0):** มีโค้ดเนทีฟสำหรับ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
+**GPU ที่รองรับ (รีลีส v0.3.2):** มีโค้ดเนทีฟสำหรับ GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx
 (sm_89) และ RTX 50xx (sm_120a) ส่วน GPU CUDA อื่น ๆ ตั้งแต่ Pascal ขึ้นไปจะรัน PTX ที่ฝังไว้ผ่านไดรเวอร์ (เริ่มครั้งแรก
 ช้ากว่า) Maxwell (GTX 9xx) และรุ่นเก่ากว่าไม่รองรับใน CUDA 12.8 เราทดสอบบน GTX 1050 Ti 4 GB (รวมถึงผ่าน Docker Desktop/WSL2 บน Windows เฉพาะ CLI) และวัดผลโดย @mslmyilmaz5 (#15): RTX 3060 Ti 8 GB, Ubuntu 24.04 Docker,
 CUDA 12.8.1 (รายละเอียดใน [docs/linux.md](docs/linux.md)) ยินดีรับรายงานจากการ์ดรุ่นอื่นใน [Discussions](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/discussions)
@@ -204,7 +204,7 @@ CUDA 12.8.1 (รายละเอียดใน [docs/linux.md](docs/linux.md)
 
 **การทดสอบจากชุมชน (AMD):** @mitraTR รัน v0.1.1 ด้วย Vulkan บน AMD Radeon RX 6900 XT ใน Windows 11: การติดตั้ง การออกแบบเสียง การอ่าน เว็บอินเทอร์เฟซ และชุดทดสอบทำงานได้ทั้งหมด การอ่านใช้เวลาประมวลผลราว 0.8-0.9 วินาทีต่อเสียงพูด 1 วินาที ([รายงานใน #6](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/6#issuecomment-6581393655)) ให้ติดตั้งในโฟลเดอร์สั้น ๆ ที่พาธมีแต่อักขระ ASCII (เช่น `C:\vox`) เพราะบน Windows เอนจินเปิดพาธที่มีอักษรไทยหรืออักขระนอก ASCII อื่นไม่ได้ รายงานทั้งหมดจนถึงตอนนี้: [ฮาร์ดแวร์ที่ทดสอบแล้ว](docs/donanim_testleri.md)
 
-**หมายเหตุเรื่อง Vulkan:** ตั้งแต่เอนจิน v0.3.1 เวลาของแต่ละคำใช้งานบน Vulkan ได้แล้ว มีสองแพ็กเกจ: `vulkan` ต้องใช้ CPU ที่มี AVX2 (Intel Core ส่วนใหญ่ตั้งแต่ปี 2013, AMD ตั้งแต่ปี 2015; Pentium/Celeron หลายรุ่นไม่มี) ส่วน [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.1/voxcpm2-turkce-ses-tasarimi-motor-v0.3.1-win64-vulkan-uyumlu.zip) ทำงานได้กับ CPU x86 64 บิตทุกตัว แต่การอ่านครั้งแรกของเสียงหนึ่งจะใช้เวลาราว 2.2 เท่า (การอ่านครั้งต่อไปเร็วเท่าเดิม) `kur.ps1 -Vulkan` ตรวจ CPU และเลือกแพ็กเกจเอง บนกราฟิกในตัว เอนจินใช้ RAM ราว 8 GB ขณะอ่าน การเปิดครั้งแรกบน Vulkan อาจใช้เวลาสองสามนาทีเพราะต้องคอมไพล์เชเดอร์ของ GPU การอ่านครั้งต่อไปจะเร็วขึ้น รายละเอียด: [docs/vulkan.md](docs/vulkan.md)
+**หมายเหตุเรื่อง Vulkan:** ตั้งแต่เอนจิน v0.3.1 เวลาของแต่ละคำใช้งานบน Vulkan ได้แล้ว มีสองแพ็กเกจ: `vulkan` ต้องใช้ CPU ที่มี AVX2 (Intel Core ส่วนใหญ่ตั้งแต่ปี 2013, AMD ตั้งแต่ปี 2015; Pentium/Celeron หลายรุ่นไม่มี) ส่วน [`vulkan-uyumlu`](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/releases/download/v0.3.2/voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-vulkan-uyumlu.zip) ทำงานได้กับ CPU x86 64 บิตทุกตัว แต่การอ่านครั้งแรกของเสียงหนึ่งจะใช้เวลาราว 2.2 เท่า (การอ่านครั้งต่อไปเร็วเท่าเดิม) `kur.ps1 -Vulkan` ตรวจ CPU และเลือกแพ็กเกจเอง บนกราฟิกในตัว เอนจินใช้ RAM ราว 8 GB ขณะอ่าน การเปิดครั้งแรกบน Vulkan อาจใช้เวลาสองสามนาทีเพราะต้องคอมไพล์เชเดอร์ของ GPU การอ่านครั้งต่อไปจะเร็วขึ้น รายละเอียด: [docs/vulkan.md](docs/vulkan.md)
 
 ### ทางเลือก: สร้างเอนจินจากซอร์ส
 
