@@ -108,6 +108,34 @@ function GitApply([string[]]$argv, [bool]$sessiz = $false) {
     try { & git @argv 2>&1 | ForEach-Object { if (-not $sessiz) { Write-Output "  git: $_" } } } finally { $ErrorActionPreference = $eap }
     return $LASTEXITCODE
 }
+function YamaImzasi([string[]]$yamalar) {
+    # Yama imzası: her yamanın sha256'sı + adı (kur.sh, kur-linux.sh, motoru_derle.sh ile aynı biçim) / patch signature, same format as the shell installers
+    (($yamalar | ForEach-Object { "{0}  {1}" -f (Get-FileHash -Algorithm SHA256 -LiteralPath $_).Hash.ToLower(), (Split-Path $_ -Leaf) }) -join "`n") + "`n"
+}
+function YamalariUygula([string]$src, [string[]]$yamalar) {
+    # Yamalar sırayla (0001 4 GB + hız, 0002 kelime zamanı, 0003 CUDA block_reduce yarışı). Uygulanınca <src>\.yama_imzasi yazılır.
+    # Var olan kaynakta imza yoksa ya da tutmuyorsa (eski sürümün yamaları) sessizce derlenmez: açık hata, kaynak silinip yeniden açılır.
+    # Patches in order; <src>\.yama_imzasi is written after applying. An existing source with a missing or different signature is not built.
+    $imzaYol = Join-Path $src ".yama_imzasi"
+    $beklenen = YamaImzasi $yamalar
+    $eski = "kaynak eski ya da farklı yamalı (yama imzası tutmuyor): motor/src klasörünü silip yeniden çalıştır: $src`n" +
+            "  source was patched with older or different patches (patch signature mismatch): delete motor/src and run again: $src"
+    if (Test-Path -LiteralPath $imzaYol) {
+        if ([IO.File]::ReadAllText($imzaYol) -ceq $beklenen) { Write-Output "  yamalar zaten uygulanmış (imza tutuyor)"; return }
+        throw $eski
+    }
+    Push-Location $src
+    try {
+        for ($i = $yamalar.Count - 1; $i -ge 0; $i--) { if ((GitApply @("apply", "--reverse", "--check", $yamalar[$i]) $true) -eq 0) { throw $eski } }
+        foreach ($p in $yamalar) {
+            if ((GitApply @("apply", "--check", $p)) -ne 0) { throw "yama uygulanamıyor: $p (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)`n$eski" }
+            if ((GitApply @("apply", $p)) -ne 0) { throw "git apply başarısız: $p" }
+            if ((GitApply @("apply", "--reverse", "--check", $p)) -ne 0) { throw "yama sessizce atlandı: $p (git deposu içinde misin? --directory gerekir)" }
+            Write-Output "  yama uygulandı ve doğrulandı: $(Split-Path $p -Leaf)"
+        }
+    } finally { Pop-Location }
+    [IO.File]::WriteAllText($imzaYol, $beklenen, (New-Object Text.UTF8Encoding $false))
+}
 function PythonBul {
     # 64-bit Python 3.10+; Microsoft Store'un sahte "python" takma adı ve 2.x elenir / finds a real 64-bit Python 3.10+
     foreach ($aday in @(@("py", "-3"), @("python"), @("python3"))) {
@@ -283,21 +311,7 @@ if ($Adim -contains "kaynak") {
         Rename-Item (Join-Path $motor "audio.cpp-0.7.2") "src"
     }
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "git bulunamadı; Git for Windows kurun (yama için gerekli)" }
-    Push-Location $src
-    try {
-        # Yamalar sırayla (0001 4 GB + hız, 0002 kelime zamanı, 0003 CUDA block_reduce yarışı); en son uygulanan sondan geriye bulunur, kalanlar uygulanır
-        # patches in order; the last applied one is found from the end, the rest are applied and verified
-        $son = -1
-        for ($i = $PATCHES.Count - 1; $i -ge 0; $i--) { if ((GitApply @("apply", "--reverse", "--check", $PATCHES[$i]) $true) -eq 0) { $son = $i; break } }
-        if ($son -eq $PATCHES.Count - 1) { Write-Output "  yamalar zaten uygulanmış" }
-        for ($i = $son + 1; $i -lt $PATCHES.Count; $i++) {
-            $p = $PATCHES[$i]
-            if ((GitApply @("apply", "--check", $p)) -ne 0) { throw "yama uygulanamıyor: $p (kaynak saf v0.7.2 mi? CRLF'ye çevrilmiş mi?)" }
-            if ((GitApply @("apply", $p)) -ne 0) { throw "git apply başarısız: $p" }
-            if ((GitApply @("apply", "--reverse", "--check", $p)) -ne 0) { throw "yama sessizce atlandı: $p (git deposu içinde misin? --directory gerekir)" }
-            Write-Output "  yama uygulandı ve doğrulandı: $(Split-Path $p -Leaf)"
-        }
-    } finally { Pop-Location }
+    YamalariUygula $src $PATCHES
     Write-Output "KAYNAK_OK"
 }
 

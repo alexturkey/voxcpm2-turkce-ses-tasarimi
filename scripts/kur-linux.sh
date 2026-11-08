@@ -58,21 +58,35 @@ BUILD="$KOK/motor/build"
 MOTOR="$BUILD/bin/audiocpp_cli"
 MODEL="$KOK/model/voxcpm2-q8_0.gguf"
 PATCHES=("$REPO/patches/0001-voxcpm2-4gb-ve-hiz.patch" "$REPO/patches/0002-voxcpm2-kelime-zamani.patch" "$REPO/patches/0003-ggml-cuda-block-reduce-yarisi.patch")
-# Yamalar sırayla: 0001 (4 GB + hız), 0002 (kelime zamanı sondası), 0003 (CUDA block_reduce yarışı, upstream #837). Hangisine kadar uygulandığı sondan geriye bulunur
-# (sonraki yama öncekinin bağlamını değiştirdiği için yalnız en son uygulanan geri-denetimden geçer), kalanlar uygulanır.
-# Patches in order; the last applied one is found from the end, the rest are applied and verified.
+# Yamalar sırayla: 0001 (4 GB + hız), 0002 (kelime zamanı sondası), 0003 (CUDA block_reduce yarışı, upstream #837). Uygulanınca <src>/.yama_imzasi
+# (her yamanın sha256'sı + adı) yazılır; var olan kaynakta imza yoksa ya da tutmuyorsa (eski sürümün yamaları) sessizce derlenmez, açık hata verir.
+# Patches in order; <src>/.yama_imzasi is written after applying. An existing source with a missing or different signature is not built.
+yama_imzasi() {
+    local p
+    for p in "$@"; do
+        if command -v sha256sum >/dev/null 2>&1; then sha256sum "$p"; else shasum -a 256 "$p"; fi | cut -d' ' -f1 | tr -d '\n'
+        printf '  %s\n' "$(basename "$p")"
+    done
+}
 yamalari_uygula() {
     local src="$1"; shift
-    local yamalar=("$@") son=-1 i
+    local yamalar=("$@") i beklenen
+    local eski="kaynak eski ya da farklı yamalı (yama imzası tutmuyor): motor/src klasörünü silip yeniden çalıştır: $src
+  source was patched with older or different patches (patch signature mismatch): delete motor/src and run again: $src"
+    beklenen="$(yama_imzasi "${yamalar[@]}")"
+    if [[ -f "$src/.yama_imzasi" ]]; then
+        if [[ "$(cat "$src/.yama_imzasi")" == "$beklenen" ]]; then echo "  yamalar zaten uygulanmış (imza tutuyor)"; return 0; fi
+        echo "$eski" >&2; return 1
+    fi
     for ((i=${#yamalar[@]}-1; i>=0; i--)); do
-        if (cd "$src" && git apply --reverse --check "${yamalar[$i]}" 2>/dev/null); then son=$i; break; fi
+        if (cd "$src" && git apply --reverse --check "${yamalar[$i]}" 2>/dev/null); then echo "$eski" >&2; return 1; fi
     done
-    for ((i=son+1; i<${#yamalar[@]}; i++)); do
-        (cd "$src" && git apply --check "${yamalar[$i]}") || { echo "yama uygulanamıyor / patch does not apply: ${yamalar[$i]} (kaynak saf v0.7.2 mi?)" >&2; return 1; }
+    for ((i=0; i<${#yamalar[@]}; i++)); do
+        (cd "$src" && git apply --check "${yamalar[$i]}") || { printf '%s\n%s\n' "yama uygulanamıyor / patch does not apply: ${yamalar[$i]} (kaynak saf v0.7.2 mi?)" "$eski" >&2; return 1; }
         (cd "$src" && git apply "${yamalar[$i]}" && git apply --reverse --check "${yamalar[$i]}") || { echo "yama doğrulanamadı / not verified: ${yamalar[$i]}" >&2; return 1; }
         echo "  yama uygulandı ve doğrulandı: $(basename "${yamalar[$i]}")"
     done
-    [[ $son -eq $((${#yamalar[@]}-1)) ]] && echo "  yamalar zaten uygulanmış"
+    printf '%s\n' "$beklenen" > "$src/.yama_imzasi"
     return 0
 }
 MODEL_URL="https://huggingface.co/audio-cpp/audio.cpp-gguf/resolve/661a224e9d9adbd49c01626f85e426f5f425d771/VoxCPM2-GGUF/voxcpm2-q8_0.gguf"
