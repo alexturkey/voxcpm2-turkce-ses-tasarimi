@@ -25,7 +25,7 @@ REFERENCE_OPTION = ("--session-option", "voxcpm2.audiovae_encoder_sample_capacit
 MIN_REFERENCE_SECONDS = 8.0
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
 WINDOWS = sys.platform == "win32"
-# Motorun ara dosyaları (motor.log satır başına ~3 MB, PCM dökümleri) iş başarıyla bitince silinir; hata olursa kalır.
+# Motorun ara dosyaları (motor.log satır başına ~0,3 MB, kelime zamanı sondası dahil; PCM dökümleri) iş başarıyla bitince silinir; hata olursa kalır.
 # 1 = her zaman sakla (hata ayıklama). / Engine scratch files are deleted after a successful run, kept on failure.
 KEEP_ENV = "SES_TASARIM_ARA_DOSYA_TUT"
 ENGINE_DIR = "_motor_is"
