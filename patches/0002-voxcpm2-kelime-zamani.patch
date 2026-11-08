@@ -66,7 +66,7 @@ index 2c18e07..d15a60a 100644
 +      }
        debug::trace_log_scalar("voxcpm2.internal.next_state_step", index + 2);
        debug::trace_log_scalar("voxcpm2.internal.base_position_actual", next_lm_result.position);
-       const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1") || (index + 2 >= 170 && index + 2 <= 220);
+       const bool probe_next_full = (std::getenv("VOXCPM2_PROBE_FULL_TRACE") && std::string(std::getenv("VOXCPM2_PROBE_FULL_TRACE")) == "1");
 diff --git a/src/models/voxcpm2/minicpm.cpp b/src/models/voxcpm2/minicpm.cpp
 index 88f0e06..904a2c8 100644
 --- a/src/models/voxcpm2/minicpm.cpp
