@@ -61,11 +61,13 @@ if ($DusukOncelik) { (Get-Process -Id $PID).PriorityClass = "BelowNormal" }
 #   avx2        yayin zip'i: NATIVE kapali, yalniz AVX2 (/arch:AVX2: FMA, F16C dahil); AVX2'li her islemci / release: AVX2
 #   tasinabilir yayin yedegi: NATIVE ve AVX kapali, SSE2 tabani; her x86-64 islemci; sesin ilk okumasi ~2,2 kat uzun (GTX 1050 Ti 243,9 / 109,5 sn), sonrakiler ayni hizda
 $kapali = @("-DGGML_AVX_VNNI=OFF", "-DGGML_BMI2=OFF", "-DGGML_AVX512=OFF", "-DGGML_AVX512_VBMI=OFF", "-DGGML_AVX512_VNNI=OFF", "-DGGML_AVX512_BF16=OFF")
-$cpuFlags = switch ($Islemci) {
+# @(...) sart: tek ogeli sonuc dizgiye acilir, @cpuFlags onu harf harf cmake'e verir (native derleme "Unknown argument -" ile duserdi)
+# @(...) keeps a one-item result an array; splatting a plain string passes it to cmake character by character
+$cpuFlags = @(switch ($Islemci) {
     "avx2"        { @("-DENGINE_ENABLE_NATIVE_CPU=OFF", "-DGGML_SSE42=ON", "-DGGML_AVX=ON", "-DGGML_AVX2=ON") + $kapali }
     "tasinabilir" { @("-DENGINE_ENABLE_NATIVE_CPU=OFF", "-DGGML_SSE42=OFF", "-DGGML_AVX=OFF", "-DGGML_AVX2=OFF") + $kapali }
     default       { @("-DENGINE_ENABLE_NATIVE_CPU=ON") }
-}
+})
 Write-Output "CPU: $Islemci"
 
 & $cmake -S $Kaynak -B $Build -G Ninja "-DCMAKE_MAKE_PROGRAM=$ninja" `
