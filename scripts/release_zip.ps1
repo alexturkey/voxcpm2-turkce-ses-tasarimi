@@ -78,6 +78,8 @@ voxcpm2-q8_0.gguf (kur.ps1 -Vulkan downloads it). The exe is a command-line engi
 Built with MSVC 2022 + CUDA 12.8, CMAKE_CUDA_ARCHITECTURES=$Mimari
 GPUs: native code for GTX 10xx (sm_61), RTX 20xx (sm_75), RTX 30xx (sm_86), RTX 40xx (sm_89), RTX 50xx (sm_120a);
 other CUDA GPUs >= Pascal run the embedded compute_89 PTX via driver JIT (slower first start). Maxwell and older: not supported.
+CPU: needs AVX2 (Intel 4th gen Core / Haswell 2013+, AMD 2015+); built with derle.ps1 -Islemci avx2 (v0.3.0 and older were
+built for the build machine's own CPU).
 sha256 $sha
 
 Needs at runtime (NOT in this zip): CUDA 12.8 DLLs cudart64_12.dll, cublas64_12.dll, cublasLt64_12.dll, cufft64_11.dll
