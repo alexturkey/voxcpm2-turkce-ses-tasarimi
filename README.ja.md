@@ -222,7 +222,7 @@ nvcc は長いパスで失敗します。チェック付きの手順：[AGENTS.m
 | 表示される内容 | 意味と対処 |
 |---|---|
 | exe をダブルクリックすると `cudart64_12.dll not found` | エンジンは手動で起動するものではありません。上の `kur.ps1` コマンドを実行してから Web UI を起動してください。 |
-| `64-bit Python 3.10+ bulunamadı`（Python が見つからない） | Python をインストールし（`winget install Python.Python.3.12`）、PowerShell を閉じて新しく開き、同じコマンドをもう一度実行します。 |
+| `64-bit Python 3.10-3.13 bulunamadı`（Python が見つからない） | Python をインストールし（`winget install Python.Python.3.12`）、PowerShell を閉じて新しく開き、同じコマンドをもう一度実行します。 |
 | `motor ekran kartını görmedi`（エンジンが GPU を認識しない） | NVIDIA ドライバーを 570 以降に更新し、`nvidia-smi` が動くことを確認します。 |
 | `indirme başarısız` / `sha256 tutmadı`（ダウンロード失敗 / チェックサム不一致） | たいていはダウンロードの中断です。同じコマンドをもう一度実行してください。検証済みのファイルはスキップされます。 |
 | ソースからのビルド：`nvcc` が失敗する | インストール先のルートを短くします（`-Kok C:\vox`）。 |

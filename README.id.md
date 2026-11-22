@@ -232,7 +232,7 @@ demi langkah dengan pemeriksaan: [AGENTS.md](AGENTS.md).
 | Yang kamu lihat | Artinya, apa yang harus dilakukan |
 |---|---|
 | `cudart64_12.dll not found` setelah mengklik dua kali exe | Engine tidak dimaksudkan untuk dijalankan secara manual. Jalankan perintah `kur.ps1` di atas, lalu jalankan antarmuka web. |
-| `64-bit Python 3.10+ bulunamadı` (Python tidak ditemukan) | Instal Python (`winget install Python.Python.3.12`), tutup PowerShell, buka yang baru, lalu jalankan perintah yang sama lagi. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python tidak ditemukan) | Instal Python (`winget install Python.Python.3.12`), tutup PowerShell, buka yang baru, lalu jalankan perintah yang sama lagi. |
 | `motor ekran kartını görmedi` (engine tidak mendeteksi GPU) | Perbarui driver NVIDIA ke 570 atau yang lebih baru; pastikan `nvidia-smi` bisa berjalan. |
 | `indirme başarısız` / `sha256 tutmadı` (unduhan gagal / checksum tidak cocok) | Biasanya karena unduhan terputus. Jalankan perintah yang sama lagi; berkas yang sudah terverifikasi akan dilewati. |
 | Jalur build: `nvcc` gagal | Gunakan root instalasi yang pendek (`-Kok C:\vox`). |

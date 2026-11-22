@@ -222,7 +222,7 @@ nvcc faalt bij lange paden. Stap voor stap met controles: [AGENTS.md](AGENTS.md)
 | Wat je ziet | Wat het betekent, wat je doet |
 |---|---|
 | `cudart64_12.dll not found` na dubbelklikken op de exe | De engine is niet bedoeld om met de hand te starten. Voer het `kur.ps1`-commando hierboven uit en start daarna de webinterface. |
-| `64-bit Python 3.10+ bulunamadı` (Python niet gevonden) | Installeer Python (`winget install Python.Python.3.12`), sluit PowerShell, open een nieuw venster en voer hetzelfde commando opnieuw uit. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python niet gevonden) | Installeer Python (`winget install Python.Python.3.12`), sluit PowerShell, open een nieuw venster en voer hetzelfde commando opnieuw uit. |
 | `motor ekran kartını görmedi` (de engine zag de GPU niet) | Werk de NVIDIA-driver bij naar 570 of nieuwer; controleer of `nvidia-smi` werkt. |
 | `indirme başarısız` / `sha256 tutmadı` (download mislukt / checksum klopt niet) | Meestal een onderbroken download. Voer hetzelfde commando opnieuw uit; gecontroleerde bestanden worden overgeslagen. |
 | Bouwen: `nvcc` faalt | Houd de installatiemap kort (`-Kok C:\vox`). |

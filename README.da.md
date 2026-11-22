@@ -229,7 +229,7 @@ fejler ved lange stier. Trin for trin med kontroller: [AGENTS.md](AGENTS.md).
 | Du ser | Hvad det betyder, og hvad du skal gøre |
 |---|---|
 | `cudart64_12.dll not found` efter dobbeltklik på exe-filen | Motoren er ikke beregnet til at blive startet manuelt. Kør `kur.ps1`-kommandoen ovenfor, og start derefter webbrugerfladen. |
-| `64-bit Python 3.10+ bulunamadı` (Python blev ikke fundet) | Installer Python (`winget install Python.Python.3.12`), luk PowerShell, åbn et nyt vindue, og kør den samme kommando igen. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python blev ikke fundet) | Installer Python (`winget install Python.Python.3.12`), luk PowerShell, åbn et nyt vindue, og kør den samme kommando igen. |
 | `motor ekran kartını görmedi` (motoren kunne ikke se GPU'en) | Opdater NVIDIA-driveren til 570 eller nyere; kontrollér, at `nvidia-smi` kan køre. |
 | `indirme başarısız` / `sha256 tutmadı` (download mislykkedes / kontrolsummen passer ikke) | Som regel en afbrudt download. Kør den samme kommando igen; verificerede filer springes over. |
 | Bygning fra kildekoden: `nvcc` fejler | Hold installationsroden kort (`-Kok C:\vox`). |

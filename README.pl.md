@@ -222,7 +222,7 @@ nvcc zawodzi przy długich ścieżkach. Krok po kroku z kontrolami: [AGENTS.md](
 | Co widzisz | Co to znaczy, co zrobić |
 |---|---|
 | `cudart64_12.dll not found` po dwukliku na exe | Silnik nie jest przeznaczony do ręcznego uruchamiania. Uruchom powyższe polecenie `kur.ps1`, a potem interfejs webowy. |
-| `64-bit Python 3.10+ bulunamadı` (nie znaleziono Pythona) | Zainstaluj Pythona (`winget install Python.Python.3.12`), zamknij PowerShell, otwórz nowy i uruchom to samo polecenie ponownie. |
+| `64-bit Python 3.10-3.13 bulunamadı` (nie znaleziono Pythona) | Zainstaluj Pythona (`winget install Python.Python.3.12`), zamknij PowerShell, otwórz nowy i uruchom to samo polecenie ponownie. |
 | `motor ekran kartını görmedi` (silnik nie widzi karty graficznej) | Zaktualizuj sterownik NVIDIA do wersji 570 lub nowszej; sprawdź, czy `nvidia-smi` działa. |
 | `indirme başarısız` / `sha256 tutmadı` (pobieranie nieudane / suma kontrolna się nie zgadza) | Zwykle to przerwane pobieranie. Uruchom to samo polecenie ponownie; zweryfikowane pliki są pomijane. |
 | Budowanie: `nvcc` zawodzi | Trzymaj krótki katalog instalacji (`-Kok C:\vox`). |

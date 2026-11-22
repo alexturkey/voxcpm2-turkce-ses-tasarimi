@@ -25,6 +25,15 @@ for a in ${ADIM//,/ }; do
 done
 adim() { [[ ",$ADIM," == *",$1,"* ]]; }
 echo "adımlar: $ADIM  (kök $KOK)"
+# Var olan .venv'in Python'u 3.10-3.13 dışındaysa büyük indirmelerden ÖNCE dur (silmez) / refuse an existing .venv with an unsupported Python before the big downloads (never deletes it)
+if adim python && [[ -x "$(cd "$(dirname "$0")/.." && pwd)/.venv/bin/python" ]]; then
+    VENV_PY="$(cd "$(dirname "$0")/.." && pwd)/.venv/bin/python"
+    "$VENV_PY" -c 'import sys,struct; sys.exit(0 if (3, 10) <= sys.version_info[:2] <= (3, 13) and struct.calcsize("P") == 8 else 1)' 2>/dev/null || {
+        echo "var olan .venv desteklenmeyen (ya da bozuk) Python kullanıyor, 3.10-3.13 (64-bit) gerekir / existing .venv uses an unsupported Python: $VENV_PY" >&2
+        echo "Betik .venv'i silmez: klasörü silip (rm -r \"${VENV_PY%/bin/python}\") yeniden çalıştırın / delete the folder and run again." >&2
+        exit 1
+    }
+fi
 
 [[ "$(uname -s)" == "Darwin" ]] || { echo "bu betik macOS içindir; Windows: scripts\\kur.ps1" >&2; exit 1; }
 [[ "$(uname -m)" == "arm64" ]] || echo "UYARI: Apple Silicon değil ($(uname -m)); Metal yolu yalnız M1-M4'te denendi" >&2

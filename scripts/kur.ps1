@@ -136,16 +136,61 @@ function YamalariUygula([string]$src, [string[]]$yamalar) {
     } finally { Pop-Location }
     [IO.File]::WriteAllText($imzaYol, $beklenen, (New-Object Text.UTF8Encoding $false))
 }
+# Desteklenen Python: 3.10-3.13 (64-bit). 3.14+ için numpy/soundfile tekerleği yok: pip kaynaktan derlemeye çalışıp "Unknown compiler(s)" ile düşer (X kullanıcısı, 3.15).
+# Supported Python: 3.10-3.13, 64-bit. Newer versions have no numpy/soundfile wheels: pip falls back to a source build and fails.
+$PY_MIN = 10; $PY_MAX = 13
+function PythonSurum([string]$cmd, [string[]]$on = @()) {
+    # "3 12 64 <yol>" ya da $null (komut yok, Store takma adı, çalışmadı) / "major minor bits path" or $null
+    if (-not (Get-Command $cmd -ErrorAction SilentlyContinue)) { return $null }
+    $eap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+    try { $v = (& $cmd ($on + @("-c", "import sys,struct;print(sys.version_info[0],sys.version_info[1],struct.calcsize('P')*8,sys.executable)")) 2>$null) } finally { $ErrorActionPreference = $eap }
+    if ($v) { return [string](@($v)[-1]) }
+    return $null
+}
 function PythonBul {
-    # 64-bit Python 3.10+; Microsoft Store'un sahte "python" takma adı ve 2.x elenir / finds a real 64-bit Python 3.10+
-    foreach ($aday in @(@("py", "-3"), @("python"), @("python3"))) {
-        $exe = Get-Command $aday[0] -ErrorAction SilentlyContinue
-        if (-not $exe) { continue }
-        $eap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
-        try { $v = (& $aday[0] ($aday[1..9] + @("-c", "import sys,struct;print(sys.version_info[0],sys.version_info[1],struct.calcsize('P')*8,sys.executable)")) 2>$null) } finally { $ErrorActionPreference = $eap }
-        if ($v -match "^3 (\d+) 64 (.+)$" -and [int]$matches[1] -ge 10) { return $matches[2].Trim() }
+    # 64-bit Python 3.10-3.13; Microsoft Store'un sahte "python" takma adı, 2.x, 32-bit ve 3.14+ elenir. Sıra: py -3.12, -3.13, -3.11, -3.10, py -3, python, python3
+    # (birden çok Python kuruluysa "py -3" 3.15 verse bile 3.12 seçilir). Bulunan ama kabul edilmeyenler $script:PyReddedilen'e yazılır / rejected finds are listed in the error.
+    $script:PyReddedilen = @()
+    foreach ($aday in @(@("py", "-3.12"), @("py", "-3.13"), @("py", "-3.11"), @("py", "-3.10"), @("py", "-3"), @("python"), @("python3"))) {
+        $on = @(); if ($aday.Count -gt 1) { $on = @($aday[1..($aday.Count - 1)]) }
+        $v = PythonSurum $aday[0] $on
+        if ($v -match "^3 (\d+) (\d+) (.+)$") {
+            $minor = [int]$matches[1]; $bit = [int]$matches[2]; $yol = $matches[3].Trim()
+            if ($bit -eq 64 -and $minor -ge $PY_MIN -and $minor -le $PY_MAX) { return $yol }
+            $oz = "3.$minor ($bit-bit, $yol)"
+            if ($script:PyReddedilen -notcontains $oz) { $script:PyReddedilen += $oz }
+        }
     }
     return $null
+}
+function PythonYokMesaji {
+    $m = "64-bit Python 3.$($PY_MIN)-3.$($PY_MAX) bulunamadı. Desteklenen aralık 3.$($PY_MIN)-3.$($PY_MAX); 3.14 ve üstü desteklenmez (numpy için hazır paket yok, pip kaynaktan derlemeye çalışıp derleyici hatasıyla düşer)."
+    if ($script:PyReddedilen.Count -gt 0) { $m += " Bulunan ama kabul edilmeyen: " + ($script:PyReddedilen -join "; ") + "." }
+    $m += " Kurun: winget install Python.Python.3.12  (ya da python.org, 64-bit), sonra yeni bir PowerShell açıp aynı komutu yeniden çalıştırın. Birden çok Python kuruluysa betik py -3.12 / -3.13 / -3.11 / -3.10 sırasıyla uygun olanı kendisi seçer."
+    $m += "`n  No 64-bit Python 3.$($PY_MIN)-3.$($PY_MAX) found (3.14+ is not supported: no numpy wheels). Install: winget install Python.Python.3.12, then open a new PowerShell and re-run."
+    return $m
+}
+function VenvDenetle([string]$vpy) {
+    # Var olan .venv'in Python'u aralık dışıysa hata metni döner ($null = uygun ya da .venv yok). .venv'i SİLMEZ / never deletes it.
+    if (-not (Test-Path -LiteralPath $vpy)) { return $null }
+    $v = PythonSurum $vpy @()
+    $venvYol = Split-Path (Split-Path $vpy -Parent) -Parent
+    if ($v -match "^3 (\d+) (\d+) ") {
+        $minor = [int]$matches[1]; $bit = [int]$matches[2]
+        if ($bit -eq 64 -and $minor -ge $PY_MIN -and $minor -le $PY_MAX) { return $null }
+        $ne = "Python 3.$minor ($bit-bit)"
+    } else { $ne = "çalışmayan bir Python" }
+    return "var olan .venv desteklenmeyen $ne kullanıyor (3.$($PY_MIN)-3.$($PY_MAX) gerekir): $venvYol`n" +
+           "  Betik .venv'i silmez. Klasörü silip aynı komutu yeniden çalıştırın (silinince 3.$($PY_MIN)-3.$($PY_MAX) arasından uygun Python ile yeniden kurulur): Remove-Item -Recurse -Force `"$venvYol`"`n" +
+           "  existing .venv uses an unsupported Python ($ne): delete the folder and re-run; this script never deletes it"
+}
+# Python ön kontrolü: ~3 GB indirmeden ÖNCE başarısız ol (sürüm aralık dışı ya da var olan .venv uyumsuz) / fail before the big downloads
+$py = $null
+if ($Adim -contains "python") {
+    $py = PythonBul
+    if (-not $py) { throw (PythonYokMesaji) }
+    $venvHata = VenvDenetle (Join-Path (Join-Path $Repo ".venv") "Scripts\python.exe")
+    if ($venvHata) { throw $venvHata }
 }
 $motorExe = Join-Path $Kok "motor\build\bin\audiocpp_cli.exe"
 $cudaRoot = Join-Path $Kok "cuda"
@@ -185,8 +230,6 @@ if ($Adim -contains "cuda") {
 
 if ($Adim -contains "python") {
     Write-Output "== Python paketleri (.venv + numpy, soundfile)"
-    $py = PythonBul
-    if (-not $py) { throw "64-bit Python 3.10+ bulunamadı. Kurun: winget install Python.Python.3.12  (ya da python.org), sonra yeni bir PowerShell açın" }
     Write-Output "  python: $py"
     $venv = Join-Path $Repo ".venv"
     $vpy = Join-Path $venv "Scripts\python.exe"

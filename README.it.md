@@ -232,7 +232,7 @@ compila per la tua GPU (`-Mimari native`, predefinito; oppure ad es. `-Mimari 61
 | Vedi | Cosa significa, cosa fare |
 |---|---|
 | `cudart64_12.dll not found` dopo il doppio clic sull'exe | Il motore non va avviato a mano. Esegui il comando `kur.ps1` qui sopra, poi avvia l'interfaccia web. |
-| `64-bit Python 3.10+ bulunamadı` (Python non trovato) | Installa Python (`winget install Python.Python.3.12`), chiudi PowerShell, aprine uno nuovo ed esegui di nuovo lo stesso comando. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python non trovato) | Installa Python (`winget install Python.Python.3.12`), chiudi PowerShell, aprine uno nuovo ed esegui di nuovo lo stesso comando. |
 | `motor ekran kartını görmedi` (il motore non ha visto la GPU) | Aggiorna il driver NVIDIA alla versione 570 o successiva; controlla che `nvidia-smi` funzioni. |
 | `indirme başarısız` / `sha256 tutmadı` (download non riuscito / checksum non corrispondente) | Di solito un download interrotto. Esegui di nuovo lo stesso comando; i file già verificati vengono saltati. |
 | Compilazione dal sorgente: `nvcc` fallisce | Tieni corta la radice di installazione (`-Kok C:\vox`). |

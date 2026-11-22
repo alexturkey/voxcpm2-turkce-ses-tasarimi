@@ -222,7 +222,7 @@ nvcc lỗi với đường dẫn dài. Hướng dẫn từng bước kèm kiểm
 | Bạn thấy | Ý nghĩa, cách xử lý |
 |---|---|
 | `cudart64_12.dll not found` sau khi nhấp đúp vào exe | Engine không dùng để khởi động bằng tay. Chạy lệnh `kur.ps1` ở trên, rồi khởi động giao diện web. |
-| `64-bit Python 3.10+ bulunamadı` (không tìm thấy Python) | Cài Python (`winget install Python.Python.3.12`), đóng PowerShell, mở cửa sổ mới và chạy lại đúng lệnh đó. |
+| `64-bit Python 3.10-3.13 bulunamadı` (không tìm thấy Python) | Cài Python (`winget install Python.Python.3.12`), đóng PowerShell, mở cửa sổ mới và chạy lại đúng lệnh đó. |
 | `motor ekran kartını görmedi` (engine không thấy GPU) | Cập nhật driver NVIDIA lên 570 hoặc mới hơn; kiểm tra xem `nvidia-smi` có chạy không. |
 | `indirme başarısız` / `sha256 tutmadı` (tải thất bại / sai checksum) | Thường do tải bị ngắt giữa chừng. Chạy lại đúng lệnh đó; các file đã kiểm tra sẽ được bỏ qua. |
 | Khi build: `nvcc` lỗi | Giữ thư mục cài đặt gốc ngắn (`-Kok C:\vox`). |

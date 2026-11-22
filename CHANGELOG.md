@@ -1,5 +1,15 @@
 # Sürüm notları / Release notes
 
+## Yayımlanmamış / Unreleased
+
+**TR**
+- Kurulum betikleri artık yalnız 64-bit Python 3.10-3.13 kabul eder. `kur.ps1` `PythonBul` önce `py -3.12`, `-3.13`, `-3.11`, `-3.10` dener, sonra `py -3`, `python`, `python3`; 3.14+ (numpy için hazır paket yok, pip derlemeye çalışıp `Unknown compiler(s)` ile düşüyordu), 3.9 ve 32-bit elenir, hata bulunan ama reddedilen sürümü yazar. Birden çok Python kuruluysa `py -3` 3.15 verse bile 3.12 seçilir.
+- Var olan `.venv` aralık dışı bir Python ile kurulmuşsa betik artık ~3 GB indirmeden ÖNCE açık hatayla durur (klasör yolu ve "silip yeniden çalıştırın" adımı; `.venv` asla otomatik silinmez). Aynı denetim `kur.sh` ve `kur-linux.sh`'de. Test: `tests/test_python_surum.py`. README ve README.tr sorun giderme tablosu, `AGENTS.md` sorun giderme bölümü güncellendi (öteki dil README'leri sonraki çeviri turunda).
+
+**EN**
+- The installers now accept only 64-bit Python 3.10-3.13. `kur.ps1` `PythonBul` tries `py -3.12`, `-3.13`, `-3.11`, `-3.10` first, then `py -3`, `python`, `python3`; 3.14+ (no numpy wheels, pip fell back to a source build and failed with `Unknown compiler(s)`), 3.9 and 32-bit are skipped and the error names the rejected version it found. With several Pythons installed, 3.12 is picked even when `py -3` reports 3.15.
+- An existing `.venv` built with an unsupported Python now stops the installer with a clear error BEFORE the ~3 GB downloads (folder path and a "delete it and re-run" step; the `.venv` is never deleted automatically). Same check in `kur.sh` and `kur-linux.sh`. Test: `tests/test_python_surum.py`. The troubleshooting tables in README and README.tr and the troubleshooting section of `AGENTS.md` are updated (the other README languages follow in the next translation pass).
+
 ## v0.3.2 — 2026-11-09
 
 **TR**

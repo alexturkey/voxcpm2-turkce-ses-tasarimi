@@ -241,7 +241,7 @@ vérifications : [AGENTS.md](AGENTS.md).
 | Vous voyez | Ce que cela signifie, que faire |
 |---|---|
 | `cudart64_12.dll not found` après un double-clic sur l'exe | Le moteur n'est pas fait pour être lancé à la main. Exécutez la commande `kur.ps1` ci-dessus, puis démarrez l'interface web. |
-| `64-bit Python 3.10+ bulunamadı` (Python introuvable) | Installez Python (`winget install Python.Python.3.12`), fermez PowerShell, ouvrez-en un nouveau et relancez la même commande. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python introuvable) | Installez Python (`winget install Python.Python.3.12`), fermez PowerShell, ouvrez-en un nouveau et relancez la même commande. |
 | `motor ekran kartını görmedi` (le moteur n'a pas vu le GPU) | Mettez à jour le pilote NVIDIA en version 570 ou ultérieure ; vérifiez que `nvidia-smi` fonctionne. |
 | `indirme başarısız` / `sha256 tutmadı` (échec du téléchargement / somme de contrôle incorrecte) | En général un téléchargement interrompu. Relancez la même commande ; les fichiers déjà vérifiés sont ignorés. |
 | Compilation depuis les sources : `nvcc` échoue | Gardez une racine d'installation courte (`-Kok C:\vox`). |

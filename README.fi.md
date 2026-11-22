@@ -237,7 +237,7 @@ polku lyhyenä (`C:\vox`): nvcc epäonnistuu pitkillä poluilla. Vaihe vaiheelta
 | Näet | Mitä se tarkoittaa, mitä tehdä |
 |---|---|
 | `cudart64_12.dll not found` exe-tiedoston kaksoisnapsautuksen jälkeen | Moottoria ei ole tarkoitettu käynnistettäväksi käsin. Suorita yllä oleva `kur.ps1`-komento ja käynnistä sitten verkkokäyttöliittymä. |
-| `64-bit Python 3.10+ bulunamadı` (Pythonia ei löytynyt) | Asenna Python (`winget install Python.Python.3.12`), sulje PowerShell, avaa uusi ikkuna ja suorita sama komento uudelleen. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Pythonia ei löytynyt) | Asenna Python (`winget install Python.Python.3.12`), sulje PowerShell, avaa uusi ikkuna ja suorita sama komento uudelleen. |
 | `motor ekran kartını görmedi` (moottori ei nähnyt näytönohjainta) | Päivitä NVIDIA-ajuri versioon 570 tai uudempaan; tarkista, että `nvidia-smi` toimii. |
 | `indirme başarısız` / `sha256 tutmadı` (lataus epäonnistui / tarkistussumma ei täsmää) | Yleensä keskeytynyt lataus. Suorita sama komento uudelleen; jo tarkistetut tiedostot ohitetaan. |
 | Kääntäminen lähdekoodista: `nvcc` epäonnistuu | Pidä asennuksen juurihakemisto lyhyenä (`-Kok C:\vox`). |

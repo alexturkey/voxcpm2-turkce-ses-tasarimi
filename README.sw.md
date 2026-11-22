@@ -231,7 +231,7 @@ kujenga kwa ajili ya GPU yako (`-Mimari native`, chaguo-msingi; au mfano `-Mimar
 | Unachokiona | Maana yake, nini cha kufanya |
 |---|---|
 | `cudart64_12.dll not found` baada ya kubofya exe mara mbili | Injini haikusudiwi kuanzishwa kwa mkono. Endesha amri ya `kur.ps1` iliyo juu, kisha anzisha kiolesura cha wavuti. |
-| `64-bit Python 3.10+ bulunamadı` (Python haikupatikana) | Sakinisha Python (`winget install Python.Python.3.12`), funga PowerShell, fungua mpya na uendeshe amri ileile tena. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python haikupatikana) | Sakinisha Python (`winget install Python.Python.3.12`), funga PowerShell, fungua mpya na uendeshe amri ileile tena. |
 | `motor ekran kartını görmedi` (injini haikuiona GPU) | Sasisha kiendeshi cha NVIDIA hadi 570 au mpya zaidi; hakikisha `nvidia-smi` inafanya kazi. |
 | `indirme başarısız` / `sha256 tutmadı` (upakuaji umeshindwa / checksum hailingani) | Kwa kawaida ni upakuaji uliokatika. Endesha amri ileile tena; faili zilizothibitishwa zinarukwa. |
 | Njia ya kujenga: `nvcc` inashindwa | Weka mzizi wa usakinishaji mfupi (`-Kok C:\vox`). |

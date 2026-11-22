@@ -238,7 +238,7 @@ Hakbang-hakbang na may mga check: [AGENTS.md](AGENTS.md).
 | Nakikita mo | Ano ang ibig sabihin, ano ang gagawin |
 |---|---|
 | `cudart64_12.dll not found` matapos i-double-click ang exe | Hindi dapat manu-manong simulan ang engine. Patakbuhin ang `kur.ps1` command sa itaas, saka simulan ang web UI. |
-| `64-bit Python 3.10+ bulunamadı` (hindi nahanap ang Python) | I-install ang Python (`winget install Python.Python.3.12`), isara ang PowerShell, magbukas ng bago at patakbuhing muli ang parehong command. |
+| `64-bit Python 3.10-3.13 bulunamadı` (hindi nahanap ang Python) | I-install ang Python (`winget install Python.Python.3.12`), isara ang PowerShell, magbukas ng bago at patakbuhing muli ang parehong command. |
 | `motor ekran kartını görmedi` (hindi nakita ng engine ang GPU) | I-update ang NVIDIA driver sa 570 o mas bago; tiyaking tumatakbo ang `nvidia-smi`. |
 | `indirme başarısız` / `sha256 tutmadı` (pumalya ang download / hindi tugma ang checksum) | Kadalasan ay naputol na download. Patakbuhing muli ang parehong command; nilalaktawan ang mga file na na-verify na. |
 | Build path: pumapalya ang `nvcc` | Panatilihing maikli ang install root (`-Kok C:\vox`). |

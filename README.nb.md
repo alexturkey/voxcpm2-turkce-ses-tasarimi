@@ -227,7 +227,7 @@ og bygger for GPU-en din (`-Mimari native`, standard; eller f.eks. `-Mimari 61`)
 | Du ser | Hva det betyr, hva du gjør |
 |---|---|
 | `cudart64_12.dll not found` etter dobbeltklikk på exe-filen | Motoren er ikke ment å startes manuelt. Kjør `kur.ps1`-kommandoen ovenfor, og start deretter nettgrensesnittet. |
-| `64-bit Python 3.10+ bulunamadı` (Python ble ikke funnet) | Installer Python (`winget install Python.Python.3.12`), lukk PowerShell, åpne et nytt vindu og kjør den samme kommandoen på nytt. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python ble ikke funnet) | Installer Python (`winget install Python.Python.3.12`), lukk PowerShell, åpne et nytt vindu og kjør den samme kommandoen på nytt. |
 | `motor ekran kartını görmedi` (motoren så ikke GPU-en) | Oppdater NVIDIA-driveren til 570 eller nyere; sjekk at `nvidia-smi` kjører. |
 | `indirme başarısız` / `sha256 tutmadı` (nedlastingen mislyktes / sjekksummen stemmer ikke) | Som regel en avbrutt nedlasting. Kjør den samme kommandoen på nytt; verifiserte filer hoppes over. |
 | Bygging fra kildekode: `nvcc` feiler | Hold installasjonsroten kort (`-Kok C:\vox`). |

@@ -223,7 +223,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 | អ្វីដែលអ្នកឃើញ | អត្ថន័យ និងអ្វីដែលត្រូវធ្វើ |
 |---|---|
 | `cudart64_12.dll not found` បន្ទាប់ពីចុចពីរដងលើ exe | engine មិនមែនសម្រាប់ចាប់ផ្តើមដោយដៃទេ។ ដំណើរការពាក្យបញ្ជា `kur.ps1` ខាងលើ បន្ទាប់មកចាប់ផ្តើម web UI។ |
-| `64-bit Python 3.10+ bulunamadı` (រកមិនឃើញ Python) | ដំឡើង Python (`winget install Python.Python.3.12`) បិទ PowerShell បើកមួយថ្មី ហើយដំណើរការពាក្យបញ្ជាដដែលម្តងទៀត។ |
+| `64-bit Python 3.10-3.13 bulunamadı` (រកមិនឃើញ Python) | ដំឡើង Python (`winget install Python.Python.3.12`) បិទ PowerShell បើកមួយថ្មី ហើយដំណើរការពាក្យបញ្ជាដដែលម្តងទៀត។ |
 | `motor ekran kartını görmedi` (engine មិនឃើញ GPU) | ធ្វើបច្ចុប្បន្នភាព NVIDIA driver ទៅ 570 ឬថ្មីជាងនេះ ពិនិត្យថា `nvidia-smi` ដំណើរការបាន។ |
 | `indirme başarısız` / `sha256 tutmadı` (ទាញយកបរាជ័យ / checksum មិនត្រូវគ្នា) | ជាធម្មតាគឺការទាញយកដែលដាច់ពាក់កណ្តាលទី។ ដំណើរការពាក្យបញ្ជាដដែលម្តងទៀត ឯកសារដែលបានផ្ទៀងផ្ទាត់នឹងត្រូវរំលង។ |
 | ផ្លូវ build៖ `nvcc` បរាជ័យ | រក្សា root ដំឡើងឱ្យខ្លី (`-Kok C:\vox`)។ |

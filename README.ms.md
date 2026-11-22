@@ -233,7 +233,7 @@ pendek (`C:\vox`): nvcc gagal pada laluan yang panjang. Langkah demi langkah den
 | Anda nampak | Maksudnya, apa yang perlu dilakukan |
 |---|---|
 | `cudart64_12.dll not found` selepas klik dua kali pada exe | Enjin tidak bertujuan untuk dimulakan secara manual. Jalankan arahan `kur.ps1` di atas, kemudian mulakan antara muka web. |
-| `64-bit Python 3.10+ bulunamadı` (Python tidak dijumpai) | Pasang Python (`winget install Python.Python.3.12`), tutup PowerShell, buka yang baharu dan jalankan arahan yang sama sekali lagi. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python tidak dijumpai) | Pasang Python (`winget install Python.Python.3.12`), tutup PowerShell, buka yang baharu dan jalankan arahan yang sama sekali lagi. |
 | `motor ekran kartını görmedi` (enjin tidak mengesan GPU) | Kemas kini pemacu NVIDIA ke 570 atau lebih baharu; semak bahawa `nvidia-smi` boleh dijalankan. |
 | `indirme başarısız` / `sha256 tutmadı` (muat turun gagal / checksum tidak sepadan) | Biasanya muat turun yang terganggu. Jalankan arahan yang sama sekali lagi; fail yang telah disahkan akan dilangkau. |
 | Laluan bina: `nvcc` gagal | Pastikan akar pemasangan pendek (`-Kok C:\vox`). |

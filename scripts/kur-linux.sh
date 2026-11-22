@@ -49,7 +49,14 @@ if adim python; then
             PY="$(command -v "$candidate")"; break
         fi
     done
-    [[ -n "$PY" ]] || { echo "64-bit Python 3.10-3.13 required; see docs/linux.md" >&2; exit 1; }
+    [[ -n "$PY" ]] || { echo "64-bit Python 3.10-3.13 required (3.14+ is not supported: no numpy wheels); see docs/linux.md" >&2; exit 1; }
+    # An existing .venv is reused as is: refuse one built with an unsupported Python (never deleted by this script).
+    if [[ -x "$REPO/.venv/bin/python" ]] && ! "$REPO/.venv/bin/python" -c \
+        'import sys,struct; sys.exit(0 if (3,10) <= sys.version_info[:2] <= (3,13) and struct.calcsize("P")==8 else 1)' 2>/dev/null; then
+        echo "Existing .venv uses an unsupported (or broken) Python, 3.10-3.13 64-bit is required: $REPO/.venv" >&2
+        echo "This script never deletes it: delete the folder (rm -r \"$REPO/.venv\") and run again." >&2
+        exit 1
+    fi
 fi
 mkdir -p "$KOK"
 KOK="$(cd "$KOK" && pwd)"

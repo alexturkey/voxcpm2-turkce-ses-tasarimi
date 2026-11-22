@@ -222,7 +222,8 @@ nvcc fails on long paths. Step-by-step with checks: [AGENTS.md](AGENTS.md).
 | You see | What it means, what to do |
 |---|---|
 | `cudart64_12.dll not found` after double-clicking the exe | The engine is not meant to be started by hand. Run the `kur.ps1` command above, then start the web UI. |
-| `64-bit Python 3.10+ bulunamadı` (Python not found) | Install Python (`winget install Python.Python.3.12`), close PowerShell, open a new one and run the same command again. |
+| `64-bit Python 3.10-3.13 bulunamadı` (no supported Python found; the message names any rejected version, e.g. 3.15) | Python 3.14 and newer are not supported yet (no numpy wheels, pip would try to compile). Install Python 3.12 (`winget install Python.Python.3.12`; it can sit next to a newer one, the installer picks it), close PowerShell, open a new one and run the same command again. |
+| `var olan .venv desteklenmeyen Python ... kullanıyor` (the existing `.venv` uses an unsupported Python) | The installer reuses an existing `.venv` and never deletes it. Delete the `.venv` folder named in the message and run the same command again. |
 | `motor ekran kartını görmedi` (the engine did not see the GPU) | Update the NVIDIA driver to 570 or newer; check that `nvidia-smi` runs. |
 | `indirme başarısız` / `sha256 tutmadı` (download failed / checksum mismatch) | Usually an interrupted download. Run the same command again; verified files are skipped. |
 | Build path: `nvcc` fails | Keep the install root short (`-Kok C:\vox`). |

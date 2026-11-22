@@ -222,7 +222,8 @@ uzun yolda düşer. Adım adım, kontrollü anlatım: [AGENTS.md](AGENTS.md).
 | Gördüğünüz | Anlamı, ne yapmalı |
 |---|---|
 | exe'ye çift tıklayınca `cudart64_12.dll bulunamadı` | Motor elle açılmak için değil. Yukarıdaki `kur.ps1` komutunu çalıştırın, sonra web arayüzünü başlatın. |
-| `64-bit Python 3.10+ bulunamadı` | Python kurun (`winget install Python.Python.3.12`), PowerShell'i kapatıp yenisini açın, aynı komutu yeniden çalıştırın. |
+| `64-bit Python 3.10-3.13 bulunamadı` (desteklenen Python yok; mesaj bulduğu reddedilen sürümü de yazar, ör. 3.15) | Python 3.14 ve üstü henüz desteklenmiyor (numpy için hazır paket yok, pip derlemeye çalışır). Python 3.12 kurun (`winget install Python.Python.3.12`; daha yeni olanın yanında durabilir, kurulum betiği uygununu seçer), PowerShell'i kapatıp yenisini açın, aynı komutu yeniden çalıştırın. |
+| `var olan .venv desteklenmeyen Python ... kullanıyor` (var olan `.venv` desteklenmeyen bir Python ile kurulmuş) | Kurulum betiği var olan `.venv`'i olduğu gibi kullanır ve asla silmez. Mesajda yazan `.venv` klasörünü silin, aynı komutu yeniden çalıştırın. |
 | `motor ekran kartını görmedi` | NVIDIA sürücüsünü 570 ya da üstüne güncelleyin; `nvidia-smi` çalışıyor mu bakın. |
 | `indirme başarısız` / `sha256 tutmadı` | Çoğunlukla yarıda kalan indirme. Aynı komutu yeniden çalıştırın; doğrulanmış dosyalar atlanır. |
 | Derleme yolunda `nvcc` düşüyor | Kurulum kökünü kısa tutun (`-Kok C:\vox`). |

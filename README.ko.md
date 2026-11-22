@@ -222,7 +222,7 @@ nvcc는 긴 경로에서 실패합니다. 점검 단계가 포함된 단계별 �
 | 보이는 메시지 | 의미와 해결 방법 |
 |---|---|
 | exe를 더블클릭한 뒤 `cudart64_12.dll not found` | 엔진은 직접 실행하는 프로그램이 아닙니다. 위의 `kur.ps1` 명령을 실행한 뒤 웹 UI를 시작하세요. |
-| `64-bit Python 3.10+ bulunamadı`(Python을 찾을 수 없음) | Python을 설치하고(`winget install Python.Python.3.12`), PowerShell을 닫은 뒤 새로 열어 같은 명령을 다시 실행하세요. |
+| `64-bit Python 3.10-3.13 bulunamadı`(Python을 찾을 수 없음) | Python을 설치하고(`winget install Python.Python.3.12`), PowerShell을 닫은 뒤 새로 열어 같은 명령을 다시 실행하세요. |
 | `motor ekran kartını görmedi`(엔진이 GPU를 인식하지 못함) | NVIDIA 드라이버를 570 이상으로 업데이트하고 `nvidia-smi`가 실행되는지 확인하세요. |
 | `indirme başarısız` / `sha256 tutmadı`(다운로드 실패 / 체크섬 불일치) | 대개 다운로드가 중간에 끊긴 경우입니다. 같은 명령을 다시 실행하세요. 검증된 파일은 건너뜁니다. |
 | 소스 빌드: `nvcc` 실패 | 설치 루트 경로를 짧게 유지하세요(`-Kok C:\vox`). |

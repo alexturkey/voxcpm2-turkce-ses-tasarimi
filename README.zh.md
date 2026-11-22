@@ -217,7 +217,7 @@ nvcc 在长路径下会失败。带检查步骤的分步说明：[AGENTS.md](AGE
 | 你看到的 | 含义与解决办法 |
 |---|---|
 | 双击 exe 后出现 `cudart64_12.dll not found` | 引擎不是用来手动启动的。运行上面的 `kur.ps1` 命令，然后启动网页界面。 |
-| `64-bit Python 3.10+ bulunamadı`（找不到 Python） | 安装 Python（`winget install Python.Python.3.12`），关闭 PowerShell，打开一个新窗口，再运行同一条命令。 |
+| `64-bit Python 3.10-3.13 bulunamadı`（找不到 Python） | 安装 Python（`winget install Python.Python.3.12`），关闭 PowerShell，打开一个新窗口，再运行同一条命令。 |
 | `motor ekran kartını görmedi`（引擎没有识别到 GPU） | 把 NVIDIA 驱动更新到 570 或更高版本；确认 `nvidia-smi` 可以运行。 |
 | `indirme başarısız` / `sha256 tutmadı`（下载失败 / 校验和不匹配） | 通常是下载中断。再运行一次同一条命令；已校验的文件会被跳过。 |
 | 源码构建：`nvcc` 失败 | 安装根目录路径要短（`-Kok C:\vox`）。 |

@@ -211,7 +211,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 | ما تراه | معناه وما يجب فعله |
 |---|---|
 | ظهور `cudart64_12.dll not found` بعد النقر المزدوج على exe | المحرك ليس مُعدًّا للتشغيل اليدوي. شغّل أمر `kur.ps1` أعلاه، ثم شغّل واجهة الويب. |
-| `64-bit Python 3.10+ bulunamadı` (لم يُعثر على Python) | ثبّت Python (`winget install Python.Python.3.12`)، وأغلق PowerShell، وافتح نافذة جديدة وشغّل الأمر نفسه مرة أخرى. |
+| `64-bit Python 3.10-3.13 bulunamadı` (لم يُعثر على Python) | ثبّت Python (`winget install Python.Python.3.12`)، وأغلق PowerShell، وافتح نافذة جديدة وشغّل الأمر نفسه مرة أخرى. |
 | `motor ekran kartını görmedi` (المحرك لم يرَ البطاقة) | حدّث تعريف NVIDIA إلى 570 أو أحدث؛ وتأكد من أن `nvidia-smi` يعمل. |
 | `indirme başarısız` / `sha256 tutmadı` (فشل التنزيل / عدم تطابق المجموع الاختباري) | غالبًا تنزيل منقطع. شغّل الأمر نفسه مرة أخرى؛ تُتخطى الملفات التي سبق التحقق منها. |
 | مسار البناء: فشل `nvcc` | اجعل جذر التثبيت قصيرًا (`-Kok C:\vox`). |

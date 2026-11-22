@@ -222,7 +222,7 @@ o nvcc falha com caminhos longos. Passo a passo com verificações: [AGENTS.md](
 | O que aparece | O que significa, o que fazer |
 |---|---|
 | `cudart64_12.dll not found` depois de clicar duas vezes no exe | O motor não foi feito para ser iniciado manualmente. Execute o comando `kur.ps1` acima e depois inicie a interface web. |
-| `64-bit Python 3.10+ bulunamadı` (Python não encontrado) | Instale o Python (`winget install Python.Python.3.12`), feche o PowerShell, abra um novo e execute o mesmo comando de novo. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python não encontrado) | Instale o Python (`winget install Python.Python.3.12`), feche o PowerShell, abra um novo e execute o mesmo comando de novo. |
 | `motor ekran kartını görmedi` (o motor não viu a GPU) | Atualize o driver NVIDIA para a versão 570 ou mais recente; confira se o `nvidia-smi` funciona. |
 | `indirme başarısız` / `sha256 tutmadı` (falha no download / checksum não confere) | Normalmente é um download interrompido. Execute o mesmo comando de novo; os arquivos já verificados são pulados. |
 | Compilação: o `nvcc` falha | Mantenha a raiz da instalação curta (`-Kok C:\vox`). |

@@ -207,7 +207,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kur.ps1 -Kok C:\vox 
 | מה רואים | מה זה אומר ומה לעשות |
 |---|---|
 | ההודעה `cudart64_12.dll not found` אחרי לחיצה כפולה על ה-exe | המנוע לא נועד להפעלה ידנית. הריצו את פקודת `kur.ps1` שלמעלה ואז הפעילו את ממשק הווב. |
-| `64-bit Python 3.10+ bulunamadı` (לא נמצא Python) | התקינו Python (`winget install Python.Python.3.12`), סגרו את PowerShell, פתחו חלון חדש והריצו שוב את אותה פקודה. |
+| `64-bit Python 3.10-3.13 bulunamadı` (לא נמצא Python) | התקינו Python (`winget install Python.Python.3.12`), סגרו את PowerShell, פתחו חלון חדש והריצו שוב את אותה פקודה. |
 | `motor ekran kartını görmedi` (המנוע לא זיהה את הכרטיס) | עדכנו את דרייבר NVIDIA לגרסה 570 ומעלה; ודאו ש-`nvidia-smi` רץ. |
 | `indirme başarısız` / `sha256 tutmadı` (ההורדה נכשלה / אי-התאמה בסכום הביקורת) | בדרך כלל הורדה שנקטעה. הריצו שוב את אותה פקודה; קבצים שכבר אומתו מדולגים. |
 | בנייה מקוד המקור: `nvcc` נכשל | שמרו על שורש התקנה קצר (`-Kok C:\vox`). |

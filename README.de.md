@@ -235,7 +235,7 @@ kurz (`C:\vox`): nvcc scheitert an langen Pfaden. Schritt für Schritt mit Prüf
 | Du siehst | Was es bedeutet, was zu tun ist |
 |---|---|
 | `cudart64_12.dll not found` nach Doppelklick auf die exe | Die Engine ist nicht zum manuellen Starten gedacht. Führe den `kur.ps1`-Befehl oben aus und starte dann die Weboberfläche. |
-| `64-bit Python 3.10+ bulunamadı` (Python nicht gefunden) | Installiere Python (`winget install Python.Python.3.12`), schließe PowerShell, öffne ein neues Fenster und führe denselben Befehl erneut aus. |
+| `64-bit Python 3.10-3.13 bulunamadı` (Python nicht gefunden) | Installiere Python (`winget install Python.Python.3.12`), schließe PowerShell, öffne ein neues Fenster und führe denselben Befehl erneut aus. |
 | `motor ekran kartını görmedi` (die Engine hat die GPU nicht erkannt) | Aktualisiere den NVIDIA-Treiber auf 570 oder neuer; prüfe, ob `nvidia-smi` läuft. |
 | `indirme başarısız` / `sha256 tutmadı` (Download fehlgeschlagen / Prüfsumme stimmt nicht) | Meist ein abgebrochener Download. Führe denselben Befehl erneut aus; bereits geprüfte Dateien werden übersprungen. |
 | Bau aus dem Quellcode: `nvcc` scheitert | Halte das Installationsverzeichnis kurz (`-Kok C:\vox`). |

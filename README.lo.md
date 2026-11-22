@@ -220,7 +220,7 @@ GPU ຂອງທ່ານ (`-Mimari native`, ຄ່າເລີ່ມຕົ້�
 | ສິ່ງທີ່ທ່ານເຫັນ | ຄວາມໝາຍ ແລະ ສິ່ງທີ່ຕ້ອງເຮັດ |
 |---|---|
 | `cudart64_12.dll not found` ຫຼັງຈາກຄລິກສອງເທື່ອທີ່ exe | engine ບໍ່ໄດ້ມີໄວ້ໃຫ້ເລີ່ມດ້ວຍມື. ແລ່ນຄຳສັ່ງ `kur.ps1` ຂ້າງເທິງ, ແລ້ວເລີ່ມ web UI. |
-| `64-bit Python 3.10+ bulunamadı` (ບໍ່ພົບ Python) | ຕິດຕັ້ງ Python (`winget install Python.Python.3.12`), ປິດ PowerShell, ເປີດອັນໃໝ່ ແລ້ວແລ່ນຄຳສັ່ງເກົ່າອີກຄັ້ງ. |
+| `64-bit Python 3.10-3.13 bulunamadı` (ບໍ່ພົບ Python) | ຕິດຕັ້ງ Python (`winget install Python.Python.3.12`), ປິດ PowerShell, ເປີດອັນໃໝ່ ແລ້ວແລ່ນຄຳສັ່ງເກົ່າອີກຄັ້ງ. |
 | `motor ekran kartını görmedi` (engine ບໍ່ເຫັນ GPU) | ອັບເດດ NVIDIA driver ເປັນ 570 ຫຼື ໃໝ່ກວ່າ; ກວດວ່າ `nvidia-smi` ແລ່ນໄດ້. |
 | `indirme başarısız` / `sha256 tutmadı` (ດາວໂຫຼດລົ້ມເຫຼວ / checksum ບໍ່ກົງກັນ) | ສ່ວນຫຼາຍແມ່ນການດາວໂຫຼດທີ່ຂາດກາງຄັນ. ແລ່ນຄຳສັ່ງເກົ່າອີກຄັ້ງ; ໄຟລ໌ທີ່ກວດສອບແລ້ວຈະຖືກຂ້າມ. |
 | ທາງ build: `nvcc` ລົ້ມເຫຼວ | ຮັກສາ root ການຕິດຕັ້ງໃຫ້ສັ້ນ (`-Kok C:\vox`). |
