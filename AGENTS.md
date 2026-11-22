@@ -103,6 +103,21 @@ GPU architecture for the build: `-Mimari native` (default) compiles for the GPU 
 RTX 20xx → `75`, RTX 30xx → `86`, RTX 40xx → `89`, RTX 50xx → `120`; a list like `"61-real;75-real;86-real;89;120"` builds
 a multi-GPU exe (what the release uses; ~5× longer CUDA compile). Fewer cores / quieter PC: `-Paralel 2`.
 
+## 2c. Install layout and agent discipline
+These rules apply to you (an AI agent) and to any sub-agent you start. They exist so that installing the engine leaves nothing behind outside its folders and downloads nothing twice.
+
+1. **One root, plus the repo folder.** The engine install lives under one root, `<KOK>` (`-Kok`, default `C:\vox`): `motor` (engine), `cuda` (CUDA DLLs), `model` (the model file), `indirme` (downloaded zips and unpacking leftovers), `.onbellek\pip` (pip cache) and `gecici` (temporary files); only the folders that are really used are created. Two things stay OUTSIDE the root on purpose, so the defaults do not change: the Python environment `<repo>\.venv`, and your own data in the repo folder (`ayarlar.json`, `sesler\`, `onbellek\` with measurements). Map: `README.md`, "Disk layout and removal". Note the two caches: `<repo>\onbellek\` is application data; `<KOK>\.onbellek\` (dot prefix) is the install cache.
+2. **No trace outside these folders.** For its own process only, `kur.ps1` sets `PIP_CACHE_DIR` to `<KOK>\.onbellek\pip` and `TMP`/`TEMP` to `<KOK>\gecici` while it installs the Python packages (`derle.ps1` already redirects `TEMP` for its build). If you have already set your own `PIP_CACHE_DIR`, `kur.ps1` leaves it alone and uses it; an empty one is pointed into the root. `TMP` and `TEMP` always go to the root (this process only). It does not change the system PATH (the CUDA DLLs are used from `<KOK>\cuda`, never added to PATH), the user profile, the registry or any global setting, and you must not either (no `setx`, no profile edits, no `reg add`). `HF_HOME`, `HF_HUB_CACHE` and `TORCH_HOME` are not needed: the model comes from one pinned URL with a sha256 check, not through `huggingface_hub` or `torch.hub`; if you add a tool that uses them, point them into the root too.
+   For your own manual `pip` calls in the same terminal (nothing is saved; the terminal forgets it when closed):
+   ```powershell
+   $env:PIP_CACHE_DIR = "<KOK>\.onbellek\pip"; $env:TMP = "<KOK>\gecici"; $env:TEMP = $env:TMP
+   ```
+3. **No double download.** A complete file with the right sha256 is skipped; an interrupted download continues from its `.part` file; a ready engine zip you already downloaded is used with `-HazirZip <path>` (its sha256 is still checked). Never fetch the model or the engine into a second place and never start a second `kur.ps1` while one is running.
+4. **Measure first.** Check the prerequisites table above and the free disk (at least 8 GB for the prebuilt engine, 12 GB to build) before any download; tell the user the sizes and sources and wait for a yes.
+5. **Show before you delete.** Before removing anything (a half install, `indirme` leftovers, an old `.venv`) show the user the path, the size and the reason. The supported uninstall is deleting the two folders listed in the README (back up `sesler\` first: those are the user's voices); never delete anything else, never delete the user's own models. The scripts never delete the `.venv` or the user's data; they delete only their own leftovers (`.part` files and the `_ac_` unpacking folders in `indirme`).
+6. **Same error twice: stop.** Do not try a third time; take the message and the first 20 lines of output to the user.
+7. **Sub-agents follow the same rules.** Put these rules in the brief of any agent you start; one GPU job and one install at a time (`GGML_ASSERT mem_buffer` otherwise); no agent edits the install scripts to get past a check.
+
 ## 3. Verify the engine sees the GPU
 
 ```powershell

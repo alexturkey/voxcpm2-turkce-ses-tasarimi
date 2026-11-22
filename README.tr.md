@@ -233,6 +233,25 @@ Sorun mu var? [Discussions (Soru-Cevap)](https://github.com/alexturkey/voxcpm2-t
 [kurulum sorunu kaydı](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml):
 ekran kartı, Windows sürümü, komut ve son satırlarıyla.
 
+## Disk düzeni ve kaldırma
+Motor kurulumu tek kök klasörde, `<KOK>` altında durur (`-Kok` parametresi, varsayılan `C:\vox`); kendi verileriniz ve Python ortamı depo klasöründe kalır. Sistem PATH'ine, kullanıcı profiline ve registry'ye hiçbir şey yazılmaz.
+
+| Nerede | İçinde ne var | Boyut |
+|---|---|---|
+| `<KOK>\motor` | motor (hazır zip açılmış ya da `-Derle` ile kaynaktan derlenmiş) | hazırda yaklaşık 0,1 GB [okudum: `AGENTS.md`] |
+| `<KOK>\cuda` | motorun kullandığı CUDA DLL'leri (PATH'e konmaz) | açılmış yaklaşık 0,9 GB [okudum: `AGENTS.md`] |
+| `<KOK>\model` | `voxcpm2-q8_0.gguf` | yaklaşık 2,95 GB [okudum: `AGENTS.md`] |
+| `<KOK>\indirme` | indirilen zip'ler ve açma artıkları | zip'ler yaklaşık 0,7 GB [okudum: `AGENTS.md`] |
+| `<KOK>\.onbellek\pip`, `<KOK>\gecici` | kurulumun pip önbelleği ve geçici dosyaları | küçük [ölçülmedi] |
+| `<repo>\.venv` | Python ortamı (numpy, soundfile) | küçük [ölçülmedi] |
+| `<repo>\ayarlar.json`, `<repo>\sesler\`, `<repo>\onbellek\` | SİZİN ayarlarınız, tasarladığınız sesler, ölçümler | kullandıkça büyür |
+
+Yalnız kurulum betiğinin kendi süreci için `PIP_CACHE_DIR`, `TMP` ve `TEMP` `<KOK>` içine yönlenir; böylece pip kullanıcı profilinizi doldurmaz (kendiniz tanımladığınız `PIP_CACHE_DIR`'a dokunulmaz ve o kullanılır; `TMP` ve `TEMP` her zaman `<KOK>`'a gider). Hugging Face ve torch önbellekleri kullanılmaz (model sabit tek adres ve sha256 denetimiyle iner).
+
+**Bir şeyi zaten indirdiniz mi?** sha256'sı doğru tam dosya atlanır, yarım indirme `.part` dosyasından sürer, kendiniz indirdiğiniz hazır motor zip'i `-HazirZip <yol>` ile verilir.
+
+**Kaldırma:** web arayüzünü kapatın, seslerinizi saklamak istiyorsanız `sesler\`'i yedekleyin, sonra `<KOK>` klasörünü ve depo klasörünü silin; kaldırma bu kadar. Bizim silmemiz gerekmeyenler: kurulumdan ÖNCE var olan pip önbellekleri ve `winget` ile kurulan Python ya da git (`pip cache purge` ya da Windows "Uygulamalar" ile siz silersiniz).
+
 ## Kullanım
 
 Komut satırı:

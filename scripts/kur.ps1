@@ -95,9 +95,18 @@ function Indir([string]$url, [string]$hedef, [string]$sha) {
     if ((Test-Path -LiteralPath $hedef) -and ((Sha256 $hedef) -eq $sha)) { Write-Output "  var ve doğru: $(Split-Path $hedef -Leaf)"; return }
     Write-Output "  indiriliyor: $url"
     $tmp = "$hedef.part"
-    curl.exe -L --fail --retry 3 --retry-delay 5 --progress-bar -o $tmp $url
-    if ($LASTEXITCODE -ne 0) { throw "indirme başarısız: $url" }
-    $got = Sha256 $tmp
+    # Yarım indirme sürer (-C -): .part varsa kaldığı yerden; zaten tamam ve doğruysa yeniden inmez / resume a partial download; skip if the .part is already complete
+    $got = $null
+    if ((Test-Path -LiteralPath $tmp) -and ((Get-Item -LiteralPath $tmp).Length -gt 0)) { $got = Sha256 $tmp }
+    if ($got -ne $sha) {
+        curl.exe -L --fail --retry 3 --retry-delay 5 --progress-bar -C - -o $tmp $url
+        if ($LASTEXITCODE -eq 33) {   # sunucu aralık (Range) kabul etmedi: baştan / server refused Range: restart
+            Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+            curl.exe -L --fail --retry 3 --retry-delay 5 --progress-bar -o $tmp $url
+        }
+        if ($LASTEXITCODE -ne 0) { throw "indirme başarısız (yarım dosya $(Split-Path $tmp -Leaf) kalır, aynı komut kaldığı yerden sürer): $url" }
+        $got = Sha256 $tmp
+    }
     if ($got -ne $sha) { Remove-Item -LiteralPath $tmp -Force; throw "sha256 tutmadı: $hedef`n  beklenen $sha`n  gelen    $got" }
     Move-Item -LiteralPath $tmp -Destination $hedef -Force
     Write-Output "  tamam, sha256 doğru: $(Split-Path $hedef -Leaf)"
@@ -231,6 +240,13 @@ if ($Adim -contains "cuda") {
 if ($Adim -contains "python") {
     Write-Output "== Python paketleri (.venv + numpy, soundfile)"
     Write-Output "  python: $py"
+    # pip önbelleği ve geçici dosyalar kurulum köküne gider; yalnız bu süreç (kullanıcı profili, registry, PATH değişmez; kaldırma = kök klasörü silmek)
+    # pip cache + temp stay inside the install root; this process only (no user profile / registry / PATH change)
+    # Kendi PIP_CACHE_DIR değeriniz doluysa dokunulmaz ve o kullanılır; boşsa köke yönlenir / a PIP_CACHE_DIR you already set is kept
+    if (-not $env:PIP_CACHE_DIR) { $env:PIP_CACHE_DIR = Join-Path (Join-Path $Kok ".onbellek") "pip" }
+    $gecici = Join-Path $Kok "gecici"
+    New-Item -ItemType Directory -Force $gecici | Out-Null
+    $env:TMP = $gecici; $env:TEMP = $gecici
     $venv = Join-Path $Repo ".venv"
     $vpy = Join-Path $venv "Scripts\python.exe"
     if (-not (Test-Path $vpy)) { & $py -m venv $venv; if ($LASTEXITCODE -ne 0) { throw "venv oluşturulamadı" } }

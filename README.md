@@ -233,6 +233,25 @@ Problems? [Discussions (Q&A)](https://github.com/alexturkey/voxcpm2-turkce-ses-t
 [install issue](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml)
 with your GPU, Windows version, the command and its last lines.
 
+## Disk layout and removal
+The engine install lives under one root folder, `<KOK>` (the `-Kok` argument, default `C:\vox`); your own data and the Python environment stay in the repository folder. Nothing is written to the system PATH, the user profile or the registry.
+
+| Where | What is in it | Size |
+|---|---|---|
+| `<KOK>\motor` | the engine (prebuilt zip unpacked, or built from source with `-Derle`) | about 0.1 GB prebuilt [read: `AGENTS.md`] |
+| `<KOK>\cuda` | CUDA DLLs the engine uses (never put on PATH) | about 0.9 GB unpacked [read: `AGENTS.md`] |
+| `<KOK>\model` | `voxcpm2-q8_0.gguf` | about 2.95 GB [read: `AGENTS.md`] |
+| `<KOK>\indirme` | downloaded zips and unpacking leftovers | about 0.7 GB of zips [read: `AGENTS.md`] |
+| `<KOK>\.onbellek\pip`, `<KOK>\gecici` | pip cache and temporary files of the install | small [not measured] |
+| `<repo>\.venv` | the Python environment (numpy, soundfile) | small [not measured] |
+| `<repo>\ayarlar.json`, `<repo>\sesler\`, `<repo>\onbellek\` | YOUR settings, designed voices, measurements | grows with use |
+
+For the installer's own process only, `PIP_CACHE_DIR`, `TMP` and `TEMP` point into `<KOK>`, so pip does not fill the user profile (a `PIP_CACHE_DIR` you set yourself is left alone and used; `TMP` and `TEMP` always go to `<KOK>`). Hugging Face and torch caches are not used (the model is one pinned URL with a sha256 check).
+
+**Already downloaded something?** A complete file with the right sha256 is skipped, an interrupted download continues from its `.part` file, and a ready engine zip you downloaded yourself goes in with `-HazirZip <path>`.
+
+**Removal:** close the web UI, back up `sesler\` if you want to keep your voices, then delete the `<KOK>` folder and the repository folder. That is the whole uninstall. Not ours to remove: pip caches that existed before the install and Python or git installed with `winget` (`pip cache purge` or Windows "Apps" yourself).
+
 ## Use
 
 Command line:
