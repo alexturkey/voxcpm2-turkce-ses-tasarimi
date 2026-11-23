@@ -1,0 +1,20 @@
+# voxcpm2-turkce-ses-tasarimi
+
+> Turkish voice design and reading with VoxCPM2 on a 4 GB GPU: a one-command installer, a patched audio.cpp engine, a small local web UI and 14 ready-made synthetic voices. The repository contains no model weights and no recording of any person.
+
+Rules that never change: quality is fixed (16 steps, cfg 2.0); one GPU job at a time; voice cloning only with the user's own voice or a voice with its owner's explicit permission (keep the UI permission check); patches stay LF; no personal paths, e-mail addresses or tokens in anything you write (use `<ROOT>`).
+
+## Start here
+- [AGENTS_HIZLI.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/AGENTS_HIZLI.md): 12-step decision tree and exit code to action table (English and Turkish)
+- [AGENTS.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/AGENTS.md): full setup, hard rules, options, measurements and evidence labels
+- [README.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/README.md): overview, quick start (English is authoritative; 29 translations)
+
+## When something fails
+- [docs/hata_imzalari.json](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/docs/hata_imzalari.json): stable error codes with the first step in English and Turkish
+- [docs/SIK_HATALAR.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/docs/SIK_HATALAR.md): common errors, one row per code
+
+## Safety, license, privacy
+- [SECURITY.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/SECURITY.md): private reporting, what counts as a vulnerability
+- [PRIVACY.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/PRIVACY.md): no telemetry; the only network addresses
+- [ETHICS.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/ETHICS.md): responsible use of voices
+- [CONTRIBUTING.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/CONTRIBUTING.md): how to contribute

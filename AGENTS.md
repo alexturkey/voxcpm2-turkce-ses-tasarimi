@@ -2,7 +2,7 @@
 
 This file is for an agent setting up the project on a **Windows 10/11 PC with an NVIDIA GPU (≥ 4 GB VRAM)**. Follow the
 steps in order. **On a Mac (Apple Silicon) skip to "6b. macOS".** Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
-user-facing texts; commands are language-neutral. `CLAUDE.md` points here.
+user-facing texts; commands are language-neutral. `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md` point here (this file is the single source). Short version: `AGENTS_HIZLI.md` (12-step decision tree, exit code table). Error codes: `docs/hata_imzalari.json`.
 
 Hard rules for agents working in this repo:
 - Quality settings are fixed: 16 steps, cfg 2.0 (`ses_tasarim/motor.py: FIXED`). Never lower them "for speed".
@@ -113,7 +113,7 @@ These rules apply to you (an AI agent) and to any sub-agent you start. They exis
    $env:PIP_CACHE_DIR = "<KOK>\.onbellek\pip"; $env:TMP = "<KOK>\gecici"; $env:TEMP = $env:TMP
    ```
 3. **No double download.** A complete file with the right sha256 is skipped; an interrupted download continues from its `.part` file; a ready engine zip you already downloaded is used with `-HazirZip <path>` (its sha256 is still checked). Never fetch the model or the engine into a second place and never start a second `kur.ps1` while one is running.
-4. **Measure first.** Check the prerequisites table above and the free disk (at least 8 GB for the prebuilt engine, 12 GB to build) before any download; tell the user the sizes and sources and wait for a yes.
+4. **Measure first.** Check the prerequisites table above and the free disk (at least 8 GB for the prebuilt engine, 12 GB to build) before any download; tell the user the sizes and sources and wait for a yes. Run the dry run `kur.ps1 -Kok <KOK> -Kuru` (it writes and downloads nothing, prints one list of `HATA:` / `UYARI:` lines; exit 0 ready, 1 Python problem, 3 disk or driver not enough).
 5. **Show before you delete.** Before removing anything (a half install, `indirme` leftovers, an old `.venv`) show the user the path, the size and the reason. The supported uninstall is deleting the two folders listed in the README (back up `sesler\` first: those are the user's voices); never delete anything else, never delete the user's own models. The scripts never delete the `.venv` or the user's data; they delete only their own leftovers (`.part` files and the `_ac_` unpacking folders in `indirme`).
 6. **Same error twice: stop.** Do not try a third time; take the message and the first 20 lines of output to the user.
 7. **Sub-agents follow the same rules.** Put these rules in the brief of any agent you start; one GPU job and one install at a time (`GGML_ASSERT mem_buffer` otherwise); no agent edits the install scripts to get past a check.
@@ -239,13 +239,17 @@ hazir_sesler/     14 bundled synthetic voices (7 Turkish + anlatici_<en|fr|de|es
 docs/cok_dilli.md multilingual use, per-language commands, lessons
 tests/            offline unit tests (python -m unittest discover -s tests)
 patches/          0001-voxcpm2-4gb-ve-hiz.patch — audio.cpp v0.7.2 changes (LF, apply with git apply)
-scripts/          kur.ps1 (installer: prebuilt or -Derle), derle.ps1 (build), release_zip.ps1 (packs a release zip)
+scripts/          kur.ps1 (installer: prebuilt or -Derle; -Kuru = dry run), derle.ps1 (build), release_zip.ps1 (packs a release zip)
+                  denetim.py (--hizli: all repo gates in seconds; --tam adds the unit tests), on_kontrol.ps1 (same, with a clear message if Python is missing),
+                  gizlilik_denetimi.py, yama_bekcisi.py, dil_eslik_denetimi.py (+ dil_profili.json), pr_kapi.py, pr_kombinasyon.py, tani.ps1 (local diagnostic; -Hata finds an error code)
 ayarlar/          okunus_sozlugu.tsv pronunciation dictionary
 docs/4gb.md       how it fits in 4 GB, measurements
 docs/marka_sesi_rehberi.md   brand voice guide (prompt pattern, seeds, ethics)
 docs/test_seti/cumleler.txt  shared Turkish test set (CC0; digit sentences need spelling out for this reader)
-CONTRIBUTING.md   how to contribute (starter issues #5-#8, PR rules); SECURITY.md private reporting
-.github/          ISSUE_TEMPLATE (install problem form, Discussions link), pull_request_template.md, dependabot.yml
+CONTRIBUTING.md   how to contribute (starter issues #5-#8, first PR in 5 steps, PR rules); SECURITY.md private reporting; PRIVACY.md, SUPPORT.md
+AGENTS_HIZLI.md, llms.txt, CLAUDE.md, GEMINI.md, .github/copilot-instructions.md, .aider.conf.yml: agent entry points (only AGENTS.md holds the rules)
+docs/hata_imzalari.json + docs/SIK_HATALAR.md: stable error codes (SES-E-...)
+.github/          ISSUE_TEMPLATE (install problem form, Discussions link), pull_request_template.md, dependabot.yml, release.yml, workflows/denetim.yml (report mode)
 ayarlar.example.json, requirements.txt, LICENSE (Apache-2.0), THIRD_PARTY.md, ETHICS.md
 ```
 

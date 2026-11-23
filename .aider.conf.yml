@@ -1,0 +1,2 @@
+# Aider: load the single source of truth for agent instructions (no copy is kept here).
+read: AGENTS.md
