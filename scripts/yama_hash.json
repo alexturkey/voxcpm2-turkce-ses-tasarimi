@@ -1,0 +1,5 @@
+{
+  "0001-voxcpm2-4gb-ve-hiz.patch": "928f1541b16cca394f5e06e811d29302b6323fc23b686bd54f8c3821a9c5d27d",
+  "0002-voxcpm2-kelime-zamani.patch": "a95c69c54413fe59e9434a2fa072ab45e6afb1420e0c6fff850393bd6aba2324",
+  "0003-ggml-cuda-block-reduce-yarisi.patch": "00d88d1bede5d2195034e6ce320f7feb6d1dad01ff8d77abb140954b8ca0d56f"
+}

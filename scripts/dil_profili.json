@@ -1,0 +1,11 @@
+{
+  "_not": "Dil esligi profili (kit KL-07). Kaynak README.md (Ingilizce); ceviri deseni README.<dil>.md. Kademe A: yapi birebir esit olmak zorunda (baslik, tablo satiri, kod blogu, baglanti). Kademe B: kod blogu ve baglanti kumesi esit olmak zorunda; baslik/tablo farki UYARIdir (kirmizi degil), cunku yeni bolumler once EN+TR'ye girer. Arayuz dili JSON'lari en.json ile ayni anahtar kumesi.",
+  "kaynak": "README.md",
+  "ceviri_deseni": "README.{dil}.md",
+  "kademe": {
+    "A": ["tr"],
+    "B": ["ar", "da", "de", "el", "es", "fi", "fr", "he", "hi", "id", "it", "ja", "km", "ko", "lo", "ms", "my", "nb", "nl", "pl", "pt", "ru", "sv", "sw", "th", "tl", "vi", "zh"]
+  },
+  "arayuz_dilleri": "ses_tasarim/arayuz_dilleri/{dil}.json",
+  "arayuz_kaynak": "en"
+}

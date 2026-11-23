@@ -1,0 +1,128 @@
+{
+  "_not": "voxcpm2-turkce-ses-tasarimi icin kit ayar dosyasi (bakim turu 2026-11-23). Kapi betikleri (scripts/*.py) simdilik kendi sabitlerini tasir; bu dosya kit_denetle ve kit_doldur icin kimlik, kurulu parcalar ve gerekceli atlamalari tutar.",
+  "kit_surumu": 2,
+  "kurulu_parcalar": {
+    "K-03": 2,
+    "KL-01": 2,
+    "KL-03": 2,
+    "KL-04": 2,
+    "KL-05": 2,
+    "KL-06": 2,
+    "KL-07": 2,
+    "KL-08": 2,
+    "KL-09": 2,
+    "KL-10": 2,
+    "KL-13": 2,
+    "KL-14": 2,
+    "KL-15": 2,
+    "KL-17": 2,
+    "KL-18": 2,
+    "KL-19": 2,
+    "KL-21": 2,
+    "KL-22": 1
+  },
+  "repo": {
+    "ad": "voxcpm2-turkce-ses-tasarimi",
+    "sahip": "alexturkey",
+    "kisa_ad": "ses",
+    "tur": "uygulama",
+    "gpu": true,
+    "platform": [
+      "windows-10",
+      "windows-11",
+      "macos",
+      "ubuntu"
+    ],
+    "ana_dal": "main",
+    "lisans": "Apache-2.0"
+  },
+  "betik_dizini": "scripts",
+  "korumali_yollar": [
+    ".github/*",
+    "scripts/*",
+    "patches/*",
+    "requirements*.txt",
+    "baslat.*",
+    "AGENTS.md",
+    "ses_tasarim/motor.py",
+    "ses_tasarim/ayarlar.py",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "izinli_alan_adlari": [
+    "github.com",
+    "release-assets.githubusercontent.com",
+    "huggingface.co",
+    "hf.co",
+    "developer.download.nvidia.com",
+    "pypi.org",
+    "files.pythonhosted.org"
+  ],
+  "izinli_paketler": [
+    "numpy",
+    "soundfile"
+  ],
+  "dil": {
+    "kaynak": "README.md",
+    "ceviri_deseni": "README.{dil}.md",
+    "profil": "scripts/dil_profili.json",
+    "hukuki_belgeler_ingilizce": true
+  },
+  "kalite_sabitleri": [
+    {
+      "ad": "adim sayisi ve cfg",
+      "aciklama": "16 adim, cfg 2.0",
+      "dosyalar": [
+        "ses_tasarim/motor.py"
+      ],
+      "izinli_deger": "FIXED = {\"adim\": 16, \"cfg\": 2.0}"
+    }
+  ],
+  "hata": {
+    "imza_dosyasi": "docs/hata_imzalari.json",
+    "sik_hatalar": "docs/SIK_HATALAR.md",
+    "kod_oneki": "SES"
+  },
+  "betikler": {
+    "kur": "scripts/kur.ps1",
+    "tani": "scripts/tani.ps1",
+    "on_kontrol": "scripts/on_kontrol.ps1",
+    "denetim": "scripts/denetim.py"
+  },
+  "cikis_kodlari": {
+    "kur.ps1": {
+      "0": "adimlar bitti / -Kuru: hazir",
+      "1": "hata firlatildi / -Kuru: yalniz Python sorunu",
+      "3": "-Kuru: disk ya da surucu yetmiyor"
+    },
+    "denetim.py": {
+      "0": "hepsi GECTI",
+      "1": "en az bir kapi KIRMIZI",
+      "3": "arguman yok ya da git yok",
+      "6": "bir kapi CALISAMADI"
+    },
+    "tani.ps1": {
+      "0": "rapor basildi / -Hata: kod bulundu",
+      "1": "-Hata: bilinen kod yok",
+      "3": "beklenmedik hata"
+    }
+  },
+  "yer_tutucular": {
+    "REPO_AD": "voxcpm2-turkce-ses-tasarimi",
+    "SAHIP_REPO": "alexturkey/voxcpm2-turkce-ses-tasarimi",
+    "REPO_URL": "https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi",
+    "HATA_ONEKI": "SES",
+    "HATA_IMZA_DOSYASI": "docs/hata_imzalari.json",
+    "SIK_HATALAR_YOLU": "docs/SIK_HATALAR.md",
+    "ONKONTROL_KOMUTU": "python -I -X utf8 scripts/denetim.py --hizli",
+    "DENETIM_BETIGI": "scripts/denetim.py",
+    "LISANS_ADI": "Apache-2.0",
+    "KALITE_SABITLERI": "16 steps, cfg 2.0",
+    "CHECKOUT_SHA": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "SETUP_PYTHON_SHA": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"
+  },
+  "atla": {
+    "KL-16": "UYMAZ: repoda mcp/ sunucusu yok",
+    "KL-20": "ERTELENDI 2026-11-23: karsilama taslaklari repo disi (docs/github/repolar/voxcpm2-turkce-ses-tasarimi/taslaklar/), ekip tarafinda ayri is olarak yazilir; repo dosyasi degildir"
+  }
+}
