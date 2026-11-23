@@ -1,0 +1,34 @@
+# Repo quick check (kit KL-09). Rules of this file:
+#  - trigger is pull_request (and push to main) only; never the "_target" variant: that one runs untrusted code with secrets
+#  - permissions: contents: read only; no secrets, no GPU, no model downloads, no network use by the checks
+#  - every third-party action is pinned to a full commit SHA (a tag can be moved); Dependabot updates the SHAs
+#  - REPORT MODE for the first two weeks (continue-on-error): the check reports but does not block; remove that line after
+#  - runs the same command a contributor runs locally: python -I -X utf8 scripts/denetim.py --hizli
+name: denetim
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: denetim-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hizli-kontrol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.11"
+      - name: Quick checks (report mode)
+        continue-on-error: true
+        run: python -I -X utf8 scripts/denetim.py --hizli

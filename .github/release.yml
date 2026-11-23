@@ -1,0 +1,24 @@
+# Release notes categories (GitHub generated notes).
+# New contributors are listed automatically by GitHub; the notes also name every pull request author.
+changelog:
+  exclude:
+    labels:
+      - duplicate
+      - invalid
+      - wontfix
+  categories:
+    - title: "Fixes / Düzeltmeler"
+      labels:
+        - bug
+    - title: "Improvements / İyileştirmeler"
+      labels:
+        - enhancement
+    - title: "Docs and translations / Belge ve çeviri"
+      labels:
+        - documentation
+    - title: "Dependencies / Bağımlılıklar"
+      labels:
+        - bagimlilik
+    - title: "Other changes / Diğer değişiklikler"
+      labels:
+        - "*"
