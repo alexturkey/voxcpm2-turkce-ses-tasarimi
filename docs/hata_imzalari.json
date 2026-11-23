@@ -1,0 +1,143 @@
+{
+  "_not": "Hata imza dosyasi (kit KL-13). Kod kalici: bir kez verilen kod degismez, silinmez. imza = hata metninde aranan DUZ alt dize (regex degil). kodda: imza kodda degisken acilimiyla basiliyorsa kodda gecen sabit parca; kaynak: repo = bu repodaki betik/kod bu metni basar (tests/test_hata_imzalari.py bunu denetler); motor/isletim_sistemi = dis kaynak. Kullanim: scripts/tani.ps1 -Hata \"<hata metni>\".",
+  "kod_oneki": "SES",
+  "hatalar": [
+    {
+      "kod": "SES-E-PY-SURUM",
+      "imza": "64-bit Python 3.10-3.13 bulunamadı",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "Install Python 3.12 (64-bit): winget install Python.Python.3.12, open a NEW PowerShell, run kur.ps1 again. 3.14+ is not supported (no numpy wheels).",
+      "ilk_adim_tr": "Python 3.12 (64-bit) kurun: winget install Python.Python.3.12, YENİ bir PowerShell açın, kur.ps1'i yeniden çalıştırın. 3.14 ve üstü desteklenmez (numpy için hazır paket yok).",
+      "kodda": "bulunamadı. Desteklenen aralık"
+    },
+    {
+      "kod": "SES-E-VENV-PY",
+      "imza": "var olan .venv desteklenmeyen",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The repo's .venv was made with an unsupported Python. The script never deletes it: delete the folder named in the message and re-run with -Adim python,ayar,kontrol.",
+      "ilk_adim_tr": "Repo'nun .venv klasörü desteklenmeyen bir Python ile yapılmış. Betik silmez: iletideki klasörü silin, -Adim python,ayar,kontrol ile yeniden çalıştırın."
+    },
+    {
+      "kod": "SES-E-KOK-ASCII",
+      "imza": "Kurulum klasörü Türkçe harf",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The engine cannot open non-ASCII paths. Use a short English-letter folder: kur.ps1 -Kok C:/vox",
+      "ilk_adim_tr": "Motor ASCII dışı yolları açamaz. Kısa, İngilizce harfli klasör seçin: kur.ps1 -Kok C:/vox"
+    },
+    {
+      "kod": "SES-E-SHA",
+      "imza": "sha256 tutmadı",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The download is partial or changed. Run kur.ps1 again (the .part file is removed automatically). If it repeats, tell us in an issue.",
+      "ilk_adim_tr": "İndirme yarım ya da değişmiş. kur.ps1'i yeniden çalıştırın (.part dosyası otomatik silinir). Tekrarlarsa issue açın."
+    },
+    {
+      "kod": "SES-E-MOTOR-SHA",
+      "imza": "hazır motor sha256",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "Old checkout: run git pull, then kur.ps1 again.",
+      "ilk_adim_tr": "Eski kopya: git pull yapın, kur.ps1'i yeniden çalıştırın."
+    },
+    {
+      "kod": "SES-E-INDIRME",
+      "imza": "indirme başarısız",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "Network problem. Run the same command again; it resumes from the .part file.",
+      "ilk_adim_tr": "Ağ sorunu. Aynı komutu yeniden çalıştırın; .part dosyasından kaldığı yerden sürer."
+    },
+    {
+      "kod": "SES-E-GPU",
+      "imza": "motor ekran kartını görmedi",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "Driver older than 570, not a CUDA card, or Maxwell/older. Update the driver, check nvidia-smi. AMD/Intel: kur.ps1 -Vulkan (experimental).",
+      "ilk_adim_tr": "Sürücü 570'ten eski, kart CUDA değil ya da Maxwell ve eski. Sürücüyü güncelleyin, nvidia-smi'ye bakın. AMD/Intel: kur.ps1 -Vulkan (deneysel)."
+    },
+    {
+      "kod": "SES-E-MOTOR-YOK",
+      "imza": "motor yok:",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The engine step has not run. Run kur.ps1 (default steps) or -Adim hazir.",
+      "ilk_adim_tr": "Motor adımı çalışmadı. kur.ps1'i çalıştırın ya da -Adim hazir kullanın."
+    },
+    {
+      "kod": "SES-E-CUDA-DLL",
+      "imza": "CUDA DLL eksik",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "Run kur.ps1 -Adim cuda. The CUDA DLLs live in <root>/cuda/bin and are never added to the system PATH.",
+      "ilk_adim_tr": "kur.ps1 -Adim cuda çalıştırın. CUDA DLL'leri <kök>/cuda/bin içindedir, sistem PATH'ine eklenmez."
+    },
+    {
+      "kod": "SES-E-YAMA",
+      "imza": "yama uygulanamıyor",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The source is not pristine v0.7.2 or a patch became CRLF. Delete <root>/motor/src, re-run -Adim kaynak; keep patches LF (git config core.autocrlf).",
+      "ilk_adim_tr": "Kaynak saf v0.7.2 değil ya da yama CRLF olmuş. <kök>/motor/src klasörünü silip -Adim kaynak ile yeniden çalıştırın; yamalar LF kalmalı."
+    },
+    {
+      "kod": "SES-E-YAMA-IMZA",
+      "imza": "yama imzası tutmuyor",
+      "kaynak": "repo",
+      "betik": "kur.ps1",
+      "ilk_adim_en": "The source was patched with older patches. Delete <root>/motor/src and run again.",
+      "ilk_adim_tr": "Kaynak eski yamalarla yamalanmış. <kök>/motor/src klasörünü silip yeniden çalıştırın."
+    },
+    {
+      "kod": "SES-E-EOS",
+      "imza": "satırlar düzgün bitmedi",
+      "kaynak": "repo",
+      "betik": "oku.py",
+      "ilk_adim_en": "The sentence is too long or has odd punctuation. Split it (one sentence per line); write numbers in words.",
+      "ilk_adim_tr": "Cümle çok uzun ya da noktalama garip. Bölün (satır başına bir cümle); sayıları yazıyla yazın."
+    },
+    {
+      "kod": "SES-E-ISARET",
+      "imza": "okunamayan işaret",
+      "kaynak": "repo",
+      "betik": "okunus.py",
+      "ilk_adim_en": "Digits or quotes in the text. Write numbers in words (iki bin yirmi altı) and remove quotes.",
+      "ilk_adim_tr": "Metinde rakam ya da tırnak var. Sayıları yazıyla yazın (iki bin yirmi altı), tırnakları kaldırın."
+    },
+    {
+      "kod": "SES-E-MEM-BUFFER",
+      "imza": "GGML_ASSERT mem_buffer",
+      "kaynak": "motor",
+      "betik": "-",
+      "ilk_adim_en": "Two GPU jobs at once or under 4.5 GB free RAM. Run one job at a time and close other GPU programs.",
+      "ilk_adim_tr": "İki GPU işi aynı anda ya da boş RAM 4,5 GB'ın altında. Tek iş çalıştırın, diğer GPU programlarını kapatın."
+    },
+    {
+      "kod": "SES-E-KAPASITE",
+      "imza": "CapacityError",
+      "kaynak": "motor",
+      "betik": "-",
+      "ilk_adim_en": "A single line exceeds the engine's budget. Shorten the line (one sentence per line).",
+      "ilk_adim_tr": "Tek satır motorun bütçesini aşıyor. Satırı kısaltın (satır başına bir cümle)."
+    },
+    {
+      "kod": "SES-E-PORT",
+      "imza": "Address already in use",
+      "kaynak": "isletim_sistemi",
+      "betik": "-",
+      "ilk_adim_en": "Port 8765 is busy (the UI may already be open). Use another port: --port 8800.",
+      "ilk_adim_tr": "8765 portu dolu (arayüz zaten açık olabilir). Başka port kullanın: --port 8800."
+    },
+    {
+      "kod": "SES-E-YOL-UZUN",
+      "imza": "Could not open output file",
+      "kaynak": "motor",
+      "betik": "-",
+      "ilk_adim_en": "Path too long or not ASCII. Use a shorter -Kok (e.g. C:/v).",
+      "ilk_adim_tr": "Yol çok uzun ya da ASCII değil. Daha kısa bir -Kok kullanın (ör. C:/v)."
+    }
+  ]
+}

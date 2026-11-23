@@ -5,6 +5,7 @@
 # Her adım yeniden çalıştırılabilir: mevcut ve sha256'sı doğru dosya atlanır. / Idempotent: verified files are skipped.
 # Çevrimdışı/yerel sürüm zip'i / local release zip:  -HazirZip C:\indirilenler\voxcpm2-turkce-ses-tasarimi-motor-v0.3.2-win64-cuda12.8.zip
 # AMD / Intel (deneysel):  -Vulkan  [-Islemci oto|avx2|uyumlu]   paket işlemciye göre seçilir / package picked from the CPU
+# Önce kuru çalışma / dry run first:  ... kur.ps1 -Kok C:\vox -Kuru   (indirme ve yazma yok; HATA/UYARI listesi; çıkış 0 hazır, 3 donanım ya da disk yetmiyor, 1 Python sorunu)
 param(
     [string]$Kok = "C:\vox",                      # kısa yol şart (derlemede nvcc 260 karakter sınırı) / short path
     [string[]]$Adim = @(),                        # boş = varsayılan akış / empty = default flow
@@ -14,7 +15,8 @@ param(
     [int]$Paralel = 6,
     [string]$HazirZip = "",                       # yerel sürüm zip'i (sha256 yine doğrulanır) / local release zip
     [ValidateSet("oto", "avx2", "uyumlu")]
-    [string]$Islemci = "oto"                      # Vulkan paketi: oto = işlemciye göre; avx2 / uyumlu = elle / Vulkan package choice
+    [string]$Islemci = "oto",                     # Vulkan paketi: oto = işlemciye göre; avx2 / uyumlu = elle / Vulkan package choice
+    [switch]$Kuru                                 # KURU ÇALIŞMA: hiçbir şey yazmaz/indirmez; tüm HATA ve UYARI'yı tek listede basar / dry run: writes and downloads nothing
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
@@ -192,6 +194,57 @@ function VenvDenetle([string]$vpy) {
     return "var olan .venv desteklenmeyen $ne kullanıyor (3.$($PY_MIN)-3.$($PY_MAX) gerekir): $venvYol`n" +
            "  Betik .venv'i silmez. Klasörü silip aynı komutu yeniden çalıştırın (silinince 3.$($PY_MIN)-3.$($PY_MAX) arasından uygun Python ile yeniden kurulur): Remove-Item -Recurse -Force `"$venvYol`"`n" +
            "  existing .venv uses an unsupported Python ($ne): delete the folder and re-run; this script never deletes it"
+}
+# --- kuru çalışma / dry run (-Kuru): hiçbir şey indirmez, yazmaz, klasör açmaz; her kontrolün sonucunu tek listede basar -----------------
+if ($Kuru) {
+    $motorExeKuru = Join-Path $Kok "motor\build\bin\audiocpp_cli.exe"
+    $hata = @(); $uyari = @()
+    $surucuKok = [IO.Path]::GetPathRoot([IO.Path]::GetFullPath($Kok))
+    try { $bos = (New-Object IO.DriveInfo $surucuKok).AvailableFreeSpace / 1GB } catch { $bos = $null }
+    $gerek = $(if ($derleme) { 12 } else { 8 })
+    if ($null -eq $bos) { $uyari += "disk boş alanı okunamadı ($surucuKok)" }
+    elseif ($bos -lt $gerek) { $hata += ("disk yetmiyor: {0:N1} GB boş, en az {1} GB gerekir ($surucuKok)" -f $bos, $gerek) }
+    try { $ram = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB } catch { $ram = $null }
+    if ($null -ne $ram -and $ram -lt 8) { $uyari += ("RAM {0:N1} GB; en az 8 GB önerilir" -f $ram) }
+    $gpuSatir = "(Vulkan/CPU yolu: ekran kartı sürücüsü kontrol edilmedi)"
+    if (-not $Vulkan) {
+        $smi = Get-Command nvidia-smi -ErrorAction SilentlyContinue
+        if (-not $smi) { $hata += "nvidia-smi bulunamadı: NVIDIA sürücüsü yok ya da PATH'te değil (AMD/Intel için -Vulkan)" }
+        else {
+            $eapK = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+            try { $sm = (& nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader 2>$null | Select-Object -First 1) } finally { $ErrorActionPreference = $eapK }
+            if ($sm) {
+                $gpuSatir = "ekran kartı: $sm"
+                $parca = @($sm -split ",")
+                if ($parca.Count -ge 2 -and ($parca[1].Trim() -split "\.")[0] -match "^\d+$" -and [int]($parca[1].Trim() -split "\.")[0] -lt 570) { $hata += "sürücü 570'ten eski ($($parca[1].Trim())): CUDA 12.8 çalışma zamanı gerektirir" }
+            } else { $uyari += "nvidia-smi çalıştı ama kart bilgisi dönmedi" }
+        }
+    }
+    $pyK = PythonBul; $pyKodu = 0
+    if (-not $pyK -and ($Adim -contains "python")) { $pyKodu = 1; $hata += (PythonYokMesaji) }
+    elseif ($Adim -contains "python") {
+        $vh = VenvDenetle (Join-Path (Join-Path $Repo ".venv") "Scripts\python.exe")
+        if ($vh) { $pyKodu = 1; $hata += $vh }
+    }
+    $durum = @(
+        ("  model:  " + $(if (Test-Path -LiteralPath (Join-Path $Kok "model\voxcpm2-q8_0.gguf")) { "dosya var (sha256 gerçek kurulumda doğrulanır)" } else { "yok, inecek (2,95 GB, huggingface.co)" })),
+        ("  motor:  " + $(if (Test-Path -LiteralPath $motorExeKuru) { "var" } else { "yok, inecek (github.com sürüm zip'i, sha256 sabit)" })),
+        ("  python: " + $(if ($pyK) { "uygun Python bulundu" } else { "uygun Python bulunamadı" }))
+    )
+    Write-Output "== KURU ÇALIŞMA / DRY RUN: hiçbir şey indirilmedi, yazılmadı, klasör açılmadı"
+    Write-Output "  kök: $Kok   repo: $Repo"
+    Write-Output "  adımlar: $($Adim -join ', ')"
+    Write-Output "  $gpuSatir"
+    $durum | ForEach-Object { Write-Output $_ }
+    foreach ($u in $uyari) { Write-Output "UYARI: $u" }
+    foreach ($h in $hata) { Write-Output "HATA: $h" }
+    if ($hata.Count -gt 0) {
+        Write-Output "SONUÇ: KURULUM YAPILAMAZ (kuru çalışma): $($hata.Count) hata, $($uyari.Count) uyarı"
+        if ($pyKodu -eq 1 -and $hata.Count -eq 1) { exit 1 }
+        exit 3
+    }
+    Write-Output "SONUÇ: HAZIR (kuru çalışma): hata yok, $($uyari.Count) uyarı. Gerçek kurulum için -Kuru'suz çalıştırın."
+    exit 0
 }
 # Python ön kontrolü: ~3 GB indirmeden ÖNCE başarısız ol (sürüm aralık dışı ya da var olan .venv uyumsuz) / fail before the big downloads
 $py = $null
