@@ -32,7 +32,7 @@ class Sapma(unittest.TestCase):
         kod, c = kos({"SES_TEST_EZME": "1"})
         self.assertEqual(kod, 0, c[-300:])
         self.assertIn("SAPMA / DEVIATIONS", c)
-        self.assertIn("SES_TEST_EZME=1", c)
+        self.assertIn("SES_TEST_EZME", c)
 
     def test_ezme_degerindeki_ad_gizlenir(self):
         ad = "Gizli" + "Kisi" + "Adi"

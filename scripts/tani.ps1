@@ -96,8 +96,8 @@ try {
             if ($gs.Count -eq 0) { Yaz "  git: izlenen dosyalar degismemis" } else { Yaz "  git: $($gs.Count) izlenen dosya degismis (yalniz adlar):"; foreach ($g in $gs) { Yaz "    $g" } }
         } else { Yaz "  git: kopya degil ya da git yok" }
     } catch { Yaz "  git durumu okunamadi" }
-    $sesEnv = @(Get-ChildItem Env: | Where-Object { $_.Name -like 'SES_*' } | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Value)" })
-    if ($sesEnv.Count) { Yaz ("  SES_* ortam ezmeleri: " + ($sesEnv -join " ")) } else { Yaz "  SES_* ortam ezmesi: yok" }
+    $sesEnv = @(Get-ChildItem Env: | Where-Object { $_.Name -like 'SES_*' } | Sort-Object Name | ForEach-Object { "$($_.Name)" })
+    if ($sesEnv.Count) { Yaz ("  SES_* ortam ezmeleri (yalniz adlar, degerler basilmaz): " + ($sesEnv -join " ")) } else { Yaz "  SES_* ortam ezmesi: yok" }
     try {
         $ornek = Get-Content -Raw -Encoding UTF8 (Join-Path $repo "ayarlar.example.json") | ConvertFrom-Json
         $gercek = Get-Content -Raw -Encoding UTF8 (Join-Path $repo "ayarlar.json") | ConvertFrom-Json
