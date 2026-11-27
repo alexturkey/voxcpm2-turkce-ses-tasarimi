@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Nutzen Sie einen KI-Coding-Agenten (Codex, Claude Code, Gemini, Cursor)?** Geben Sie ihm diesen einen Satz: „Lies `AGENTS_HIZLI.md` bis zum Ende, führe zuerst `scripts\tani.ps1` aus, halte deinen Fortschritt in `DURUM.md` fest und frag mich, bevor du etwas löschst oder verschiebst, das System-Python oder PATH änderst oder eine Qualitätseinstellung senkst.“ Der Agent diagnostiziert diesen PC, schreibt eine Checkliste und fragt Sie bei jeder Entscheidung.
+
 **Türkisches Voice Design mit VoxCPM2 auf einer 4-GB-GPU.** Beschreibe eine Stimme auf Englisch, lass das Modell sie
 erzeugen, wähle die Variante, die dir gefällt, und lies dann beliebigen türkischen Text mit dieser Stimme vor. Enthalten
 sind ein Installer mit einem einzigen Befehl, eine gepatchte [audio.cpp](https://github.com/0xShug0/audio.cpp)-Engine,

@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Yapay zeka ajanı (Codex, Claude Code, Gemini, Cursor) mı kullanıyorsunuz?** Ona şu cümleyi verin: "`AGENTS_HIZLI.md` dosyasını sonuna kadar oku, önce `scripts\tani.ps1` çalıştır, ilerlemeni `DURUM.md` dosyasında tut; bir şeyi silmeden ya da taşımadan, sistem Python'unu ya da PATH'i değiştirmeden veya kalite ayarını düşürmeden önce bana sor." Ajan bu bilgisayarı teşhis eder, kontrol listesi yazar ve her kararda size sorar.
+
 **4 GB ekran kartında VoxCPM2 ile Türkçe ses tasarımı.** Sesi İngilizce tarif edin, model yaratsın, beğendiğiniz çeşidi
 seçin, sonra o sesle istediğiniz Türkçe metni okutun. Tek komutluk kurulum, GTX 1050 Ti'ye (4 GB) sığdırılmış yamalı
 [audio.cpp](https://github.com/0xShug0/audio.cpp) motoru, küçük bir yerel web arayüzü ve on dört hazır yapay ses içerir: yedi Türkçe ses ve İngilizce, Fransızca, Almanca,

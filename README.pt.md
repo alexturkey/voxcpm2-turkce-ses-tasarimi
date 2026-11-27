@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Utiliza um agente de programação com IA (Codex, Claude Code, Gemini, Cursor)?** Dê-lhe esta única frase: «Lê `AGENTS_HIZLI.md` até ao fim, executa primeiro `scripts\tani.ps1`, regista o teu progresso em `DURUM.md` e pergunta-me antes de apagares ou moveres qualquer coisa, mudares o Python do sistema ou o PATH, ou reduzires uma definição de qualidade.» O agente vai diagnosticar este PC, escrever uma lista de verificação e perguntar-lhe a cada decisão.
+
 **Design de voz em turco com o VoxCPM2 numa GPU de 4 GB.** Descreva uma voz em inglês, deixe o modelo criá-la, escolha a
 variante de que mais gostar e depois leia qualquer texto em turco com essa voz. Inclui um instalador de um só comando, um
 motor [audio.cpp](https://github.com/0xShug0/audio.cpp) com patch que cabe numa GTX 1050 Ti (4 GB), uma pequena interface web

@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **正在使用 AI 编程代理（Codex、Claude Code、Gemini、Cursor）吗？** 把下面这一句话交给它：“读完 `AGENTS_HIZLI.md`，先运行 `scripts\tani.ps1`，把进度记在 `DURUM.md` 里；在删除或移动任何东西、更改系统 Python 或 PATH、或降低任何质量设置之前，必须先问我。”代理会诊断这台电脑、写出检查清单，并在每个决定处询问你。
+
 **在 4 GB 显卡上用 VoxCPM2 设计土耳其语声音。** 用英文描述一个声音，让模型生成出来，挑选你喜欢的版本，
 然后用这个声音朗读任意土耳其语文本。项目包含一键安装脚本、一个经过补丁修改、能在 GTX 1050 Ti（4 GB）上运行的
 [audio.cpp](https://github.com/0xShug0/audio.cpp) 引擎、一个轻量的本地网页界面，以及十四个现成的合成声音：

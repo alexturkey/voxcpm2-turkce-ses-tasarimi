@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Bạn đang dùng tác tử lập trình AI (Codex, Claude Code, Gemini, Cursor)?** Hãy đưa cho nó đúng một câu này: “Đọc `AGENTS_HIZLI.md` đến hết, chạy `scripts\tani.ps1` trước, ghi tiến độ của bạn vào `DURUM.md`, và hỏi tôi trước khi xóa hoặc di chuyển bất cứ thứ gì, đổi Python hệ thống hay PATH, hoặc hạ bất kỳ cài đặt chất lượng nào.” Tác tử sẽ chẩn đoán máy tính này, viết một danh sách kiểm tra và hỏi bạn ở mỗi quyết định.
+
 **Thiết kế giọng nói tiếng Thổ Nhĩ Kỳ với VoxCPM2 trên GPU 4 GB.** Bạn mô tả một giọng nói bằng tiếng Anh, để mô hình
 tạo ra giọng đó, chọn biến thể mình thích, rồi dùng giọng ấy đọc bất kỳ văn bản tiếng Thổ Nhĩ Kỳ nào. Dự án gồm một
 trình cài đặt chỉ cần một lệnh, engine [audio.cpp](https://github.com/0xShug0/audio.cpp) đã vá để chạy vừa trên GTX

@@ -4,6 +4,7 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\tani.ps1 -Hata "<hata metni>"   hata iletisinin bir parcasindan kodu ve ilk adimi bulur (docs/hata_imzalari.json)
 # Kisisel ad ve yol sizmaz: kullanici adi, bilgisayar adi ve profil yolu <USER>, <PC> ile degistirilir; ayarlar.json'daki yollar yalniz "var/yok" olarak yazilir.
 # This script sends nothing and writes nothing. User name, computer name and profile path are replaced before printing.
+# Rapor SAPMA bolumu da icerir (PATH'te ilk python, degismis izlenen dosyalar, SES_* ezmeleri, ayarlar.json farki, model kopyasi): salt okur.
 # Cikis / exit: 0 rapor basildi, 3 beklenmedik hata.
 param([switch]$KartSatiri, [string]$Hata = "")
 $ErrorActionPreference = "Continue"
@@ -79,6 +80,41 @@ try {
     if (Test-Path -LiteralPath $imza) { Yaz ("kur.ps1 sha256: " + (Get-FileHash -Algorithm SHA256 -LiteralPath $imza).Hash.Substring(0, 12)) }
     $git = Calistir "git" @("-C", $repo, "log", "-1", "--format=%h %s")
     if ($git) { Yaz "repo son commit: $git" }
+    # SAPMA / DEVIATIONS (salt okur): varsayilandan farkli ne var? Kalite sabiti kodda (16 adim, cfg 2.0); burada ortam, yerel degisiklik ve ayar farki gorulur.
+    Yaz "SAPMA / DEVIATIONS (salt okur):"
+    try {
+        $pc = @(Get-Command python -All -ErrorAction SilentlyContinue | Select-Object -First 3)
+        if ($pc.Count -gt 0) {
+            if ($pc[0].Source -match 'WindowsApps') { Yaz "  PATH'te ilk python: Microsoft Store kisayolu (gercek Python degil; py -3.12 ya da kur.ps1 kullanin)" }
+            else { Yaz ("  PATH'te ilk python: " + (Calistir $pc[0].Source @("--version"))) }
+        } else { Yaz "  PATH'te python yok (py baslaticisi ya da .venv kullanilir)" }
+    } catch { Yaz "  python sirasi okunamadi" }
+    try {
+        $gitK = Get-Command git -ErrorAction SilentlyContinue
+        if ($gitK -and (Test-Path -LiteralPath (Join-Path $repo ".git"))) {
+            $gs = @(& $gitK.Source --no-optional-locks -C $repo status --short -uno 2>$null | ForEach-Object { "$_".Trim() } | Where-Object { $_ } | Select-Object -First 40)
+            if ($gs.Count -eq 0) { Yaz "  git: izlenen dosyalar degismemis" } else { Yaz "  git: $($gs.Count) izlenen dosya degismis (yalniz adlar):"; foreach ($g in $gs) { Yaz "    $g" } }
+        } else { Yaz "  git: kopya degil ya da git yok" }
+    } catch { Yaz "  git durumu okunamadi" }
+    $sesEnv = @(Get-ChildItem Env: | Where-Object { $_.Name -like 'SES_*' } | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Value)" })
+    if ($sesEnv.Count) { Yaz ("  SES_* ortam ezmeleri: " + ($sesEnv -join " ")) } else { Yaz "  SES_* ortam ezmesi: yok" }
+    try {
+        $ornek = Get-Content -Raw -Encoding UTF8 (Join-Path $repo "ayarlar.example.json") | ConvertFrom-Json
+        $gercek = Get-Content -Raw -Encoding UTF8 (Join-Path $repo "ayarlar.json") | ConvertFrom-Json
+        $farkli = @()
+        foreach ($k in @("backend", "cihaz", "audiovae_threads", "motor_threads", "port")) { if ("$($ornek.$k)" -ne "$($gercek.$k)") { $farkli += "$k=$($gercek.$k) (ornek $($ornek.$k))" } }
+        if ($farkli.Count) { Yaz ("  ayarlar.json ornekten farkli: " + ($farkli -join "; ")) } else { Yaz "  ayarlar.json: yol disindaki alanlar ornekle ayni" }
+        $mdl = "$($gercek.model)"
+        if ($mdl -and -not (Test-Path -LiteralPath $mdl)) {
+            $ad = Split-Path -Leaf $mdl
+            foreach ($hd in @($(if ($env:HF_HUB_CACHE) { $env:HF_HUB_CACHE }), $(if ($env:HF_HOME) { Join-Path $env:HF_HOME "hub" }), $(if ($env:USERPROFILE) { Join-Path $env:USERPROFILE ".cache\huggingface\hub" }))) {
+                if ($hd -and (Test-Path -LiteralPath $hd -PathType Container)) {
+                    $f = Get-ChildItem -LiteralPath $hd -Recurse -File -Filter $ad -ErrorAction SilentlyContinue | Select-Object -First 1
+                    if ($f) { Yaz ("  model dosyasi YOK ama Hugging Face onbelleginde ayni adli bir kopya var: {0:N2} GB (sha256 okunmadi; kullanici onaylarsa kopyalanabilir)" -f ($f.Length / 1GB)); break }
+                }
+            }
+        }
+    } catch { Yaz "  ayarlar.json / ayarlar.example.json karsilastirilamadi (dosya yok olabilir)" }
     Yaz "-- bu raporu issue formuna yapistirabilirsiniz; kisisel ad ve yol gizlendi. Yine de gozden gecirin. / Review before pasting."
     exit 0
 } catch {

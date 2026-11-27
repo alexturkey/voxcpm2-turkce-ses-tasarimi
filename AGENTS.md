@@ -4,6 +4,13 @@ This file is for an agent setting up the project on a **Windows 10/11 PC with an
 steps in order. **On a Mac (Apple Silicon) skip to "6b. macOS".** Every step has a command, the expected output and a check. Do not skip a check. Turkish is fine for the
 user-facing texts; commands are language-neutral. `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md` point here (this file is the single source). Short version: `AGENTS_HIZLI.md` (12-step decision tree, exit code table). Error codes: `docs/hata_imzalari.json`.
 
+## First, do this (agents)
+- **Run first:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\tani.ps1`. Read-only: it prints the system, the card, the Python candidates, `ayarlar.json` and a DEVIATIONS section (first Python on PATH, locally changed files, `SES_*` overrides, settings that differ from `ayarlar.example.json`, a model copy in the Hugging Face cache). Read it to the user in plain words.
+- **Keep a notebook:** `DURUM.md` in the repo root (git-ignored; `<ROOT>` instead of paths). Top three lines: `Now:` / `Next:` / `Question for you:`; below, one line per step with [measured] / [read] / [guess] and the command it came from. Update it after every step.
+- **NEVER:** lower a quality setting; run two GPU jobs at once; clone a voice you were not given; change system Python, PATH, registry or the user profile; use a force flag to get past an error.
+- **ASK first:** delete, move or re-download anything; install Python, packages or the engine; start a GPU run.
+- **Same error twice:** stop; take the message and the first 20 log lines to the user. The 12-step card with exit codes is `AGENTS_HIZLI.md`.
+
 Hard rules for agents working in this repo:
 - Quality settings are fixed: 16 steps, cfg 2.0 (`ses_tasarim/motor.py: FIXED`). Never lower them "for speed".
 - One GPU job at a time. Do not run two engine processes concurrently (`GGML_ASSERT mem_buffer`).
@@ -106,8 +113,13 @@ a multi-GPU exe (what the release uses; ~5× longer CUDA compile). Fewer cores /
 ## 2c. Install layout and agent discipline
 These rules apply to you (an AI agent) and to any sub-agent you start. They exist so that installing the engine leaves nothing behind outside its folders and downloads nothing twice.
 
-1. **One root, plus the repo folder.** The engine install lives under one root, `<KOK>` (`-Kok`, default `C:\vox`): `motor` (engine), `cuda` (CUDA DLLs), `model` (the model file), `indirme` (downloaded zips and unpacking leftovers), `.onbellek\pip` (pip cache) and `gecici` (temporary files); only the folders that are really used are created. Two things stay OUTSIDE the root on purpose, so the defaults do not change: the Python environment `<repo>\.venv`, and your own data in the repo folder (`ayarlar.json`, `sesler\`, `onbellek\` with measurements). Map: `README.md`, "Disk layout and removal". Note the two caches: `<repo>\onbellek\` is application data; `<KOK>\.onbellek\` (dot prefix) is the install cache.
-2. **No trace outside these folders.** For its own process only, `kur.ps1` sets `PIP_CACHE_DIR` to `<KOK>\.onbellek\pip` and `TMP`/`TEMP` to `<KOK>\gecici` while it installs the Python packages (`derle.ps1` already redirects `TEMP` for its build). If you have already set your own `PIP_CACHE_DIR`, `kur.ps1` leaves it alone and uses it; an empty one is pointed into the root. `TMP` and `TEMP` always go to the root (this process only). It does not change the system PATH (the CUDA DLLs are used from `<KOK>\cuda`, never added to PATH), the user profile, the registry or any global setting, and you must not either (no `setx`, no profile edits, no `reg add`). `HF_HOME`, `HF_HUB_CACHE` and `TORCH_HOME` are not needed: the model comes from one pinned URL with a sha256 check, not through `huggingface_hub` or `torch.hub`; if you add a tool that uses them, point them into the root too.
+1. **One root, plus the repo folder.** The engine install lives under one root, `<KOK>` (`-Kok`, default `C:\vox`): `motor` (engine), `cuda` (CUDA DLLs), `model` (the model file), `indirme` (downloaded zips and unpacking leftovers), `.onbellek\pip` (pip cache) and `gecici` (temporary files); only the folders that are really used are created.
+   - Two things stay OUTSIDE the root on purpose, so the defaults do not change: the Python environment `<repo>\.venv`, and your own data in the repo folder (`ayarlar.json`, `sesler\`, `onbellek\` with measurements). Map: `README.md`, "Disk layout and removal".
+   - Note the two caches: `<repo>\onbellek\` is application data; `<KOK>\.onbellek\` (dot prefix) is the install cache.
+2. **No trace outside these folders.** For its own process only, `kur.ps1` sets `PIP_CACHE_DIR` to `<KOK>\.onbellek\pip` and `TMP`/`TEMP` to `<KOK>\gecici` while it installs the Python packages (`derle.ps1` already redirects `TEMP` for its build).
+   - If you have already set your own `PIP_CACHE_DIR`, `kur.ps1` leaves it alone and uses it; an empty one is pointed into the root. `TMP` and `TEMP` always go to the root (this process only).
+   - It does not change the system PATH (the CUDA DLLs are used from `<KOK>\cuda`, never added to PATH), the user profile, the registry or any global setting, and you must not either (no `setx`, no profile edits, no `reg add`).
+   - `HF_HOME`, `HF_HUB_CACHE` and `TORCH_HOME` are not needed: the model comes from one pinned URL with a sha256 check, not through `huggingface_hub` or `torch.hub`; if you add a tool that uses them, point them into the root too.
    For your own manual `pip` calls in the same terminal (nothing is saved; the terminal forgets it when closed):
    ```powershell
    $env:PIP_CACHE_DIR = "<KOK>\.onbellek\pip"; $env:TMP = "<KOK>\gecici"; $env:TEMP = $env:TMP

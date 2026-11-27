@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **AIコーディングエージェント（Codex、Claude Code、Gemini、Cursor）を使っていますか？** エージェントに次の一文を渡してください：「`AGENTS_HIZLI.md` を最後まで読み、最初に `scripts\tani.ps1` を実行し、進捗を `DURUM.md` に記録すること。ファイルの削除や移動、システムのPythonやPATHの変更、品質設定の引き下げは、必ず事前に私に確認すること。」エージェントはこのPCを診断し、チェックリストを書き、判断のたびにあなたに尋ねます。
+
 **4 GB の GPU で、VoxCPM2 を使ってトルコ語の声をデザイン。** 英語で声を説明すると、モデルがその声を作ります。
 気に入った候補を選べば、その声で好きなトルコ語のテキストを読み上げられます。ワンコマンドのインストーラー、
 GTX 1050 Ti（4 GB）に収まるようパッチを当てた [audio.cpp](https://github.com/0xShug0/audio.cpp) エンジン、

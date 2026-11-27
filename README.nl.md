@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Gebruikt u een AI-codeeragent (Codex, Claude Code, Gemini, Cursor)?** Geef hem deze ene zin: “Lees `AGENTS_HIZLI.md` helemaal uit, voer eerst `scripts\tani.ps1` uit, houd je voortgang bij in `DURUM.md` en vraag het me voordat je iets verwijdert of verplaatst, het systeem-Python of PATH wijzigt of een kwaliteitsinstelling verlaagt.” De agent diagnosticeert deze pc, schrijft een checklist en vraagt u bij elke beslissing om akkoord.
+
 **Turkse stemontwerpen met VoxCPM2 op een GPU van 4 GB.** Beschrijf een stem in het Engels, laat het model hem maken, kies
 de variant die je mooi vindt en lees daarna elke Turkse tekst met die stem. Inclusief een installatieprogramma met één
 commando, een gepatchte [audio.cpp](https://github.com/0xShug0/audio.cpp)-engine die past op een GTX 1050 Ti (4 GB), een kleine

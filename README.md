@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Using an AI coding agent (Codex, Claude Code, Gemini, Cursor)?** Give it this one sentence: "Read `AGENTS_HIZLI.md` to the end, run `scripts\tani.ps1` first, keep your progress in `DURUM.md`, and ask me before you delete or move anything, change system Python or PATH, or lower a quality setting." The agent will diagnose this PC, write a checklist and ask you at every decision.
+
 **Turkish voice design with VoxCPM2 on a 4 GB GPU.** Describe a voice in English, let the model create it, pick the
 variant you like, then read any Turkish text with that voice. Includes a one-command installer, a patched
 [audio.cpp](https://github.com/0xShug0/audio.cpp) engine that fits a GTX 1050 Ti (4 GB), a tiny local web UI and fourteen

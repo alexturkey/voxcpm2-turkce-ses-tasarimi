@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **AI 코딩 에이전트(Codex, Claude Code, Gemini, Cursor)를 사용하시나요?** 에이전트에게 이 한 문장을 주세요: “`AGENTS_HIZLI.md`를 끝까지 읽고, 먼저 `scripts\tani.ps1`를 실행하고, 진행 상황을 `DURUM.md`에 기록하고, 무엇이든 삭제하거나 옮기기 전, 시스템 Python이나 PATH를 바꾸기 전, 품질 설정을 낮추기 전에는 반드시 나에게 물어봐.” 에이전트는 이 PC를 진단하고 체크리스트를 작성하며 결정할 때마다 여러분께 물어봅니다.
+
 **4 GB GPU에서 VoxCPM2로 터키어 목소리 디자인하기.** 원하는 목소리를 영어로 설명하면 모델이 그 목소리를 만들어 줍니다.
 마음에 드는 후보를 고른 뒤, 그 목소리로 어떤 터키어 텍스트든 읽게 할 수 있습니다. 명령 한 줄로 끝나는 설치 스크립트,
 GTX 1050 Ti(4 GB)에 맞게 패치한 [audio.cpp](https://github.com/0xShug0/audio.cpp) 엔진, 가벼운 로컬 웹 UI, 그리고 14개의

@@ -11,6 +11,7 @@
 - Yeni belgeler: `PRIVACY.md` (betiklerin kullandığı tek tek ağ adresleri, telemetri yok), `SUPPORT.md`, `AGENTS_HIZLI.md` (ajan hızlı kartı, testle betiğe bağlı), `llms.txt`, `GEMINI.md`, `.github/copilot-instructions.md`, `.aider.conf.yml`, `.github/release.yml`; `CLAUDE.md` artık yalnız `AGENTS.md`'ye bağlar. `SECURITY.md` (7 gün hedefi, desteklenen sürümler, ajan istem enjeksiyonu paragrafı), `CONTRIBUTING.md` (ilk PR 5 adım, kabul/ret, kanıt etiketleri, tek dil yeter, no-reply e-posta) ve PR şablonu genişletildi.
 - Issue seçici artık boş issue'ya izin vermez (`blank_issues_enabled: false`); dört form ve Discussions bağlantıları yerinde. Kalite ayarları, varsayılan komut satırı ve kullanıcı davranışı değişmedi.
 - Not: `kur.ps1`'de kısaltılmış `-K` artık belirsiz (`-Kok` ve `-Kuru`); tam adı `-Kok` yazın. Yeni disk düzeni bölümünün öteki dil README'lerine çevirisi sonraki çeviri turunda.
+- Ajan karşılama (kit KL-23): `AGENTS_HIZLI.md` ve `AGENTS.md` tepesinde "önce bunu yap" bloğu (önce `scripts\tani.ps1`, git dışı `DURUM.md` defteri, ASLA/ÖNCE SOR listeleri, aynı hata iki kez dur); `tani.ps1`'e salt okur SAPMA bölümü; README'lere "ajanınıza verin" cümlesi (30 dil); `AGENTS.md` uzun satırları bölündü. Kalite ve üretim davranışı değişmedi.
 
 **EN**
 - The installers now accept only 64-bit Python 3.10-3.13. `kur.ps1` `PythonBul` tries `py -3.12`, `-3.13`, `-3.11`, `-3.10` first, then `py -3`, `python`, `python3`; 3.14+ (no numpy wheels, pip fell back to a source build and failed with `Unknown compiler(s)`), 3.9 and 32-bit are skipped and the error names the rejected version it found. With several Pythons installed, 3.12 is picked even when `py -3` reports 3.15.
@@ -21,6 +22,7 @@
 - New documents: `PRIVACY.md` (every network address the scripts use, no telemetry), `SUPPORT.md`, `AGENTS_HIZLI.md` (agent quick card, tied to the scripts by tests), `llms.txt`, `GEMINI.md`, `.github/copilot-instructions.md`, `.aider.conf.yml`, `.github/release.yml`; `CLAUDE.md` now only points to `AGENTS.md`. `SECURITY.md` (7-day goal, supported versions, agent prompt-injection paragraph), `CONTRIBUTING.md` (first PR in 5 steps, accept/decline, evidence labels, one language is enough, no-reply e-mail) and the PR template were extended.
 - The issue chooser no longer allows blank issues (`blank_issues_enabled: false`); the four forms and the Discussions links stay. Quality settings, the default command line and user-facing behaviour are unchanged.
 - Note: the abbreviated `-K` of `kur.ps1` is now ambiguous (`-Kok` and `-Kuru`); write `-Kok` in full. The translation of the new disk layout section into the other README languages comes in the next translation round.
+- Agent onboarding (kit KL-23): a do-this-first block at the top of `AGENTS_HIZLI.md` and `AGENTS.md` (run `scripts\tani.ps1` first, git-ignored `DURUM.md` notebook, NEVER / ASK lists, same error twice stop); a read-only DEVIATIONS section in `tani.ps1`; a one-sentence "give this to your agent" block in every README (30 languages); long `AGENTS.md` lines split. Quality and run behaviour unchanged.
 
 ## v0.3.2 — 2026-11-09
 

@@ -5,6 +5,7 @@
 Rules that never change: quality is fixed (16 steps, cfg 2.0); one GPU job at a time; voice cloning only with the user's own voice or a voice with its owner's explicit permission (keep the UI permission check); patches stay LF; no personal paths, e-mail addresses or tokens in anything you write (use `<ROOT>`).
 
 ## Start here
+- [tani.ps1](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/scripts/tani.ps1): run this first; read-only report (system, card, Python, settings, deviations from the defaults); keep your progress in `DURUM.md` (git-ignored notebook in the repo root)
 - [AGENTS_HIZLI.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/AGENTS_HIZLI.md): 12-step decision tree and exit code to action table (English and Turkish)
 - [AGENTS.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/AGENTS.md): full setup, hard rules, options, measurements and evidence labels
 - [README.md](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/blob/main/README.md): overview, quick start (English is authoritative; 29 translations)

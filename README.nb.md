@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Bruker du en AI-kodeagent (Codex, Claude Code, Gemini, Cursor)?** Gi den denne ene setningen: «Les `AGENTS_HIZLI.md` til slutten, kjør `scripts\tani.ps1` først, før fremdriften din i `DURUM.md`, og spør meg før du sletter eller flytter noe, endrer systemets Python eller PATH eller senker en kvalitetsinnstilling.» Agenten diagnostiserer denne pc-en, skriver en sjekkliste og spør deg ved hver beslutning.
+
 **Tyrkisk stemmedesign med VoxCPM2 på en GPU med 4 GB.** Beskriv en stemme på engelsk, la modellen lage den, velg
 varianten du liker, og les deretter opp hvilken som helst tyrkisk tekst med den stemmen. Prosjektet inneholder et
 installasjonsprogram med én kommando, en patchet [audio.cpp](https://github.com/0xShug0/audio.cpp)-motor som får plass

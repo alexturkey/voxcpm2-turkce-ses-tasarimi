@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Menggunakan ejen pengekodan AI (Codex, Claude Code, Gemini, Cursor)?** Berikan satu ayat ini kepadanya: “Baca `AGENTS_HIZLI.md` hingga habis, jalankan `scripts\tani.ps1` dahulu, simpan kemajuan anda dalam `DURUM.md`, dan tanya saya sebelum memadam atau memindahkan apa-apa, menukar Python sistem atau PATH, atau menurunkan sebarang tetapan kualiti.” Ejen akan mendiagnosis PC ini, menulis senarai semak dan bertanya kepada anda pada setiap keputusan.
+
 **Reka bentuk suara bahasa Turki dengan VoxCPM2 pada GPU 4 GB.** Huraikan suara dalam bahasa Inggeris, biarkan model
 menciptanya, pilih varian yang anda suka, kemudian baca apa-apa teks bahasa Turki dengan suara itu. Disertakan pemasang
 satu arahan, enjin [audio.cpp](https://github.com/0xShug0/audio.cpp) yang telah ditampal supaya muat dalam GTX 1050 Ti

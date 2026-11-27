@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Memakai agen pemrograman AI (Codex, Claude Code, Gemini, Cursor)?** Berikan satu kalimat ini kepadanya: “Baca `AGENTS_HIZLI.md` sampai habis, jalankan `scripts\tani.ps1` lebih dulu, catat kemajuanmu di `DURUM.md`, dan tanyakan kepada saya sebelum menghapus atau memindahkan apa pun, mengubah Python sistem atau PATH, atau menurunkan pengaturan kualitas.” Agen akan mendiagnosis PC ini, menulis daftar periksa, dan bertanya kepada Anda pada setiap keputusan.
+
 **Desain suara berbahasa Turki dengan VoxCPM2 di GPU 4 GB.** Deskripsikan sebuah suara dalam bahasa Inggris, biarkan
 model membuatnya, pilih varian yang kamu suka, lalu bacakan teks berbahasa Turki apa pun dengan suara itu. Sudah
 termasuk installer satu perintah, engine [audio.cpp](https://github.com/0xShug0/audio.cpp) yang sudah di-patch agar

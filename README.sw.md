@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Je, unatumia wakala wa uandishi wa msimbo wa AI (Codex, Claude Code, Gemini, Cursor)?** Mpe sentensi hii moja: “Soma `AGENTS_HIZLI.md` hadi mwisho, endesha `scripts\tani.ps1` kwanza, weka maendeleo yako katika `DURUM.md`, na uniulize kabla ya kufuta au kuhamisha chochote, kubadilisha Python ya mfumo au PATH, au kupunguza mpangilio wowote wa ubora.” Wakala atachunguza kompyuta hii, ataandika orodha ya ukaguzi na atakuuliza katika kila uamuzi.
+
 **Ubunifu wa sauti za Kituruki kwa VoxCPM2 kwenye GPU ya 4 GB.** Eleza sauti kwa Kiingereza, acha modeli iiunde, chagua
 toleo unalolipenda, kisha soma maandishi yoyote ya Kituruki kwa sauti hiyo. Mradi unajumuisha kisakinishi cha amri moja,
 injini ya [audio.cpp](https://github.com/0xShug0/audio.cpp) iliyorekebishwa inayotosha kwenye GTX 1050 Ti (4 GB), kiolesura

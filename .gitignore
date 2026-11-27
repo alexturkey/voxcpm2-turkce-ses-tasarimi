@@ -19,3 +19,4 @@ cuda/
 model/
 # sürüm paketi / release build output
 dist/
+/DURUM.md

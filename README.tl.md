@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Gumagamit ka ba ng AI coding agent (Codex, Claude Code, Gemini, Cursor)?** Ibigay sa kanya ang isang pangungusap na ito: “Basahin mo ang `AGENTS_HIZLI.md` hanggang dulo, patakbuhin muna ang `scripts\tani.ps1`, itala ang progreso mo sa `DURUM.md`, at magtanong ka muna sa akin bago magbura o maglipat ng anuman, magpalit ng Python ng sistema o PATH, o magbaba ng anumang setting ng kalidad.” Susuriin ng agent ang PC na ito, magsusulat ng checklist, at magtatanong sa iyo sa bawat desisyon.
+
 **Pagdidisenyo ng boses sa Turkish gamit ang VoxCPM2 sa isang 4 GB na GPU.** Ilarawan ang isang boses sa Ingles,
 hayaang likhain ito ng model, piliin ang variant na gusto mo, at basahin ang kahit anong tekstong Turkish gamit ang
 boses na iyon. Kasama rito ang installer na isang command lang, isang patched na

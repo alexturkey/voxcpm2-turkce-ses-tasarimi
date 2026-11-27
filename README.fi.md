@@ -2,6 +2,8 @@
 
 # voxcpm2-turkce-ses-tasarimi
 
+> **Käytätkö tekoälykoodausagenttia (Codex, Claude Code, Gemini, Cursor)?** Anna sille tämä yksi lause: ”Lue `AGENTS_HIZLI.md` loppuun asti, aja ensin `scripts\tani.ps1`, pidä edistymisesi kirjaa tiedostossa `DURUM.md` ja kysy minulta ennen kuin poistat tai siirrät mitään, muutat järjestelmän Pythonia tai PATHia tai laskat laatuasetusta.” Agentti diagnosoi tämän tietokoneen, kirjoittaa tarkistuslistan ja kysyy sinulta jokaisessa päätöksessä.
+
 **Turkinkielistä äänisuunnittelua VoxCPM2:lla 4 Gt:n näytönohjaimella.** Kuvaile ääni englanniksi, anna mallin luoda
 se, valitse mieleisesi muunnelma ja lue sitten mikä tahansa turkinkielinen teksti tuolla äänellä. Mukana on yhden
 komennon asennusohjelma, paikattu [audio.cpp](https://github.com/0xShug0/audio.cpp)-moottori, joka mahtuu

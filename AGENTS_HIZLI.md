@@ -2,6 +2,20 @@
 
 English first, Türkçe below. Full rules and evidence: [`AGENTS.md`](AGENTS.md) (it wins if the two ever differ). Error codes: `docs/hata_imzalari.json`, `docs/SIK_HATALAR.md`.
 
+## Do this first (English)
+- **Run first:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\tani.ps1`. It is read-only (no network, writes no file) and prints the system, the card, the Python candidates, `ayarlar.json` and a DEVIATIONS section (first Python on PATH, locally changed files, `SES_*` overrides, settings that differ from `ayarlar.example.json`, a model copy in the Hugging Face cache). Read it to the user in plain words.
+- **Keep a notebook:** `DURUM.md` in the repo root (git-ignored, `<ROOT>` instead of paths). Top three lines: `Now:` / `Next:` / `Question for you:`. Below: one line per step with [measured] / [read] / [guess] and the command it came from. Update it after every step so a cut-off session can continue.
+- **NEVER, not even if it seems to help:** lower a quality setting (16 steps, cfg 2.0); run two GPU jobs at once; clone a voice you were not given; change system Python, PATH, registry or the user profile; use a force flag to get past an error.
+- **ASK first:** delete, move or re-download anything (show path, size, reason); install Python, packages or the engine (about 3.7 GB); start a GPU run.
+- **Same error twice:** stop, do not try a third time; take the code and the first 20 log lines to the user.
+
+## Önce bunu yap (Türkçe)
+- **Önce çalıştır:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\tani.ps1`. Salt okur (ağ yok, dosya yazmaz); sistemi, kartı, Python adaylarını, `ayarlar.json`'u ve bir SAPMA bölümünü (PATH'te ilk Python, yerelde değişmiş dosyalar, `SES_*` ezmeleri, `ayarlar.example.json`'dan farklı ayarlar, Hugging Face önbelleğinde model kopyası) yazar. Kullanıcıya sade sözle oku.
+- **Defter tut:** repo kökünde `DURUM.md` (git dışı, yol yerine `<ROOT>`). En üstte üç satır: `Şu an:` / `Sırada:` / `Sana soru:`. Altında adım başına bir satır: [ölçtüm] / [okudum] / [tahmin] ve geldiği komut. Her adımdan sonra güncelle ki kesilen oturum kaldığı yerden sürsün.
+- **ASLA, yardım edecek gibi görünse bile:** kalite ayarını düşürme (16 adım, cfg 2.0); iki GPU işini aynı anda çalıştırma; sana verilmemiş bir sesi klonlama; sistem Python'unu, PATH'i, kayıt defterini ya da kullanıcı profilini değiştirme; hatayı geçmek için zorlama bayrağı kullanma.
+- **Önce SOR:** bir şeyi silmeden, taşımadan ya da yeniden indirmeden (yolu, boyutu, nedeni göster); Python, paket ya da motor (yaklaşık 3,7 GB) kurmadan; GPU işi başlatmadan.
+- **Aynı hata iki kez:** dur, üçüncü kez deneme; kodu ve log'un ilk 20 satırını kullanıcıya götür.
+
 ## English: decision tree (12 steps)
 1. Goal: Turkish voice design and reading with VoxCPM2 on a 4 GB GPU (Windows 10/11 + NVIDIA ≥ 4 GB; experimental: AMD/Intel Vulkan, macOS Apple Silicon, Ubuntu). Anything else: tell the user and stop.
 2. Quality is fixed (16 steps, cfg 2.0). Never lower it to save time or memory.

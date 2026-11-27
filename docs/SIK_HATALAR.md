@@ -4,6 +4,8 @@
 
 **EN:** Search part of the error message with `scripts\tani.ps1 -Hata "<message>"`: it prints the code and the first step (local, offline, sends nothing). The table below is the same data. Codes are permanent; rows with source "repo" are messages printed by this repository's scripts, "engine" and "OS" rows come from outside.
 
+**Ajan ile kurulum / Agent-assisted install:** önce `scripts\tani.ps1` (salt okur; SAPMA bölümü varsayılandan farkı gösterir); ajanınız ilerlemesini kökte `DURUM.md` dosyasında tutsun, kalite ayarını düşürmesin. / Run `scripts\tani.ps1` first (read-only; its DEVIATIONS section shows what differs from the defaults); your agent keeps its progress in `DURUM.md` in the root and must not lower a quality setting.
+
 Hâlâ çözülmediyse / Still stuck: `scripts\tani.ps1` raporunu [kurulum sorunu formuna](https://github.com/alexturkey/voxcpm2-turkce-ses-tasarimi/issues/new?template=kurulum-sorunu.yml) yapıştırın / paste its report into the install-problem form.
 
 | Kod / Code | İletide ara / Look for | İlk adım (TR) | First step (EN) | Kaynak / Source |
